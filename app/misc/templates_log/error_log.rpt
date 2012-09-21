@@ -1,0 +1,5 @@
+header=System Error Log
+datatable_table=lgks_log_error
+datatable_cols=id,date,time,user,error_code,error_msg,error_log,client,user_agent
+datatable_where=site='#forsite#'
+datatable_params=rptOptions.sortname='id';rptOptions.sortorder='desc';

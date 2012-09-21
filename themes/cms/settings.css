@@ -1,0 +1,21 @@
+body {overflow-x:hidden;font-size:14px;}
+#toolbar {position:absolute;top:0px;left:0px;width:100%;padding:10px;border-bottom:1px solid #aaa;}
+#toolbar button {width:100px;height:35px;margin-left:20px;}
+
+#settings {margin-top:60px;margin-right:10px;padding:5px;float:right;width:300px;text-align:right;font-family:Georgia;}
+#settings table {width:100%;padding:3px;border:2px solid #aaa;clear:none;margin-right:20px;margin-bottom:20px;}
+#settings table caption {font-weight:bold;font-size:1.2em;width:102%;height:20px;padding-top:3px;}
+#settings input[type=text],#settings input[type=file], #settings select {width:100%;}
+#settings input {border:1px solid #aaa;}
+
+#configurations {margin-top:60px;padding:5px;font:14px plain Georgia;float:left;}
+#configurations table {width:70%;padding:3px;border:2px solid #aaa;float:left;margin-right:20px;margin-bottom:20px;}
+#configurations ul,#configurations li {list-style:none;margin-left:0px;}
+#configurations li.title {font-size:16px;margin-top:10px;color:#333;}
+#configurations li.input {margin-left:20px;}
+#configurations input {border:1px solid #aaa;width:350px;height:22px;}
+#configurations select {border:1px solid #aaa;width:353px;height:25px;}
+
+select,textarea {
+	width:98%;
+}

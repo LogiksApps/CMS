@@ -1,0 +1,5 @@
+header=Site Visitor Log
+datatable_table=lgks_log_visitor
+datatable_cols=id,date,time,page,user_agent,client
+datatable_where=site='#forsite#'
+datatable_params=rptOptions.sortname='id';rptOptions.sortorder='desc';

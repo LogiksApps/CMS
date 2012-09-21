@@ -1,0 +1,6 @@
+header=Login Pie Of Users
+datatable_table=lgks_log_login
+datatable_cols=user,count(*)
+datatable_where=site='#forsite#'
+datatable_params=rptOptions.groupField::["user"];rptOptions.sortname::"user";
+engine=piechart

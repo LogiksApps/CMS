@@ -1,0 +1,5 @@
+header=System Log
+datatable_table=lgks_log_system
+datatable_cols=id,date,time,user,priority,category,module,source,log_data,client,user_agent
+datatable_where=site='#forsite#'
+datatable_params=rptOptions.sortname='id';rptOptions.sortorder='desc';

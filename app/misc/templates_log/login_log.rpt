@@ -1,0 +1,5 @@
+header=Login Log Of Users
+datatable_table=lgks_log_login
+datatable_cols=id,date,user,site,login_time,logout_time,sys_spec,user_agent,status
+datatable_where=site='#forsite#'
+datatable_params=rptOptions.sortname='id';rptOptions.sortorder='desc';

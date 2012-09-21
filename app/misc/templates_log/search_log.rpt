@@ -1,0 +1,5 @@
+header=Top Search Pages
+datatable_table=lgks_log_search
+datatable_cols=id,date,time,user,source,searchtxt
+datatable_where=site='#forsite#'
+datatable_params=rptOptions.sortname='id';rptOptions.sortorder='desc';
