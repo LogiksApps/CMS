@@ -2,7 +2,7 @@
 @font-face{
 	font-family: HattoriHanzoLight;
 	src: url('fonts/hattori/hattori_hanzo-webfont.eot');
-	src: url('fonts/hattori/hattori_hanzo-webfont.eot?iefix') format('eot'), url('fonts/hattori/hattori_hanzo-webfont.woff') format('woff'), url('fonts/hattori/hattori_hanzo-webfont.ttf') format('truetype'), url('fonts/hattori/hattori_hanzo-webfont.svg#webfont2bbtnxOL') format('svg');
+	src: url('fonts/hattori/hattori_hanzo-webfont-iefix.eot') format('eot'), url('fonts/hattori/hattori_hanzo-webfont.woff') format('woff'), url('fonts/hattori/hattori_hanzo-webfont.ttf') format('truetype'), url('fonts/hattori/hattori_hanzo-webfont.svg#webfont2bbtnxOL') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -53,19 +53,6 @@ body {
 	color:white;
 	font:27px bold Georgia;
 	
-	background: #1D6311 url(../../../services/?scmd=gensvg&from=71995A&to=C4E0AF) repeat;
-	background-image: -o-linear-gradient(top, #71995A, #C4E0AF);
-    background-image: -ms-linear-gradient(top, #71995A, #C4E0AF);
-    background-image: -moz-linear-gradient(top, #71995A, #C4E0AF);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#71995A), to(#C4E0AF));
-    background-image: -webkit-linear-gradient(top, #71995A, #C4E0AF);
-    background-image: linear-gradient(top, #71995A, #C4E0AF);
-
-	border:2px solid #aaa;
-	-moz-border-radius:10px;
-	-webkit-border-radius:10px;
-	-khtml-border-radius:10px;
-	border-radius:10px;
 }
 #header a {
 	color: #FFFFFF;
@@ -389,7 +376,7 @@ body {
 }
 /** Table **/
 #page table:not(.nostyle) {
-	width: 100%;
+	width: 99%;
 	text-align: left;
 }
 #page table:not(.nostyle) .picture img{

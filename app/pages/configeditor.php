@@ -1,5 +1,7 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
+user_admin_check(true);
+checkUserSiteAccess($_REQUEST['forsite'],true);
 
 if(isset($_REQUEST["cfg"])) {
 	$cfg=$_REQUEST["cfg"];
@@ -9,6 +11,7 @@ if(isset($_REQUEST["cfg"])) {
 	$schema=explode(",",$schema);
 	
 	if(isset($_REQUEST["forsite"])) {
+		checkUserSiteAccess($_REQUEST['forsite'],true);
 		$cfgFile=findAppCfgFile($cfg);
 		if(strlen($cfgFile)>0) {
 			loadCfgFile($cfgFile,$schema);

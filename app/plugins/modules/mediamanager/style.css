@@ -1,0 +1,133 @@
+#pgworkspace {
+	overflow:hidden;
+}
+.mediaPane {
+	display:none;
+}
+.mediaPane.active {
+	display:block;
+}
+#page .toolbar>.left {
+	padding-top:0px;
+}
+#page .toolbar {
+	border-bottom:1px solid #aaa !important;
+}
+#photoGallery {
+	width:40%;height:100%;float:right;overflow:auto;
+}
+#photoViewer {
+	width:59%;height:100%;float:left;border-right:3px solid #CCC;
+}
+#photoViewer #viewer {
+	width:100%;height:90%;
+	overflow:auto;
+}
+#photoViewer #tools {
+	width:100%;height:10%;
+}
+#photoViewer #viewer img {
+	margin:auto;
+}
+#photoViewer #tools button {
+	width:55px;height:45px;
+	margin:5px;
+}
+.thumbnail { width:110px;height:110px;cursor:pointer;}
+.thumbnail:hover {opacity:0.5;}
+.thumbnail img {margin:5px;}
+
+.minithumbnail { width:70px;height:70px;cursor:pointer;}
+.minithumbnail:hover {opacity:0.5;}
+.minithumbnail img {margin:5px;}
+
+#thumbsview .ui-selecting { background: #FECA40; }
+#thumbsview .ui-selected { background: #F39814; color: white; }
+#thumbsview { list-style-type: none; margin: 0; padding: 0; }
+#thumbsview li { margin: 10px 10px 10px 10px; padding: 1px; float: left;}
+
+#tableview table tr {	
+	height:25px;
+	background:#ffffff;
+}
+#tableview table tr:hover{
+	background:#eeeeee;
+}
+#tableview table th {
+	background:#8abdf1;
+	border:1px solid #5A97D4 !important;/*#5A97D4*/
+	font-size:11px !important;
+	text-align:center !important;
+	padding:1px !important;
+	height:25px;
+}
+#tableview table td  {
+	border: 0px solid #eee;
+	padding-left: 5px;
+	padding-right: 5px;
+	color:#333333;
+}
+#tableview table td:hover {
+	color:#cc0000;
+	cursor:pointer;
+}
+#tableview table tr td img {
+	margin:3px;
+}
+#tableview table tr td img:hover {
+	opacity:0.5;
+}
+.selectedItem,#tableview table tr.selectedItem td {
+	background:#000 !important;
+	color:#CCCCCC !important;
+}
+.current,#tableview table tr.current td {
+	background:#86B9C2 !important;
+	color:#222222 !important;
+}
+.errormsg {
+	width:80%;
+	margin:auto;
+	margin-top:50px;
+	cursor:pointer;
+}
+.infomsg {
+	display:none;
+}
+
+#searchfield {
+	background:#FFF url(images/searchfield.png) no-repeat right center;
+	width:150px;height:20px;
+	border:1px solid #AAA;
+	display:none;
+}
+
+/*All Icons*/
+.deleteicon {background:transparent url(images/delete.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.toggleicon {background:transparent url(images/toggle.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+
+.reloadicon {background:transparent url(images/reload.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.swapicon {background:transparent url(images/swap.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.downloadicon {background:transparent url(images/download.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+
+.viewicon {background:transparent url(images/views.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.uploadicon {background:transparent url(images/upload.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+
+.findicon {background:transparent url(images/find.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.printicon {background:transparent url(images/print.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.slideshowicon {background:transparent url(images/slideshow.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+
+.zoominicon {background:transparent url(images/zoom-in.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.zoomouticon {background:transparent url(images/zoom-out.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.zoomoriginalicon {background:transparent url(images/zoom-original.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+
+.gofirsticon {background:transparent url(images/gofirst.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.gobackicon {background:transparent url(images/goback.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.gonexticon {background:transparent url(images/gonext.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+.golasticon {background:transparent url(images/golast.png) no-repeat left center;width:18px;height:18px;padding-left:20px;}
+
+.bigdeleteicon {background:transparent url(images/30/delete.png) no-repeat left center;width:30px;height:30px;padding-left:30px;}
+.bigswapicon {background:transparent url(images/30/swap.png) no-repeat left center;width:30px;height:30px;padding-left:30px;}
+.bigdownloadicon {background:transparent url(images/30/download.png) no-repeat left center;width:30px;height:30px;padding-left:30px;}
+
+.nophoto {background:transparent url(images/nophoto.png) no-repeat center center;}

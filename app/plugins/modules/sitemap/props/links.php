@@ -1,0 +1,6 @@
+<?php
+printArray($props);
+?>
+
+	
+

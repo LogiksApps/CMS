@@ -61,7 +61,7 @@ if(isset($_REQUEST["forsite"])) {
 </div>
 <?php
 if(strlen(getConfig("CMS_TITLEBAR_TEXT"))>0) {
-	echo "<div class='center' style='margin-left:200px;'>".getConfig("CMS_TITLEBAR_TEXT")."</div>";
+	echo "<div class='center' style='margin-left:300px;'>".getConfig("CMS_TITLEBAR_TEXT")."</div>";
 }
 ?>
 <div id=header_search_selector_div style='display:none;' title='Search Menu'><b>Search :: </b>

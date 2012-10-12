@@ -197,7 +197,7 @@ class MenuTree {
 	function createMenuPropsWindow($menuData) {
 		if($menuData['idCol']==-1) return "";
 		$s="";
-		$s.="<table width=100% border=0 cellpadding=2 cellspacing=0>";
+		$s.="<table width=100% border=0 cellpadding=2 cellspacing=0 class='nostyle'>";
 		$s.="<input type=hidden name='id' value='{$menuData['idCol']}' />";
 		$s.="<tr><th width=100px align=left>Title</th><td><input name=title type=text value='{$menuData['titleCol']}' /></td></tr>";
 		$s.="<tr><th width=100px align=left>Link</th><td><input name=link type=text value='{$menuData['linkCol']}' /></td></tr>";
@@ -214,6 +214,10 @@ class MenuTree {
 		if(isset($_SESSION["APP_FOLDER"])) {
 			$appRoot=$_SESSION["APP_FOLDER"]["APPROOT"];
 			
+			if(!in_array($appRoot . $name,$paths) && file_exists($appRoot. $name)) {
+				array_push($paths,$appRoot . $name);
+			}
+			
 			if(isset($_SESSION["APP_FOLDER"]["APPS_MEDIA_FOLDER"])) {
 				if(!in_array($appRoot . $_SESSION["APP_FOLDER"]["APPS_MEDIA_FOLDER"] . $name,$paths) && file_exists($appRoot.$_SESSION["APP_FOLDER"]["APPS_MEDIA_FOLDER"] . $name)) {
 					array_push($paths,$appRoot . $_SESSION["APP_FOLDER"]["APPS_MEDIA_FOLDER"] . $name);
@@ -227,6 +231,7 @@ class MenuTree {
 				}
 			}
 		}
+		
 		if(sizeOf($paths)>0) {
 			return str_replace(ROOT,SiteLocation,$paths[0]);
 		} else {

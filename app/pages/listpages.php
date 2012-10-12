@@ -1,11 +1,13 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
-session_check(true);
 
 if(!isset($_REQUEST["forsite"])) {
 	dispErrMessage("HostSite Is Required But Not Found","CMS Error",400);
 	exit();
 }
+user_admin_check(true);
+checkUserSiteAccess($_REQUEST['forsite'],true);
+
 loadModule("page");
 
 loadModule("editor");
@@ -673,7 +675,7 @@ select {
 			<button style="width:90px;" class='' onclick="loadLayout();"><div class='reloadicon'>Reset</div></button>
 			<button style="width:90px;" class='' onclick="saveLayout()"><div class='searchicon'>Save</div></button>
 			<hr/>
-			<div id=layoutEditor title='Code Editor' style='width:100%;height:90%;overflow:auto;padding-left:20px;padding-top:10px;'>
+			<div id=layoutEditor title='Code Editor' style='width:98%;height:85%;overflow:auto;padding-left:20px;padding-top:10px;'>
 				<table class='properties nostyle noborder' width=500px border=0 cellspacing=0 cellpadding=1>
 					<thead>
 						<tr>
@@ -729,7 +731,7 @@ select {
 						<tr><td colspan=10><hr/></td></tr>
 					</thead>
 					<tbody></tbody>
-				</table><br/>
+				</table><br/><br/>
 			</div>
 		</div>
 	</div>

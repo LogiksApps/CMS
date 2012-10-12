@@ -1,6 +1,7 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
-session_check(true);
+user_admin_check(true);
+checkUserSiteAccess($_REQUEST['forsite'],true);
 
 $module=$_REQUEST["mod"];
 $_SESSION["CMS_FORSITE"]=$_REQUEST["forsite"];

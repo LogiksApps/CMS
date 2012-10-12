@@ -1,11 +1,12 @@
 <?php
-if (!defined('ROOT')) exit('No direct script access allowed');
-session_check(true);
+if(!defined('ROOT')) exit('No direct script access allowed');
 
 if(!isset($_REQUEST["forsite"])) {
 	dispErrMessage("HostSite Is Required But Not Found","CMS Error",400);
 	exit();
 }
+user_admin_check(true);
+checkUserSiteAccess($_REQUEST['forsite'],true);
 
 loadModule("page");
 
