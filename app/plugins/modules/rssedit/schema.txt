@@ -1,8 +1,0 @@
-guid,				:: Auto Generate
-title,
-link/url/href,			:: Default Sites URL
-author,
-category,
-image/photo,
-description/descs,
-content,			:: Auto Content From Fields
