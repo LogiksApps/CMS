@@ -17,7 +17,10 @@ $(function() {
 					dateFormat:src,
 				});
 		});
-	
+	$("input,select,textarea","#cfg_workspace").each(function() {
+			v=$(this).attr("value");
+			$(this).val(v);
+		});
 	$("select").addClass("ui-state-default ui-corner-all");
 	$("select.multiple").attr("multiple","multiple");
 	$("select.multiple").removeClass("ui-state-default");
@@ -69,13 +72,13 @@ function submitForm(id) {
 		v=$(this).val();
 		t=$(this).attr("name");
 		$(this).attr("value",v);
-		params+=t+"="+v+"&";
+		params+=t+"="+encodeURIComponent(v)+"&";
 	});
 	$(id).find("select.changed").each(function() {
 		v=$(this).val();
 		t=$(this).attr("name");
 		$(this).attr("value",v);
-		params+=t+"="+v+"&";
+		params+=t+"="+encodeURIComponent(v)+"&";
 	});
 	if(params.length>0) {
 		params=params.substr(0,params.length-1);

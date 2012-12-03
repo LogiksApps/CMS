@@ -1,8 +1,12 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
-loadModule("dbcon");loadFolderConfig();//getDBControls();
-$_SESSION["LGKS_EDITOR_FPATH"]=APPS_FOLDER.$_REQUEST["forsite"]."/{$_SESSION['APP_FOLDER']['APPS_MEDIA_FOLDER']}";
-
+loadModule("dbcon");
+$appFolder=loadFolderConfig();//getDBControls();
+if(isset($appFolder['APP_FOLDER']))
+	$_SESSION["LGKS_EDITOR_FPATH"]=APPS_FOLDER.$_REQUEST["forsite"]."/{$appFolder['APP_FOLDER']['APPS_MEDIA_FOLDER']}";
+else
+	$_SESSION["LGKS_EDITOR_FPATH"]=APPS_FOLDER.$_REQUEST["forsite"].MEDIA_FOLDER;
+	
 loadModule("tabbedspace");
 
 _js(array("jquery.mailform"));

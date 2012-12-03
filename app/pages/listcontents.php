@@ -104,6 +104,14 @@ $(function() {
 	$("#editPage").tabs("disable",1);
 	
 	CKEDITOR.config.toolbar="WYSIWYG_NOSTYLE";
+	
+	CKEDITOR.config.filebrowserBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&site=<?=$_REQUEST['forsite']?>';
+	CKEDITOR.config.filebrowserImageBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&type=Images&site=<?=$_REQUEST['forsite']?>';
+	CKEDITOR.config.filebrowserFlashBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&type=Flash&site=<?=$_REQUEST['forsite']?>';
+	CKEDITOR.config.filebrowserUploadUrl='plugins/modules/fileselectors/index.php?popup=direct&command=QuickUpload&type=Files&site=<?=$_REQUEST['forsite']?>';
+	CKEDITOR.config.filebrowserImageUploadUrl='plugins/modules/fileselectors/index.php?popup=direct&command=QuickUpload&type=Images&site=<?=$_REQUEST['forsite']?>';
+	CKEDITOR.config.filebrowserFlashUploadUrl='plugins/modules/fileselectors/index.php?popup=direct&command=QuickUpload&type=Flash&site=<?=$_REQUEST['forsite']?>';
+	
 	loadEditor("richtextarea");
 	
 	var href="services/?scmd=autocomplete&site=<?=$_REQUEST["forsite"]?>&src=sqltbl&format=json&tbl=do_contents&cols=category";
@@ -206,14 +214,14 @@ function saveContent(id) {
 			
 			html=$("#editor input[name=title]").val()+" ["+$("#editor input[name=category]").val()+"]";
 			html+=listBtns;
-			$("#contentList tr[rel="+id+"] td").html(html);
+			$("#contentList tr[rel="+id+"] td.title").html(html);
 			
-			$("#contentList tr[rel="+id+"]").removeClass("okicon");
-			$("#contentList tr[rel="+id+"]").removeClass("notokicon");
+			$("#contentList tr[rel="+id+"] td:first-child").removeClass("okicon");
+			$("#contentList tr[rel="+id+"] td:first-child").removeClass("notokicon");
 			if($("#editor select[name=blocked]").val()=="true") {
-				$("#contentList tr[rel="+id+"]").addClass("notokicon");
+				$("#contentList tr[rel="+id+"] td:first-child").addClass("notokicon");
 			} else {
-				$("#contentList tr[rel="+id+"]").addClass("okicon");
+				$("#contentList tr[rel="+id+"] td:first-child").addClass("okicon");
 			}
 			
 			$("#editor .loading").hide();
@@ -227,8 +235,8 @@ function createContent() {
 				processAJAXQuery(l,function(data) {
 						json=$.parseJSON(data);
 						if(json!=null && json.id>0) {
-							html="<tr rel='"+json.id+"' class='notokicon editable'>";
-							html+="<td style='padding-left:25px'>";
+							html="<tr rel='"+json.id+"' class='editable'>";
+							html+="<td class='okicon'></td><td class=title>";
 							html+=txt+listBtns;
 							html+="</td></tr>";
 							

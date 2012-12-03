@@ -32,7 +32,7 @@ if(isset($_REQUEST["action"])) {
 			$noCat=$out['/'];
 			unset($out['/']);
 		}
-		$st="<tr rel='#id#' class='#editable#'><td class='#icon#'></td><td>#title#</td></tr>";
+		$st="<tr rel='#id#' title='#title#' class='#editable#'><td class='#icon#'></td><td class='title'>#reflink#</td></tr>";
 		
 		foreach($out as $a=>$b) {
 			echo "<tr><th class='clr_darkmaroon' align=left colspan=10>".ucwords($a)."</th></tr>";
@@ -41,6 +41,7 @@ if(isset($_REQUEST["action"])) {
 				$ss=str_replace("#id#",$y['id'],$ss);
 				$ss=str_replace("#title#",$y['title'],$ss);
 				$ss=str_replace("#category#",$y['category'],$ss);
+				$ss=str_replace("#reflink#",$y['reflink'],$ss);
 				if($y['blocked']=="false")
 					$ss=str_replace("#icon#","okicon",$ss);
 				else
@@ -58,6 +59,7 @@ if(isset($_REQUEST["action"])) {
 			$ss=str_replace("#id#",$y['id'],$ss);
 			$ss=str_replace("#title#",$y['title'],$ss);
 			$ss=str_replace("[#category#]","",$ss);
+			$ss=str_replace("#reflink#",$y['reflink'],$ss);
 			if($y['blocked']=="false")
 				$ss=str_replace("#icon#","okicon",$ss);
 			else
@@ -69,7 +71,7 @@ if(isset($_REQUEST["action"])) {
 			echo $ss;
 		}
 	} elseif($_REQUEST["action"]=="fetch" && isset($_REQUEST["id"])) {
-		$sql="SELECT id,title,category,blocked,text,site,doc,doe FROM $tbl WHERE (SITE='*' OR SITE='{$_REQUEST['forsite']}') AND id={$_REQUEST["id"]}";
+		$sql="SELECT id,reflink,title,category,blocked,text,site,doc,doe FROM $tbl WHERE (SITE='*' OR SITE='{$_REQUEST['forsite']}') AND id={$_REQUEST["id"]}";
 		$res=$dbCon->executeQuery($sql);
 		$data=array();
 		if($res) {
@@ -83,6 +85,8 @@ if(isset($_REQUEST["action"])) {
 	} elseif($_REQUEST["action"]=="save" && isset($_REQUEST["id"]) && isset($_POST["data"])) {
 		$data=$_POST["data"];
 		$data=cleanText($data);
+		$data=mysql_real_escape_string($data);
+		//$data="";
 		$sql="UPDATE $tbl SET ";
 		$sql.="title='{$_POST["title"]}', category='{$_POST["category"]}', blocked='{$_POST["blocked"]}', text='{$data}', ";
 		$sql.="doe='".date('Y/m/d')."'";
@@ -90,6 +94,7 @@ if(isset($_REQUEST["action"])) {
 		$res=$dbCon->executeQuery($sql);
 		
 		if(!$res) {
+			echo $dbCon->getError();
 			echo "Error Updating Article#{$_REQUEST["id"]}. Try Again.";
 		}
 	} elseif($_REQUEST["action"]=="create" && isset($_REQUEST["title"])) {
@@ -97,8 +102,8 @@ if(isset($_REQUEST["action"])) {
 			$site="*";
 			$userid=$_SESSION['SESS_USER_ID'];
 			$date=date('Y/m/d');
-			$sql="INSERT INTO $tbl (title,category,text,site,userid,doc,doe) VALUES ";
-			$sql.="('{$_REQUEST["title"]}','','','$site','$userid','$date','$date')";
+			$sql="INSERT INTO $tbl (reflink,title,category,text,site,userid,doc,doe) VALUES ";
+			$sql.="('".str_replace(" ","_",strtolower($_REQUEST["title"]))."','{$_REQUEST["title"]}','','','$site','$userid','$date','$date')";
 			$res=$dbCon->executeQuery($sql);
 			if($res) {
 				$d=array("id"=>$dbCon->insert_id());

@@ -18,6 +18,7 @@ if(!isset($_REQUEST["forsite"])) {
 					header("Location:"._url("&forsite=$b"));
 				}
 			}
+			trigger_NotFound("NoAppSite Found In Current Installation");
 		}
 	}
 }

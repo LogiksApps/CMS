@@ -10,7 +10,10 @@ if(isset($_REQUEST["action"]) && isset($_REQUEST["forpage"]) && strlen($_REQUEST
 	loadModule("dbcon");
 	$folders=loadFolderConfig();
 	
-	$metaFiles=getMetaFiles($_REQUEST["forpage"]);
+	if(isset($_REQUEST['encodeURL']) && $_REQUEST['encodeURL']=="true")
+		$metaFiles=array(base64_encode($_REQUEST["forpage"]));
+	else
+		$metaFiles=array($_REQUEST["forpage"]);
 	
 	if($_REQUEST["action"]=="fetchmeta") {
 		foreach($metaFiles as $mf) {
@@ -40,35 +43,5 @@ if(isset($_REQUEST["action"]) && isset($_REQUEST["forpage"]) && strlen($_REQUEST
 		}
 		exit();
 	}
-}
-function getMetaFiles($metaReq="") {
-	if(strlen($metaReq)>0) {
-		if(strpos("#".$metaReq,"=")>1) {
-			$pgArr=explode("&",$metaReq);
-			foreach($pgArr as $n=>$a) {
-				$a=explode("=",$a);
-				if(!isset($a[1])) $a[1]="";
-				unset($pgArr[$n]);
-				$pgArr[$a[0]]=$a[1];
-			}
-			$metaReq=$pgArr;
-			if(!isset($metaReq["page"])) {
-				$metaReq["page"]=md5($_REQUEST["forpage"]);
-			}
-		} else {
-			$metaReq=array("page"=>$metaReq);
-		}
-		unset($metaReq['site']);unset($metaReq['forsite']);
-		
-		$metaFile1=$metaReq["page"];
-		
-		$href=array();
-		foreach($metaReq as $a=>$b) {array_push($href,"$a=$b");}
-		$metaFile2=md5(implode("&",$href));
-		$metaFile2=(implode("&",$href));
-		
-		return array($metaFile2,$metaFile1);
-	}
-	return "";
 }
 ?>

@@ -23,7 +23,7 @@ if(isset($_REQUEST["forsite"])) {
 	</a>
 	<?php
 		if(isset($_SESSION['SESS_USER_NAME'])) 
-			echo "Hello, <a title='Edit Profile' onclick='showProfileEditor();'>".$_SESSION['SESS_USER_NAME']."</a> | <a  href='api/logout.php' title='Logout Session'>Logout</a>"; 
+			echo "Hello, <a title='Edit Profile' onclick='showProfileEditor();'>".$_SESSION['SESS_USER_NAME']."</a> | <a  href='".SiteLocation."api/logout.php' title='Logout Session'>Logout</a>"; 
 		else echo "Welcome To <a>CMS Demo</a> : <a>Login</a>";
 	?>
 </div>

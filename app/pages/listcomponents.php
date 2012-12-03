@@ -148,6 +148,7 @@ function deleteComponent(p) {
 				"Delete Component",function() {
 						l=lnk+"&action=delete&comp="+p;
 						$("#loadingmsg").show();
+						resetEditor();
 						processAJAXQuery(l,function(data) {
 								if(data.length>0) lgksAlert(data);
 								else $("#componentList tr[rel='"+p+"']").detach();

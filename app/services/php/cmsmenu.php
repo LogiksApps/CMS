@@ -29,7 +29,7 @@ if(isset($_REQUEST["action"])) {
 					"tableList"=>$dbTables,
 					//"moduleList"=>$modules,
 					"showEmptyHolders"=>"$SHOW_EMPTY_HOLDERS",
-					"orderBy"=>"menugroup asc,weight asc")
+					"orderBy"=>"weight,id")
 			);
 	}
 	

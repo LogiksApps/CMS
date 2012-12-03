@@ -10,7 +10,7 @@ if(isset($_REQUEST["action"])) {
 	
 	loadHelpers("files");
 	$sysPf=$_SESSION["APP_FOLDER"]["APPROOT"].$_SESSION["APP_FOLDER"]["APPS_CONFIG_FOLDER"]."lists/syspages.lst";
-	$layoutDir=$_SESSION["APP_FOLDER"]["APPROOT"].$_SESSION["APP_FOLDER"]["APPS_CONFIG_FOLDER"]."layouts/";
+	$layoutDir=$_SESSION["APP_FOLDER"]["APPROOT"].$_SESSION["APP_FOLDER"]["APPS_PAGES_FOLDER"]."layouts/";
 	
 	$sysPages=array();
 	$autoPages=array();
@@ -305,9 +305,13 @@ if(isset($_REQUEST["action"])) {
 			$pg="{$layoutDir}{$nm}.json";
 			$pg=str_replace(".json.json",".json",$pg);
 			$d=getBlankLayout("json");
-			$a=file_put_contents($pg,$d);
-			if($a!==false) {
-				chmod($pg,0666);
+			if(is_writable(dirname($pg))) {
+				$a=file_put_contents($pg,$d);
+				if($a!==false) {
+					chmod($pg,0666);
+				} else {
+					echo "Error Creating Page. ReadOnly Set.";
+				}
 			} else {
 				echo "Error Creating Page. ReadOnly Set.";
 			}
