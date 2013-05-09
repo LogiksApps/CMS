@@ -84,9 +84,7 @@ if(isset($_REQUEST["action"])) {
 		echo json_encode($data);
 	} elseif($_REQUEST["action"]=="save" && isset($_REQUEST["id"]) && isset($_POST["data"])) {
 		$data=$_POST["data"];
-		$data=cleanText($data);
-		$data=mysql_real_escape_string($data);
-		//$data="";
+		$data=cleanForDB($data);
 		$sql="UPDATE $tbl SET ";
 		$sql.="title='{$_POST["title"]}', category='{$_POST["category"]}', blocked='{$_POST["blocked"]}', text='{$data}', ";
 		$sql.="doe='".date('Y/m/d')."'";

@@ -7,10 +7,14 @@ user_admin_check(true);
 if(isset($_REQUEST["action"])) {
 	loadModule("dbcon");getDBControls();
 	$tbl=_dbtable("lists");
+	$whrX="";
 	//Selector Controls
-	
+	if($_SESSION['SESS_PRIVILEGE_ID']>=3) {
+		$whrX="(site='*' OR site='{$_REQUEST['forsite']}')";
+	}
 	if($_REQUEST["action"]=="selectorlist") {
-		$sql="SELECT groupid,count(*) as cnt FROM $tbl group by groupid";
+		if(strlen($whrX)>0) $whrX="WHERE ".$whrX;
+		$sql="SELECT groupid,count(*) as cnt FROM $tbl {$whrX} group by groupid";
 		$r=_dbQuery($sql);
 		if($r) {
 			$arr=_dbData($r);
@@ -25,7 +29,8 @@ if(isset($_REQUEST["action"])) {
 			printErr("WrongFormat","Command Missing Argument");
 			exit();
 		}
-		$sql="SELECT id,groupid,title,value,class,site,privilege,blocked FROM $tbl WHERE groupid='{$_REQUEST['gid']}' AND (site='*' OR site='{$_REQUEST['forsite']}') ORDER BY title,id";
+		if(strlen($whrX)>0) $whrX=" AND ".$whrX;
+		$sql="SELECT id,groupid,title,value,class,site,privilege,blocked FROM $tbl WHERE groupid='{$_REQUEST['gid']}' {$whrX} ORDER BY title,id";
 		
 		$r=_dbQuery($sql);
 		if($r) {

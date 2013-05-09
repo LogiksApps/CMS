@@ -70,12 +70,12 @@ table tr,table tr td {
 </div>
 <script language=javascript>
 currentComp=null;
-lnk="services/?scmd=blocks.components&site=<?=SITENAME?>&forsite=<?=$_REQUEST["forsite"]?>";
+lnk=getServiceCMD("blocks.components");
 listBtns="<div title='delete' class='right deleteicon minibtn'></div><div title='Clone Component' class='right cloneicon minibtn'></div><div title='Edit/View Code' class='right viewicon minibtn'></div>";
 $(function() {
 	$("#richtextarea").css("height",($(window).height()-$("#toolbar").height()));
 	loadCodeEditor("richtextarea","php");
-	
+
 	$("#componentList tbody").delegate("tr","dblclick", function() {
 			id=$(this).attr('rel');
 			editComponent(id);
@@ -111,15 +111,15 @@ function editComponent(p) {
 	currentComp=p;
 	resetEditor();
 	$("#componentList tr.active").removeClass("active");
-	
+
 	l=lnk+"&action=data&comp="+p;
 	$("#loadingmsg").show();
 	processAJAXQuery(l,function(data) {
 			editor.setValue(data);
 			editor.setOption("readOnly", false);
-			
+
 			$("#componentList tr[rel='"+p+"']").addClass("active");
-			
+
 			$("#loadingmsg").hide();
 		});
 }
@@ -128,13 +128,16 @@ function saveComponent(p) {
 		lgksAlert("Nothing To Edit Or Save.");
 		return;
 	}
-	
+
 	l=lnk+"&action=save&comp="+p;
 	q="&data="+encodeURIComponent(editor.getValue());
-	
+
 	$("#loadingmsg").show();
 	processAJAXPostQuery(l,q,function(data) {
-			if(data.length>0) lgksAlert(data);
+			if(data.length>0) {
+				if(typeof lgksToast=="function") lgksToast(data,{position: "top-right"});
+				else lgksAlert(data);
+			}
 			$("#loadingmsg").hide();
 		});
 }

@@ -95,25 +95,25 @@ table tr,table tr td {
 </div>
 <script language=javascript>
 currentID=0;
-lnk="services/?scmd=blocks.contents&site=<?=SITENAME?>&forsite=<?=$_REQUEST["forsite"]?>";
+lnk=getServiceCMD("blocks.contents");
 listBtns="<div class='right deleteicon minibtn'></div><div class='right viewicon minibtn'></div>";
 $(function() {
 	$("#editPage").css("height",($(window).height()-45)+"px");
 	$(".tabPage").css("height",($("#editPage").height()-28)+"px");
 	$("#editPage").tabs();
 	$("#editPage").tabs("disable",1);
-	
+
 	CKEDITOR.config.toolbar="WYSIWYG_NOSTYLE";
-	
+
 	CKEDITOR.config.filebrowserBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&site=<?=$_REQUEST['forsite']?>';
 	CKEDITOR.config.filebrowserImageBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&type=Images&site=<?=$_REQUEST['forsite']?>';
 	CKEDITOR.config.filebrowserFlashBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&type=Flash&site=<?=$_REQUEST['forsite']?>';
 	CKEDITOR.config.filebrowserUploadUrl='plugins/modules/fileselectors/index.php?popup=direct&command=QuickUpload&type=Files&site=<?=$_REQUEST['forsite']?>';
 	CKEDITOR.config.filebrowserImageUploadUrl='plugins/modules/fileselectors/index.php?popup=direct&command=QuickUpload&type=Images&site=<?=$_REQUEST['forsite']?>';
 	CKEDITOR.config.filebrowserFlashUploadUrl='plugins/modules/fileselectors/index.php?popup=direct&command=QuickUpload&type=Flash&site=<?=$_REQUEST['forsite']?>';
-	
+
 	loadEditor("richtextarea");
-	
+
 	var href="services/?scmd=autocomplete&site=<?=$_REQUEST["forsite"]?>&src=sqltbl&format=json&tbl=do_contents&cols=category";
 	$("#category").autocomplete({
 			minLength: 1,
@@ -122,12 +122,12 @@ $(function() {
 				return true;
 			}
 		});
-	
+
 	$("#contentList tbody").delegate("tr","dblclick", function() {
 			id=$(this).attr('rel');
 			viewContent(id);
 		});
-	
+
 	$("#contentList tbody").delegate(".minibtn","click",function() {
 			id=$(this).parents("tr").attr('rel');
 			if(id==null || id<0) return;
@@ -140,7 +140,7 @@ $(function() {
 				viewContent(id);
 			}
 		});
-	
+
 	reloadList();
 });
 function reloadList() {
@@ -148,7 +148,7 @@ function reloadList() {
 	resetEditor();
 	$("#editPage").tabs({"selected":0});
 	$("#viewer").html($("#infoBox").clone().html());
-	
+
 	l=lnk+"&action=list";
 	$("#contentList tbody").html("<tr><td class='ajaxloading3'><br/><br/><br/><br/>Listing ...</td></tr>");
 	$("#loadingmsg").show();
@@ -161,9 +161,9 @@ function reloadList() {
 function viewContent(id) {
 	resetEditor();
 	$("#contentList tr.active").removeClass("active");
-	
+
 	if(id==null || id<=0) return;
-	
+
 	currentID=id;
 	l=lnk+"&action=fetch&id="+currentID;
 	$("#loadingmsg").show();
@@ -174,18 +174,18 @@ function viewContent(id) {
 				html="<h2 class='clr_green' align=center style='margin:0px;padding:0px;'>"+json.title+"</h2>";
 				html+=json.text;
 				$("#viewer").html(html);
-				
+
 				$("#editor #articleName").html("Article#"+currentID);
-				
+
 				$("#editor input[name=title]").val(json.title);
 				$("#editor input[name=category]").val(json.category);
 				$("#editor select[name=blocked]").val(json.blocked);
 				editor.setData(json.text);
 				$("#editPage").tabs("enable",1);
-				
+
 				$("#editor .loading").hide();
 				$("#editor .formTable").show();
-				
+
 				$("#contentList tr[rel="+currentID+"]").addClass("active");
 			} else {
 				html="<h3 class='clr_pink' style='margin:auto;margin-top:50px;width:80%;height:30px;padding-top:20px;'>Failed To Loading Content For Article#"+id+"</h3>";
@@ -198,7 +198,7 @@ function saveContent(id) {
 	if(id==null || id<=0) return;
 	l=lnk+"&action=save&id="+id;
 	q="&data="+encodeURIComponent(editor.getData());
-	
+
 	$("#editor").find("input, textarea, select").each(function() {
 			if($(this).attr('name')!=null)
 				q+="&"+$(this).attr('name')+"="+encodeURIComponent($(this).val());
@@ -207,15 +207,15 @@ function saveContent(id) {
 	$("#editor .loading").show();
 	processAJAXPostQuery(l,q,function(msg) {
 			if(msg.length>0) lgksAlert(msg);
-			
+
 			html="<h2 class='clr_green' align=center style='margin:0px;padding:0px;'>"+$("#editor input[name=title]").val()+"</h2>";
 			html+=editor.getData();
 			$("#viewer").html(html);
-			
+
 			html=$("#editor input[name=title]").val()+" ["+$("#editor input[name=category]").val()+"]";
 			html+=listBtns;
 			$("#contentList tr[rel="+id+"] td.title").html(html);
-			
+
 			$("#contentList tr[rel="+id+"] td:first-child").removeClass("okicon");
 			$("#contentList tr[rel="+id+"] td:first-child").removeClass("notokicon");
 			if($("#editor select[name=blocked]").val()=="true") {
@@ -223,7 +223,7 @@ function saveContent(id) {
 			} else {
 				$("#contentList tr[rel="+id+"] td:first-child").addClass("okicon");
 			}
-			
+
 			$("#editor .loading").hide();
 			$("#editor .formTable").show();
 		});
@@ -239,7 +239,7 @@ function createContent() {
 							html+="<td class='okicon'></td><td class=title>";
 							html+=txt+listBtns;
 							html+="</td></tr>";
-							
+
 							$("#contentList tbody").append(html);
 						} else {
 							lgksAlert("There was error creating article with name <b>"+txt+"</b>. <br/>Please try again.");
@@ -265,7 +265,7 @@ function deleteContent(id) {
 					}
 				});
 		});
-	
+
 }
 function resetEditor() {
 	$("#editor").find("input, textarea").val("");

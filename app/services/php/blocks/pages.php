@@ -7,14 +7,14 @@ user_admin_check(true);
 if(isset($_REQUEST["action"])) {
 	loadModule("dbcon");loadFolderConfig();getDBControls();
 	$lf=$_SESSION["APP_FOLDER"]["APPROOT"].$_SESSION["APP_FOLDER"]["APPS_PAGES_FOLDER"];
-	
+
 	loadHelpers("files");
 	$sysPf=$_SESSION["APP_FOLDER"]["APPROOT"].$_SESSION["APP_FOLDER"]["APPS_CONFIG_FOLDER"]."lists/syspages.lst";
 	$layoutDir=$_SESSION["APP_FOLDER"]["APPROOT"].$_SESSION["APP_FOLDER"]["APPS_PAGES_FOLDER"]."layouts/";
-	
+
 	$sysPages=array();
 	$autoPages=array();
-	
+
 	if(file_exists($sysPf)) {
 		$spfData=file_get_contents($sysPf);
 		$sysPages=explode("\n",$spfData);
@@ -24,7 +24,7 @@ if(isset($_REQUEST["action"])) {
 			chmod($layoutDir,0777);
 		}
 	}
-	
+
 	if($_REQUEST["action"]=="viewtable") {
 		$cnt=0;
 		$showSysPages=false;
@@ -77,7 +77,7 @@ if(isset($_REQUEST["action"])) {
 				}
 			}
 		}
-		
+
 		if($cnt<=0) {
 			echo "<tr><th colspan=20><h3>Error Finding Pages Folder</h3></th></tr>";
 		}
@@ -91,7 +91,7 @@ if(isset($_REQUEST["action"])) {
 		if($r) {
 			$data=_dbData($r);
 			_db()->freeResult($r);
-			
+
 			if(count($data)>0) {
 				$s="";
 				$s.="<tr class='ui-widget-header'><th>Title</th><th>Group</th><th>Tips</th><th>Status</th><th>Privileges</th></tr>";
@@ -99,7 +99,7 @@ if(isset($_REQUEST["action"])) {
 					if($row['blocked']=="true" || $row['blocked']) $row['blocked']="<input type=checkbox rel='' class='blockLink' disabled=disabled checked=true />";
 					else $row['blocked']="<input type=checkbox rel='' class='blockLink' disabled=disabled checked=false />";
 					if($row['privilege']=="*") $row['privilege']="All";
-					
+
 					$s.="<tr rel='{$row['id']}'>";
 					$s.="<td>{$row['title']}</td>";
 					$s.="<td></td>";//{$row['menugroup']}
@@ -135,7 +135,7 @@ if(isset($_REQUEST["action"])) {
 			echo "Sorry, Source File Is ReadOnly.";
 		}
 		exit();
-	} 
+	}
 	elseif($_REQUEST["action"]=="fetchlayout" && isset($_REQUEST["forpage"])) {
 		$layoutFile="{$layoutDir}{$_REQUEST["forpage"]}.json";
 		$json=file_get_contents($layoutFile);
@@ -143,21 +143,21 @@ if(isset($_REQUEST["action"])) {
 		if($json==null) {
 			exit("Error Loading Layout Configurations");
 		}
-		
+
 		if(!isset($json['css'])) $json['css']="";
 		if(!isset($json['js'])) $json['js']="";
 		if(!isset($json['modules'])) $json['modules']="";
 		if(!isset($json['enabled'])) $json['enabled']="true";
-		
+
 		if(!isset($json['template'])) $json['template']="";
 		if(!isset($json['layout'])) $json['layout']="";
-		
+
 		echo json_encode($json);
-		
+
 		exit();
 	} elseif($_REQUEST["action"]=="savelayout" && isset($_REQUEST["forpage"])) {
 		$layoutFile="{$layoutDir}{$_REQUEST["forpage"]}.json";
-		
+
 		if(isset($_POST['enabled'])) {
 			$_POST['enabled']=($_POST['enabled']=="true")?true:false;
 		}
@@ -168,13 +168,18 @@ if(isset($_REQUEST["action"])) {
 		}
 		$data=json_encode($_POST);
 		$data=str_replace("\/","/",$data);
-		file_put_contents($layoutFile,$data);
+		if(!file_exists($layoutFile))
+			file_put_contents($layoutFile,$data);
+		elseif(is_writable($layoutFile))
+			file_put_contents($layoutFile,$data);
+		else
+			echo "Sorry, Layout File Is Readonly.";
 		exit();
-	} elseif($_REQUEST["action"]=="rename" && isset($_POST['pg']) && isset($_POST['topg'])) { 
+	} elseif($_REQUEST["action"]=="rename" && isset($_POST['pg']) && isset($_POST['topg'])) {
 		if(in_array($_POST['pg'],$sysPages)) {
 			exit("Can Not Rename A System File");
 		}
-		
+
 		$ext=explode(".",$_POST['topg']);
 		$rename=false;
 		$fname=$_POST['topg'];
@@ -187,11 +192,19 @@ if(isset($_REQUEST["action"])) {
 		if(strtoupper($_POST['ext'])=="JSON") {
 			$fs=$layoutDir;
 		}
-		if(!rename($fs.$_POST['pg'],$fs.$fname)) {
-			echo "Failed To Rename Page";
-		} else {
-			$rename=true;
-		}
+		if(!file_exists($fs.$_POST['pg']))
+			echo "Sorry, Layout File Does Not Exist.";
+		elseif(is_writable($fs.$_POST['pg']))
+			if(!rename($fs.$_POST['pg'],$fs.$fname)) {
+				echo "Failed To Rename Page";
+			} else {
+				$rename=true;
+			}
+		else
+			echo "Sorry, Layout File Is Readonly.";
+
+
+
 		//ToDo :: Rename Should Clear/Rename Meta Files
 		/*$fname1=strstr($_POST['pg'],".",true);
 		$fname2=strstr($fname,".",true);
@@ -218,7 +231,7 @@ if(isset($_REQUEST["action"])) {
 				}
 				$pg="{$fs}{$a}";
 				$pg1="{$fs}{$nm}_copy.{$ext}";
-				
+
 				if(in_array($a,$sysPages)) {
 					$fail[$a]="Can Not Clone System File";
 				} elseif(file_exists($pg1)) {
@@ -235,7 +248,7 @@ if(isset($_REQUEST["action"])) {
 				}
 			} else {
 				unset($fss[$n]);
-			}			
+			}
 		}
 		if(count($fss)>0) {
 			$s="<h3>Failed To Clone</h3>";
@@ -243,7 +256,7 @@ if(isset($_REQUEST["action"])) {
 			foreach($fail as $a=>$b) {
 				$s.="<tr><th align=left width=100px>$a</th><td>$b</td></tr>";
 			}
-			$s.="</table>";			
+			$s.="</table>";
 			echo $s;
 		}
 		exit();
@@ -277,7 +290,7 @@ if(isset($_REQUEST["action"])) {
 				}
 			} else {
 				unset($fss[$n]);
-			}			
+			}
 		}
 		if(count($fss)>0) {
 			$s="<h3>Failed To Delete</h3>";
@@ -285,7 +298,7 @@ if(isset($_REQUEST["action"])) {
 			foreach($fail as  $a=>$b) {
 				$s.="<tr><th align=left width=100px>$a</th><td>$b</td></tr>";
 			}
-			$s.="</table>";			
+			$s.="</table>";
 			echo $s;
 		}
 		exit();
@@ -293,7 +306,7 @@ if(isset($_REQUEST["action"])) {
 		$nm=$_POST['nm'];
 		$tmpl=$_POST['tmpl'];
 		$pg="{$lf}{$nm}";
-		
+
 		if($tmpl=="blank") {
 			$a=file_put_contents($pg,"");
 			if($a!==false) {
@@ -333,14 +346,14 @@ if(isset($_REQUEST["action"])) {
 			} else {
 				echo "Template Missing";
 			}
-		}		
+		}
 		exit();
 	} elseif($_REQUEST["action"]=="editor") {
 		$editor=$_REQUEST['type'];
-		
+
 		$p="{$lf}{$_REQUEST['editpage']}";
 		$p=str_replace($_SESSION["APP_FOLDER"]["APPROOT"],"",$p);
-		
+
 		$url="";
 		if($editor=="codeeditor") {
 			$url="../index.php?&site=cms&forsite={$_REQUEST['forsite']}&page=codeeditor&file=$p";
@@ -351,12 +364,12 @@ if(isset($_REQUEST["action"])) {
 		} elseif($editor=="pagebuilder") {
 			$url="../index.php?&site=cms&forsite={$_REQUEST['forsite']}&page=modules&mod=$editor&file=$p";
 		} else {
-			printErr("NotAcceptable","Requested Editor Is Not Acceptable");			
+			printErr("NotAcceptable","Requested Editor Is Not Acceptable");
 			$url="";
-		}		
+		}
 		if(strlen($url)>0) {
 			header("Location:$url");
-		}		
+		}
 		exit();
 	} elseif($_REQUEST["action"]=="upload") {
 		$msg="";
@@ -442,7 +455,7 @@ if(isset($_REQUEST["action"])) {
 		exit($s);
 	} elseif($_REQUEST["action"]=="templatelist") {
 		$s="";
-		
+
 		$tmpls=ROOT.TEMPLATE_LAYOUT_FOLDER;
 		if(is_dir($tmpls)) {
 			$tmpls=scandir($tmpls);
@@ -480,11 +493,11 @@ if(isset($_REQUEST["action"])) {
 
 function printPageInfo($a,$lf,$sys=false,$btns=null) {
 	if(is_dir($lf.$a)) return;
-	
+
 	$t=$a;
 	$ext=fileExtension($a);
 	$nm=str_replace(".{$ext}","",$a);
-	
+
 	$clz1="";
 	$type="";
 	if($sys) {
@@ -493,33 +506,33 @@ function printPageInfo($a,$lf,$sys=false,$btns=null) {
 	} else {
 		$col1="<td align=center width=35px><input type=checkbox name=pgselect rel='$a' /></td>";
 	}
-	
+
 	$pgName=str_replace(".{$ext}","",$a);
-	
+
 	if(strtoupper($ext)=="JSON") {
 		$type="generated";
 	} else {
 		$type="created";
 	}
-	
+
 	$metaFile=$_SESSION["APP_FOLDER"]["APPROOT"].$_SESSION["APP_FOLDER"]["APPS_CONFIG_FOLDER"]."meta/{$pgName}.json";
-	
+
 	/*if(!file_exists($metaFile)) {
 		if(is_writable(dirname($metaFile))) {
 			file_put_contents($metaFile,"");
 			chmod($metaFile,0777);
 		}
 	}*/
-	
-	$s="<tr rel='$a' class='$clz1' 
-		title='$a' 
-		ext='".strtoupper($ext)."' 
-		size='".getFileSizeInString(filesize($lf.$a))."' 
-		created='".date(getConfig("TIMESTAMP_FORMAT"),filectime($lf.$a))."' 
-		modified='".date(getConfig("TIMESTAMP_FORMAT"),filemtime($lf.$a))."' 
-		accessed='".date(getConfig("TIMESTAMP_FORMAT"),fileatime($lf.$a))."' 
-		meta='$pgName' 
-		type='$type' 
+
+	$s="<tr rel='$a' class='$clz1'
+		title='$a'
+		ext='".strtoupper($ext)."'
+		size='".getFileSizeInString(filesize($lf.$a))."'
+		created='".date(getConfig("TIMESTAMP_FORMAT"),filectime($lf.$a))."'
+		modified='".date(getConfig("TIMESTAMP_FORMAT"),filemtime($lf.$a))."'
+		accessed='".date(getConfig("TIMESTAMP_FORMAT"),fileatime($lf.$a))."'
+		meta='$pgName'
+		type='$type'
 		>";
 	$s.=$col1;
 	$s.="<td>$pgName</td>";
@@ -534,22 +547,22 @@ function printPageInfo($a,$lf,$sys=false,$btns=null) {
 }
 function getBlankLayout($frmt="json") {
 	$arr=array();
-	
+
 	$arr["template"]="";
-	
+
 	include ROOT."config/layoutareas.php";
-	
+
 	$arr["layout"]=array();
-	
+
 	foreach($default_Layout_Params as $a=>$b) {
 		$arr["layout"][$a]=array("component"=>$b,"enable"=>false);
 	}
-	
+
 	$arr["css"]="";
 	$arr["js"]="";
 	$arr["modules"]="";
 	$arr["enabled"]="false";
-	
+
 	if($frmt=="json") {
 		return json_encode($arr);
 	} else {

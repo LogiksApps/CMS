@@ -55,7 +55,7 @@ if(isset($_REQUEST["action"])) {
 		$f=$lf.$_REQUEST["comp"];
 		if(is_writable($f)) {
 			$data=$_POST["data"];
-			$data=cleanText($data);
+			$data=cleanCode($data);
 			$a=file_put_contents($f,$data);
 			if($a==strlen($data)) echo "Successfully Saved Component";
 			else {

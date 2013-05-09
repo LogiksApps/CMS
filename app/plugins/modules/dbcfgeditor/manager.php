@@ -52,7 +52,7 @@ select#reportselector {
 }
 </style>
 <div style='width:100%;height:100%;'>
-	<div style='width:20%;height:100%;float:left;overflow:auto;'>
+	<div style='width:20%;height:100%;float:left;overflow:hidden;'>
 		<select id=reportselector size=2 onchange='loadConfig();' class='ui-widget-content ui-corner-all'>
 			<?php
 				$sql="SELECT scope FROM "._dbtable("config_sites",true)." WHERE site='{$_REQUEST['forsite']}' group by scope";
@@ -75,7 +75,7 @@ forSite="<?=$_REQUEST["forsite"]?>";
 site="<?=SITENAME?>";
 $(function() {
 	$(".tabPage").css("height",($("#pgworkspace").height()-35)+"px");
-	
+
 	printMsg("No Settings Selected ...");
 });
 function loadConfig() {

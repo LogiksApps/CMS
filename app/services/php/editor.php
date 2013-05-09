@@ -27,7 +27,7 @@ if(isset($_REQUEST["action"])) {
 				$data=cleanCode($data);
 				$a=file_put_contents($file,$data);
 				if($a==strlen($data)) {
-					//echo "Successfully Saved ...";
+					echo "Successfully Saved";
 				} else {
 					echo "Source Page Data Could Not Be Saved. Try Again.";
 				}

@@ -63,25 +63,25 @@ gid="";
 $(function() {
 	$("select:not(multiple)").addClass("ui-state-active ui-corner-all");
 	reloadSelectorList();
-	
+
 	$("#selectorData").delegate("tr","dblclick",function() {
 			a1=$(this).find("th.title").text();
 			b1=$(this).find("td.value").text();
 			$("#infields input#a1").val(a1);
 			$("#infields input#b1").val(b1);
 		});
-	
+
 	$("#toolbtns a").click(function() {
 			a=$(this).attr("class").replace("toolbtns","").trim();
 			r=$("#selectorData input[type=checkbox]:checked");
 			if(r.length>0) {
-				s="";
+				rt="";
 				st="";
 				r.each(function() {
-						s+=$(this).attr("rel")+",";
+						rt+=$(this).attr("rel")+",";
 						st+=$(this).attr("title")+", ";
 					});
-				s1="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&for="+s+"&action=";
+				s1=getServiceCMD("blocks.selectors")+"&for="+rt+"&action=";
 				if(a=="delete") {
 					lgksConfirm("Do you really want to delete these selectors ?<br/><div style='width:500px;height:100px;overflow:auto;border:1px solid #aaa;'>"+st+"</div>"+
 								"<br/><br/><b>Please note: Deleting all items from a group will result in deleteting of group itself.</b>",
@@ -101,7 +101,7 @@ $(function() {
 						  complete: function(txt){
 								loadListData();
 						  }
-						});					
+						});
 				} else if(a=="unblock") {
 					s1+="unblock";
 					$.ajax({
@@ -114,10 +114,10 @@ $(function() {
 					id=r.attr("rel");
 					st=r.attr("title");
 					sv=r.attr("v");
-					
+
 					lgksPrompt("Please give the new value for item <b>"+st+"</b>?","Edit Item",null,function(txt) {
 								if(txt!=sv) {
-									l="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&for="+s+"&action=edititem";
+									l=getServiceCMD("blocks.selectors")+"&for="+s+"&action=edititem";
 									qp="&id="+id+"&b1="+txt+"&gid="+gid;
 									processAJAXPostQuery(l,qp,function(txt) {
 											if(txt=="success") {
@@ -156,7 +156,7 @@ $(function() {
 });
 function reloadSelectorList(x) {
 	closeList();
-	s1="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&action=selectorlist";
+	s1=getServiceCMD("blocks.selectors")+"&action=selectorlist";
 	$("#selector").html("Loading ...");
 	$("#loadingmsg").show();
 	$("#selector").load(s1,function() {
@@ -167,7 +167,7 @@ function reloadSelectorList(x) {
 }
 function loadListData() {
 	gid=$('#selector').val();
-	s1="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&action=selectordata&format=table&gid="+gid;
+	s1=getServiceCMD("blocks.selectors")+"&action=selectordata&format=table&gid="+encodeURIComponent(gid);
 	$('#selectorData').html("<tr><td class=ajaxloading6>Loading List</td></tr>");
 	$("#loadingmsg").show();
 	$("#selectorData").load(s1,function(txt) {
@@ -187,7 +187,7 @@ function addNewList() {
 		"<br/><br/><b>Please note: Deleting all items from a group will result in deleteting of group itself.</b>",
 		"New List Name",null,function(txt) {
 			if(txt.length>0) {
-				s1="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&action=newlist&gid="+txt.split(" ").join("_");
+				s1=getServiceCMD("blocks.selectors")+"&action=newlist&gid="+txt.split(" ").join("_");
 				processAJAXQuery(s1,function(x) {
 						reloadSelectorList(x);
 					});
@@ -200,7 +200,7 @@ function deleteList() {
 	lgksConfirm("Do you really want to delete a complete list of :: <b>"+t+"</b><br/>This will delete a complete set of <b>"+n+"</b> items in the list."+
 			"<br/><br/><b>Please note: Deleting all items from a group will result in deleteting of group itself.</b>",
 			"Delete Complete List ?",function() {
-					s1="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&for="+t+"&action=deletelist";
+					s1=getServiceCMD("blocks.selectors")+"&for="+t+"&action=deletelist";
 					closeList();
 					$("#loadingmsg").show();
 					$.ajax({
@@ -216,21 +216,21 @@ function insertItems() {
 	a1=$("#infields input#a1").val();
 	b1=$("#infields input#b1").val();
 	if(a1.length>0) {
-		rt=$("#selectorData th.title:contains('"+a1+"')");
+		/*rt=$("#selectorData th.title:contains('"+a1+"')");
 		n1=rt.length;
 		if(rt.length>0 && rt.text().indexOf(a1)<=0) {
 			rt.parents("tr").addClass("pointedto");
 			$("#infields input#a1").select();
 			$("#infields input#a1").focus();
 			return;
-		}
-		l="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&action=additem";
+		}*/
+		l=getServiceCMD("blocks.selectors")+"&action=additem";
 		q="&a1="+a1+"&b1="+b1+"&gid="+gid;
 		processAJAXPostQuery(l,q,function(txt) {
 				if(txt=="success") {
 					$("#infields input#a1").val("");
 					$("#infields input#b1").val("");
-					s1="services/?scmd=blocks.selectors&forsite=<?=$_REQUEST["forsite"]?>&action=selectordata&format=table&gid="+gid;
+					s1=getServiceCMD("blocks.selectors")+"&action=selectordata&format=table&gid="+gid;
 					$("#selectorData").load(s1,function() {
 								$("#infields input#a1").focus();
 							});
@@ -247,8 +247,8 @@ function insertItems() {
 <?php
 function printContent() { ?>
 <p id=msgboxp style='font-size:15px; width:80%;margin:auto;margin-top:10px;'>
-	Selector's are Lists,autocompletes,select html tags, etc. They can be real handy in forms and pages. Here You can create as many 
-	lists/selectors as you want. Yes OfCourse, the item names have to be unique as user sees the name and same names will look lot confusing. 
+	Selector's are Lists,autocompletes,select html tags, etc. They can be real handy in forms and pages. Here You can create as many
+	lists/selectors as you want. Yes OfCourse, the item names have to be unique as user sees the name and same names will look lot confusing.
 	So <b>Unique Names</b> Please.
 </p><br/>
 <div style='width:600px;margin:auto;'>
@@ -272,7 +272,7 @@ function printContent() { ?>
 	</div>
 </div>
 <?php
-} 
+}
 function printToolbar() { ?>
 <button onclick="reloadSelectorList()" style='width:100px;' title='Reload List' ><div class='reloadicon'>Reload</div></button>
 <select id=selector onchange='loadListData()'></select>

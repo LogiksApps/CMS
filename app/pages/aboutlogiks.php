@@ -24,12 +24,11 @@ html,body {
 </style>
 <div class='tabs ui-widget-content ui-corner-all' style='width:700px;height:400px;margin:auto;margin-top:100px;'>
 	<ul>
-		<li><a href='services/?scmd=aboutlgks&abt=aboutsite'>About</a></li>
-		<li><a href='services/?scmd=aboutlgks&abt=about'>Logiks</a></li>
-		<li><a href='services/?scmd=aboutlgks&abt=techspecs'>TechSpecs</a></li>
-		<li><a href='services/?scmd=aboutlgks&abt=license'>Licenses</a></li>
-		<li><a href='services/?scmd=aboutlgks&abt=marketpolicy'>AppMarket Policies</a></li>		
-	</ul>	
+		<li><a href='<?=SiteLocation?>services/?scmd=aboutlgks&abt=about'>About</a></li>
+		<li><a href='<?=SiteLocation?>services/?scmd=aboutlgks&abt=techspecs'>TechSpecs</a></li>
+		<li><a href='<?=SiteLocation?>services/?scmd=aboutlgks&abt=license'>Licenses</a></li>
+		<li><a href='<?=SiteLocation?>services/?scmd=aboutlgks&abt=marketpolicy'>AppMarket Policies</a></li>
+	</ul>
 </div>
 <script language=javascript>
 $(function() {

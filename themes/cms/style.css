@@ -13,14 +13,14 @@ body {
 	font-family: Arial, Helvetica, Sans-serif;
 }
 /*********************************************** HEADER ***********************************************************/
-#header { 
-	background: #aaa url(images/header.png) repeat;		
+#header {
+	background: #aaa url(images/header.png) repeat;
 }
-#header a.button { 
-	background: #aaa url(images/header.png) repeat;	
+#header a.button {
+	background: #aaa url(images/header.png) repeat;
 }
-#header .search { 
-	background: #aaa url(images/header.png) repeat;	
+#header .search {
+	background: #aaa url(images/header.png) repeat;
 }
 #header {
 	line-height: 40px;
@@ -52,7 +52,7 @@ body {
 	margin-top:2px;
 	color:white;
 	font:27px bold Georgia;
-	
+
 }
 #header a {
 	color: #FFFFFF;
@@ -84,7 +84,7 @@ body {
 #header .search {
 	width:200px;
 	height:25px;
-	background-position: 0px -65px;	
+	background-position: 0px -65px;
 	margin-top:7px;
 	margin-right:8px;
 	/*+border-radius:5px;*/
@@ -136,7 +136,7 @@ body {
 	-webkit-box-shadow: inset -5px 0 5px #404040;
 	-o-box-shadow: inset -5px 0 5px #404040;
 	box-shadow: inset -5px 0 5px #404040;*/
-	
+
 	/*+text-shadow:0px 1px 0px #000000;*/
 	-moz-text-shadow: 0px 1px 0px #000000;
 	-webkit-text-shadow: 0px 1px 0px #000000;
@@ -166,27 +166,27 @@ body {
     font-weight: normal;
 }
 #sidebar a:hover, #sidebar h2:hover {
-	background:url("images/nav-item-bg.png") repeat-x scroll 0 -39px transparent;	
+	background:url("images/nav-item-bg.png") repeat-x scroll 0 -39px transparent;
 }
 #sidebar h2>a {padding-left:0px;}
 #sidebar img {
     padding-right:7px;
 }
 #sidebar li {
-	overflow:hidden;    
+	overflow:hidden;
     line-height:39px;
 }
 #sidebar li ul a {
 	background:#324452;
 	border-bottom:1px solid #333;
-	color:#aaa;	
+	color:#aaa;
 	padding-left:20px;
 }
 #sidebar li ul a:hover {
 	background:#284860;
 	background-position: 37px -31px;
 	padding-left:20px;
-	color:#fff;	
+	color:#fff;
 }
 
 #sidebar li.divider {
@@ -220,7 +220,7 @@ body {
 /*********************************************** DASHBOARD ***********************************************************/
 #content {
 	color: #6D6D6D;
-	font-size: 12px;	
+	font-size: 12px;
 }
 #content #workspace {
 	background:transparent;
@@ -934,9 +934,6 @@ body {
 	-o-box-shadow: none;
 	box-shadow: none;
 }
-#page .toolbar>.left {
-	padding-top:10px;
-}
 /*Submit*/
 #page .submit input, #page .button{
 	background: url(images/buttons.png) left -68px;
@@ -1442,4 +1439,7 @@ table td:last-child {
 #page #toolbar.ui-widget-header {
 	background:transparent;
 	border:0px;
+}
+#page #toolbar>div {
+	padding-top:10px;
 }

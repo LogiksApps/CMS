@@ -13,12 +13,12 @@ if(isset($_REQUEST["action"])) {
 		$dbCon->connect($config["DB_USER"]['value'],$config["DB_PASSWORD"]['value'],$config["DB_HOST"]['value'],$config["DB_DATABASE"]['value']);
 	}
 	//$folders=loadFolderConfig();
-	
+
 	if($_REQUEST["action"]=="loadmenu") {
 		$SHOW_EMPTY_HOLDERS=getSiteSettings("SHOW_EMPTY_HOLDERS","false","SIDEBAR");
-		
+
 		$dbTables=getDBTableList($dbCon,$config);
-		
+
 		echo "<li class='nosubmenu'><a href='#' onclick=\"$"."tabs.tabs('select',0);\"><img src='".loadMedia("icons/sidebar/home.png")."' />Dashboard</a></li>";
 		loadModule("navigator",
 				array(
@@ -32,7 +32,7 @@ if(isset($_REQUEST["action"])) {
 					"orderBy"=>"weight,id")
 			);
 	}
-	
+
 	if($dbCon!=null) $dbCon->close();
 }
 
@@ -41,7 +41,7 @@ function getDBTableList($dbCon,$config) {
 	if($dbCon==null) return $arr;
 	$arr1=$dbCon->getTableList();
 	$arr2=_db(true)->getTableList();
-	
+
 	$ss=$config["DB_APPS"]['value']."_";
 	$ssln=strlen($ss);
 	foreach($arr1 as $n=>$a) {

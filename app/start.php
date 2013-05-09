@@ -3,24 +3,43 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 if(!defined('APPROOT')) exit('No direct script access allowed');
 
 $a=session_check(true);
+if($_SESSION['SESS_PRIVILEGE_ID']>getConfig("MAX_PRIVILEGE_ID")) {
+	$relink=SiteLocation . "login.php?site=".SITENAME;
+	redirectTo($relink,"SESSION Expired. Going To Login Page");
+	sessionExpired();
+	exit();
+}
 
 if(!isset($_REQUEST["forsite"])) {
 	if(isset($_SESSION["LGKS_CMS_SITE"])) {
 		$_REQUEST["forsite"]=$_SESSION["LGKS_CMS_SITE"];
 	} else {
-		$site=DEFAULT_SITE;
-		if(is_dir(ROOT.APPS_FOLDER.$site)) {
-			header("Location:"._url("&forsite=".DEFAULT_SITE));
+		if(in_array(DEFAULT_SITE,$_SESSION['SESS_ACCESS_SITES'])) {
+			$_REQUEST["forsite"]=DEFAULT_SITE;
 		} else {
-			$arr=$_SESSION['SESS_ACCESS_SITES'];
-			foreach($arr as $a=>$b) {
-				if(file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg") && file_exists(ROOT.APPS_FOLDER.$b."/cms.php")) {
-					header("Location:"._url("&forsite=$b"));
+			foreach($_SESSION['SESS_ACCESS_SITES'] as $a) {
+				if($a!="admincp" && $a!=SITENAME) {
+					$_REQUEST["forsite"]=$a;
+					break;
 				}
 			}
-			trigger_NotFound("NoAppSite Found In Current Installation");
 		}
 	}
+	$site=$_REQUEST["forsite"];
+	if(is_dir(ROOT.APPS_FOLDER.$site)
+		&& file_exists(ROOT.APPS_FOLDER.$site."/apps.cfg")
+		&& file_exists(ROOT.APPS_FOLDER.$site."/cms.php") &&
+		$_REQUEST["forsite"]!=$_REQUEST["site"]) {
+		header("Location:"._url("&forsite=$site"));
+	} else {
+		logoutSession("Failed To Determine AppSite !");
+		exit("X");
+	}
+}
+if(is_array($_SESSION['SESS_ACCESS_SITES']) && !(in_array($_REQUEST["forsite"],$_SESSION['SESS_ACCESS_SITES'])
+	&& in_array(SITENAME,$_SESSION['SESS_ACCESS_SITES']))) {
+	logoutSession("No AppSite Found !");
+	exit("Y");
 }
 $_SESSION["LGKS_CMS_SITE"]=$_REQUEST["forsite"];
 
@@ -66,7 +85,7 @@ if(isLayoutConfig($page)) {
 					$loaded=true;
 					echo "<style>html,body {width:100%;height:100%;padding:0px;margin:0px;}".getUserPageStyle(false)."</style>\n";
 					echo "</head>\n<body style='width:100%;height:100%;padding:0px;margin:0px;' ".getBodyContext().">\n";
-					include $f;	
+					include $f;
 					echo "</body>";
 					break;
 				}

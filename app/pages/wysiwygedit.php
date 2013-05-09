@@ -71,7 +71,10 @@ function saveEditor() {
 	q="&data="+encodeURIComponent(editor.getData());
 	$("#loadingmsg").show();
 	processAJAXPostQuery(lnk,q,function(txt) {
-			if(txt.length>0) lgksAlert(txt);
+			if(txt.length>0) {
+				if(typeof lgksToast=="function") lgksToast(txt,{position: "top-right"});
+				else lgksAlert(txt);
+			}
 			$("#loadingmsg").hide();
 		});
 }

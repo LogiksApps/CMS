@@ -39,17 +39,17 @@ curr_meta="";
 $(function() {
 	$(".tabPage").css("height",($("#pgworkspace").height()-35)+"px");
 	$("select").addClass("ui-state-active ui-corner-all");
-	
-	$("#codearea").css("height",($(window).height()-$("#toolbar").height()));
+
+	$("#codearea").css("height",($(window).height()-$("#toolbar").height()-110));
 	loadCodeEditor("codearea","php");
 	reloadPageList();
-	
+
 	$("#allpages").delegate("tr","click",function() {
 			closePageView();
-		
+
 			$(this).parents("table").find("tr.active").removeClass("active");
 			$(this).addClass("active");
-			
+
 			curr_page=$(this).attr("rel");
 			curr_ext=$(this).attr("ext");
 			curr_meta=$(this).attr("meta");
@@ -59,13 +59,13 @@ $(function() {
 			$("#fileInfo .created").html($(this).attr("created"));
 			$("#fileInfo .modified").html($(this).attr("modified"));
 			$("#fileInfo .accessed").html($(this).attr("accessed"));
-			
+
 			$("#pageArea").tabs("select",0);
 			$("#pageEditBar").show();
-			
+
 			$("#pageEditBar button.designer").hide();
 			$("#pageEditBar button.weditor").show();
-			
+
 			if($(this).hasClass("system")) {
 				$("#pageEditBar button.weditor").hide();
 				$("#pageEditBar button.rename").hide();
@@ -85,9 +85,12 @@ $(function() {
 			}
 			editor.setOption("readOnly", true);
 		});
+		$("#editorEdit").hide();
+		$("#editorSave").hide();
+		$("#editorTab").hide();
 });
 function getCMD() {
-	return "services/?scmd=blocks.pages&site="+site+"&forsite="+forSite;
+	return getServiceCMD("blocks.pages");
 }
 function closePageView() {
 	$("#fileInfo .title").html("");
@@ -96,16 +99,16 @@ function closePageView() {
 	$("#fileInfo .created").html("");
 	$("#fileInfo .modified").html("");
 	$("#fileInfo .accessed").html("");
-	
+
 	$("#pageArea").tabs("select",0);
 	$("#pageEditBar").hide();
-	
+
 	$("#pageArea .layout").hide();
 	$("#pageArea .src").hide();
 }
 function reloadPageList() {
 	closePageView();
-	
+
 	$("#loadingmsg").show();
 	l=getCMD()+"&action=viewtable&format=table&showSysPages="+$("#showSysPages").is(":checked");
 	$("#allpages").html("<tr><td colspan=20 class='ajaxloading6'><br/><br/><br/>Loading ...</td></tr>");
@@ -115,10 +118,10 @@ function reloadPageList() {
 	l=getCMD()+"&action=editorlist";
 	$("#editorSelector select[name=editors]").load(l);
 	resetEditors();
-	
+
 	l=getCMD()+"&action=componentlist";
 	$("#componentSelector select[name=components]").load(l);
-	
+
 	l=getCMD()+"&action=templatelist";
 	$("#templateSelector select[name=templates]").load(l);
 }
@@ -133,7 +136,7 @@ function viewLinksToMe(page,ext) {
 }
 function createNewLink(page) {
 	closeLnkDialog();
-	
+
 	l=getCMD()+"&action=createLinkDlg&forpage="+page;
 	linkDlg=jqPopupURL(l,"Create New Link : "+page);
 }
@@ -149,7 +152,7 @@ function viewPage(page) {
 		return false;
 	}
 	l="index.php?site=<?=$_REQUEST["forsite"]?>&page="+page;
-	
+
 	if(typeof parent.openInNewTab=="function")
 		parent.openInNewTab("Preview",l);
 	else
@@ -188,11 +191,11 @@ function editPage(page,ext,editor) {
 	} else {
 		curr_page=page;
 		curr_ext=ext.toUpperCase();
-		if(ext=="php" || ext=="html" || ext=="htm" || ext=="xhtml" || ext=="xhtm") {
+		if(ext=="html" || ext=="htm" || ext=="xhtml" || ext=="xhtm") {
 			loadEditor("wysiwyg");
 		} else if(ext=="js" || ext=="css") {
 			loadEditor("codeeditor");
-		} else if(ext=="tpl") {
+		} else if(ext=="tpl" || ext=="php") {
 			loadEditor("codeeditor");
 		} else if(ext=="page") {
 			//designPage(page,ext);
@@ -211,12 +214,12 @@ function loadEditor(editor) {
 		return false;
 	}
 	l=getCMD()+"&action=editor&type="+editor+"&editpage="+curr_page;
-	
+
 	if(typeof parent.openInNewTab=="function")
 		parent.openInNewTab(editor.toUpperCase()+" Editor",l);
 	else
 		lgksOverlayURL(l);
-	
+
 	//curr_page="";
 	//curr_ext="";
 }
@@ -232,7 +235,7 @@ function clonePages() {
 		processAJAXPostQuery(l,q,function(txt) {
 				if(txt.length>0) lgksAlert(txt);
 				reloadPageList();
-			});		
+			});
 	}
 }
 function deletePages() {
@@ -252,7 +255,7 @@ function deletePages() {
 							if(txt.length>0) lgksAlert(txt);
 							reloadPageList();
 						});
-				});	
+				});
 	} else if(r1!=null && r1.length>0) {
 		pg=r1;
 		lgksConfirm("Are you Sure about deleting the pages <br/><br/><div style='width:100%;height:70px;border:1px solid #aaa;overflow:auto;'><h3>"+pg+"</h3></div><br/>Deleting them will not remove them from Menus though.",
@@ -264,14 +267,14 @@ function deletePages() {
 							if(txt.length>0) lgksAlert(txt);
 							reloadPageList();
 						});
-				});	
+				});
 	} else {
 		lgksAlert("No Pages Selected");
 	}
 }
 function createPage() {
 	$("#createPageEditor input[name=pagename]").val("");
-	$("#createPageEditor select[name=pagetmplt]").val("blank");
+	$("#createPageEditor select[name=pagetmplt]").val("generated");
 	osxPopupDiv("#createPageEditor",function(txt) {
 			if(txt=="OK") {
 				nm=$("#createPageEditor input[name=pagename]").val().split(" ").join("_");
@@ -303,10 +306,18 @@ function loadSource() {
 	else ext="htmlmixed";
 	editor.setValue("Loading ...");
 	$("#loadingmsg").show();
+	$("#editorReset").attr("disabled", "disabled");
+	$("#editorEdit").hide();
+	$("#editorSave").hide();
+	$("#editorTab").hide();
 	l=getCMD()+"&action=fetch&forpage="+page;
 	processAJAXQuery(l,function(txt) {
 			editor.setValue(txt);
 			editor.setOption("mode",ext);
+			$("#editorReset").removeAttr("disabled");
+			$("#editorEdit").show();
+			$("#editorSave").show();
+			$("#editorTab").show();
 			$("#loadingmsg").hide();
 		});
 }
@@ -318,14 +329,43 @@ function saveSource() {
 	ext=curr_ext.toLowerCase();
 	$("#loadingmsg").show();
 	data=editor.getValue();
-	l1=getCMD()+"&action=save&forpage="+page;
 	q="&data="+encodeURIComponent(data);
 	$("#loadingmsg").show();
+	$("#editorReset").attr("disabled", "disabled");
+	$("#editorEdit").hide();
+	$("#editorSave").hide();
+	$("#editorTab").hide();
+	l1=getCMD()+"&action=save&forpage="+page;
 	processAJAXPostQuery(l1,q,function(txt) {
 			if(txt.trim().length>0) {
 				lgksAlert(txt);
+			} else {
+				lgksToast("Code Saved",{position: "top-right"});
 			}
+			$("#editorReset").removeAttr("disabled");
+			$("#editorEdit").show();
+			$("#editorSave").show();
+			$("#editorTab").show();
 			$("#loadingmsg").hide();
+		});
+}
+function newTabEdit() {
+	ref=curr_page;
+
+	nm=ref.split("/");
+	nm=nm[nm.length-1];
+
+	l=getCMD()+"&action=editurl&file="+ref;
+	processAJAXQuery(l,function(txt) {
+			$("#editorReset").removeAttr();
+			$("#editorEdit").hide();
+			$("#editorSave").hide();
+			$("#editorTab").hide();
+			url="index.php?site=<?=SITENAME?>&forsite=<?=$_REQUEST['forsite']?>&page=codeeditor&file="+txt;
+			if(typeof parent.openInNewTab=="function")
+				parent.openInNewTab(nm,url);
+			else
+				lgksOverlayURL(url,nm);
 		});
 }
 function loadMeta() {
@@ -377,15 +417,15 @@ function loadLayout() {
 		return false;
 	}
 	page=curr_meta;
-	
+
 	$("#layoutEditor .regions tbody").html("");
 	$("#layoutEditor .properties input").val("");
-	
+
 	$("#loadingmsg").show();
 	l=getCMD()+"&action=fetchlayout&forpage="+curr_meta;
 	processAJAXQuery(l,function(txt) {
 			json=$.parseJSON(txt);
-			
+
 			$.each(json,function(k,v) {
 				if(k=="layout") {
 					return;
@@ -418,18 +458,18 @@ function loadLayout() {
 				html+="<div title='View Suggestions' class='minibtn popupicon right' rel='"+k+"' onclick='suggestComponent(this)'></div>";
 				html+="</td>";
 				html+="</tr>";
-				
+
 				$("#layoutEditor .regions tbody").append(html);
 			});
 			$("#loadingmsg").hide();
 		});
 }
-function saveLayout() {	
+function saveLayout() {
 	if(curr_meta.length<=0) {
 		return false;
 	}
 	page=curr_meta;
-	
+
 	$("#loadingmsg").show();
 	l1=getCMD()+"&action=savelayout&forpage="+page;
 	q="";
@@ -536,7 +576,7 @@ function editComponent(btn) {
 	rel=$(btn).attr('rel');
 	tr=$(btn).parents("tr");
 	ref=tr.find("input.component").val();
-	
+
 	l=getCMD()+"&action=editurl&file="+ref;
 	processAJAXQuery(l,function(txt) {
 			url="index.php?site=<?=SITENAME?>&forsite=<?=$_REQUEST['forsite']?>&page=wysiwygedit&file="+txt;
@@ -550,10 +590,10 @@ function editComponentCode(btn) {
 	rel=$(btn).attr('rel');
 	tr=$(btn).parents("tr");
 	ref=tr.find("input.component").val();
-	
+
 	nm=ref.split("/");
 	nm=nm[nm.length-1];
-	
+
 	l=getCMD()+"&action=editurl&file="+ref;
 	processAJAXQuery(l,function(txt) {
 			url="index.php?site=<?=SITENAME?>&forsite=<?=$_REQUEST['forsite']?>&page=codeeditor&file="+txt;
@@ -644,7 +684,7 @@ select {
 					<button class='weditor' style="width:120px;" class='' onclick="editPage(curr_page,curr_ext)"><div class='editicon' style='padding-left:30px;'>Editor</div></button>
 					<button class='designer' style="width:120px;" class='' onclick="editPage(curr_page,curr_ext)"><div class='designicon' style='padding-left:30px;'>Design</div></button>
 					<button class='download' style="width:120px;" class='' onclick="downloadPage(curr_page,curr_ext)"><div class='downloadicon'>Download</div></button>
-					
+
 					<button class='preview' style="width:120px;" class='' onclick="previewPage(curr_page,curr_ext)"><div class='viewicon'>Preview</div></button>
 				</td></tr>
 			</table>
@@ -664,9 +704,10 @@ select {
 			</div>
 		</div>
 		<div id=fileSrc class='tabPage' style='overflow:hidden;'>
-			<button style="width:90px;" class='' onclick="editor.setOption('readOnly', false);"><div class='editicon'>Edit</div></button>
-			<button style="width:90px;" class='' onclick="loadSource();"><div class='reloadicon'>Reset</div></button>
-			<button style="width:90px;" class='' onclick="saveSource()"><div class='searchicon'>Save</div></button>
+			<button id=editorEdit style="width:90px;" class='' onclick="editor.setOption('readOnly', false);"><div class='lockicon'>Unlock</div></button>
+			<button id=editorReset style="width:90px;" class='' onclick="loadSource();"><div class='reloadicon'>Reset</div></button>
+			<button id=editorSave style="width:90px;" class='' onclick="saveSource()"><div class='searchicon'>Save</div></button>
+			<button id=editorTab style="width:90px;" class='' onclick="newTabEdit()"><div class='popupicon'>Edit</div></button>
 			<div id=codeEditor title='Code Editor' style='width:100%;height:95%;overflow:hidden;'>
 				<textarea name=codearea id=codearea style='width:100%;height:500px;' readonly></textarea>
 			</div>
@@ -757,7 +798,7 @@ select {
 		<form enctype='multipart/form-data' method='POST' target="uptarget"
 			 action='services/?scmd=blocks.pages&forsite=<?=$_REQUEST["forsite"]?>&action=upload'>
 			 <table class='noborder' width=100% border=0 cellspacing=0 style='border:0px;'>
-				<tr><th width=100px>Page Name</th>		
+				<tr><th width=100px>Page Name</th>
 					<td><input type=file name=attachment  style="width:100%;height:20px;font-size:13px;font-weight:bold;border:1px solid #aaa;" /></td>
 				</tr>
 				<tr><td colspan=10><hr/></td></tr>
@@ -773,7 +814,7 @@ select {
 		<p>Please create a new page. Please do not give any extensions as they are picked up automatically.
 		</p>
 		<table class='noborder' width=100% border=0 cellspacing=0>
-			<tr><th width=100px>Page Name</th>		
+			<tr><th width=100px>Page Name</th>
 				<td><input type=text name=pagename  style="width:100%;height:20px;font-size:13px;font-weight:bold;border:1px solid #aaa;" /></td>
 			</tr>
 			<tr><th width=100px>Template</th>
@@ -791,13 +832,13 @@ select {
 		<b>Page Manager</b>, helps you manage all your pages across your selected appSite.
 		<p><u><b>Various Page Categories</b></u></p>
 		<ul>
-			<li><b>System Pages</b>, these are system created and used pages. Changing them may cause catastrophic results. You 
+			<li><b>System Pages</b>, these are system created and used pages. Changing them may cause catastrophic results. You
 			may delete such pages but one at a time.
 			</li>
 			<li><b>Web Pages</b>, these are your pages that you created/designed/uploaded. They are most common type of pages
 			and used widely across the appSite.
 			</li>
-			<li><b>Virtual Pages</b>, these are more development oriented pages. Here you can connect various <b>Components</b> you 
+			<li><b>Virtual Pages</b>, these are more development oriented pages. Here you can connect various <b>Components</b> you
 			created under Developer Tab. They are more organized way of developing a appSite.
 			</li>
 		</ul>
@@ -808,7 +849,7 @@ select {
 			<li><b>WYSIWYG Editor</b>, this is a more user friendly editor with a visual HTML editor that supports various attributes simmillar
 			to Dreamweaver or Kompozer desktop HTML Editors. Here you can design full pages as well use PHP and JS in Source mode of editor.
 			</li>
-			<li><b>Page Builder</b>, this is a user oriented page designer where you don't have to write a single line of code and simply use 
+			<li><b>Page Builder</b>, this is a user oriented page designer where you don't have to write a single line of code and simply use
 			drag and drop interface to design you Logiks Compatible Dynamic WebPages using avaiable layouts and widgets.
 			</li>
 		</ul>

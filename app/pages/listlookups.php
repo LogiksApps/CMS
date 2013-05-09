@@ -83,15 +83,15 @@ $(function() {
 		$(".editarea").css("width",($(window).width()-$("#msgboxdata").width()-100)+"px");
 		$("#msgboxdata").css("font-size","12px");
 		$("#selector").css("width","100px");
-	}	
+	}
 	reloadList();
-	
+
 	$("#closebtn").hide();
 	$("#savebtn").hide();
 });
 function reloadList(x) {
 	closeEdit();
-	s1="services/?scmd=blocks.lookups&forsite=<?=$_REQUEST["forsite"]?>&action=list";
+	s1=getServiceCMD("blocks.lookups")+"&action=list";
 	$("#selector").html("Loading ...");
 	$("#loadingmsg").show();
 	$("#selector").load(s1,function() {
@@ -103,11 +103,11 @@ function reloadList(x) {
 function viewData() {
 	lid=$('#selector').val();
 	closeEdit();
-	
-	s1="services/?scmd=blocks.lookups&forsite=<?=$_REQUEST["forsite"]?>&action=data&lookup="+lid;
+
+	s1=getServiceCMD("blocks.lookups")+"&action=data&lookup="+lid;
 	$('#lookup_edit').html("Loading Data ...");
 	$("#loadingmsg").show();
-	
+
 	processAJAXQuery(s1,function(txt) {
 					$('#lookup_edit').val(txt);
 					$("#loadingmsg").hide();
@@ -116,17 +116,17 @@ function viewData() {
 function loadData() {
 	lid=$('#selector').val();
 	closeEdit();
-	
-	s1="services/?scmd=blocks.lookups&forsite=<?=$_REQUEST["forsite"]?>&action=data&lookup="+lid;
+
+	s1=getServiceCMD("blocks.lookups")+"&action=data&lookup="+lid;
 	$('#lookup_edit').html("Loading Data ...");
 	$("#loadingmsg").show();
-	
+
 	processAJAXQuery(s1,function(txt) {
 					$('#lookup_edit').val(txt);
 					$("#loadingmsg").hide();
 					$('#lookup_edit').removeAttr("readonly");
 					$('#lookup_edit').focus();
-					
+
 					$(".edit").show();
 					$(".noedit").hide();
 					$(".newlookupform").hide();
@@ -140,12 +140,12 @@ function closeEdit() {
 }
 function saveEdit() {
 	data=encodeURIComponent($('#lookup_edit').val());
-	s1="services/?scmd=blocks.lookups&forsite=<?=$_REQUEST["forsite"]?>&action=save&lookup="+lid;
+	s1=getServiceCMD("blocks.lookups")+"&action=save&lookup="+lid;
 	q1="&data="+data;
-	
+
 	processAJAXPostQuery(s1,q1,function(txt) {
 			if(txt=="success") {
-				
+
 			} else {
 				lgksAlert(txt);
 			}
@@ -155,7 +155,7 @@ function deleteLookup() {
 	lgksConfirm("Do you really want to delete the selected Lookup <b>"+$('#selector option:selected').text()+"</b> ?<br/>",
 					"Delete Lookup ?",function() {
 							closeEdit();
-							s1="services/?scmd=blocks.lookups&forsite=<?=$_REQUEST["forsite"]?>&action=delete&lookup="+$('#selector').val();
+							s1=getServiceCMD("blocks.lookups")+"&action=delete&lookup="+$('#selector').val();
 							$("#loadingmsg").show();
 							processAJAXQuery(s1,function(txt) {
 									if(txt.length>0) {
@@ -173,7 +173,7 @@ function createBlankLookup(v) {
 			lgksAlert("No Space Is Allowed In The Lookup Names");
 			return;
 		}
-		s1="services/?scmd=blocks.lookups&forsite=<?=$_REQUEST["forsite"]?>&action=blank&lookup="+v;
+		s1=getServiceCMD("blocks.lookups")+"&action=blank&lookup="+v;
 		$("#loadingmsg").show();
 		processAJAXQuery(s1,function(txt) {
 				if(txt=="success") {
@@ -194,7 +194,7 @@ function checkFile() {
 		$("#nlf_upload form #lookupfile").val("");
 	    lgksAlert("Please upload only .txt extention files");
 	    return false;
-	}	
+	}
 	return true;
 }
 function clearUploadField(f) {
@@ -205,7 +205,7 @@ function clearUploadField(f) {
 <?php
 function printContent() { ?>
 <div id=msgboxdata class='msgboxd ui-widget-header ui-border-all'>
-	Lookups are file based data sources that can help users during form filling. They provide a central data dictionary which is used 
+	Lookups are file based data sources that can help users during form filling. They provide a central data dictionary which is used
 	by the autocomplete fields to popup help support based on what User has typed eg. country names, stations, commands, ship names, etc...
 	Ofcourse they are not db based, for that you can use <b>Selectors</b>. They can be real handy in forms and pages. Here You can create
 	as many Lookups as you want. <br/><br/>
@@ -225,7 +225,7 @@ function printContent() { ?>
 		<ul>
 			<li><a href='#nlf_blank'>Blank Lookup</a></li>
 			<li><a href='#nlf_upload'>Upload Lookup</a></li>
-			<li><a onclick="$('#newlookupform').hide();">Close</a></li>			
+			<li><a onclick="$('#newlookupform').hide();">Close</a></li>
 		</ul>
 		<div id=nlf_blank>
 			<table width=100%>
@@ -240,9 +240,9 @@ function printContent() { ?>
 			</table>
 		</div>
 		<div id=nlf_upload style='padding:5px;'>
-			<form method=POST onsubmit="return checkFile()" enctype="multipart/form-data" target="nlf_upload_frame" 
+			<form method=POST onsubmit="return checkFile()" enctype="multipart/form-data" target="nlf_upload_frame"
 				action="services/?scmd=blocks.lookups&forsite=<?=$_REQUEST["forsite"]?>&action=upload">
-				
+
 				<input type="hidden" name="MAX_FILE_SIZE" value="100000" />
 				<table width=100%>
 					<tr>
@@ -252,7 +252,7 @@ function printContent() { ?>
 					<tr><td colspan=10>&nbsp;</td></tr>
 					<tr><td colspan=10 align=center>
 						<button type=reset>Clear</button>
-						<button type=submit>Upload</button>						
+						<button type=submit>Upload</button>
 					</td></tr>
 					<tr><td colspan=10><hr/></td></tr>
 					<tr><td colspan=10 style='font-size:12px;color:maroon;' align=left>
@@ -267,7 +267,7 @@ function printContent() { ?>
 	</div>
 </div>
 <?php
-} 
+}
 function printToolbar() { ?>
 <button class='noedit' onclick="reloadList()" style='width:100px;' ><div class='reloadicon'>Reload</div></button>
 <select class='noedit' id=selector onchange='viewData()'></select>

@@ -57,7 +57,8 @@ $(function() {
 	});
 });
 function getCMD(){
-	return "services/?scmd=mediamanager&s="+site;
+	return getServiceCMD("mediamanager")+"&s="+site;
+	//return "services/?scmd=mediamanager&s="+site;
 }
 function toggleChecked(checkId) {
 	$(checkId).each( function() {
@@ -137,7 +138,7 @@ function updatePreview() {
 	photFldDlg.dialog("close");
 }
 function uploadMedia() {
-	lnk="?page=modules&mod=photocrop&popup=true&func=updatePreview&src="+$("#fselector").val()+"&rel="+0;
+	lnk="?page=modules&site=cms&mod=photocrop&popup=true&func=updatePreview&src="+$("#fselector").val()+"&rel="+0;
 	$("#photoFieldUploaderFrame iframe").attr("src",lnk);
 	photFldDlg=lgksPopup("#photoFieldUploaderFrame","Upload Photo",{
 					width:600,
