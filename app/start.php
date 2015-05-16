@@ -18,7 +18,7 @@ if(!isset($_REQUEST["forsite"])) {
 			$_REQUEST["forsite"]=DEFAULT_SITE;
 		} else {
 			foreach($_SESSION['SESS_ACCESS_SITES'] as $a) {
-				if($a!="admincp" && $a!=SITENAME) {
+				if($a!="admincp" && $a!="cms" && $a!=SITENAME) {
 					$_REQUEST["forsite"]=$a;
 					break;
 				}
@@ -39,7 +39,7 @@ if(!isset($_REQUEST["forsite"])) {
 if(is_array($_SESSION['SESS_ACCESS_SITES']) && !(in_array($_REQUEST["forsite"],$_SESSION['SESS_ACCESS_SITES'])
 	&& in_array(SITENAME,$_SESSION['SESS_ACCESS_SITES']))) {
 	logoutSession("No AppSite Found !");
-	exit("Y");
+	exit();
 }
 $_SESSION["LGKS_CMS_SITE"]=$_REQUEST["forsite"];
 
@@ -52,7 +52,7 @@ if(!isset($_REQUEST["page"]) || strlen($_REQUEST["page"])==0) {
 
 _js(array("jquery","jquery.ui"));
 printSubSkin();
-_css(array("style","ajax","colors"));
+_css(array("reset","style","ajax","colors"));
 
 $css->loadCSS("ie6","*","ie6");
 $css->loadCSS("print","*","","print");

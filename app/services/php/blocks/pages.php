@@ -85,7 +85,7 @@ if(isset($_REQUEST["action"])) {
 	} elseif($_REQUEST["action"]=="linkstome" && isset($_REQUEST["forpage"])) {
 		$pg=explode(".",$_REQUEST['forpage']);
 		$pg=$pg[0];
-		$sql="SELECT id,title,menugroup,link,tips,blocked,privilege FROM "._dbTable("links")." WHERE link LIKE '%page={$pg}%' AND (site='{$_REQUEST['forsite']}' OR site='*') ORDER BY id";
+		$sql="SELECT id,title,menugroup,link,tips,blocked,privilege FROM "._dbtable("links")." WHERE link LIKE '%page={$pg}%' AND (site='{$_REQUEST['forsite']}' OR site='*') ORDER BY id";
 		$r=_dbQuery($sql);
 		echo "<table width=100% border=0 cellspacing=0>";
 		if($r) {

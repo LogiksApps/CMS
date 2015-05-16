@@ -42,7 +42,7 @@ if(isset($_REQUEST["action"])) {
 					"noScript"=>true
 				));
 		echo "</ul></li>";
-		$sql="SELECT menuid FROM "._dbTable("links")." WHERE site='{$_REQUEST['forsite']}' GROUP BY menuid";
+		$sql="SELECT menuid FROM "._dbtable("links")." WHERE site='{$_REQUEST['forsite']}' GROUP BY menuid";
 		$result=$dbCon->executeQuery($sql);
 		$data=_dbData($result);
 		$dbCon->freeResult($result);

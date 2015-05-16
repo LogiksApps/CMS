@@ -16,14 +16,14 @@ if(isset($_REQUEST["forsite"])) {
 	?>
 
 	<a class='button clr_darkmaroon profile' onclick="showProfileEditor();">
-		<img src='<?=loadMedia("icons/user.png")?>' width=22px height=22px style='margin-top:-10px;' />
+		<img src='<?=loadMedia("icons/user.png")?>' width=22px height=22px />
 	</a>
 	<a class='button clr_darkblue settings' onclick="showSettingsEditor();">
 		<img src='<?=loadMedia("icons/config.png")?>' width=22px height=22px />
 	</a>
 	<?php
 		if(isset($_SESSION['SESS_USER_NAME'])) 
-			echo "Hello, <a title='Edit Profile' onclick='showProfileEditor();'>".$_SESSION['SESS_USER_NAME']."</a> | <a  href='".SiteLocation."api/logout.php' title='Logout Session'>Logout</a>"; 
+			echo "Hello, <a title='Edit Profile' onclick='showProfileEditor();'>".$_SESSION['SESS_USER_NAME']."</a> | <a  href='".SiteLocation."logout.php' title='Logout Session'>Logout</a>"; 
 		else echo "Welcome To <a>CMS Demo</a> : <a>Login</a>";
 	?>
 </div>
@@ -57,7 +57,7 @@ if(isset($_REQUEST["forsite"])) {
 			?>
 		</select>		
 	</div>
-	<a style='' href='#' onclick="window.open('<?=SiteLocation . "index.php?site="?>'+$('#sitemanager').val())">Preview</a>
+	<a style='' href='#' onclick="window.open('<?=SiteLocation?>'+$('#sitemanager').val())">Preview</a>
 </div>
 <?php
 if(strlen(getConfig("CMS_TITLEBAR_TEXT"))>0) {

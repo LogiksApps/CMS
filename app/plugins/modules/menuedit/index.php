@@ -19,16 +19,16 @@ loadModule("dbcon");
 $dbCon=getDBControls();
 
 $sql="SELECT menuid,site,count(*) FROM "._dbtable("links")." WHERE (site='{$_REQUEST["forsite"]}' || site='*') GROUP BY menuid";
-$result=_dbQuery($sql);
+$result=$dbCon->executeQuery($sql);
 $_SESSION["menuArr"]=array();
 if($result) {
 	while($row = $dbCon->fetchData($result)) {
 		$t=ucwords($row["menuid"]);//." [".$row["site"]."]";
-		if(strlen($t)>0)
+		if(strlen($t)>0) {
 			$_SESSION["menuArr"][$row["menuid"]]=$t;
+		}
 	}
 }
-
 printPageContent($layout,$params);
 
 _js(array("jquery.multiselect","jquery.editinplace"));//,"jquery.listAttributes","jquery.ui-timepicker","jquery.tagit"

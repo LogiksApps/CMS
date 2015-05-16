@@ -1,0 +1,29 @@
+.icon_form {background:url(images/dev/form.png) no-repeat center right; width:16px; height:16px;}
+.icon_datatable {background:url(images/dev/layout.png) no-repeat center right; width:16px; height:16px;}
+.icon_template {background:url(images/dev/template.png) no-repeat center right; width:16px; height:16px;}
+.icon_html {background:url(images/dev/html.png) no-repeat center right; width:16px; height:16px;}
+.icon_style {background:url(images/dev/css.png) no-repeat center right; width:16px; height:16px;}
+.icon_script {background:url(images/dev/js.png) no-repeat center right; width:16px; height:16px;}
+.icon_props {background:url(images/dev/gear.png) no-repeat center right; width:16px; height:16px;}
+
+.icon_export {background:url(images/dev/datatable.png) no-repeat center left; width:16px; height:16px;padding-left:20px;}
+
+.blankicon {background:transparent; width:16px; height:16px;padding-left:0px;}
+
+.colbtn { float:right;cursor:pointer;padding-right:4px;margin-right:2px;padding-left:0px; }
+.colbtn:hover { opacity:0.6; }
+
+.infobox {
+	width:330px;height:70px;border:1px solid #aaa;overflow:auto;
+}
+
+input[type=text],input[type=file],textarea {
+	width:95%;border:1px solid #aaa;
+	resize:none;
+}
+textarea {
+	height:50px;
+}
+select {
+	width:95%;height:25px;font-size:15px;font-weight:bold;
+}

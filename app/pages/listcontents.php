@@ -103,7 +103,7 @@ $(function() {
 	$("#editPage").tabs();
 	$("#editPage").tabs("disable",1);
 
-	CKEDITOR.config.toolbar="WYSIWYG_NOSTYLE";
+	CKEDITOR.config.toolbar="WYSIWYG";//WYSIWYG_NOSTYLE
 
 	CKEDITOR.config.filebrowserBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&site=<?=$_REQUEST['forsite']?>';
 	CKEDITOR.config.filebrowserImageBrowseUrl='plugins/modules/fileselectors/index.php?popup=direct&type=Images&site=<?=$_REQUEST['forsite']?>';

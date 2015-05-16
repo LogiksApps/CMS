@@ -21,9 +21,9 @@ if(isset($_REQUEST["action"])) {
 		
 		$orderBy="category asc,weight,id";//category desc,weight,id desc//weight,id,category desc//menugroup asc,category desc,
 		if($_SESSION['SESS_PRIVILEGE_ID']<=3) {
-			$sql="select * from "._dbTable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' order by $orderBy";
+			$sql="select * from "._dbtable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' order by $orderBy";
 		} else {
-			$sql="select * from "._dbTable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' order by $orderBy";
+			$sql="select * from "._dbtable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' order by $orderBy";
 		}
 		
 		if(strlen($sql)>0) {
@@ -37,9 +37,9 @@ if(isset($_REQUEST["action"])) {
 	}
 	elseif($_REQUEST["action"]=="menudelete" && isset($_REQUEST["menuid"])) {
 		if($_SESSION['SESS_PRIVILEGE_ID']<=3) {
-			$sql="delete from "._dbTable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}'";
+			$sql="delete from "._dbtable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}'";
 		} else {
-			$sql="delete * from "._dbTable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}'";
+			$sql="delete * from "._dbtable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}'";
 		}
 		if(strlen($sql)>0) {
 			$result=$dbcon->executeQuery($sql);
@@ -54,9 +54,9 @@ if(isset($_REQUEST["action"])) {
 	} 
 	elseif($_REQUEST["action"]=="itemview" && isset($_REQUEST["menuid"]) && isset($_REQUEST["itemid"])) {
 		if($_SESSION['SESS_PRIVILEGE_ID']<=3) {
-			$sql="select * from "._dbTable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' AND id={$_REQUEST['itemid']}";
+			$sql="select * from "._dbtable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' AND id={$_REQUEST['itemid']}";
 		} else {
-			$sql="select * from "._dbTable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' AND id={$_REQUEST['itemid']}";
+			$sql="select * from "._dbtable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' AND id={$_REQUEST['itemid']}";
 		}
 		if(strlen($sql)>0) {
 			$result=$dbcon->executeQuery($sql);
@@ -83,9 +83,9 @@ if(isset($_REQUEST["action"])) {
 		exit();
 	} elseif($_REQUEST["action"]=="itemdelete" && isset($_REQUEST["menuid"]) && isset($_REQUEST["itemid"])) {
 		if($_SESSION['SESS_PRIVILEGE_ID']<=3) {
-			$sql="delete from "._dbTable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' AND (id={$_REQUEST['itemid']} OR menugroup={$_REQUEST['itemid']})";
+			$sql="delete from "._dbtable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' AND (id={$_REQUEST['itemid']} OR menugroup={$_REQUEST['itemid']})";
 		} else {
-			$sql="delete * from "._dbTable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' AND (id={$_REQUEST['itemid']} OR menugroup={$_REQUEST['itemid']})";
+			$sql="delete * from "._dbtable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' AND (id={$_REQUEST['itemid']} OR menugroup={$_REQUEST['itemid']})";
 		}
 		if(strlen($sql)>0) {
 			$result=$dbcon->executeQuery($sql);
@@ -130,7 +130,7 @@ if(isset($_REQUEST["action"])) {
 			$cols=implode(",",$cols);
 			$vals=implode(",",$vals);
 			
-			$sql="INSERT INTO "._dbTable('links')." ($cols) VALUES ($vals)";
+			$sql="INSERT INTO "._dbtable('links')." ($cols) VALUES ($vals)";
 			
 			$result=$dbcon->executeQuery($sql);
 			if(!$result) {
@@ -146,7 +146,7 @@ if(isset($_REQUEST["action"])) {
 				array_push($sets,"$a='$b'");
 			}
 			$sets=implode(",",$sets);
-			$sql="UPDATE "._dbTable('links')." SET $sets";
+			$sql="UPDATE "._dbtable('links')." SET $sets";
 			$sql.=" where menuid='{$_REQUEST['menuid']}' AND id={$_REQUEST['itemid']}";
 			
 			$result=$dbcon->executeQuery($sql);
@@ -206,9 +206,9 @@ if(isset($_REQUEST["action"])) {
 	elseif($_REQUEST["action"]=="menugroups" && isset($_REQUEST["menuid"])) {
 		$menuid=$_REQUEST["menuid"];
 		if($_SESSION['SESS_PRIVILEGE_ID']<=3) {
-			$sql="select id,menuid,title,category,menugroup from "._dbTable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' AND (menugroup IS NULL OR menugroup='') AND (category IS NULL OR category='') ORDER BY id";
+			$sql="select id,menuid,title,category,menugroup from "._dbtable('links')." where (site='{$_REQUEST['forsite']}' OR site='*') and menuid='{$_REQUEST['menuid']}' AND (menugroup IS NULL OR menugroup='') AND (category IS NULL OR category='') ORDER BY id";
 		} else {
-			$sql="select id,menuid,title,category,menugroup from "._dbTable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' AND (menugroup IS NULL OR menugroup='') AND (category IS NULL OR category='') ORDER BY id";
+			$sql="select id,menuid,title,category,menugroup from "._dbtable('links')." where site='{$_REQUEST['forsite']}' and menuid='{$_REQUEST['menuid']}' AND (menugroup IS NULL OR menugroup='') AND (category IS NULL OR category='') ORDER BY id";
 		}
 		echo "<option value=''>No Group</option>";
 		if(strlen($sql)>0) {
