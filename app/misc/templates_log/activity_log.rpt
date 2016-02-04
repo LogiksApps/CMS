@@ -1,5 +1,0 @@
-header=Activity Log
-datatable_table=lgks_log_activity
-datatable_cols=id,date,time,site,user,priority,category,module,source,log_data,client,user_agent
-datatable_where=site='#forsite#'
-datatable_params=rptOptions.sortname='id';rptOptions.sortorder='desc';
