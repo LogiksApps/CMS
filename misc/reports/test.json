@@ -1,0 +1,98 @@
+{
+	"schema":"1.0",
+	"title":"Test Report",
+	"category":"CMS",
+	"privilege":"*",
+	"blocked":false,
+	"rowlink":false,
+	"rowsPerPage":20,
+	"showExtraColumn":"checkbox",
+	"custombar":false,
+	"source":{
+		"type":"sql",
+		"table":"lgks_users",
+		"where":{
+			"guid":{"VALUE":"seleccontrols","OP":"EQ"},
+			"id":{"RAW":"id>1"}
+		},
+		"limit":10
+	},
+	"source1":{
+		"type":"php",
+		"file":"plugins/modules/test/test.php"
+	},
+	"actions":{
+		"addRecord": {
+			"label":"",
+			"icon":"<i class='fa fa-plus'></i>"
+		}
+	},
+	"datagrid":{
+		"id":{
+			"label":"ID",
+			"hidden":false,
+			"searchable":false,
+			"sortable":true,
+			"groupable":false,
+			"classes":"",
+			"style":"width:50px;",
+			"formatter":"text"
+		},
+		"userid":{
+			"label":"UserID",
+			"sortable":true,
+			"searchable":true,
+			"filter":{
+				"type":"createDataSelectorFromUniques",
+				"table":"lgks_users",
+				"col1":"userid",
+				"where":{
+					"guid":{"VALUE":"seleccontrols","OP":"EQ"},
+					"id":{"RAW":"id>1"}
+				}
+			}
+		},
+		"gender":{
+			"label":"Gender",
+			"searchable":true,
+			"filter":{
+				"type":"select",
+				"options":{
+					"male":"Male",
+					"female":"Female"
+				}
+			}
+		},
+		"name":{
+			"label":"User Name",
+			"hidden":true,
+			"searchable":true
+		},
+		"blocked":{
+			"label":"Blocked",
+			"formatter":"checkbox",
+			"searchable":true,
+			"filter":{
+				"type":"select",
+				"nofilter":"--",
+				"options":{
+					"true":"Blocked",
+					"false":"Not Blocked"
+				}
+			}
+		},
+		"dtoc":{
+			"label":"Created At",
+			"formatter":"date",
+			"searchable":true,
+			"filter":{
+				"type":"date"
+			}
+		},
+
+		"dtoe":{
+			"label":"Updated At",
+			"formatter":"time"
+		}
+	}
+}

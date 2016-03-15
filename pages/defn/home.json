@@ -1,0 +1,15 @@
+{
+    "title": "Testing 001",
+    "description": "",
+    "keywords": "Open,OpenSource,Framework,WebApp,OpenLogiks,Logiks,Logiks3,Logiks4",
+    "robot": "index,follow",
+    "slug": "",
+    "template": "default",
+    "css": "style",
+    "js_preload": "",
+    "js_postload": "",
+    "modules_preload": "",
+    "modules_postload": "",
+    "enabled": true,
+    "access": "public"
+}

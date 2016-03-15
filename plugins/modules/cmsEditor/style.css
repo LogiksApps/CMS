@@ -1,0 +1,97 @@
+#editor {
+    position: absolute;
+    top: 30px;
+    bottom: 0px;
+    right: 0;left: 0;
+}
+#editorToolbar {
+	position: absolute;
+	right: 0;left: 0;
+	top: 0px;
+	height: 30px;
+}
+
+#editorToolbar a {
+  font-size: 16px;
+  padding: 6px 4px;
+}
+#editortoolbar a:first-child {
+  margin-left: 5px;
+}
+#editorToolbar a:hover {
+  text-decoration: none;
+}
+#editorToolbar a i.icon{
+  margin-right: 4px;
+}
+#editorToolbar .btn-group {
+  height: 100%;
+  padding: 0px;
+}
+#editorToolbar .btn-group button.btn {
+	padding: 3px 6px;
+  border-radius: 0px;
+  margin-top: 2px;
+  height: 27px;
+  background: transparent;
+  color: #337ab7;
+}
+#editorToolbar input {
+  outline: 0px;
+  border: 0px solid #FAFAFA;
+  margin-top: 3px;
+}
+#editorToolbar .open>.dropdown-menu {
+  width: 700px;
+  margin-right: 15px;
+  margin-top: 0px;
+}
+
+#editorToolbar .open>.dropdown-menu li {
+  float: left;
+  width: 14%;
+}
+#editorToolbar .open>.dropdown-menu.themelist li {
+  width: 25%;
+}
+#editorToolbar .open>.dropdown-menu a {
+  font-size: 12px;
+  padding: 3px 20px;
+}
+#editorToolbar .open>.dropdown-menu hr {
+  clear: both;
+  margin-top: 31px;
+}
+
+/*#editorToolbar .open>.dropdown-menu {
+  max-height: 300px;
+  overflow-y: scroll;
+  margin-right: 15px;
+  margin-top: 0px;
+}*/
+
+.ace_search_field {
+	color: #888 !important;
+}
+
+
+#ace_settingsmenu {
+  width: 400px;
+}
+#ace_settingsmenu .ace_optionsMenuEntry {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+#ace_settingsmenu .ace_optionsMenuEntry label {
+
+}
+#ace_settingsmenu .ace_optionsMenuEntry input[type=text] {
+  width: 175px;
+  background: white;
+  padding: 2px;
+}
+#ace_settingsmenu .ace_optionsMenuEntry select {
+  width: 175px;
+  background: white;
+  padding: 2px;
+}

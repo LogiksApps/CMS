@@ -1,0 +1,10 @@
+{
+    "title": "ERROR PAGE",
+    "description": "Logiks Error Page",
+    "template": "error",
+    "viewpage": "error",
+    "css": "error,errorPrint",
+    "js_preload": "",
+    "js_postload": "jquery,prettify",
+    "enabled": true
+}

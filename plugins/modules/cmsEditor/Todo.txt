@@ -1,0 +1,28 @@
+Reveal in sidebar
+
+
+
+
+
+Paste History
+Spell Check
+Beautify
+
+Revision History
+
+File Edit and Lock if somebody else editing
+
+
+
+
+Image Editor
+
+Source Tree
+	Create New Folder
+	Create New File In Folder
+	Upload
+	Download as Zip
+
+
+Source Map/Minimap
+

@@ -1,0 +1,21 @@
+INSERT INTO `lgks_admin_links` (`id`, `menuid`, `title`, `mode`, `category`, `menugroup`, `class`, `target`, `link`, `iconpath`, `tips`, `site`, `device`, `privilege`, `weight`, `onmenu`, `blocked`, `rules`, `creator`, `dtoc`, `dtoe`) VALUES 
+('101', 'default', 'Site Manager', '*', '', '/', '', '', '#', 'fa fa-folder', 'Manage the various components required for running a site', 'cms', '*', '*', '50', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('102', 'default', 'Data Controls', '*', '', '/', '', '', '#', '', 'Logiks Data Modules', 'cms', '*', '*', '51', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('103', 'default', 'Media Manager', '*', '', '/', '', '', '#', '', 'Explore various assets, media and userdata', 'cms', '*', '*', '52', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('104', 'default', 'Configurations', '*', '', '/', '', '', '#', '', 'Manage Global and Default Configurations', 'cms', '*', '*', '53', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('106', 'default', 'Security Manager', '*', '', '/', '', '', '#', '', 'Manage All Security Related Issues', 'cms', '*', '*', '54', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('107', 'default', 'Maintainance', '*', '', '/', '', '', '#', '', 'Install/Update Plugins, Themes, etc', 'cms', '*', '*', '55', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('108', 'default', 'Privilege & Roles', '*', '', '/', '', '', '#', '', 'Privilege and roles for the site', 'cms', '*', '*', '56', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('109', 'default', 'Site Reports', '*', '', '/', '', '', '#', '', 'Site Wide Reports', 'cms', '*', '*', '57', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('114', 'default', 'Super Tools', '*', '', '/', '', '', '#', '', 'Super User Tools, required by root of the user', 'cms', '*', '*', '190', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18');
+
+
+INSERT INTO `lgks_admin_links` (`id`, `menuid`, `title`, `mode`, `category`, `menugroup`, `class`, `target`, `link`, `iconpath`, `tips`, `site`, `device`, `privilege`, `weight`, `onmenu`, `blocked`, `rules`, `creator`, `dtoc`, `dtoe`) VALUES 
+('120', 'default', 'Page Manager', '*', '', '101', '', '', 'modules/pageManager', '', 'Manage pages for your site', 'cms', '*', '*', '0', 'true', 'false', 'module#pageManager', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('123', 'default', 'Component Manager', '*', '', '101', '', '', 'modules/compManager', '', 'Component Manager for various pages', 'cms', '*', '*', '0', 'true', 'false', 'module#compManager', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('127', 'default', 'Content Manager', '*', '', '101', '', '', 'modules/pageContents', '', 'Manage Static Content', 'cms', '*', '*', '0', 'true', 'false', 'module#pageContents', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('128', 'default', 'User Manager', '*', '', '101', '', '', 'modules/userManager', '', 'Manage users', 'cms', '*', '*', '0', 'true', 'false', 'module#userManager', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('112', 'default', 'Advanced Tools', '*', '', '/', '', '', '#', '', 'Advanced tools for developers', 'cms', '*', '*', '100', 'true', 'false', '', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('124', 'default', 'CMS Controls', '*', '', '114', '', '', 'modules/cmsControls', '', 'CMS Control Center', 'cms', 'pc', '*', '0', 'true', 'false', 'module#cmsControls', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('125', 'default', 'Permission Manager', '*', '', '108', '', '', 'modules/permissionManager', '', 'Manage Permission across users', 'cms', '*', '*', '0', 'true', 'false', 'module#permissionManager', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18'),
+('165', 'default', 'ChangeLog', '*', '', '107', '', '', 'modules/changeLog', '', 'Find The File System Changes Across Time', 'cms', '*', '*', '0', 'true', 'false', 'module#changeLog', 'root', '0000-00-00 00:00:00', '2016-03-04 02:04:18');

@@ -1,0 +1,8 @@
+{
+    "title": "Module Loader",
+    "description": "",
+    "slug": "module",
+    "template": "innerpage",
+    "viewpage": "modules",
+    "enabled": true
+}

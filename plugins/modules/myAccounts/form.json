@@ -1,0 +1,85 @@
+{
+	"preload":{
+		"helpers":["countries"]
+	},
+	"postsubmit":{
+
+	},
+	"source":{
+		"type":"sql",
+		"table":"lgks_users",
+		"where":["userid"]
+	},
+	"fields": {
+		"email": {
+			"label": "E-mail",
+			"type": "email",
+			"required":true,
+			"validate":{
+				"email":true
+			}
+		},
+		"avatar":{
+			"label": "Avatar",
+			"type": "file"
+		},
+		"userid": {
+			"label": "Login ID",
+			"disabled":true,
+			"concat":{
+				"position":"after",
+				"field":"email"
+			}
+		},
+		"name": {
+			"label": "Full Name",
+			"validate":{
+				"length-min":5,
+				"length-max":10
+			}
+		},
+		"mobile": {
+			"label": "Mobile",
+			"required":true
+		},
+		"remarks": {
+			"label": "Description\/Notes",
+			"type": "textarea",
+			"width": "12",
+			"validate":{
+				"length-min":15
+			}
+		},
+		"address":{
+			"label":"Address",
+			"group":"address"
+		},
+		"country":{
+			"label":"Country",
+			"group":"address",
+			"type":"dataMethod",
+			"method":{
+				"name":"getCountrySelector",
+				"valuefield":"default"
+			}
+		},
+		"region":{
+			"label":"Region/State",
+			"group":"address"
+		},
+		"zipcode":{
+			"label":"Zipcode/PIN Code",
+			"group":"address"
+		},
+		"gender": {
+			"label": "Gender",
+			"group":"address",
+			"type":"select",
+			"options":{
+				"":false,
+				"male":"Male",
+				"female":"Female"
+			}
+		}
+	}
+}
