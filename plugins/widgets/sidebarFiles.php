@@ -15,8 +15,9 @@
 </div> -->
 <ul id="sidebarFileTree" class='sidebarTree'></ul>
 <div class='popupoverIcon sidebarFileTreeButtons'>
-    <div class='glyphicon glyphicon-plus actionIcon' cmd='createnew'></div>
-    <div class='glyphicon glyphicon-refresh actionIcon' cmd='refresh'></div>
+    <div class='fa fa-plus actionIcon' cmd='createnew'></div>
+    <div class='fa fa-upload actionIcon' cmd='upload'></div>
+    <div class='fa fa-refresh actionIcon' cmd='refresh'></div>
 </div>
 <script>
 listFileMode="listFiles";
@@ -45,6 +46,10 @@ $(function() {
             case "createnew":
                 lx=_link("modules/cmsEditor")+"&type=new&ext=text";
                 openLinkFrame("New File",lx);
+            break;
+            case "upload":
+                lx=_link("modules/cmsUploader");
+                openLinkFrame("New Uploads",lx);
             break;
             case "searchfiles":
 

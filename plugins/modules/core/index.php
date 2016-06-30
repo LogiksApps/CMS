@@ -16,7 +16,6 @@ if(!function_exists("setupCMSEnviroment")) {
 		}
 		$_REQUEST['forSite']=$forSite;
 		$_GET['forSite']=$forSite;
-		_pageVar("forSite",$forSite);
 
 		$arr=[];
 		$siteList=[];
@@ -30,18 +29,31 @@ if(!function_exists("setupCMSEnviroment")) {
             if(file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg")) {
                 $t=ucwords($b);
                 $lnk=SiteLocation."?site=cms&forsite=$b";
-                $siteList[]=['title'=>$t,'url'=>$lnk];
+                $siteList[$b]=['title'=>$t,'url'=>$lnk];
             }
         }
+
+        $f=ROOT.CFG_FOLDER."/jsonConfig/db.json";
+		if(file_exists($f)) {
+			$jsonDB=json_decode(file_get_contents($f),true);
+
+			if(isset($jsonDB[$_REQUEST['forsite']])) {
+				foreach ($jsonDB[$_REQUEST['forsite']] as $dbKey => $dbParams) {
+					Database::connect($dbKey,$dbParams);
+				}
+			}
+		}
         
-        _pageVar("siteList",$siteList);
-        _pageVar("SESS_USER_NAME",$_SESSION['SESS_USER_NAME']);
+        define("CMS_APPROOT",ROOT.APPS_FOLDER.$forSite."/");
+
+        _session("siteList",$siteList);
 	}
 	function checkServiceAccess() {
 		$ls=new LogiksSecurity();
 		session_check();
 		$ls->checkUserSiteAccess($_REQUEST['forsite'],true);
 		user_admin_check(true);
+		//Check Role Controls
 	}
 	function getAppFile($file) {
 		if(substr($file, 0, 1)!="/") $file="/{$file}";

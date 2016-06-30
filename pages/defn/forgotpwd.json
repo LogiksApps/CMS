@@ -5,7 +5,7 @@
     "robot": "index,follow",
     "slug": "",
     "template": "basic",
-    "css": "style",
+    "css": "style,login",
     "js_preload": "",
     "js_postload": "",
     "modules_preload": "",

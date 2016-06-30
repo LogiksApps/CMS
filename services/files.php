@@ -18,9 +18,6 @@ switch ($_REQUEST['action']) {
 		$APPPATH=ROOT.APPS_FOLDER.$_GET['forsite']."/";
 		printServiceMsg(scanFolderTree($APPPATH));
 		break;
-	case 'listAllFiles':
-		# code...
-		break;
 }
 function scanFolderTree($folder) {
 	$files=array();

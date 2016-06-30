@@ -3,9 +3,15 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">CMS Login</h3>
+                    <img src='http://logiks.com/media/logos/logiks.png' />
                 </div>
                 <div class="panel-body">
+                    {if isset($ERROR_MSG) }
+                        <div class='alert alert-danger'>
+                            {$ERROR_MSG}
+                            <span class="close" data-dismiss="alert">&times;</span>
+                        </div>
+                    {/if}
                     <form role="form" action="{_service("auth")}" method="POST">
                         <fieldset>
                             <div class="form-group">
@@ -31,4 +37,9 @@
 </div>
 <script>
 if(top!=window) top.location.reload();
+$(function() {
+    $(".alert .close").click(function() {
+        $(this).closest(".alert").detach();
+    });
+});
 </script>

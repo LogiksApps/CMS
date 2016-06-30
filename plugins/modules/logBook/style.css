@@ -1,0 +1,15 @@
+#logDataTable h2 {
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.table.table-hover.table-striped.table-condensed caption {
+	padding-left: 10px;
+}
+#logDataTable {
+	font-size: 11px;
+}
+
+.fa, .glyphicon {
+	cursor: pointer;
+	font-size: 12px;
+}

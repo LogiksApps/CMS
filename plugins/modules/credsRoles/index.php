@@ -1,0 +1,182 @@
+<?php
+if(!defined('ROOT')) exit('No direct script access allowed');
+
+
+$sql=_db(true)->_selectQ(_dbTable("privileges",true),"id,site,name,blocked,remarks,md5(concat(id,name)) as hash")
+					//->_where(array("blocked"=>"false"))//,"length(hash)"=>[0,">"]
+					->_whereOR("site",[SITENAME,'*'])
+					->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
+
+$r=_dbQuery($sql,true);
+if($r) {
+	$dataPrivileges=_dbData($r,true);
+	_dbFree($r,true);
+	
+	$sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,category,module,activity,privilegehash,allow,role_type")
+					->_where(array("site"=>$_GET['forsite']));
+	//echo $sql->_SQL();
+	
+	$r=_dbQuery($sql,true);
+	if($r) {
+		$dataRoles=_dbData($r,true);
+		_dbFree($r,true);
+		
+		$dataRolesFinal=[];
+		foreach($dataRoles as $role) {
+			if(!isset($dataRolesFinal[$role['privilegehash']])) {
+				$dataRolesFinal[$role['privilegehash']]=[];
+			}
+			
+			$dataRolesFinal[$role['privilegehash']][$role['module']][]=$role;
+		}
+		
+		//printArray($dataRolesFinal);
+	}
+} else {
+	$dataPrivileges=[];
+	$dataRolesFinal=[];
+}
+//printArray($dataRolesFinal);
+echo _css("credsRoles");
+?>
+<style>
+.roleTabModel .list-group-item {
+	width:45%;
+	float:left;
+	margin:5px;
+}
+.roleTabModel input[name=checkAll] {
+	margin: 13px;
+}
+.roleTabModel .panel-heading .accordion-toggle:after {
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.roleTabModel .panel-heading .accordion-toggle.collapsed:after {
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+</style>
+<div class='col-xs-12'>
+<div class='row'>
+  <ul class="nav nav-tabs" role="tablist">
+		<?php
+			$dx=0;
+			foreach($dataPrivileges as $k=>$p) {
+				if($p['id']<=ROLE_PRIME) {
+					continue;
+				}
+				if(isset($dataRolesFinal[$p['hash']])) {
+					$title=toTitle(_ling($p['name']));
+					if($dx==0)
+						echo "<li role='presentation' class='active'><a href='#{$p['hash']}' aria-controls='{$p['hash']}' role='tab' data-toggle='tab'>$title</a></li>";
+					else
+						echo "<li role='presentation'><a href='#{$p['hash']}' aria-controls='{$p['hash']}' role='tab' data-toggle='tab'>$title</a></li>";
+					
+					$dx++;
+				}
+			}
+		?>
+  </ul>
+  
+  <div id='roleTabModel' class="tab-content roleTabModel">
+		<?php
+			$dx=0;
+			foreach($dataPrivileges as $k=>$p) {
+				if($p['id']<=ROLE_PRIME) {
+					continue;
+				}
+				
+				if(isset($dataRolesFinal[$p['hash']])) {
+					if($dx==0)
+						echo "<div role='tabpanel' class='tab-pane active' id='{$p['hash']}'>";
+					else
+						echo "<div role='tabpanel' class='tab-pane' id='{$p['hash']}'>";
+					
+					echo "<div class='panel-group' role='tablist' aria-multiselectable='false' id='accordion{$p['hash']}'>";
+					foreach($dataRolesFinal[$p['hash']] as $modName=>$modules) {
+						$modHash=md5($modName.$p['hash']);
+						echo "<div class='panel panel-default'>";
+						echo "<div class='panel-heading' role='tab' id='{$modHash}'>";
+							echo "<h4 class='panel-title'>";
+								//echo "<input class='pull-left' type='checkbox' name='checkAll' />";
+								echo "<a class='accordion-toggle' role='button' data-toggle='collapse' data-parent='#accordion{$p['hash']}' href='#collapse{$modHash}' aria-expanded='true' aria-controls='collapse{$modHash}'>";
+								echo toTitle(_ling($modName));
+								echo "</a>";
+							echo "</h4>";
+						echo "</div>";
+						echo "<div id='collapse{$modHash}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='{$modHash}'>";
+							echo "<div class='panel-body'>";
+								echo "<ul class='list-group'>";
+								foreach($modules as $role) {
+									$roleHash=md5($role['id'].$role['privilegehash']);
+									echo "<li class='list-group-item'>";
+									echo _ling(str_replace("_"," ",strtolower($role['activity'])));
+									if($role['allow']===true || $role['allow']=="true") {
+										echo "<input class='pull-right' type='checkbox' name='roleCheckbox' data-hash='{$roleHash}' checked />";// data-x='".json_encode($p)."'
+									} else {
+										echo "<input class='pull-right' type='checkbox' name='roleCheckbox' data-hash='{$roleHash}' />";
+									}
+									echo "</li>";
+								}
+								echo "</ul>";
+							echo "</div>";
+						echo "</div>";
+						echo "</div>";
+					}
+					echo "</div>";
+					echo "</div>";
+					$dx++;
+				}
+			}
+		?>
+  </div>
+</div>
+</div>
+<script>
+var uniStatus=true;
+$(function() {
+	$("input[name=checkAll]","#roleTabModel").each(function() {
+		if($(this).closest(".panel.panel-default").find("input[name=roleCheckbox]").length==$(this).closest(".panel.panel-default").find("input[name=roleCheckbox]:checked").length) {
+			this.checked=true;
+		}
+	});
+	
+	$("#roleTabModel").delegate("input[name=checkAll]","change",function(e) {
+			uniStatus=this.checked;
+			$(this).closest(".panel.panel-default").find("input[name=roleCheckbox]").each(function() {
+				roleHash=$(this).data("hash");
+				this.checked=uniStatus;
+				processAJAXPostQuery(_service("credsRoles","save"),roleHash+"="+uniStatus,function(ans) {
+					try {
+						json=$.parseJSON(ans);
+						if(json.Data=="success") {
+
+						} else {
+							lgksToast("Sorry, could not update the role.");
+						}
+					} catch($e) {
+						lgksToast("Sorry, could not update the role.");
+					}
+				});
+			});
+		});
+	$("#roleTabModel").delegate("input[name=roleCheckbox]","change",function(e) {
+		roleHash=$(this).data("hash");
+		status=$(this).is(":checked");
+		processAJAXPostQuery(_service("credsRoles","save"),roleHash+"="+status,function(ans) {
+			try {
+				json=$.parseJSON(ans);
+				if(json.Data=="success") {
+					
+				} else {
+					lgksToast("Sorry, could not update the role.");
+				}
+			} catch($e) {
+				lgksToast("Sorry, could not update the role.");
+			}
+		});
+	});
+});
+</script>

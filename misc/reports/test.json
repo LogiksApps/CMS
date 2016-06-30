@@ -12,7 +12,6 @@
 		"type":"sql",
 		"table":"lgks_users",
 		"where":{
-			"guid":{"VALUE":"seleccontrols","OP":"EQ"},
 			"id":{"RAW":"id>1"}
 		},
 		"limit":10
@@ -25,6 +24,12 @@
 		"addRecord": {
 			"label":"",
 			"icon":"<i class='fa fa-plus'></i>"
+		}
+	},
+	"buttons":{
+		"editRecord": {
+			"label":"",
+			"icon":"fa fa-pencil"
 		}
 	},
 	"datagrid":{

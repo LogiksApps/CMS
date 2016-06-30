@@ -1,0 +1,28 @@
+#pageEditor .nav i.fa {
+    padding: 2px;
+}
+#pageEditor .tab-content>.tab-pane {
+    padding: 10px;
+}
+
+#pageEditor .dataTable {
+	font-size: 12px !important;
+	margin-bottom: 0px;
+}
+#pageEditor .dataTable tfoot td {
+	padding: 0px;
+}
+#pageEditor .dataTable tbody input,#pageEditor .dataTable tbody select {
+	width: 100%;
+    outline: 0px;
+    border: 1px solid #DDD;
+} 
+
+
+
+.editorArea {
+    position: absolute;
+    top: 30px;
+    bottom: 0px;
+    right: 0;left: 0;
+}

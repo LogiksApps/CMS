@@ -8,12 +8,16 @@ html,body {
 	background-color: #f8f8f8;
 
 	display:block;
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 14px;
 	line-height: 1.42857143;
-	color: #333;
+	
+	/*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	background: #333 url(../../../media/cssbg/denim.png);
+	color: #333;*/
 
-	background: url(../../../media/cssbg/denim.png);
+	font-family: 'Work Sans', Arial, Helvetica, sans-serif;
+    background: linear-gradient(to bottom, #3c8dbc 0%, #68EACC 100%);
+    color: #777;
 }
 img {
 	margin-right:2px;
@@ -225,3 +229,13 @@ hr {
 }
 
 .icon {display:none;}
+
+
+.login-panel .panel-heading {
+	text-align: center;
+}
+.login-panel .panel-heading img {
+	max-height: 100px;
+    margin: auto;
+    margin-top: -66px;
+}

@@ -1,0 +1,76 @@
+{
+	"schema":"1.0",
+	"title":"Privilege Manager",
+	"category":"CMS",
+	"privilege":"*",
+	"blocked":false,
+	"rowlink":false,
+	"rowsPerPage":20,
+	"showExtraColumn":"checkbox",
+	"custombar":false,
+	"source":{
+		"type":"sql",
+		"table":"lgks_privileges",
+		"where":{
+			"guid":{"VALUE":"#SESS_GUID#","OP":"EQ"}
+		},
+		"sort":"id asc",
+		"limit":10
+	},
+	"buttons":{
+		"editRecord": {
+			"label":"Edit Access Point",
+			"icon":"fa fa-pencil"
+		}
+	},
+	"datagrid":{
+		"id":{
+			"label":"ID",
+			"hidden":false,
+			"searchable":false,
+			"sortable":true,
+			"groupable":false,
+			"classes":"",
+			"style":"width:50px;",
+			"formatter":"text"
+		},
+		"name":{
+			"label":"Access Name",
+			"searchable":true
+		},
+		"name":{
+			"label":"Descs",
+			"searchable":true
+		},
+		"site":{
+			"label":"For Site",
+			"searchable":true
+		},
+		"blocked":{
+			"label":"Blocked",
+			"formatter":"checkbox",
+			"searchable":true,
+			"filter":{
+				"type":"select",
+				"nofilter":"--",
+				"options":{
+					"true":"Blocked",
+					"false":"Not Blocked"
+				}
+			}
+		},
+		"dtoc":{
+			"label":"Created At",
+			"formatter":"date",
+			"searchable":true,
+			"filter":{
+				"type":"date"
+			}
+		},
+		"dtoe":{
+			"label":"Updated At",
+			"hidden":true,
+			"formatter":"time"
+		}
+	}
+}

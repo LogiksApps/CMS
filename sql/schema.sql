@@ -2,7 +2,7 @@
 -- MySQL 5.6.28
 -- Thu, 03 Mar 2016 19:32:33 +0000
 --
-CREATE TABLE `lgks_admin_links` (
+CREATE TABLE `lgks_links` (
    `id` int(10) unsigned not null auto_increment,
    `menuid` varchar(25),
    `title` varchar(150),
@@ -26,6 +26,3 @@ CREATE TABLE `lgks_admin_links` (
    `dtoe` timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
    PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-
-

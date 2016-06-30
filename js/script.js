@@ -8,6 +8,8 @@ $(function() {
         }
     });
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     $('#sidebarMenuTree').metisMenu();
 
 });
@@ -98,3 +100,8 @@ $.fn.extend({
         });
     }
 });
+
+function toTitle(s) {
+    if(s==null || s.length<=0) return "";
+    return s.charAt(0).toUpperCase()+s.substr(1);
+}

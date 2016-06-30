@@ -1,13 +1,9 @@
 /*!
- * CMS theme has been derived from SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)
- * This theme is licensed as per Logiks License.
- * 
- * The SB Admin 2 Bootstrap Theme is licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ * CSS3 Compatible
  */
 
 body {
-    background-color: #f8f8f8;
+    /*background-color: #f8f8f8;*/
 }
 
 #header {
@@ -23,6 +19,7 @@ body {
 }
 #sidebar {
     position: fixed;
+    color:white;
     left: 0px;
     top: 50px;
     bottom: 0px;
@@ -38,6 +35,15 @@ body {
     min-height: 568px;
     background-color: #fff;
 }
+
+h1, h2, h3 {
+    color: #555;
+}
+h1 {
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 10px;
+}
+
 
 .navbar-top-links {
     margin-right: 0;
@@ -523,6 +529,7 @@ body.home #content {
 }
 #sidebar {
     background: #222d32;
+    color:white;
 }
 #sidebar .sidebar {
     background: transparent;
@@ -669,7 +676,9 @@ body.error #page-wrapper {
 #page-wrapper .container-fluid>.error {
     margin-top: 50px;
 }
-
+.errorBox {
+    margin: 50px;
+}
 
 .successToast {
     color:#FFF;margin-right:5px;
@@ -679,4 +688,32 @@ body.error #page-wrapper {
 }
 .warnToast {
     color: orange;margin-right:5px;
+}
+
+.btn,.nav-tabs a {
+    border-radius: 0px !important;
+}
+
+.form-horizontal .control-label {
+    font-weight: normal;
+}
+
+.report-notoolbar .control-primebar {display: none !important;}
+
+.well {border:0px;}
+
+.componentTree {padding:0px;}
+.componentTree .list-group-item {border-radius: 0px;}
+.componentTree .list-group-item a {text-decoration: none;cursor: pointer;}
+.componentTree .list-group-item .glyphicon, .componentTree .list-group-item .fa {
+    margin-right: 5px;
+}
+
+.paddedBox {
+    margin-left: 20px;
+    margin-top: 5px;
+    padding: 5px;
+    border: 1px dashed #E9E9E9;
+    max-height: 250px;
+    overflow: auto;
 }

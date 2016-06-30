@@ -1,0 +1,101 @@
+{
+	"schema":"1.0",
+	"title":"User Manager",
+	"category":"CMS",
+	"privilege":"*",
+	"blocked":false,
+	"rowlink":false,
+	"rowsPerPage":20,
+	"showExtraColumn":"checkbox",
+	"custombar":false,
+	"source":{
+		"type":"sql",
+		"table":"lgks_users",
+		"where":{
+			"guid":{"VALUE":"#SESS_GUID#","OP":"EQ"}
+		},
+		"sort":"id asc",
+		"limit":10
+	},
+	"buttons":{
+		"editRecord": {
+			"label":"Edit User",
+			"icon":"fa fa-pencil"
+		}
+	},
+	"datagrid":{
+		"id":{
+			"label":"ID",
+			"hidden":false,
+			"searchable":false,
+			"sortable":true,
+			"groupable":false,
+			"classes":"",
+			"style":"width:50px;",
+			"formatter":"text"
+		},
+		"userid":{
+			"label":"UserID",
+			"sortable":true,
+			"searchable":true,
+			"filter":{
+				"type":"createDataSelectorFromUniques",
+				"table":"lgks_users",
+				"col1":"userid",
+				"where":{
+					
+				}
+			}
+		},
+		"name":{
+			"label":"User Name",
+			"searchable":true
+		},
+		"mobile":{
+			"label":"Mobile",
+			"searchable":true
+		},
+		"country":{
+			"label":"Country",
+			"hidden":true,
+			"searchable":true
+		},
+		"gender":{
+			"label":"Gender",
+			"searchable":true,
+			"filter":{
+				"type":"select",
+				"options":{
+					"male":"Male",
+					"female":"Female"
+				}
+			}
+		},
+		"blocked":{
+			"label":"Blocked",
+			"formatter":"checkbox",
+			"searchable":true,
+			"filter":{
+				"type":"select",
+				"nofilter":"--",
+				"options":{
+					"true":"Blocked",
+					"false":"Not Blocked"
+				}
+			}
+		},
+		"dtoc":{
+			"label":"Created At",
+			"formatter":"date",
+			"searchable":true,
+			"filter":{
+				"type":"date"
+			}
+		},
+		"dtoe":{
+			"label":"Updated At",
+			"hidden":true,
+			"formatter":"time"
+		}
+	}
+}

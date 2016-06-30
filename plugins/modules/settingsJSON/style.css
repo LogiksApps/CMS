@@ -1,0 +1,60 @@
+.list-group.list-group-root .list-group-item.active, .list-group.list-group-root .list-group-item.active a {
+    color: white;
+}
+
+#pgcontent form {
+	margin: 50px;
+	margin-top: 10px;
+}
+
+#pgcontent form label {
+	min-width: 200px;
+    text-align: left;
+    font-weight: bold;
+}
+
+form input[type=checkbox].switch {display: none;}
+form .bootstrap-switch {
+	height: 32px;
+}
+
+
+.row {
+	margin: 0px;
+}
+.row hr.cardHR {
+	clear: both;
+}
+
+
+
+.card .card-body {
+	padding: 0px;
+	margin-top: 0px;
+	min-height: 222px;
+}
+.card .card-body td {
+	font-size: 12px;
+}
+.card .card-body h5 {
+	margin: 0px;
+	margin-top: -20px;
+	padding: 4px;
+	background: #A9A9A9;
+	color: white;
+}
+.card .bottomLink {
+	position: absolute;
+    bottom: 20px;
+}
+.card .label {
+	font-size: 12px;
+	padding: .3em .4em .3em;
+	margin-right: -10px;
+	margin-top: -10px;
+}
+.card .cardSelector {
+	float: right;
+    margin-top: -21px;
+    margin-right: 10px;
+}

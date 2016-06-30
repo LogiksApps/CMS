@@ -1,0 +1,21 @@
+{
+	"title":"Clear Cache",
+	"descs":"Clear the App Cache",
+	"photo":false,
+	"author":{
+		"name":"Bismay Kumar",
+		"email":"bismay4u@gmail.com"
+	},
+	"market":{
+
+	},
+	"type":"php",
+	"source":"clear_cache",
+	"params":{
+		"autoOpen":true,
+		"spanClass":"span_1",
+		"style":"",
+		"styleContent":"text-align:center;",
+		"noheader":false
+	}
+}

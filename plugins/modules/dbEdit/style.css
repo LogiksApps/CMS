@@ -1,0 +1,53 @@
+.componentTree {
+	padding: 0px;
+	border: 0px;
+}
+a {
+	text-decoration: none !important;
+}
+
+.list-group-folder .list-file {
+	padding-left: 30px;
+}
+
+.list-group.list-group-root .list-group-item.active, .list-group.list-group-root .list-group-item.active a {
+    color: white;
+}
+.list-group.list-group-root > .list-group-item:first-child {
+    border-top-width: 0;
+}
+
+table {
+	font-size: 12px;
+}
+
+table thead th {
+	white-space: nowrap;
+}
+
+table .action {
+	text-align: right;
+}
+table .action .fa {
+	font-size: 15px;
+	margin-right: 5px;margin-left: 5px;
+	cursor: pointer;
+}
+
+.form-group.row .form-control-label {padding-top: 10px;}
+
+#resultSetPanel citie {
+	padding: 5px;
+	font-size: 10px;
+	color: #777;
+	display: block;
+	border-left: 3px solid #AAA;
+	margin-bottom: 4px;
+	margin-left: 5px;
+}
+
+form label.error {
+	font-size: 10px;
+    font-weight: 100;
+    color: maroon;
+}

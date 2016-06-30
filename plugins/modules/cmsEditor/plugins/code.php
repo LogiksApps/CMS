@@ -131,32 +131,12 @@ $(function() {
 
 	loadEditorSettings();
 
+	setupEditorConfig(editor,"<?=$_REQUEST['ext']?>");
+
 	$("#editorToolbar .themelist li[rel='"+editorConfig.theme+"']").addClass("active");
-	
-	editor.session.setMode("ace/mode/<?=$_REQUEST['ext']?>");
 
-	editor.setTheme("ace/theme/"+editorConfig.theme);
-	editor.setFontSize(editorConfig.fontsize);
-	editor.setShowPrintMargin(editorConfig.showPrintMargin);
-	editor.setHighlightActiveLine(editorConfig.highlightActiveLine);
-	editor.setDisplayIndentGuides(editorConfig.displayIndentGuides);
-	editor.setShowInvisibles(editorConfig.showInvisibles);
-	
-	editor.getSession().setUseWrapMode(editorConfig.useWrapMode);
-	editor.getSession().setTabSize(editorConfig.tabsize);
-
-	editor.renderer.setShowGutter(editorConfig.showGutter);
-	
-	editor.setOptions({
-	        enableBasicAutocompletion: true,
-	        enableSnippets: true,
-	        enableLiveAutocompletion: false
-	    });
-
-	editor.setReadOnly(true);
-
-	initAutocompletion();
-	addCustomCommands();
+	initAutocompletion(editor);
+	addCustomCommands(editor);
 
 	lx=_service("cmsEditor")+"&action=getsrc&src=<?=$_REQUEST['src']?>";
 	processAJAXQuery(lx,function(txt) {
@@ -168,56 +148,6 @@ $(function() {
 		},100);
 	});
 });
-function initAutocompletion() {
-	editor.completers.push({
-		    getCompletions: function(editor, session, pos, prefix, callback) {
-		      	var wordList = ["foo", "bar", "baz"];
-		        callback(null, wordList.map(function(word) {
-		            return {
-		                caption: word,
-		                value: word,
-		                meta: "static"
-		            };
-		        }));
-		    }
-		  });
-
-	// rhymeCompleter = {
- //        getCompletions: function(editor, session, pos, prefix, callback) {
- //            if (prefix.length === 0) { callback(null, []); return }
- //            // $.getJSON(
- //            //     "http://rhymebrain.com/talk?function=getRhymes&word=" + prefix,
- //            //     function(wordList) {
- //            //         // wordList like [{"word":"flow","freq":24,"score":300,"flags":"bc","syllables":"1"}]
- //            //         callback(null, wordList.map(function(ea) {
- //            //             return {name: ea.word, value: ea.word, score: ea.score, meta: "rhyme"}
- //            //         }));
- //            //     });
- //        }
- //    }
- //    langTools.addCompleter(rhymeCompleter);
-}
-function addCustomCommands() {
-	// add command to lazy-load keybinding_menu extension
-    editor.commands.addCommand({
-        name: "showKeyboardShortcuts",
-        bindKey: {win: "Ctrl-.", mac: "Command-."},
-        exec: function(editor) {
-            ace.config.loadModule("ace/ext/keybinding_menu", function(module) {
-                module.init(editor);
-                editor.showKeyboardShortcuts()
-            })
-        }
-    });
-    editor.commands.addCommand({
-    	name: "saveSource",
-    	bindKey: {win: "Ctrl-s", mac: "Command-s"},
-    	exec: function(editor) {
-    		saveFile();
-    	}
-    });
-    editor.execCommand("showKeyboardShortcuts");
-}
 function doEditorAction(cmd,src) {
 	switch(cmd) {
 		case "language":
@@ -258,20 +188,6 @@ function doEditorAction(cmd,src) {
 		case "settings":
 			editor.showSettingsMenu();
 		break;
-	}
-}
-function saveEditorSettings(key,value) {
-	editorConfig[key]=value;
-	localStorage.setItem('logikscms.editorconfig',JSON.stringify(editorConfig));
-}
-function loadEditorSettings() {
-	config=localStorage.getItem('logikscms.editorconfig');
-	if(config==null || config.length<=2) {
-		editorConfig=defaultEditorConfig;
-		localStorage.setItem('logikscms.editorconfig',JSON.stringify(editorConfig));
-	} else {
-		config=$.parseJSON(config);
-		editorConfig=$.extend(defaultEditorConfig,config)
 	}
 }
 

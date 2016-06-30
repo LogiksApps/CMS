@@ -1,0 +1,31 @@
+{
+	"source":{
+		"type":"sql",
+		"table":"lgks_access",
+		"where":["id"]
+	},
+	"fields": {
+		"id": {
+			"label": "Ref ID",
+			"hidden":true
+		},
+		"name":{
+			"label":"Access Name",
+			"required":true
+		},
+		"sites":{
+			"label":"Allow Sites",
+			"required":true
+		},
+		"blocked":{
+			"label":"Blocked",
+			"required":true,
+			"type":"select",
+			"options":{
+				"":false,
+				"true":"Blocked",
+				"false":"Not Blocked"
+			}
+		}
+	}
+}

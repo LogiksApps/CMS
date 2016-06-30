@@ -19,10 +19,6 @@
 				"email":true
 			}
 		},
-		"avatar":{
-			"label": "Avatar",
-			"type": "file"
-		},
 		"userid": {
 			"label": "Login ID",
 			"disabled":true,

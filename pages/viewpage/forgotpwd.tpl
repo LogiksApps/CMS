@@ -3,7 +3,7 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">CMS Login</h3>
+                    <img src='http://logiks.com/media/logos/logiks.png' />
                 </div>
                 <div class="panel-body">
                     <form role="form" action="{_service("auth")}" method="POST" autocomplete=off>

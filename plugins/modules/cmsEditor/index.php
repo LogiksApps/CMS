@@ -48,7 +48,8 @@ switch($editType) {
 		} elseif(isset($editorConfig['srctype'][$_REQUEST['srcinfo']])) {
 			include_once $editorConfig['srctype'][$_REQUEST['srcinfo']];
 		} else {
-			echo "<h1 align=center>Sorry, could not find any supported editor</h1>";
+			include_once dirname(__FILE__)."/plugins/code.php";
+			//echo "<h1 align=center>Sorry, could not find any supported editor</h1>";
 		}	
 	break;
 	case "new":
@@ -70,9 +71,6 @@ switch($editType) {
 	default:
 		echo "<h1 align=center>Sorry, Action Not Supported</h1>";
 }
-
-
-
 
 //printArray($_REQUEST);
 ?>

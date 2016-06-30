@@ -1,0 +1,39 @@
+{
+	"source":{
+		"type":"sql",
+		"table":"lgks_privileges",
+		"where":["id"]
+	},
+	"fields": {
+		"id": {
+			"label": "Ref ID",
+			"hidden":true
+		},
+		"name":{
+			"label":"Access Name",
+			"required":true
+		},
+		"site":{
+			"label":"For Sites",
+			"required":true,
+			"type":"dataMethod",
+			"options":{
+				"":false
+			},
+			"method":{
+				"name":"siteList",
+				"valuefield":"default"
+			}
+		},
+		"blocked":{
+			"label":"Blocked",
+			"required":true,
+			"type":"select",
+			"options":{
+				"":false,
+				"true":"Blocked",
+				"false":"Not Blocked"
+			}
+		}
+	}
+}

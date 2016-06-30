@@ -1,0 +1,16 @@
+DB Manager
+
+Database Controls
+Export/Import
+
+
+SQL Snippets
+
+
+Views
+Routines
+Events
+Triggers
+
+Designer
+

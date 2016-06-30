@@ -3,12 +3,12 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 loadModuleLib("navigator","api");
 
-$menuTree1=generateNavigationFromDB("default","admin_links","core");
+$menuTree1=generateNavigationFromDB("default","links","core");
 
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/","core");
 
 $menuTree=array_merge_recursive($menuTree1,$menuTree2);
-//printArray($menuTree);exit();
+//printArray($menuTree1);exit("XXX");
 ?>
 <style>
 .sidebarMenu {
