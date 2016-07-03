@@ -1,3 +1,6 @@
+<?php
+if(!defined('ROOT')) exit('No direct script access allowed');
+?>
 <div class="panel panel-default">
     <div class="panel-body">
         <form class="form-horizontal">

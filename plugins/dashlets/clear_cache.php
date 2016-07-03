@@ -34,15 +34,15 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 		<citie>--</citie>
 		<a class='btn btn-info btn-xs'>Clear</a>
 	</div>
-	<div class="cacheData col-md-3 logs" data-rel='appcache' data-toggle="tooltip" data-placement="bottom" title="Apps Cache. Clear this cache to get rid of all the APP cache.">
+	<div class="cacheData col-md-3 templates" data-rel='templates' data-toggle="tooltip" data-placement="bottom" title="Template cache. Clear this cache for removing compiled template cache.">
+		<i class='fa fa-file-code-o'></i>
+		<citie>--</citie>
+		<a class='btn btn-info btn-xs'>Clear</a>
+	</div>
+	<div class="cacheData col-md-3 appcache" data-rel='appcache' data-toggle="tooltip" data-placement="bottom" title="Apps Cache. Clear this cache to get rid of all the APP cache.">
 		<i class='fa fa-book'></i>
 		<citie>--</citie>
 		<a class='btn btn-warning btn-xs'>Clear</a>
-	</div>
-
-	<div class="cacheData col-md-3 logs" data-rel='logs' data-toggle="tooltip" data-placement="bottom" title="Logs. All the logs acquired by the filesystem only.">
-		<i class='fa fa-history'></i>
-		<citie>--</citie>
 	</div>
 </div>
 <script>
@@ -51,12 +51,25 @@ $(function() {
 		e.preventDefault();
 
 		src=$(this).closest(".cacheData").data('rel');
-		clearLogiksCache(src);
+		if(src!=null) {
+			clearLogiksCache(src);
+		} else {
+			loadLogiksCacheInfo();
+		}
 	});
 
 	loadLogiksCacheInfo();
 });
 function loadLogiksCacheInfo() {
+	$(".cacheData[data-rel='configs'] citie","#clearCacheTable").html("--");
+	$(".cacheData[data-rel='configs'] .fa","#clearCacheTable").css("color","black");
+
+	$(".cacheData[data-rel='cache'] citie","#clearCacheTable").html("--");
+	$(".cacheData[data-rel='cache'] .fa","#clearCacheTable").css("color","black");
+
+	$(".cacheData[data-rel='appcache'] citie","#clearCacheTable").html("--");
+	$(".cacheData[data-rel='appcache'] .fa","#clearCacheTable").css("color","black");
+
 	processAJAXQuery(_service("cleaner","tmpSize"),function(jsonData) {
 		try {
 			$.each(jsonData.Data,function(k,v) {

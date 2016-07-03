@@ -14,13 +14,11 @@ $cacheFolders=[
 		"logs"=>[ROOT.TMP_FOLDER."logs/$site/"],
 		"classes"=>[ROOT.TMP_FOLDER."classes/"],
 		"cache"=>[
-				ROOT.TMP_FOLDER."cache/Templates/$site/",
 				ROOT.TMP_FOLDER."cache/metaCache/$site/",
 				ROOT.TMP_FOLDER."cache/dataCache/$site/",
 			],
+		"templates"=>[ROOT.CACHE_TEMPLATES_FOLDER."$site/"],
 		"appcache"=>[ROOT.TMP_FOLDER."apps/$site/"],
-
-		//""=>"",
 	];
 
 switch (strtoupper($_REQUEST['action'])) {
@@ -38,6 +36,14 @@ switch (strtoupper($_REQUEST['action'])) {
 		break;
 	case 'PURGE:CACHE':
 		foreach ($cacheFolders['cache'] as $pth) {
+			if(is_dir($pth)) {
+				purge($pth);
+			}
+		}
+		printServiceMsg("done");
+		break;
+	case 'PURGE:TEMPLATES':
+		foreach ($cacheFolders['templates'] as $pth) {
 			if(is_dir($pth)) {
 				purge($pth);
 			}

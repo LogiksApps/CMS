@@ -73,7 +73,7 @@ $(function() {
         ttl=$(this).text();
         href=$(this).attr("href");
 
-        if($(".sidebarMenu").attr("target")==null) {
+        if($(this).attr("target")==null) {
           e.preventDefault();
 
           if(href.indexOf("http://")===0 || href.indexOf("https://")===0) {
@@ -81,7 +81,9 @@ $(function() {
           } else {
             openLinkFrame(ttl,_link(href));
           }
-        }
+        } else {
+			window.open(href);
+		}
     });
 });
 </script>

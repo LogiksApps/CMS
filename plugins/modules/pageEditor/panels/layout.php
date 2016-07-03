@@ -1,4 +1,6 @@
 <?php
+if(!defined('ROOT')) exit('No direct script access allowed');
+
 if(!isset($jsonPage['css'])) $jsonPage['css']="";
 if(!isset($jsonPage['js_preload'])) $jsonPage['js_preload']="";
 if(!isset($jsonPage['js_postload'])) $jsonPage['js_postload']="";

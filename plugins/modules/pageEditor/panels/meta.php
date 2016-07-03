@@ -1,3 +1,8 @@
+<?php
+if(!defined('ROOT')) exit('No direct script access allowed');
+
+if(!isset($jsonPage['meta'])) $jsonPage['meta']=[];
+?>
 <div class="panel panel-default">
     <div class="panel-body" style="padding: 0px;">
         <table id='metaTable' class='dataTable table table-hover table-striped table-condensed'>
