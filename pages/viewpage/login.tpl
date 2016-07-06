@@ -3,7 +3,7 @@
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <img src='http://logiks.com/media/logos/logiks.png' />
+                    <img src='media/logos/logiks.png' />
                 </div>
                 <div class="panel-body">
                     {if isset($ERROR_MSG) }
