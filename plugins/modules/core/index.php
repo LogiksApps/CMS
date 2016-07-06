@@ -38,7 +38,7 @@ if(!function_exists("setupCMSEnviroment")) {
             }
         }
 
-        if(!array_key_exists($forSite, $siteList)) {
+        if(count($siteList)>0 && !array_key_exists($forSite, $siteList)) {
         	trigger_logikserror("Site <b>'".SITENAME."'</b> Does Not Have Access rights for you.<a href='"._link("")."'>Go Back</a>",E_ERROR);
         }
         
