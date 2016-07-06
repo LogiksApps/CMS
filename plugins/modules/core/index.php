@@ -10,6 +10,11 @@ if(!function_exists("setupCMSEnviroment")) {
 		//echo CMSSITE;
 		if(isset($_REQUEST["forsite"])) {
 		    $forSite=$_REQUEST["forsite"];
+
+		    if($_REQUEST["forsite"]==SITENAME) {
+		    	$lx=_link("","&site=".SITENAME."&forsite=".DEFAULT_SITE);
+		    	header("Location:{$lx}");
+		    }
 		} else {
 		    $forSite=DEFAULT_SITE;
 		    $_REQUEST["forsite"]=DEFAULT_SITE;
@@ -33,6 +38,10 @@ if(!function_exists("setupCMSEnviroment")) {
             }
         }
 
+        if(!array_key_exists($forSite, $siteList)) {
+        	trigger_logikserror("Site <b>'".SITENAME."'</b> Does Not Have Access rights for you.<a href='"._link("")."'>Go Back</a>",E_ERROR);
+        }
+        
         $f=ROOT.CFG_FOLDER."/jsonConfig/db.json";
 		if(file_exists($f)) {
 			$jsonDB=json_decode(file_get_contents($f),true);
