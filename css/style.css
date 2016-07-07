@@ -426,6 +426,15 @@ h1 {
     outline: 0;
 }
 
+table thead {
+  color: #666;
+  font-size: 14px;
+}
+table tbody {
+  color: #666;
+  font-size: 12px;
+}
+
 .form-control {
     border-radius: 0px;
 }

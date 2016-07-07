@@ -1,5 +1,5 @@
 .componentTree {
-	padding: 0px;
+    padding: 0px;
     border: 0px;
 }
 
@@ -26,6 +26,15 @@
     border-radius: 0;
     border-width: 1px 0 0 0;
 }
+.componentSpace .list-group-item {
+    width: 20%;
+    height: 100px;
+    float: left;
+    margin: 10px;
+}
+.list-group.list-group-root .list-group-item:hover {
+    background-color:#EEEEEE;
+}
 
 .list-group.list-group-root .list-group-item.active, .list-group.list-group-root .list-group-item.active a {
     color: white;
@@ -46,10 +55,31 @@
     margin-right: 5px;
 }
 
-#componentTree a {
-	text-decoration: none;
-    cursor: pointer;
+#componentTree a, #componentSpace a {
+    text-decoration: none;
+  cursor: pointer;
+    color:#666;
 }
 #componentTree .list-folder {
     font-style:italic;
+}
+
+.action a, .action i {
+    margin: -3px;
+    margin-right: 3px;
+    margin-left: 3px;
+    padding: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.action a:hover, .action i:hover {
+     background: #EFEFEF;
+}
+
+td.folder {
+    padding-left:20px !important;
+}
+
+tr.list-file[data-folder] {
+    display:none;
 }

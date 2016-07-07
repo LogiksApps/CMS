@@ -1,3 +1,7 @@
+<?php
+if(!defined('ROOT')) exit('No direct script access allowed');
+
+?>
 <style>
 #sidebarFileTree {
     width: 100%;

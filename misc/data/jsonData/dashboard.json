@@ -27,18 +27,6 @@
 					"options": "swissRail,chunkySwiss,chunkySwissOnBlack"
 				}
 			}
-		},
-		"qwe123": {
-			"title": "Test IFrame",
-			"type": "iframe",
-			"source": "http:\/\/openlogiks.org\/",
-			"containerClass": "maxHeight-80"
-		},
-		"qwe124": {
-			"title": "Test IFrame",
-			"column": 3,
-			"type": "iframe",
-			"source": "https:\/\/www.google.com\/maps\/embed?pb=!1m10!1m8!1m3!1d15088.547894711199!2d73.03462429999999!3d19.013685!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1454240391837"
 		}
 	}
 }

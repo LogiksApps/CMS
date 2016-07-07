@@ -12,14 +12,15 @@ printPageComponent(false,[
 
 			// ["title"=>"Search Site","type"=>"search","align"=>"left"]
 			"refresh"=>["icon"=>"<i class='fa fa-refresh'></i>"],
+			"display"=>["icon"=>"<i class='glyphicon glyphicon-th-large'></i>"],
 			"createNew"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New"],
-			"openExternal"=>["icon"=>"<i class='fa fa-external-link'></i>","class"=>"onsidebarSelect"],
-			"rename"=>["icon"=>"<i class='fa fa-terminal'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Rename Page"],
-			"clone"=>["icon"=>"<i class='fa fa-copy'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Clone Page"],
+			//"openExternal"=>["icon"=>"<i class='fa fa-external-link'></i>","class"=>"onsidebarSelect"],
+			//"rename"=>["icon"=>"<i class='fa fa-terminal'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Rename Page"],
+			//"clone"=>["icon"=>"<i class='fa fa-copy'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Clone Page"],
 			['type'=>"bar"],
 			"trash"=>["icon"=>"<i class='fa fa-trash'></i>","class"=>"onsidebarSelect"],
 		],
-		"sidebar"=>"pageSidebar",
+		//"sidebar"=>"pageSidebar",
 		"contentArea"=>"pageContentArea"
 	]);
 
@@ -36,6 +37,11 @@ function pageSidebar() {
 	return "<div id='componentTree' class='componentTree list-group list-group-root well'></div>";
 }
 function pageContentArea() {
-	return "<h2 align=center>Please load something to view its information.</h2>";
+	return "<div id='componentSpace' class='componentSpace'>
+		<div class='col-md-3' data-name='new'></div>
+		<div class='col-md-3' data-name='dev'></div>
+		<div class='col-md-3' data-name='design'></div>
+		<div class='col-md-3' data-name='done'></div>
+	</div>";
 }
 ?>

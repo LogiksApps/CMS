@@ -264,6 +264,9 @@ function scanFetch($dir,$relativePath="") {
 
 		$fData=[];
 		foreach ($fs as $key => $fx) {
+			if(strpos(strtolower($fx), ".txt")>2) {
+				continue;
+			}
 			if(strpos($fx, "_")>1) {
 				$fxx=explode("_", $fx);
 				$fxy=array_splice($fxx, 1);
@@ -292,12 +295,18 @@ function fInfo($f,$relativePath) {
 	$info['size']=filesize($f);
 
 	$info['locked']=false;
+	$info['is_open']=false;
+	$info['open_by']=false;
+	
+	$info['status']="NA";
 
 	$info['path']=$relativePath;
 
 	$info['name']=explode(".", basename($f));
 	array_splice($info['name'], 1);
 	$info['name']=implode(".", $info['name']);
+	
+	$info['title']=toTitle($info['name']);
 
 	$info['edit']="";
 	//http://logiks.com/modules/cmsEditor?site=cms&forsite=default&type=edit&src=%2Fpages%2Fcomps%2FtestComp.tpl

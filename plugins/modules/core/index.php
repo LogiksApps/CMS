@@ -39,7 +39,7 @@ if(!function_exists("setupCMSEnviroment")) {
         }
 
         if(count($siteList)>0 && !array_key_exists($forSite, $siteList)) {
-        	trigger_logikserror("Site <b>'".SITENAME."'</b> Does Not Have Access rights for you.<a href='"._link("")."'>Go Back</a>",E_ERROR);
+        	trigger_logikserror("Site <b>'".$forSite."'</b> Does Not Have Access rights for you.<a href='"._link("")."'>Go Back</a>",E_ERROR);
         }
         
         $f=ROOT.CFG_FOLDER."/jsonConfig/db.json";

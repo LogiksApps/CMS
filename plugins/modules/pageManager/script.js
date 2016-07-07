@@ -1,95 +1,99 @@
 var lastComponent="";
+var lastRender="table";
 $(function() {
 	$($("#pgtoolbar .navbar-right>li")[0]).addClass("active");
-
-	$('#componentTree .list-group-item').on('click', function() {
-	    $('.glyphicon', this)
-	      .toggleClass('glyphicon-folder-close')
-	      .toggleClass('glyphicon-folder-open');
-	  });
-
-	$('#componentTree').delegate(".list-group-item input[name=selectFile]","change",function() {
+	
+	$('#componentSpace').delegate("input[name=selectFile]","change",function() {
 		listItemAttr();
 	});
 
-	$('#componentTree').delegate(".list-group-item.list-file a","click",function() {
-		$('#componentTree .list-group-item.active').removeClass('active');
-		tag=$(this).closest(".list-group-item");
-		if(lastComponent=="pages") {
-			tag.addClass('active');
-		}
+	$('#componentSpace').delegate(".list-file a","click",function() {
+		tag=$(this).closest(".list-file");
 		path=tag.data('path');
 		title=$(this).text();
 		openComponent(lastComponent, path, title);
 
 		listItemAttr();
 	});
-
-	loadComponentTree('pages');
+	$('#componentSpace').delegate(".list-folder a","click",function() {
+		tag=$(this).closest(".list-folder");
+		folder=tag.data('folder');
+		
+		$('#componentSpace tr.list-file[data-folder="'+folder+'"]').toggle();
+	});
+	loadComponents('pages');
 });
 
 function listItemAttr() {
-	if($('#componentTree .list-group-item.active').length>0) {
+	if($('#pgworkspace .list-group-item.active').length>0) {
 		$("#pgtoolbar .onsidebarActive").show();
 	} else {
 		$("#pgtoolbar .onsidebarActive").hide();
 	}
+	
+	if($('#pgworkspace input[name=selectFile]:checked').length>0) {
+		$("#pgtoolbar .onsidebarSelect").show();
+		
+		if($('#pgworkspace input[name=selectFile]:checked').length>1) {
+			$("#pgtoolbar .onOnlyOneSelect").hide();
+		}
+	} else {
+		$("#pgtoolbar .onsidebarSelect").hide();
+	}
 }
 
-function loadComponentTree(comp) {
+function loadComponents(comp) {
 	lastComponent=comp;
-	$("#componentTree").html("<div class='ajaxloading5'></div>");
+	$("#componentSpace").html("<div class='ajaxloading ajaxloading5'></div>");
 	$("#pgtoolbar .onsidebarSelect").hide();
 	
 	processAJAXQuery(_service("pageManager","getlist")+"&comptype="+lastComponent,function(txt) {
 		fs=txt.Data;
-		html="";html1="";
-		$.each(fs,function(k,v) {
-			kx=md5(k);
-			if(v.folder) {
-				html1+="<div class='list-group-item list-folder'><a href='#item-"+kx+"' data-toggle='collapse'><i class='glyphicon glyphicon-folder-close'></i>"+k+"</a></div>";
-				html1+="<div class='list-group collapse' id='item-"+kx+"'>";
-				$.each(v,function(m,n) {
-					if(typeof n =="object") {
-						html1+="<div class='list-group-item list-file' data-path='"+n.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+m+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";//n.name
-					}
-				});
-				html1+="</div>";
-			} else {
-				html+="<div class='list-group-item list-file' data-path='"+v.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+v.name+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";
-			}
-		});
-		$("#componentTree").html(html+html1);
-
-		$("#componentTree .list-folder>a").each(function() {
-			nx=$(this).closest(".list-folder").next().find(".list-file").length;
-			$(this).append(" <span class='badge pull-right'>"+nx+"</span>");
-		});
-
-		if($("#pageEditor").attr("src")!=null) {
-			$('#componentTree .list-group-item[data-path="'+$("#pageEditor").attr("src")+'.json"]').addClass("active")
+		//
+		switch(lastRender) {
+			case "cards":
+				renderCards(fs);
+			break;
+				
+			case "table":
+				renderTable(fs);
+			break;
+			default:
+				renderTable(fs);
 		}
+		
 		listItemAttr();
 	},"json");
 }
 
 function pgRefresh() {
-	loadComponentTree(lastComponent);
+	loadComponents(lastComponent);
+}
+function pgDisplay() {
+	if($("#pgtoolbar #toolbtn_display>i").hasClass("glyphicon-th-large")) {
+		$("#pgtoolbar #toolbtn_display>i").attr("class","glyphicon glyphicon-th-list");
+		lastRender="cards";
+		pgRefresh();
+	} else {
+		$("#pgtoolbar #toolbtn_display>i").attr("class","glyphicon glyphicon-th-large");
+		lastRender="table";
+		pgRefresh();
+	}
 }
 function pgPages() {
 	$("#pgtoolbar .navbar-right>li.active").removeClass('active');
 	$($("#pgtoolbar .navbar-right>li")[0]).addClass("active");
-	loadComponentTree("pages");
+	loadComponents("pages");
 }
 function pgComps() {
 	$("#pgtoolbar .navbar-right>li.active").removeClass('active');
 	$($("#pgtoolbar .navbar-right>li")[1]).addClass("active");
-	loadComponentTree("comps");
+	loadComponents("comps");
 }
 function pgLayouts() {
 	$("#pgtoolbar .navbar-right>li.active").removeClass('active');
 	$($("#pgtoolbar .navbar-right>li")[2]).addClass("active");
-	loadComponentTree("layouts");
+	loadComponents("layouts");
 }
 
 function openComponent(type, path, title) {
@@ -100,8 +104,9 @@ function openComponent(type, path, title) {
 	switch(type) {
 		case "pages":
 			lx=_link("modules/pageEditor")+"&comptype=pages&embed=true&src="+encodeURIComponent(path);
-			$("#pgcontent").html("<div class='ajaxloading5'></div>");
-			$("#pgcontent").load(lx);
+			//$("#pgcontent").html("<div class='ajaxloading5'></div>");
+			//$("#pgcontent").load(lx);
+			top.openLinkFrame(title,lx,true);
 		break;
 		default:
 			switch(lastComponent) {
@@ -122,9 +127,9 @@ function openComponent(type, path, title) {
 }
 
 function pgOpenExternal() {
-	if($("#componentTree").find("input[type=checkbox][name=selectFile]:checked").length<=0) return;
+	if($("#componentSpace").find("input[type=checkbox][name=selectFile]:checked").length<=0) return;
 
-	$("#componentTree").find("input[type=checkbox][name=selectFile]:checked").each(function() {
+	$("#componentSpace").find("input[type=checkbox][name=selectFile]:checked").each(function() {
 		file=$(this).closest(".list-file");
 
 		path=file.data("path");
@@ -132,7 +137,7 @@ function pgOpenExternal() {
 		lx=_link("modules/pageEditor")+"&comptype=pages&readonly=true&src="+encodeURIComponent(path);
 		top.openLinkFrame(title,lx,true);
 	});
-	//file=$($("#componentTree").find("input[type=checkbox][name=selectFile]:checked")[0]).closest(".list-file");
+	//file=$($("#componentSpace").find("input[type=checkbox][name=selectFile]:checked")[0]).closest(".list-file");
 }
 
 function pgCreateNew() {
@@ -149,13 +154,13 @@ function pgCreateNew() {
 }
 
 function pgTrash() {
-	if($('#componentTree .list-group-item input[name=selectFile]:checked').length<=0) {return false;}
+	if($('#componentSpace .list-file input[name=selectFile]:checked').length<=0) {return false;}
 	
 	lgksConfirm("Do you want to delete selected files?","Delete!",function(ans) {
 		if(ans) {
 			q=[];
-			$('#componentTree .list-group-item input[name=selectFile]:checked').each(function() {
-				q.push($(this).closest(".list-group-item").data("path"));
+			$('#componentSpace .list-file input[name=selectFile]:checked').each(function() {
+				q.push($(this).closest(".list-file").data("path"));
 			});
 			q="src="+q.join(",");
 			lx=_service("pageManager","delete")+"&comptype="+lastComponent;
@@ -167,11 +172,11 @@ function pgTrash() {
 }
 
 function pgClone() {
-	if($('#componentTree .list-group-item input[name=selectFile]:checked').length<=0) {return false;}
+	if($('#componentSpace .list-file input[name=selectFile]:checked').length<=0) {return false;}
 
 	q=[];
-	$('#componentTree .list-group-item input[name=selectFile]:checked').each(function() {
-		q.push($(this).closest(".list-group-item").data("path"));
+	$('#componentSpace .list-file input[name=selectFile]:checked').each(function() {
+		q.push($(this).closest(".list-file").data("path"));
 	});
 	lx=_service("pageManager","clone")+"&comptype="+lastComponent+"&src="+q.join(",");
 	processAJAXQuery(lx,function(dts) {
@@ -179,8 +184,8 @@ function pgClone() {
 	});
 }
 function pgRename() {
-	if($('#componentTree .list-group-item input[name=selectFile]:checked').length<=0) {return false;}
-	if($('#componentTree .list-group-item input[name=selectFile]:checked').length>1) {
+	if($('#componentSpace .list-file input[name=selectFile]:checked').length<=0) {return false;}
+	if($('#componentSpace .list-file input[name=selectFile]:checked').length>1) {
 		lgksToast("Please select only one file to rename.");
 		return false;
 	}
@@ -190,8 +195,8 @@ function pgRename() {
 			txt=txt.replace(/ /g,"_");//.replace(/[^\w\s]/gi, '')
 
 			q=[];
-			$('#componentTree .list-group-item input[name=selectFile]:checked').each(function() {
-				q.push($(this).closest(".list-group-item").data("path"));
+			$('#componentSpace .list-file input[name=selectFile]:checked').each(function() {
+				q.push($(this).closest(".list-file").data("path"));
 			});
 			if(q[0]==null) return false;
 
@@ -201,4 +206,92 @@ function pgRename() {
 			});
 		}
 	});
+}
+
+function renderCards(fs) {
+	html="";html1="";
+	$.each(fs,function(k,v) {
+		kx=md5(k);
+		if(v.folder) {
+			html1+="<div class='list-group-item list-folder'><a href='#item-"+kx+"' data-toggle='collapse'><i class='glyphicon glyphicon-folder-close'></i>"+k+"</a></div>";
+			html1+="<div class='list-group collapse' id='item-"+kx+"'>";
+			$.each(v,function(m,n) {
+				if(typeof n =="object") {
+					html1+="<div class='list-group-item list-file' data-path='"+n.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+m+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";//n.name
+					html+="<div class='list-group-item list-file' data-path='"+n.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+k+"/"+m+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";//n.name
+				}
+			});
+			html1+="</div>";
+		} else {
+			html+="<div class='list-group-item list-file' data-path='"+v.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+v.name+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";
+		}
+	});
+	$("#componentSpace").html(html);//html1
+
+	$("#componentSpace .list-folder>a").each(function() {
+		nx=$(this).closest(".list-folder").next().find(".list-file").length;
+		$(this).append(" <span class='badge pull-right'>"+nx+"</span>");
+	});
+}
+
+function renderTable(fs) {
+	html="<div style='padding:10px;'><table class='table table-hover table-bordered table-condensed'>";
+	html+="<thead><tr>";
+		html+="<th width=50px>SL#</th>";
+		html+="<th width=250px>Name</th>";
+		html+="<th>Title</th>";
+		html+="<th width=50px>Status</th>";
+		html+="<th width=150px></th>";
+	html+="</tr></thead>";
+	html+="<tbody>";
+	
+	$.each(fs,function(k,v) {
+		kx=md5(k);
+		if(v.folder) {
+			html+="<tr class='list-folder' id='item-"+kx+"' data-folder='"+k+"'>";
+			html+="<td class='text-center'></td>";
+			html+="<td colspan=10><a><i class='glyphicon glyphicon-folder-close'></i>&nbsp;"+k+"</a></td>";
+			html+="<tr>";
+			$.each(v,function(m,n) {
+				if(typeof n =="object") {
+					kx=md5(m);
+					html+="<tr class='list-file' id='item-"+kx+"' data-path='"+n.path+"' data-folder='"+k+"'>";
+					html+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
+					html+="<td class='folder'><a href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+m+"</a></td>";
+					html+="<td>"+n.title+"</td>";
+					html+="<td class='text-center'>"+getStatusIcon(n.status)+"</td>";
+					html+="<td class='action text-right'>"+getActions(n)+"</td>";
+					html+="<tr>";
+				}
+			});
+		} else {
+			html+="<tr class='list-file' id='item-"+kx+"' data-path='"+v.path+"'>";
+			html+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
+			html+="<td><a href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+v.name+"</a></td>";
+			html+="<td>"+v.title+"</td>";
+			html+="<td class='text-center'>"+getStatusIcon(v.status)+"</td>";
+			html+="<td class='action text-right'>"+getActions(v)+"</td>";
+			html+="<tr>";
+		}
+	});
+	
+	html+="</tbody>";
+	html+="</table></div>";
+		
+	$("#componentSpace").html(html);
+}
+
+function renderKanaban(fs) {
+	
+}
+
+function getStatusIcon(status) {
+	if(status==null || status.toLowerCase()=="na") return "<i class='fa fa-check'></i>";
+}
+function getActions(v) {
+	html="";
+	html+="<i class='fa fa-copy'></i>";
+	html+="<i class='fa fa-terminal'></i>";
+	html+="<i class='fa fa-pencil'></i>";
+	return html;
 }
