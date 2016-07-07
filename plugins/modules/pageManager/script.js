@@ -1,6 +1,11 @@
 var lastComponent="";
 var lastRender="table";
 $(function() {
+	lastRender=localStorage.getItem('logikscms.pageManager.displaytype');
+	if(lastRender==null) {
+		lastRender="table";
+	}
+
 	$($("#pgtoolbar .navbar-right>li")[0]).addClass("active");
 	
 	$('#componentSpace').delegate("input[name=selectFile]","change",function() {
@@ -21,6 +26,42 @@ $(function() {
 		
 		$('#componentSpace tr.list-file[data-folder="'+folder+'"]').toggle();
 	});
+
+	$('#componentSpace').delegate(".action a[cmd],.action i[cmd]","click",function() {
+		tag=$(this).closest(".list-file");
+		path=tag.data('path');
+		cmd=$(this).attr('cmd');
+		title=tag.find("a.fname").text();
+
+		switch(cmd) {
+			case "edit":
+				lx=_link("modules/pageEditor")+"&comptype=pages&src="+encodeURIComponent(path);
+				top.openLinkFrame(title,lx,true);
+			break;
+			case "clone":
+				$('#componentSpace input[name=selectFile]').each(function() {
+					this.checked=false;
+				});
+				tag.find("input[name=selectFile]")[0].checked=true;
+				pgClone();
+			break;
+			case "rename":
+				$('#componentSpace input[name=selectFile]').each(function() {
+					this.checked=false;
+				});
+				tag.find("input[name=selectFile]")[0].checked=true;
+				pgRename();
+			break;
+			case "preview":
+				lx=_link(path.replace(".json",""));
+				lx=lx.split("?");
+				window.open(lx[0]);
+			break;
+		}
+	});
+
+	
+
 	loadComponents('pages');
 });
 
@@ -43,6 +84,8 @@ function listItemAttr() {
 }
 
 function loadComponents(comp) {
+	localStorage.setItem('logikscms.pageManager.displaytype',lastRender);
+
 	lastComponent=comp;
 	$("#componentSpace").html("<div class='ajaxloading ajaxloading5'></div>");
 	$("#pgtoolbar .onsidebarSelect").hide();
@@ -52,10 +95,12 @@ function loadComponents(comp) {
 		//
 		switch(lastRender) {
 			case "cards":
+				$("#pgtoolbar #toolbtn_display>i").attr("class","glyphicon glyphicon-th-list");
 				renderCards(fs);
 			break;
 				
 			case "table":
+				$("#pgtoolbar #toolbtn_display>i").attr("class","glyphicon glyphicon-th-large");
 				renderTable(fs);
 			break;
 			default:
@@ -134,7 +179,7 @@ function pgOpenExternal() {
 
 		path=file.data("path");
 		title=file.text();
-		lx=_link("modules/pageEditor")+"&comptype=pages&readonly=true&src="+encodeURIComponent(path);
+		lx=_link("modules/pageEditor")+"&comptype=pages&src="+encodeURIComponent(path);
 		top.openLinkFrame(title,lx,true);
 	});
 	//file=$($("#componentSpace").find("input[type=checkbox][name=selectFile]:checked")[0]).closest(".list-file");
@@ -257,7 +302,7 @@ function renderTable(fs) {
 					kx=md5(m);
 					html+="<tr class='list-file' id='item-"+kx+"' data-path='"+n.path+"' data-folder='"+k+"'>";
 					html+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
-					html+="<td class='folder'><a href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+m+"</a></td>";
+					html+="<td class='folder'><a class='fname' href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+m+"</a></td>";
 					html+="<td>"+n.title+"</td>";
 					html+="<td class='text-center'>"+getStatusIcon(n.status)+"</td>";
 					html+="<td class='action text-right'>"+getActions(n)+"</td>";
@@ -267,7 +312,7 @@ function renderTable(fs) {
 		} else {
 			html+="<tr class='list-file' id='item-"+kx+"' data-path='"+v.path+"'>";
 			html+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
-			html+="<td><a href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+v.name+"</a></td>";
+			html+="<td><a class='fname' href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+v.name+"</a></td>";
 			html+="<td>"+v.title+"</td>";
 			html+="<td class='text-center'>"+getStatusIcon(v.status)+"</td>";
 			html+="<td class='action text-right'>"+getActions(v)+"</td>";
@@ -290,8 +335,12 @@ function getStatusIcon(status) {
 }
 function getActions(v) {
 	html="";
-	html+="<i class='fa fa-copy'></i>";
-	html+="<i class='fa fa-terminal'></i>";
-	html+="<i class='fa fa-pencil'></i>";
+	if(v.type=="pages") {
+		html+="<i class='fa fa-eye' cmd='preview' title='Preview'></i>";
+	}
+	html+="<i class='fa fa-copy' cmd='clone' title='Clone Me'></i>";
+	html+="<i class='fa fa-terminal' cmd='rename' title='Rename Me'></i>";
+	html+="<i class='fa fa-pencil' cmd='edit' title='Edit Me'></i>";
 	return html;
 }
+

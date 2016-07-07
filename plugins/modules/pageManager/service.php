@@ -294,6 +294,8 @@ function fInfo($f,$relativePath) {
 	$info['updated']=date ("Y/m/d F H:i:s.", filemtime($f));
 	$info['size']=filesize($f);
 
+	$info['type']=$_REQUEST["comptype"];
+
 	$info['locked']=false;
 	$info['is_open']=false;
 	$info['open_by']=false;
