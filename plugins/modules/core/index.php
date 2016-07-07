@@ -31,7 +31,7 @@ if(!function_exists("setupCMSEnviroment")) {
             $arr=$_SESSION['SESS_ACCESS_SITES'];
         }
         foreach($arr as $b) {
-            if(file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg")) {
+            if(file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg") && $b!=SITENAME) {
                 $t=ucwords($b);
                 $lnk=SiteLocation."?site=cms&forsite=$b";
                 $siteList[$b]=['title'=>$t,'url'=>$lnk];
