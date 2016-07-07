@@ -42,6 +42,11 @@ function pageContentArea() {
 		<div class='col-md-3' data-name='dev'></div>
 		<div class='col-md-3' data-name='design'></div>
 		<div class='col-md-3' data-name='done'></div>
-	</div>";
+	</div>
+<script>
+FORSITE='{$_REQUEST["forsite"]}';
+</script>
+
+	";
 }
 ?>

@@ -55,12 +55,10 @@ $(function() {
 			case "preview":
 				lx=_link(path.replace(".json",""));
 				lx=lx.split("?");
-				window.open(lx[0]);
+				window.open(lx[0]+"?site="+FORSITE);
 			break;
 		}
 	});
-
-	
 
 	loadComponents('pages');
 });
