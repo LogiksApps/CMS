@@ -181,8 +181,9 @@ switch ($_REQUEST['action']) {
 					$srcNew=str_replace(".tpl", "", $srcNew);
 
 					$fs=[
-							CMS_APPROOT."pages/comps/{$src}.tpl"=>CMS_APPROOT."pages/comps/{$srcNew}.tpl",
+							CMS_APPROOT."css/templates/{$src}.tpl"=>CMS_APPROOT."css/templates/{$srcNew}.tpl",
 						];
+					var_dump($fs);
 					foreach ($fs as $f1=>$f2) {
 						if(file_exists($f1)) {
 							if(!is_dir(dirname($f2))) mkdir(dirname($f2),0777,true);
