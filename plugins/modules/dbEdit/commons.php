@@ -72,10 +72,18 @@ function getInputBlock($name,$required,$column) {
 }
 
 function printDataInTable($data,$cols=false,$actionCol=false) {
+	if(is_string($data)) {
+		echo $data;
+		return;
+	} elseif($data==null) {
+		echo "No Message Returned By Query";
+		return;
+	}
 	if(count($data)<=0) return "";
 	$indexCol=array_keys($data[0])[0];
+	// table-condensed
 ?>
-<table class='table table-bordered table-hover table-condensed'>
+<table class='table table-bordered table-hover'>
 	<thead>
 		<tr>
 			<?php
@@ -88,7 +96,7 @@ function printDataInTable($data,$cols=false,$actionCol=false) {
 					echo "<th class='$c'>$title</th>";
 				}
 				if($actionCol) {
-					echo "<th class='action'></th>";
+					echo "<th class='action' width=80px></th>";
 				}
 			?>
 		</tr>

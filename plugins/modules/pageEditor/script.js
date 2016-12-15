@@ -19,6 +19,12 @@ $(function() {
     		case "save":
     			saveFile();
     		break;
+				case "preview":
+    			type=$("#pageEditor .tab-pane.active").attr("id");
+					src=$("#pageEditor").attr("src");
+					lx=SiteLocation+src+"?site="+parent.CMS_FOR_SITE;
+					window.open(lx);
+    		break;
     	}
     });
 
@@ -35,6 +41,8 @@ $(function() {
 
 		editorList[refid]=edit;
 	});
+
+	editorList['editorCode'].session.setMode({path:"ace/mode/php", inline:true})
 
     loadEditorContent(editorList['editorMarkup'],"markup");
     loadEditorContent(editorList['editorCode'],"code");
@@ -67,13 +75,26 @@ function saveFile() {
 		q.push("txt="+encodeURIComponent(editorList[$("#pageEditor .tab-pane.active .editorArea").attr("id")].getValue()));
 	} else {
 		$("input[name]:visible,select[name]:visible,textarea[name]:visible","#pageEditor .tab-pane.active").each(function() {
-			q.push($(this).attr("name")+"="+encodeURIComponent(this.value));
+			if($(this).attr("type")=="radio") {
+				if(this.checked) {
+					q.push($(this).attr("name")+"="+encodeURIComponent(this.value));
+				}
+			} else if($(this).attr("type")=="checkbox") {
+				if(this.checked) {
+					q.push($(this).attr("name")+"="+true);
+				} else {
+					q.push($(this).attr("name")+"="+false);
+				}
+			} else {
+				q.push($(this).attr("name")+"="+encodeURIComponent(this.value));
+			}
 		});
 	}
 	
 	lx=_service("pageEditor","savePage")+"&type="+type+"&src="+src;
 	processAJAXPostQuery(lx,q.join("&"),function(txt) {
 		if(txt=="done") {
+			processAJAXQuery(_service("cleaner","PURGE:TEMPLATES"));
 			lgksToast("Save Successfull");
 		} else {
 			lgksToast(txt.replace("failed:",""));

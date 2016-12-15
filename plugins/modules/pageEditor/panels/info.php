@@ -1,5 +1,14 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
+
+$templateDir=CMS_APPROOT."css/templates/";
+if(is_dir($templateDir)) {
+  $templates=scandir($templateDir);
+  $templates=array_splice($templates,2);
+} else {
+  $templates=[];
+}
+
 ?>
 <div class="panel panel-default">
     <div class="panel-body">
@@ -37,7 +46,18 @@ if(!defined('ROOT')) exit('No direct script access allowed');
             <div class="form-group">
                 <label class="col-sm-2 control-label">Page Layout</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="template" placeholder="Page template" value='<?=$jsonPage['template']?>'>
+                  <select class='form-control' name='template'  value='<?=$jsonPage['template']?>'>
+                      <?php
+                        foreach($templates as $f) {
+                          $f=str_replace(".tpl","",$f);
+                          if($f==$jsonPage['template']) {
+                            echo "<option value='$f' selected>".toTitle($f)."</option>";
+                          } else {
+                            echo "<option value='$f'>".toTitle($f)."</option>";
+                          }
+                        }
+                      ?>
+                  </select>
                 </div>
             </div>
 

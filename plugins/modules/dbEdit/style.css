@@ -5,11 +5,21 @@
 a {
 	text-decoration: none !important;
 }
-
-.list-group-folder .list-file {
-	padding-left: 30px;
+.componentTree .list-group-item {
+	padding-left:10px;
 }
-
+.list-group-folder .list-file {
+	padding-left: 20px;
+}
+.componentTree .list-group-item .fa {
+	float: left;
+	margin-top: 4px;
+}
+.componentTree .list-group-item .text {
+	display: inline-block;
+	max-width: 73%;
+	overflow: hidden;
+}
 .list-group.list-group-root .list-group-item.active, .list-group.list-group-root .list-group-item.active a {
     color: white;
 }
@@ -50,4 +60,8 @@ form label.error {
 	font-size: 10px;
     font-weight: 100;
     color: maroon;
+}
+
+.errorMsg {
+	color: maroon;
 }

@@ -67,13 +67,13 @@ function loadTableList(comp) {
 			if(v.length<=0) return;
 			kx=md5(k);
 			
-			html1+="<div class='list-group-item list-folder'><a href='#item-"+kx+"' data-toggle='collapse'><i class='glyphicon glyphicon-folder-close'></i>&nbsp;&nbsp;"+toTitle(k)+"</a></div>";
+			html1+="<div class='list-group-item list-folder'><a href='#item-"+kx+"' data-toggle='collapse'><i class='glyphicon glyphicon-folder-close'></i>"+toTitle(k)+"</a></div>";
 			html1+="<div class='list-group-folder collapse' id='item-"+kx+"'>";
 			$.each(v,function(m,n) {
 				if(typeof n =="object") {
-					html1+="<div class='list-group-item list-file' data-schema='"+k+"/"+n.tbl+"'><a href='#'><i class='fa fa-table'></i>&nbsp;&nbsp;"+n.tbl+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";
+					html1+="<div class='list-group-item list-file' data-schema='"+k+"/"+n.tbl+"' title='"+n.tbl+"'><a href='#'><i class='fa fa-table'></i><span class='text'>"+n.tbl+"</span></a><input type='checkbox' name='selectFile' class='pull-right' /></div>";
 				} else {
-					html1+="<div class='list-group-item list-file' data-schema='"+k+"/"+n+"'><a href='#'><i class='fa fa-table'></i>&nbsp;&nbsp;"+n+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";
+					html1+="<div class='list-group-item list-file' data-schema='"+k+"/"+n+"' title='"+n+"'><a href='#'><i class='fa fa-table'></i><span class='text'>"+n+"</span></a><input type='checkbox' name='selectFile' class='pull-right' /></div>";
 				}
 			});
 			html1+="</div>";

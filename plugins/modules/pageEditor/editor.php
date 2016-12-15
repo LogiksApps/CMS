@@ -15,6 +15,7 @@ loadModuleLib("cmsEditor","embed");
     <li role="presentation"><a class=' showOpen' href="#javascript" aria-controls="javascript" role="tab" data-toggle="tab">SCRIPT</a></li>
 
     <li class='pull-right btn btn-success' cmd='save' title='Save Page'><i class='fa fa-save'></i></li>
+    <li class='pull-right btn btn-warning' cmd='preview' title='Preview Page'><i class='fa fa-eye'></i></li>
     <!-- <li class='pull-right btn btn-info hidden' cmd='open' title='Open External Link'><i class='fa fa-external-link'></i></li> -->
     <!-- <li class='pull-right btn btn-warning' cmd='version' title=''><i class='fa fa-code-fork'></i></li> -->
   </ul>

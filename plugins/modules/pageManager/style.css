@@ -60,6 +60,9 @@
   cursor: pointer;
     color:#666;
 }
+#componentSpace .table tr.list-file[data-folder] td a{
+  padding-left:10px !important;
+}
 #componentTree .list-folder {
     font-style:italic;
 }

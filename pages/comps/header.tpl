@@ -12,11 +12,11 @@
                 <span class="caret"></span>
             </button>
             
-			<ul class="dropdown-menu" role="menu">
-				{foreach from=$PAGE.siteList item=site}
-				    <li><a href='{$site.url}'>{$site.title} Site</a></li>
-				{/foreach}
-			</ul>
+						<ul class="dropdown-menu" role="menu">
+							{foreach from=$PAGE.siteList item=site}
+									<li><a href='{$site.url}'>{$site.title} Site</a></li>
+							{/foreach}
+						</ul>
 
             <a href='{$WEBROOT}?site={$PAGE.forSite}' target='_blank' type="button" class="btn btn-default" title='Preview Site'>
                 <i class='fa fa-rocket' style='margin: 3px;'></i></a>

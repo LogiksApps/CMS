@@ -71,7 +71,7 @@ switch ($_REQUEST['action']) {
 					exit();
 				}
 				//printArray(urldecode($_POST['txt']));
-				$a=saveAppFile($pgFile,urldecode($_POST['txt']));
+				$a=saveAppFile($pgFile,$_POST['txt']);
 				if($a===false) {
 					echo "failed";
 				} else {
@@ -87,7 +87,9 @@ switch ($_REQUEST['action']) {
 					exit();
 				}
 				//printArray(urldecode($_POST['txt']));
-				$a=saveAppFile($pgFile,urldecode($_POST['txt']));
+				$text=$_POST['txt'];
+				$a=saveAppFile($pgFile,$text);//"< ?php\n".."\n\n? >"
+				//$a=saveAppFile($pgFile,$text);
 				if($a===false) {
 					echo "failed";
 				} else {
@@ -103,7 +105,7 @@ switch ($_REQUEST['action']) {
 					exit();
 				}
 				//printArray(urldecode($_POST['txt']));
-				$a=saveAppFile($pgFile,urldecode($_POST['txt']));
+				$a=saveAppFile($pgFile,$_POST['txt']);
 				if($a===false) {
 					echo "failed";
 				} else {
@@ -112,6 +114,7 @@ switch ($_REQUEST['action']) {
 				break;
 
 			case 'script':
+			case 'javascript':
 				$pgFile=getAppFile("js/comps/{$srcName}.js");
 				if(!is_dir(dirname($pgFile))) mkdir(dirname($pgFile),0777,true);
 				if(file_exists($pgFile) && !is_writable($pgFile)) {
@@ -119,7 +122,7 @@ switch ($_REQUEST['action']) {
 					exit();
 				}
 				//printArray(urldecode($_POST['txt']));
-				$a=saveAppFile($pgFile,urldecode($_POST['txt']));
+				$a=saveAppFile($pgFile,$_POST['txt']);
 				if($a===false) {
 					echo "failed";
 				} else {
@@ -158,7 +161,8 @@ switch ($_REQUEST['action']) {
 				break;
 
 			case 'script':
-				$pgFile=getAppFile("js/comps/{$srcName}.css");
+			case 'javascript':
+				$pgFile=getAppFile("js/comps/{$srcName}.js");
 				if(file_exists($pgFile)) {
 					echo file_get_contents($pgFile);
 				} else {

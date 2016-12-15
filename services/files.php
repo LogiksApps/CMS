@@ -16,7 +16,7 @@ switch ($_REQUEST['action']) {
 		loadHelpers("files");
 
 		$APPPATH=ROOT.APPS_FOLDER.$_GET['forsite']."/";
-		printServiceMsg(scanFolderTree($APPPATH));
+		printServiceMsg(array_reverse(scanFolderTree($APPPATH)));
 		break;
 }
 function scanFolderTree($folder) {
@@ -25,6 +25,7 @@ function scanFolderTree($folder) {
 	if(is_dir($folder)) {
 		$out=scandir($folder);
 		$out=array_splice($out, 2);
+		asort($out);
 		foreach($out as $key => $value) {
 			$bf=$folder.$value;
 			$bf=str_replace(ROOT.APPS_FOLDER."{$_GET['forsite']}/", "", $bf);
@@ -36,6 +37,6 @@ function scanFolderTree($folder) {
 			}
 		}
 	}
-	return array_merge_recursive($folders,$files);
+	return array_merge_recursive(array_reverse($folders),$files);
 }
 ?>

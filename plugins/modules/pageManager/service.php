@@ -15,16 +15,25 @@ switch ($_REQUEST['action']) {
 		switch ($_REQUEST["comptype"]) {
 			case 'pages':
 				$pageFolder=CMS_APPROOT."pages/defn/";
+				if(!is_dir($pageFolder)) @mkdir($pageFolder,0777,true);
 				$fData=scanFetch($pageFolder);
 				printServiceMsg($fData);
 				break;
 			case 'comps':
 				$pageFolder=CMS_APPROOT."pages/comps/";
+				if(!is_dir($pageFolder)) @mkdir($pageFolder,0777,true);
 				$fData=scanFetch($pageFolder);
 				printServiceMsg($fData);
 				break;
 			case 'layouts':
 				$pageFolder=CMS_APPROOT."css/templates/";
+				if(!is_dir($pageFolder)) @mkdir($pageFolder,0777,true);
+				$fData=scanFetch($pageFolder);
+				printServiceMsg($fData);
+				break;
+			case 'snippets':
+				$pageFolder=CMS_APPROOT."pages/snippets/";
+				if(!is_dir($pageFolder)) @mkdir($pageFolder,0777,true);
 				$fData=scanFetch($pageFolder);
 				printServiceMsg($fData);
 				break;
@@ -52,7 +61,7 @@ switch ($_REQUEST['action']) {
 					$fs=[
 							CMS_APPROOT."pages/defn/{$src}.json"=>json_encode($defaultPageJson,JSON_PRETTY_PRINT|JSON_HEX_QUOT|JSON_UNESCAPED_SLASHES),
 							CMS_APPROOT."pages/viewpage/{$src}.tpl"=>"",
-							CMS_APPROOT."pages/viewpage/{$src}.php"=>"",
+							CMS_APPROOT."pages/viewpage/{$src}.php"=>"<?php \n\n\n?>",
 						];
 					foreach ($fs as $f=>$data) {
 						file_put_contents($f, $data);
@@ -72,6 +81,15 @@ switch ($_REQUEST['action']) {
 							CMS_APPROOT."css/templates/{$src}.tpl"=>"",
 						];
 					foreach ($fs as $f=>$data) {
+						file_put_contents($f, $data);
+					}
+					break;
+				case 'snippets':
+					$fs=[
+							CMS_APPROOT."pages/snippets/{$src}.php"=>"<?php \n\n\n?>",
+						];
+					foreach ($fs as $f=>$data) {
+						//if(!is_dir(dirname($f))) mkdir(dirname($f),0777,true);
 						file_put_contents($f, $data);
 					}
 					break;
@@ -103,11 +121,12 @@ switch ($_REQUEST['action']) {
 					break;
 				case 'comps':
 					foreach ($srcFiles as $src) {
-						$src=str_replace(".tpl", "", $src);
+						$src=str_replace(".tpl", "", str_replace(".php","",$src));
 						$fs=[
 								CMS_APPROOT."pages/comps/{$src}.tpl",
+								CMS_APPROOT."pages/comps/{$src}.php",
 							];
-						foreach ($fs as $f) {
+						foreach ($fs as $f) {echo $f;
 							if(file_exists($f)) {
 								unlink($f);
 							}
@@ -121,6 +140,19 @@ switch ($_REQUEST['action']) {
 								CMS_APPROOT."css/templates/{$src}.tpl",
 							];
 						foreach ($fs as $f) {
+							if(file_exists($f)) {
+								unlink($f);
+							}
+						}
+					}
+					break;
+				case 'snippets':
+					foreach ($srcFiles as $src) {
+						$src=str_replace(".tpl", "", str_replace(".php","",$src));
+						$fs=[
+								CMS_APPROOT."pages/snippets/{$src}.php",
+							];
+						foreach ($fs as $f) {echo $f;
 							if(file_exists($f)) {
 								unlink($f);
 							}
@@ -162,11 +194,12 @@ switch ($_REQUEST['action']) {
 					}
 				break;
 				case 'comps':
-					$src=str_replace(".tpl", "", $src);
-					$srcNew=str_replace(".tpl", "", $srcNew);
-
+					$src=str_replace(".tpl", "", str_replace(".php","",$src));
+					$srcNew=str_replace(".tpl", "", str_replace(".php","",$srcNew));
+					
 					$fs=[
 							CMS_APPROOT."pages/comps/{$src}.tpl"=>CMS_APPROOT."pages/comps/{$srcNew}.tpl",
+							CMS_APPROOT."pages/comps/{$src}.php"=>CMS_APPROOT."pages/comps/{$srcNew}.php",
 						];
 					foreach ($fs as $f1=>$f2) {
 						if(file_exists($f1)) {
@@ -192,6 +225,21 @@ switch ($_REQUEST['action']) {
 						}
 					}
 				break;
+				case 'snippets':
+					$src=str_replace(".tpl", "", str_replace(".php","",$src));
+					$srcNew=str_replace(".tpl", "", str_replace(".php","",$srcNew));
+					
+					$fs=[
+							CMS_APPROOT."pages/snippets/{$src}.php"=>CMS_APPROOT."pages/snippets/{$srcNew}.php",
+						];
+					foreach ($fs as $f1=>$f2) {
+						if(file_exists($f1)) {
+							if(!is_dir(dirname($f2))) mkdir(dirname($f2),0777,true);
+							copy($f1, $f2);
+							unlink($f1);
+						}
+					}
+				break;
 			}
 		} else {
 			echo "<h1 align=center>Sorry, Source or New Name not defined.</h1>";
@@ -207,11 +255,11 @@ switch ($_REQUEST['action']) {
 					foreach ($srcFiles as $src) {
 						$src=str_replace(".json", "", $src);
 						$fs=[
-								CMS_APPROOT."pages/viewpage/{$src}.tpl"=>CMS_APPROOT."pages/viewpage/{$src}_copy.tpl",
-								CMS_APPROOT."pages/viewpage/{$src}.php"=>CMS_APPROOT."pages/viewpage/{$src}_copy.php",
-								CMS_APPROOT."css/comps/{$src}.css"=>CMS_APPROOT."css/comps/{$src}_copy.css",
-								CMS_APPROOT."js/comps/{$src}.js"=>CMS_APPROOT."js/comps/{$src}_copy.js",
-								CMS_APPROOT."pages/defn/{$src}.json"=>CMS_APPROOT."pages/defn/{$src}_copy.json",
+								CMS_APPROOT."pages/viewpage/{$src}.tpl"=>CMS_APPROOT."pages/viewpage/{$src}-copy.tpl",
+								CMS_APPROOT."pages/viewpage/{$src}.php"=>CMS_APPROOT."pages/viewpage/{$src}-copy.php",
+								CMS_APPROOT."css/comps/{$src}.css"=>CMS_APPROOT."css/comps/{$src}-copy.css",
+								CMS_APPROOT."js/comps/{$src}.js"=>CMS_APPROOT."js/comps/{$src}-copy.js",
+								CMS_APPROOT."pages/defn/{$src}.json"=>CMS_APPROOT."pages/defn/{$src}-copy.json",
 							];
 						foreach ($fs as $f1=>$f2) {
 							if(file_exists($f1)) {
@@ -222,9 +270,10 @@ switch ($_REQUEST['action']) {
 					break;
 				case 'comps':
 					foreach ($srcFiles as $src) {
-						$src=str_replace(".tpl", "", $src);
+						$src=str_replace(".tpl", "", str_replace(".php","",$src));
 						$fs=[
-								CMS_APPROOT."pages/comps/{$src}.tpl"=>CMS_APPROOT."pages/comps/{$src}_copy.tpl",
+								CMS_APPROOT."pages/comps/{$src}.tpl"=>CMS_APPROOT."pages/comps/{$src}-copy.tpl",
+								CMS_APPROOT."pages/comps/{$src}.php"=>CMS_APPROOT."pages/comps/{$src}-copy.php",
 							];
 						foreach ($fs as $f1=>$f2) {
 							if(file_exists($f1)) {
@@ -237,7 +286,7 @@ switch ($_REQUEST['action']) {
 					foreach ($srcFiles as $src) {
 						$src=str_replace(".tpl", "", $src);
 						$fs=[
-								CMS_APPROOT."css/templates/{$src}.tpl"=>CMS_APPROOT."css/templates/{$src}_copy.tpl",
+								CMS_APPROOT."css/templates/{$src}.tpl"=>CMS_APPROOT."css/templates/{$src}-copy.tpl",
 							];
 						foreach ($fs as $f1=>$f2) {
 							if(file_exists($f1)) {
@@ -250,6 +299,19 @@ switch ($_REQUEST['action']) {
 						}
 					}
 					break;
+				case 'snippets':
+					foreach ($srcFiles as $src) {
+						$src=str_replace(".tpl", "", str_replace(".php","",$src));
+						$fs=[
+								CMS_APPROOT."pages/snippets/{$src}.php"=>CMS_APPROOT."pages/snippets/{$src}-copy.php",
+							];
+						foreach ($fs as $f1=>$f2) {
+							if(file_exists($f1)) {
+								copy($f1, $f2);
+							}
+						}
+					}
+					break;
 			}
 			
 		} else {
@@ -258,6 +320,7 @@ switch ($_REQUEST['action']) {
 	break;
 }
 function scanFetch($dir,$relativePath="") {
+	if(!is_dir($dir)) return [];
 	$fs=[];
 	if(is_dir($dir)) {
 		$fs=scandir($dir);
@@ -277,6 +340,11 @@ function scanFetch($dir,$relativePath="") {
 				$fxy=str_replace(".json", "", str_replace(".tpl", "", str_replace(".php", "", $fxy)));
 
 				if(!isset($fData[$fxx])) $fData[$fxx]=["folder"=>true];
+				elseif(!isset($fData[$fxx]['folder'])) {
+					$temp=$fData[$fxx];
+					$fData[$fxx]=["folder"=>true];
+					$fData[$fxx][$temp['name']]=$temp;
+				}
 				$fData[$fxx][$fxy]=fInfo($dir.$fx,$relativePath.$fx);
 				
 				//$fData[$fxx]=array_merge(["folder"=>true],scanFetch($dir.$fx."/",$relativePath.$fx."/"));
@@ -287,6 +355,7 @@ function scanFetch($dir,$relativePath="") {
 		}
 		$fs=$fData;
 	}
+	ksort($fs);
 	return $fs;
 }
 function fInfo($f,$relativePath) {

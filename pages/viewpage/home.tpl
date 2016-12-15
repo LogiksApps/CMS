@@ -23,11 +23,16 @@ $(function() {
           $(this).tab('show');
         });
 });
-function openLink(tabName,tabLink,closable) {
+function openLink(tabName,tabLink,closable,multiTab) {
+    if(multiTab==null) multiTab=true;
     ref="TAB_"+tabName.replace(/\W/g,"_");
     if($("#myTab a[href='#"+ref+"']").length>0) {
-        $("#myTab a[href='#"+ref+"']").tab("show");
-        return;
+        if(multiTab) {
+          ref=(ref+Math.ceil(Math.random()*100000000));
+        } else {
+          $("#myTab a[href='#"+ref+"']").tab("show");
+          return false;
+        }
     }
     $("#myTab-content").append('<div class="tab-pane" id="'+ref+'"><div class="ajaxloading5"></div></div>');
     if(closable===false) {
@@ -37,12 +42,18 @@ function openLink(tabName,tabLink,closable) {
     }
     $("#"+ref).load(tabLink);
     $('#myTab a[href="#'+ref+'"]').tab("show");
+    return true;
 }
-function openLinkFrame(tabName,tabLink,closable) {
+function openLinkFrame(tabName,tabLink,closable,multiTab) {
+    if(multiTab==null) multiTab=true;
     ref="TAB_"+tabName.replace(/\W/g,"_");
     if($("#myTab a[href='#"+ref+"']").length>0) {
-        $("#myTab a[href='#"+ref+"']").tab("show");
-        return;
+        if(multiTab) {
+          ref=(ref+Math.ceil(Math.random()*100000000));
+        } else {
+          $("#myTab a[href='#"+ref+"']").tab("show");
+          return false;
+        }
     }
     $("#myTab-content").append('<div class="tab-pane" id="'+ref+'"><iframe width=100% height=100% frameborder=0 src="'+tabLink+'"></iframe></div>');
     if(closable===false) {
@@ -51,5 +62,9 @@ function openLinkFrame(tabName,tabLink,closable) {
         $("#myTab").append('<li><a href="#'+ref+'" data-toggle="tab">'+tabName+'<i class="closeTab fa fa-times"></i></a></li>');
     }
     $('#myTab a[href="#'+ref+'"]').tab("show");
+    return true;
+}
+function renameTab() {
+  
 }
 </script>

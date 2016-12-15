@@ -74,6 +74,9 @@ $.fn.extend({
                     var icon = $(this).children('i:first');
                     icon.toggleClass(openedClass + " " + closedClass);
                     $(this).children().children().toggle();
+                    
+                    tree.find(".branch.active").removeClass("active");
+                    $(this).addClass("active");
                 }
             })
             branch.children().children().toggle();
@@ -104,4 +107,8 @@ $.fn.extend({
 function toTitle(s) {
     if(s==null || s.length<=0) return "";
     return s.charAt(0).toUpperCase()+s.substr(1);
+}
+
+function getFileTree() {
+  return $('#sidebarFileTree');
 }

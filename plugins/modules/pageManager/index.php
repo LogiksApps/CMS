@@ -3,10 +3,11 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 loadModule("pages");
 
-printPageComponent(false,[
+$opts=[
 		"toolbar"=>[
 			"pages"=>["title"=>"Pages","align"=>"right"],
 			"comps"=>["title"=>"Components","align"=>"right"],
+			"snippets"=>["title"=>"Snippets","align"=>"right"],
 			"layouts"=>["title"=>"Layouts","align"=>"right"],
 			// ['type'=>"bar"],
 
@@ -22,7 +23,15 @@ printPageComponent(false,[
 		],
 		//"sidebar"=>"pageSidebar",
 		"contentArea"=>"pageContentArea"
-	]);
+	];
+
+$pageFolder=CMS_APPROOT."pages/";
+if(!is_dir($pageFolder) || !is_writable($pageFolder)) {
+	unset($opts['toolbar']['createNew']);
+	unset($opts['toolbar']['trash']);
+}
+
+printPageComponent(false,$opts);
 
 echo _css("pageManager");
 echo _js("pageManager");

@@ -10,6 +10,11 @@ $forSite=$_REQUEST['forsite'];
 $webpath=getWebPath(__DIR__)."/";
 
 switch($editType) {
+	case "autocreate":
+		$srcFile=getAppFile($_REQUEST['src']);
+		if(!file_exists($srcFile)) {
+			file_put_contents($srcFile, "");
+		}
 	case "edit":
 		$srcFile=getAppFile($_REQUEST['src']);
 

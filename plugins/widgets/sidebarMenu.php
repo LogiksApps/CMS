@@ -3,9 +3,9 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 loadModuleLib("navigator","api");
 
-$menuTree1=generateNavigationFromDB("default","links","core");
+$menuTree1=generateNavigationFromDB("cms","links","core");
 
-$menuTree2=generateNavigationFromDir(APPROOT."misc/menus/","core");
+$menuTree2=generateNavigationFromDir(APPROOT."misc/menus/cms/","core");
 
 $menuTree=array_merge_recursive($menuTree1,$menuTree2);
 //printArray($menuTree1);exit("XXX");
@@ -21,15 +21,15 @@ $menuTree=array_merge_recursive($menuTree1,$menuTree2);
   right: 0px;
 }
 </style>
-<div class="panel-group sidebarMenu" id="accordion" role="tablist" aria-multiselectable="true">
+<div id='sidebarMenu' class="panel-group sidebarMenu" role="tablist" aria-multiselectable="true">
   <?php
     foreach ($menuTree as $category=>$menuSet) {
       if(count($menuSet)<=0) continue;
-      $hash=md5($category);
+      $hash=md5("sidebarMenu".$category);
       echo "<div class='panel panel-default'>";
       echo "  <div class='panel-heading' role='tab' id='$hash'>";
       echo "    <h4 class='panel-title'>";
-      echo "      <a role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse{$hash}' aria-expanded='true' aria-controls='collapseOne'>";
+      echo "      <a role='button' data-toggle='collapse' data-parent='#sidebarMenu' href='#collapse{$hash}' aria-expanded='true' aria-controls='collapseOne'>";
       echo "        $category";
       echo "      </a>";
       echo "      <i class='fa fa-angle-right pull-right'></i>";
@@ -69,7 +69,7 @@ $menuTree=array_merge_recursive($menuTree1,$menuTree2);
 </div>
 <script>
 $(function() {
-  $(".sidebarMenu").delegate("a.menuItem[href]","click",function(e) {
+  $("#sidebarMenu").delegate("a.menuItem[href]","click",function(e) {
         ttl=$(this).text();
         href=$(this).attr("href");
 

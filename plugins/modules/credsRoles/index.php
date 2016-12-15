@@ -1,16 +1,27 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
 
+$dataPrivilegesFinal=[];
+$dataRolesFinal=[];
 
-$sql=_db(true)->_selectQ(_dbTable("privileges",true),"id,site,name,blocked,remarks,md5(concat(id,name)) as hash")
+$sql=_db(true)->_selectQ(_dbTable("privileges",true),"id,site,name,blocked,remarks,md5(concat(id,name)) as privilegehash,md5(concat(id,name)) as hash")
 					//->_where(array("blocked"=>"false"))//,"length(hash)"=>[0,">"]
 					->_whereOR("site",[SITENAME,'*'])
-					->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
+					->_whereOR("guid",[$_SESSION['SESS_GUID'],'globals']);
 
 $r=_dbQuery($sql,true);
 if($r) {
 	$dataPrivileges=_dbData($r,true);
 	_dbFree($r,true);
+	
+	foreach($dataPrivileges as $role) {
+		if(!isset($dataRolesFinal[$role['privilegehash']])) {
+			$dataPrivilegesFinal[$role['privilegehash']]=[];
+		}
+
+		$dataPrivilegesFinal[$role['privilegehash']]=$role;
+	}
+	
 	
 	$sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,category,module,activity,privilegehash,allow,role_type")
 					->_where(array("site"=>$_GET['forsite']));
@@ -21,49 +32,30 @@ if($r) {
 		$dataRoles=_dbData($r,true);
 		_dbFree($r,true);
 		
-		$dataRolesFinal=[];
 		foreach($dataRoles as $role) {
 			if(!isset($dataRolesFinal[$role['privilegehash']])) {
 				$dataRolesFinal[$role['privilegehash']]=[];
 			}
 			
-			$dataRolesFinal[$role['privilegehash']][$role['module']][]=$role;
+			$dataRolesFinal[$role['privilegehash']][$role['module']][]=$role;//[$role['category']][$role['activity']]
 		}
 		
 		//printArray($dataRolesFinal);
 	}
 } else {
-	$dataPrivileges=[];
+	$dataPrivilegesFinal=[];
 	$dataRolesFinal=[];
 }
+//printArray($dataPrivilegesFinal);
 //printArray($dataRolesFinal);
 echo _css("credsRoles");
 ?>
-<style>
-.roleTabModel .list-group-item {
-	width:45%;
-	float:left;
-	margin:5px;
-}
-.roleTabModel input[name=checkAll] {
-	margin: 13px;
-}
-.roleTabModel .panel-heading .accordion-toggle:after {
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
-    float: right;        /* adjust as needed */
-    color: grey;         /* adjust as needed */
-}
-.roleTabModel .panel-heading .accordion-toggle.collapsed:after {
-    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
-}
-</style>
 <div class='col-xs-12'>
 <div class='row'>
   <ul class="nav nav-tabs" role="tablist">
 		<?php
 			$dx=0;
-			foreach($dataPrivileges as $k=>$p) {
+			foreach($dataPrivilegesFinal as $k=>$p) {
 				if($p['id']<=ROLE_PRIME) {
 					continue;
 				}
@@ -79,11 +71,10 @@ echo _css("credsRoles");
 			}
 		?>
   </ul>
-  
   <div id='roleTabModel' class="tab-content roleTabModel">
 		<?php
 			$dx=0;
-			foreach($dataPrivileges as $k=>$p) {
+			foreach($dataPrivilegesFinal as $k=>$p) {
 				if($p['id']<=ROLE_PRIME) {
 					continue;
 				}
@@ -111,14 +102,14 @@ echo _css("credsRoles");
 								echo "<ul class='list-group'>";
 								foreach($modules as $role) {
 									$roleHash=md5($role['id'].$role['privilegehash']);
-									echo "<li class='list-group-item'>";
+									echo "<li class='list-group-item'><label>";
 									echo _ling(str_replace("_"," ",strtolower($role['activity'])));
 									if($role['allow']===true || $role['allow']=="true") {
 										echo "<input class='pull-right' type='checkbox' name='roleCheckbox' data-hash='{$roleHash}' checked />";// data-x='".json_encode($p)."'
 									} else {
 										echo "<input class='pull-right' type='checkbox' name='roleCheckbox' data-hash='{$roleHash}' />";
 									}
-									echo "</li>";
+									echo "</label></li>";
 								}
 								echo "</ul>";
 							echo "</div>";

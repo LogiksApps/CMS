@@ -20,7 +20,8 @@ switch ($_REQUEST['action']) {
 	break;
 	case 'save':
 		if(isset($_POST['src']) && isset($_POST['text'])) {
-			if(md5($_POST['text'])==$_POST['hash']) {
+			if(md5(urlencode($_POST['text']))==$_POST['hash'] || md5($_POST['text'])==$_POST['hash'] ||
+					md5(urlencode($_POST['text']))==$_POST['hash1'] || md5($_POST['text'])==$_POST['hash1']) {
 				if(strlen($_POST['fname'])<=0) {
 					$_POST['fname']=$_POST['src'];
 				}

@@ -29,7 +29,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 		<citie>--</citie>
 		<a class='btn btn-warning btn-xs'>Clear</a>
 	</div>
-	<div class="cacheData col-md-3 cache" data-rel='cache' data-toggle="tooltip" data-placement="bottom" title="Misc Cache. Clear this cache to get rid of all the Meta, Data and Template cache.">
+	<div class="cacheData col-md-3 cache" data-rel='cache' data-toggle="tooltip" data-placement="bottom" title="Misc Cache. Clear this cache to get rid of all the Meta, Data cache.">
 		<i class='fa fa-tasks'></i>
 		<citie>--</citie>
 		<a class='btn btn-info btn-xs'>Clear</a>

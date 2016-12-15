@@ -193,13 +193,14 @@ function doEditorAction(cmd,src) {
 
 function saveFile() {
 	value=editor.getValue();
-	hash=md5(value);
+	value1=encodeURIComponent(value);
 	
 	q=[];
 	q.push("src="+$("#editorToolbar input[name=fname]").val());
 	q.push("fname="+$("#editorToolbar input[name=fname]").data("original"));
-	q.push("text="+value);//encodeURIComponent(value)
+	q.push("text="+value1);
 	q.push("hash="+md5(value));
+	q.push("hash1="+md5(value1));
 
 	processAJAXPostQuery(_service("cmsEditor","save"),q.join("&"),function(txt) {
 		try {

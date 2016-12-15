@@ -26,12 +26,13 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 <script>
 listFileMode="listFiles";
 hiddenFolders=["/tmp/"];
+var fileTreeListener={};
 $(function() {
     $("#sidebarFileTree").delegate("li.file[basepath]>span","click",function(e) {
         e.preventDefault();
 
         $("#sidebarFileTree").find("li.active").removeClass('active');
-        //$(this).addClass('active');
+        //$(this).closest("li.folder").addClass('active');
 
         file=$(this).parent();
         bp=file.attr("filepath");
@@ -53,7 +54,12 @@ $(function() {
             break;
             case "upload":
                 lx=_link("modules/cmsUploader");
-                openLinkFrame("New Uploads",lx);
+                a=openLinkFrame("New Uploads",lx);
+                if(a===false) {
+                  $.each(fileTreeListener,function(k,func) {
+                      try {func(getFileTree().find(".branch.active").attr("basepath"));} catch(e) {}
+                    });
+                }
             break;
             case "searchfiles":
 
@@ -108,7 +114,11 @@ function revealFile(file) {
     if(typeof file=='string') {
         file=$("#sidebarFileTree li[filepath='"+file+"']");
     }
+    if(file==null) return;
     file.addClass("active").parent().find(">li").css("display","list-item");
-    if(!file.closest("ul").hasClass("sidebarTree")) {revealItem(file.parent().parent());}
+    if(!file.closest("ul").hasClass("sidebarTree")) {revealFile(file.parent().parent());}
+}
+function registerFileTreeListener(key,func) {
+  fileTreeListener[key]=func;
 }
 </script>

@@ -1,1 +1,3 @@
-{module src=$MODULE}
+{nocache}
+	{module src=$MODULE}
+{/nocache}

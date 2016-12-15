@@ -83,12 +83,25 @@ switch ($_REQUEST['action']) {
 
 			switch (strtolower($_REQUEST['type'])) {
 				case 'sql':
+					$qType=strtoupper(current(explode(" ",$_POST['q'])));
 					$sql=_db($dbKey)->_raw($_POST['q']);
 					$data=$sql->_get();
 					if(isset($_REQUEST['showSQL']) && $_REQUEST['showSQL']=="true") {
 						echo "<citie>".$sql->_SQL()."</citie>";
 					}
-					printDataInTable($data);
+					if($qType=="SELECT") {
+						if($data) {
+							printDataInTable($data);
+						} else {
+							echo "<h4 class='errorMsg'>"._db($dbKey)->get_error()."</h4>";
+						}
+					} else {
+						if($data) {
+							echo "<h4 class='successMsg'>Succesfully excuted <u>{$qType}</u> query.</h4>";
+						} else {
+							echo "<h4 class='errorMsg'>"._db($dbKey)->get_error()."</h4>";
+						}
+					}
 					break;
 				
 				case "json":
@@ -179,7 +192,7 @@ switch ($_REQUEST['action']) {
 				$res=$sql->_run();
 
 				if($res) echo "success";
-				else echo "Sorry, failed to update new record.";
+				else echo "Sorry, failed to update new record.".$sql->_SQL();
 			} else {
 				echo "<h5>Source format '{$src[0]}' not supported</h5>";
 			}

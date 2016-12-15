@@ -2,6 +2,10 @@
  * CSS3 Compatible
  */
 
+html,body {
+  width:100%:
+}
+
 body {
     /*background-color: #f8f8f8;*/
 }
@@ -429,6 +433,7 @@ h1 {
 table thead {
   color: #666;
   font-size: 14px;
+  background: #F3F3F3;
 }
 table tbody {
   color: #666;
@@ -725,4 +730,35 @@ body.error #page-wrapper {
     border: 1px dashed #E9E9E9;
     max-height: 250px;
     overflow: auto;
+}
+
+.errorMsg {
+  color:maroon;
+  text-align:center;
+  padding: 40px;
+  border: 0px;
+}
+
+
+
+.table>thead>tr>th {
+  padding: 10px !important;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  padding: 10px !important;
+}
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+  border-bottom:1px solid #DDD;
+}
+table.dataTable>thead>tr>th {
+  background: #F3F3F3 !important;
+}
+
+.overlayBox .modal-dialog {
+	width: 95%;
+    margin-right: 3%;
+}
+
+.modal-title smaller {
+	font-size: 12px;
 }
