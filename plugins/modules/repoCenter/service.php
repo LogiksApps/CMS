@@ -1,15 +1,11 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
-
 checkServiceAccess();
 
-if(!isset($_REQUEST["action"])) {
-	printServiceErrorMsg("NotAcceptable","Action Not Defined.");
-}
 
-switch($_REQUEST["action"]) {
-	case "update":
-		
+
+switch($_REQUEST['action']) {
+  case "getlist":
 		break;
 }
 ?>

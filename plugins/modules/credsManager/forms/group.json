@@ -1,0 +1,26 @@
+{
+	"source": {
+		"type": "sql",
+		"table": "lgks_users_group",
+		"where": ["id"]
+	},
+	"fields": {
+		"id": {
+			"label": "Ref ID",
+			"hidden": true
+		},
+		"group_name": {
+			"label": "Group Name",
+			"required": true
+		},
+		"group_manager": {
+			"label": "Group Manager",
+			"type":"dataMethod",
+			"method":"userList"
+		},
+		"group_descs": {
+			"label": "Description",
+			"type": "textarea"
+		}
+	}
+}

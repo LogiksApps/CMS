@@ -7,7 +7,7 @@ if(!isset($_REQUEST["action"])) {
 	printServiceErrorMsg("NotAcceptable","Action Not Defined.");
 }
 
-loadModuleLib("settingsCommon","api");
+loadModuleLib("settings","api");
 
 $cfgDir=ROOT.CFG_FOLDER."/jsonConfig/";
 

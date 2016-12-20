@@ -7,7 +7,7 @@ printPageComponent(false,[
 		"toolbar"=>[
 			"db"=>["title"=>"DB","align"=>"right","class"=>"active"],
 			"fs"=>["title"=>"FS","align"=>"right"],
-			//"log"=>["title"=>"LOG","align"=>"right"],
+			"log"=>["title"=>"ERROR-LOG","align"=>"right"],
 			"msg"=>["title"=>"MSG","align"=>"right"],
 			"cache"=>["title"=>"CACHE","align"=>"right"],
 

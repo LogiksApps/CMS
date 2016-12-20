@@ -34,7 +34,7 @@ form .bootstrap-switch {
 	min-height: 222px;
 }
 .card .card-body td {
-	font-size: 12px;
+	font-size: 10px;
 }
 .card .card-body h5 {
 	margin: 0px;
@@ -57,4 +57,10 @@ form .bootstrap-switch {
 	float: right;
     margin-top: -21px;
     margin-right: 10px;
+}
+
+
+.card-body table tr>td:first-child {
+	text-transform: uppercase;
+  font-weight: bold;
 }

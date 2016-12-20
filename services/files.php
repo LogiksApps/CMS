@@ -1,14 +1,10 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
-
 checkServiceAccess();
-
-if(!isset($_REQUEST["action"])) {
-	printServiceErrorMsg("NotAcceptable","Action Not Defined.");
-}
 
 $_ENV['HIDDEN']=[
 		"tmp",
+		".git",
 	];
 
 switch ($_REQUEST['action']) {
@@ -17,6 +13,52 @@ switch ($_REQUEST['action']) {
 
 		$APPPATH=ROOT.APPS_FOLDER.$_GET['forsite']."/";
 		printServiceMsg(array_reverse(scanFolderTree($APPPATH)));
+		break;
+	case "newFolder":
+		if(isset($_POST['path'])) {
+			$fDir=str_replace("//","/",CMS_APPROOT.$_POST['path']);
+			if(file_exists($fDir)) {
+				echo "Folder with same name exists at the given path.";
+				return;
+			}
+			mkdir($fDir,0777,true);
+			if(!is_dir($fDir)) {
+				echo "New Folder Could Not Be created.";
+			} else {
+				_log("New Folder : {$_POST['path']} #".CMS_SITENAME." @{$_SESSION['SESS_USER_ID']}","files");
+				echo "FILE:{$_POST['path']}";
+			}
+		} else {
+			echo "New Path Not Found.";
+		}
+		break;
+	case "newFile":
+		if(isset($_POST['path'])) {
+			$fDir=str_replace("//","/",CMS_APPROOT.$_POST['path']);
+			if(file_exists($fDir)) {
+				echo "File with same name exists at the given path.";
+				return;
+			}
+			file_put_contents($fDir,"");
+			if(!is_file($fDir)) {
+				echo "New Folder Could Not Be created.";
+			} else {
+				_log("New File : {$_POST['path']} #".CMS_SITENAME." @{$_SESSION['SESS_USER_ID']}","files");
+				echo "FILE:{$_POST['path']}";
+			}
+		} else {
+			echo "New Path Not Found.";
+		}
+		break;
+	case "rm":
+		break;
+	case "cp":
+		break;
+	case "mv":
+		break;
+	case "cl"://clone
+		break;
+	case "rn"://rename
 		break;
 }
 function scanFolderTree($folder) {

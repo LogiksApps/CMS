@@ -6,8 +6,8 @@ $dataRolesFinal=[];
 
 $sql=_db(true)->_selectQ(_dbTable("privileges",true),"id,site,name,blocked,remarks,md5(concat(id,name)) as privilegehash,md5(concat(id,name)) as hash")
 					//->_where(array("blocked"=>"false"))//,"length(hash)"=>[0,">"]
-					->_whereOR("site",[SITENAME,'*'])
-					->_whereOR("guid",[$_SESSION['SESS_GUID'],'globals']);
+					->_whereOR("site",[CMS_SITENAME,'*'])
+					->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
 
 $r=_dbQuery($sql,true);
 if($r) {
@@ -47,8 +47,13 @@ if($r) {
 	$dataRolesFinal=[];
 }
 //printArray($dataPrivilegesFinal);
-//printArray($dataRolesFinal);
+// printArray($dataRolesFinal);
 echo _css("credsRoles");
+
+if(count($dataPrivilegesFinal)<=0) {
+	print_error("Privleges Not Found for the site ".CMS_SITENAME);
+	return;
+}
 ?>
 <div class='col-xs-12'>
 <div class='row'>

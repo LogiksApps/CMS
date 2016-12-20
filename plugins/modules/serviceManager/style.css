@@ -1,0 +1,6 @@
+.cmdbtn {
+	cursor:pointer;
+}
+tr.active i[cmd=copyService] {
+	display:none;
+}

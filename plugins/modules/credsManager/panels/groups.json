@@ -1,0 +1,63 @@
+{
+	"schema":"1.0",
+	"title":"Group Manager",
+	"category":"CMS",
+	"privilege":"*",
+	"blocked":false,
+	"rowlink":false,
+	"rowsPerPage":20,
+	"showExtraColumn":"checkbox",
+	"custombar":false,
+	"source":{
+		"type":"sql",
+		"table":"lgks_users_group",
+		"where":{
+			"guid":{"VALUE":"#SESS_GUID#","OP":"EQ"}
+		},
+		"sort":"id asc",
+		"limit":10
+	},
+	"buttons":{
+		"editRecord": {
+			"label":"Edit Access Point",
+			"icon":"fa fa-pencil"
+		},
+		"viewUsers":{
+			"label":"List Users In This Section",
+			"icon":"fa fa-users pull-left"
+		}
+	},
+	"datagrid":{
+		"id":{
+			"label":"ID",
+			"hidden":false,
+			"searchable":false,
+			"sortable":true,
+			"groupable":false,
+			"classes":"",
+			"style":"width:50px;",
+			"formatter":"text"
+		},
+		"group_name":{
+			"label":"Group Name",
+			"searchable":true
+		},
+		"group_manager":{
+			"label":"Group Manager",
+			"searchable":true
+		},
+		"created_on":{
+			"label":"Created At",
+			"formatter":"date",
+			"searchable":true,
+			"filter":{
+				"type":"date"
+			}
+		},
+		"edited_on":{
+			"label":"Updated At",
+			"hidden":true,
+			"formatter":"date"
+		}
+	}
+}

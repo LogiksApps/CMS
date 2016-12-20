@@ -1,0 +1,189 @@
+{
+	"preload": {
+		"helpers": ["countries"]
+	},
+	"postsubmit": {
+		"method": ["updateUserMetas"]
+	},
+	"source": {
+		"type": "sql",
+		"table": "lgks_users",
+		"where": ["userid"]
+	},
+	"fields": {
+		"userid": {
+			"label": "Login ID",
+			"disabled": true,
+			"hidden": true,
+			"concat": {
+				"position": "after",
+				"field": "email"
+			}
+		},
+		"name": {
+			"label": "Full Name",
+			"required": true
+		},
+		"email": {
+			"label": "E-mail (LoginID)",
+			"type": "email",
+			"required": true,
+			"validate": {
+				"email": true
+			}
+		},
+		"mobile": {
+			"label": "Mobile",
+			"required": true,
+			"validate": {
+				"mobile": true
+			}
+		},
+		"remarks": {
+			"label": "Description\/Notes",
+			"type": "textarea",
+			"width": "12",
+			"validate": {
+
+			}
+		},
+		"organization_name": {
+			"label": "Organization Name",
+			"group": "organization"
+		},
+		"organization_position": {
+			"label": "Organization Position",
+			"group": "organization"
+		},
+		"organization_email": {
+			"label": "Organization Email",
+			"group": "organization",
+			"type": "email"
+		},
+		"address": {
+			"label": "Address",
+			"group": "address"
+		},
+		"region": {
+			"label": "Region/State",
+			"group": "address"
+		},
+		"country": {
+			"label": "Country",
+			"group": "address",
+			"type": "dataMethod",
+			"method": {
+				"name": "getCountrySelector",
+				"valuefield": "default",
+				"": false
+			}
+		},
+		"zipcode": {
+			"label": "Zipcode/PIN Code",
+			"group": "address"
+		},
+		"tags":{
+			"label": "Tags",
+			"group": "others",
+			"type": "tags"
+		},
+		"gender": {
+			"label": "Gender",
+			"group": "others",
+			"type": "select",
+			"options": {
+				"": false,
+				"male": "Male",
+				"female": "Female"
+			}
+		},
+		"dob": {
+			"label": "Date Of Birth",
+			"group": "others",
+			"type": "date"
+		},
+		"blocked": {
+			"label": "Blocked",
+			"group": "others",
+			"required": true,
+			"type": "select",
+			"options": {
+				"": false,
+				"true": "Blocked",
+				"false": "Not Blocked"
+			}
+		},
+		"guid": {
+			"label": "GUID",
+			"group": "admin",
+			"required": true
+		},
+		"privilegeid": {
+			"label": "Privlege ID",
+			"group": "admin",
+			"required": true,
+			"type": "dataMethod",
+			"method": "privilegeList"
+		},
+		"accessid": {
+			"label": "Access ID",
+			"group": "admin",
+			"required": true,
+			"type": "dataMethod",
+			"method": "accessList"
+		},
+		"groupid": {
+			"label": "Group/Team",
+			"group": "admin",
+			"required": true,
+			"type": "dataMethod",
+			"method": "groupList"
+		},
+		"refid": {
+			"label": "User Reference Code",
+			"group": "admin"
+		},
+		"registerd_site":{
+			"label": "User Registered Site",
+			"group": "admin",
+			"type":"dataMethod",
+			"method":"siteList"
+		},
+		"expires": {
+			"label": "Account Expires On",
+			"group": "security",
+			"type": "date"
+		},
+		"security_policy":{
+			"label":"User Security Policy",
+			"group": "security",
+			"required": true,
+			"type": "select",
+			"options": {
+				"": false,
+				"open": "Open",
+				"closed": "Closed"
+			}
+		},
+		"privacy":{
+			"label":"Data Privacy Policy",
+			"group": "security",
+			"required": true,
+			"type": "select",
+			"options": {
+				"": false,
+				"public": "Public",
+				"private": "Private",
+				"protected": "Protected"
+			}
+		},
+		"geolocation": {
+			"label": "Geo Location (For Login Lock)",
+			"group": "security"
+		},
+		"geoip": {
+			"label": "Geo IP (For Login Lock)",
+			"group": "security"
+		}
+	}
+}

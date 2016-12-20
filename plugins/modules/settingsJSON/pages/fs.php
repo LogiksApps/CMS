@@ -14,18 +14,21 @@ else $locals=[];
 ?>
 <div class="row">
 <?php
-	// if($_SESSION['SESS_PRIVILEGE_ID']==1) {
-	// 	foreach ($globals as $key => $config) {
-	// 		if(isset($config['dirs'])) unset($config['dirs']);
-	// 		if(isset($config['exclude_dirs'])) unset($config['exclude_dirs']);
-
-	// 		printCFGCard("GLOBALS",$key,[
-	// 					"title"=>toTitle(_ling("{$key} Key")),
-	// 					"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
-	// 				],$config);
-	// 	}
-	// 	echo "<hr class='cardHR'>";
-	// }
+if($_SESSION['SESS_PRIVILEGE_ID']==1) {
+		foreach ($globals as $key => $config) {
+			if($key=="app") continue;
+			if($key=="dir_rules") continue;
+			
+			if(isset($config['dirs'])) unset($config['dirs']);
+			if(isset($config['exclude_dirs'])) unset($config['exclude_dirs']);
+			
+			printCFGCard("GLOBALS",$key,[
+						"title"=>toTitle(_ling("{$key} Key")),
+						"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
+					],$config);
+		}
+		echo "<hr class='cardHR'>";
+	}
 	foreach ($locals as $key => $config) {
 		if(isset($config['dirs'])) unset($config['dirs']);
 		if(isset($config['exclude_dirs'])) unset($config['exclude_dirs']);

@@ -3,6 +3,22 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 if(!function_exists("setupCMSEnviroment")) {
 	function setupCMSEnviroment() {
+		if(!isset($_SESSION['PLUGINCHECK'])) {
+			$checkPlugins=["navigator","pages","forms","reports","datagrid",];
+			$checkPluginPass=true;
+			foreach($checkPlugins as $plugin) {
+				if(!checkModule($plugin)) {
+					$checkPluginPass=false;
+					println("Plugin Missing :: {$plugin}");
+				}
+			}
+			if(!$checkPluginPass) {
+				exit("<hr>Please install the above plugins to start using CMS. More information can be found at <a href='http://openlogiks.org'>openlogiks.org</a>");
+			} else {
+				$_SESSION['PLUGINCHECK']=true;
+			}
+		}
+		
 		if(defined("PAGE") && (PAGE=="login" || PAGE=="register" || PAGE=="forgotpwd")) {
 			return true;
 		}
@@ -61,7 +77,7 @@ if(!function_exists("setupCMSEnviroment")) {
 			exit();
 		}
 		$_SESSION['siteList']=$siteList;
-		
+
 		$f=ROOT.CFG_FOLDER."/jsonConfig/db.json";
 		if(file_exists($f)) {
 			$jsonDB=json_decode(file_get_contents($f),true);
@@ -74,6 +90,7 @@ if(!function_exists("setupCMSEnviroment")) {
 		}
         
     define("CMS_APPROOT",ROOT.APPS_FOLDER.$forSite."/");
+		define("CMS_SITENAME",$_REQUEST['forsite']);
 		
 		if($_SESSION['SESS_PRIVILEGE_NAME']!="root") {
 			unset($siteList["cms"]);

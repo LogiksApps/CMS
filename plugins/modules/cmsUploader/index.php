@@ -41,6 +41,13 @@ $(function() {
   $("#uploadMaskIcon").click(function() {
     $("#uploadForm input[type=file]").click();
   });
+  $("#pathBreadCrumb a[data-path]").click(function() {
+    pth=$(this).data("path");
+    pth=pth.split("/");
+    pth=pth.reverse();
+    pth=pth.join("/");
+    parent.revealFile(pth)
+  });
 });
 function uploadFiles() {
   $("#uploadForm").addClass("hidden");
