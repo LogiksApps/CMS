@@ -95,9 +95,11 @@ function loadTextEditor() {
 		} else {
 			rid="templateManager"+Math.ceil(Math.random()*1000000);
 			$("#componentSpace").html("<div id='"+rid+"' style='width:100%;height:100%;border:0px;'></div>");
-			$("#"+rid).html(txt);
+			//$("#"+rid).html(txt);
 			
 			loadEditor(rid,"php");
+
+			editArea.setValue(txt);
 		}
 	},"RAW");
 }
@@ -121,9 +123,11 @@ function loadSQLEditor() {
 		} else {
 			rid="templateManager"+Math.ceil(Math.random()*1000000);
 			$("#componentSpace").html("<div id='"+rid+"' style='width:100%;height:100%;border:0px;'></div>");
-			$("#"+rid).html(txt);
+			//$("#"+rid).html(txt);
 			
 			loadEditor(rid,"sql");
+
+			editArea.setValue(txt);
 		}
 	},"RAW");
 }

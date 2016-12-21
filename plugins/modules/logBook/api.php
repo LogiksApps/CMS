@@ -7,6 +7,7 @@ if(!function_exists("getLoggerList")) {
 	}
 	function getLoggerList() {
 		$logDir=getAllLogFolder();
+		if(!is_dir($logDir)) return [];
 		$fs=scandir($logDir);
 		$fs=array_splice($fs, 2);
 		foreach ($fs as $key => $fname) {
