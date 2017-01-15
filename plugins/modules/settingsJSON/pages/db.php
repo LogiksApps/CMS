@@ -16,6 +16,8 @@ else $locals=[];
 <?php
 	if($_SESSION['SESS_PRIVILEGE_ID']==1) {
 		foreach ($globals as $key => $config) {
+			//if(count($config)<=0) continue;
+			if(isset($config['pwd'])) $config['pwd']="***";
 			unset($config['block']);
 			printCFGCard("GLOBALS",$key,[
 						"title"=>toTitle(_ling("{$key} Key")),
@@ -25,6 +27,8 @@ else $locals=[];
 		echo "<hr class='cardHR'>";
 	}
 	foreach ($locals as $key => $config) {
+		//if(count($config)<=0) continue;
+		if(isset($config['pwd'])) $config['pwd']="***";
 		unset($config['block']);
 		printCFGCard("APP",$key,[
 					"title"=>toTitle(_ling("{$key} Key")),

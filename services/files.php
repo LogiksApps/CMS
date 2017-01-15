@@ -9,10 +9,14 @@ $_ENV['HIDDEN']=[
 
 switch ($_REQUEST['action']) {
 	case 'listFiles':
-		loadHelpers("files");
+		if(checkUserRoles("FILES","LIST")) {
+			loadHelpers("files");
 
-		$APPPATH=ROOT.APPS_FOLDER.$_GET['forsite']."/";
-		printServiceMsg(array_reverse(scanFolderTree($APPPATH)));
+			$APPPATH=ROOT.APPS_FOLDER.$_GET['forsite']."/";
+			printServiceMsg(array_reverse(scanFolderTree($APPPATH)));
+		} else {
+			printServiceMsg([]);
+		}
 		break;
 	case "newFolder":
 		if(isset($_POST['path'])) {

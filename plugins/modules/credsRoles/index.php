@@ -23,7 +23,7 @@ if($r) {
 	}
 	
 	
-	$sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,category,module,activity,privilegehash,allow,role_type")
+	$sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,guid,category,module,activity,privilegehash,allow,role_type")
 					->_where(array("site"=>$_GET['forsite']));
 	//echo $sql->_SQL();
 	
@@ -107,8 +107,8 @@ if(count($dataPrivilegesFinal)<=0) {
 								echo "<ul class='list-group'>";
 								foreach($modules as $role) {
 									$roleHash=md5($role['id'].$role['privilegehash']);
-									echo "<li class='list-group-item'><label>";
-									echo _ling(str_replace("_"," ",strtolower($role['activity'])));
+									echo "<li class='list-group-item' guid='{$role['guid']}'><label>";
+									echo _ling(str_replace("_"," ",strtolower($role['activity'])))." <citie class='datalink' data-type='guid-users' data-value='{$role['guid']}'>[{$role['guid']}]</citie>";
 									if($role['allow']===true || $role['allow']=="true") {
 										echo "<input class='pull-right' type='checkbox' name='roleCheckbox' data-hash='{$roleHash}' checked />";// data-x='".json_encode($p)."'
 									} else {

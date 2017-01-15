@@ -1,16 +1,23 @@
 $(function() {
-    $("#header #toolsMenu").delegate("a[href]:not(.noauto)","click",function(e) {
-        e.preventDefault();
-        href=$(this).attr('href');
-        if(href!=null && href.length>2) {
-            ttl=$(this).text();
-            openLinkFrame(ttl,href);
-        }
-    });
+  $("#header #toolsMenu").delegate("a[href]:not(.noauto)","click",function(e) {
+      e.preventDefault();
+      href=$(this).attr('href');
+      if(href!=null && href.length>2) {
+          ttl=$(this).text();
+          openLinkFrame(ttl,href);
+      }
+  });
 
-    $('[data-toggle="tooltip"]').tooltip();
+  $('body').delegate(".datalink[data-type]","click",function(e) {
+    type=$(this).data("type");
+    val=$(this).data("value");
+    
+    dataInfo(type,val);
+  });
 
-    $('#sidebarMenuTree').metisMenu();
+  $('[data-toggle="tooltip"]').tooltip();
+
+  $('#sidebarMenuTree').metisMenu();
 
 });
 
@@ -103,6 +110,21 @@ $.fn.extend({
         });
     }
 });
+
+function dataInfo(type, val) {
+  //console.log(type+" "+val);
+  type=type.split("-");
+  switch(type[0]) {
+    case "guid":case "guid-users":
+      
+      break;
+    case "privilege":case "privilege-users":
+      
+      break;
+    case "user":
+      break;
+  }
+}
 
 function toTitle(s) {
     if(s==null || s.length<=0) return "";

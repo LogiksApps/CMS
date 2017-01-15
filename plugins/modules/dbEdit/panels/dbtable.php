@@ -51,7 +51,7 @@ switch ($src[0]) {
 <div id="dataContent">
 	
 </div>
-<script>
+<script>console.log($("#dbTableNav li>a").length);
 $(function() {
 	$("#dbTableNav li>a").click(function() {
 		comptype=$(this).attr('href');

@@ -742,7 +742,21 @@ body.error #page-wrapper {
   border: 0px;
 }
 
-
+a.fa, a.glyphicon {
+	text-decoration:none;
+	cursor:pointer;
+}
+i.fa, i.glyphicon {
+	
+}
+td a.fa, td a.glyphicon, th a.fa, th a.glyphicon {
+	color: #666;
+}
+td i.fa, td i.glyphicon, th i.fa, th i.glyphicon {
+	margin-right:3px;margin-left:3px;
+	color: #666;
+	cursor:pointer;
+}
 
 .table>thead>tr>th {
   padding: 10px !important;
@@ -764,4 +778,9 @@ table.dataTable>thead>tr>th {
 
 .modal-title smaller {
 	font-size: 12px;
+}
+
+.datalink[data-type] {
+	color: #777;
+	cursor:pointer;
 }

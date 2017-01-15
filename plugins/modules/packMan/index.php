@@ -4,23 +4,21 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 loadModule("pages");
 
 function pageContentArea() {
-	
-	
-	return "<h1 align=center>Not installed correctly</h1>";
-}
-function pageSidebar() {
-	return "";
+	return "<h1 align=center>Checking installation ...</h1>";
 }
 
+//Installed : Search, Configure (feature/localize), Editor (cms.php), Disable, Remove, Goto Market, Report Issue
+//Repos : Search, Install, View (from market in iframe), Goto Market
 
-echo _js(["packman"]);
+echo _js(["packMan"]);
+echo _css(["packMan"]);
 
 printPageComponent(false,[
 		"toolbar"=>[
 			"searchPackages"=>["title"=>"Search Packages","type"=>"search","align"=>"right"],
 	
-			"loadLocal"=>["title"=>"App","align"=>"right","class"=>"active"],
-			"loadGlobal"=>["title"=>"Global","align"=>"right"],
+			"loadInstalled"=>["title"=>"Installed","align"=>"right","class"=>"active"],
+			//"loadGlobal"=>["title"=>"Global","align"=>"right"],
 		
 			"listPackages"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			['type'=>"bar"],
