@@ -1,7 +1,7 @@
-
-
-
-
+--
+-- MySQL 5.6.30
+-- Sun, 15 Jan 2017 16:45:23 +0000
+--
 INSERT INTO `lgks_links` (`id`, `guid`, `menuid`, `title`, `mode`, `category`, `menugroup`, `class`, `target`, `link`, `iconpath`, `tips`, `site`, `device`, `privilege`, `weight`, `onmenu`, `blocked`, `rules`, `created_by`, `created_on`, `edited_by`, `edited_on`) VALUES
 (101, 'globals', 'cms', 'Webmaster', '*', '', '/', '', '', '#', 'fa fa-folder', 'Manage the various components required for running a site', 'cms', '*', '*', 50, 'true', 'false', '', '', '0000-00-00 00:00:00', '', '2016-11-02 09:36:43'),
 (102, 'globals', 'cms', 'Data Controls', '*', '', '/', '', '', '#', '', 'Logiks Data Modules', 'cms', '*', '*', 51, 'true', 'false', '', '', '0000-00-00 00:00:00', '', '2016-11-02 09:28:00'),
