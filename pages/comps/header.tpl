@@ -5,8 +5,10 @@
     </div>
     <div class="navbar-header" title='Switch Between Available Sites' style='float: left;background: transparent;'>
         <div class="btn-group site-select-form">
-            
-
+            <button type="button" class="btn btn-default show-sidebar-menu">
+		<span class="fa fa-bars"></span>
+            </button>
+						
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 {$PAGE.forSite}
                 <span class="caret"></span>

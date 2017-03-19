@@ -6,7 +6,7 @@ $dataRolesFinal=[];
 
 $sql=_db(true)->_selectQ(_dbTable("privileges",true),"id,site,name,blocked,remarks,md5(concat(id,name)) as privilegehash,md5(concat(id,name)) as hash")
 					//->_where(array("blocked"=>"false"))//,"length(hash)"=>[0,">"]
-					->_whereOR("site",[CMS_SITENAME,'*'])
+					->_whereOR("site",[SITENAME,'*',CMS_SITENAME])
 					->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
 
 $r=_dbQuery($sql,true);

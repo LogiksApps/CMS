@@ -14,6 +14,15 @@ $(function() {
     
     dataInfo(type,val);
   });
+  
+  $("body").delegate("#header .show-sidebar-menu","click",function(e) {
+    //$("#sidebar").toggleClass("active");
+    if($("#sidebar").hasClass("slide-in")) {
+      $("#sidebar").toggleClass("slide-out").removeClass("slide-in");
+    } else {
+      $("#sidebar").toggleClass("slide-in").removeClass("slide-out");
+    }
+  });
 
   $('[data-toggle="tooltip"]').tooltip();
 
@@ -28,11 +37,12 @@ $(function() {
     $(window).bind("load resize", function() {
         topOffset = 50;
         width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-        if (width < 768) {
+        if (width < 800) {
             $('div.navbar-collapse').addClass('collapse');
             topOffset = 100; // 2-row-menu
         } else {
             $('div.navbar-collapse').removeClass('collapse');
+            $("#sidebar").removeClass("slide-out").removeClass("slide-in");
         }
 
         height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
