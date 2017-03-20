@@ -44,7 +44,6 @@ if(!function_exists("setupCMSEnviroment")) {
 		}
 		$_REQUEST['forSite']=$forSite;
 		$_GET['forSite']=$forSite;
-		define("CMS_SITENAME",$forSite); 
 		
 		if(defined("SERVICE_ROOT")) {
 			if(isset($_REQUEST['scmd']) && $_REQUEST['scmd']=="auth") {
