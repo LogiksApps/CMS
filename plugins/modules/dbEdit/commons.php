@@ -90,6 +90,7 @@ function printDataInTable($data,$cols=false,$actionCol=false) {
 				if(!$cols) {
 					$cols=array_keys($data[0]);
 				}
+				
 				foreach ($cols as $c) {
 					$title=_ling("DBTABLE:$c");
 					if($title=="DBTABLE:$c") $title=($c);//toTitle

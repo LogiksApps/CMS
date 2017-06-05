@@ -26,7 +26,7 @@ switch($_REQUEST["action"]) {
 			if(is_array($done)) {
 				$done=implode(", ",$done);
 			}
-			printUploadMsg('Error Uploading Some Files : {$done}');
+			printUploadMsg("Error Uploading Some Files : {$done}");
 		}
 		break;
 }
@@ -46,7 +46,7 @@ function doUpload($uploadPath) {
 				$ans+=1;
 			}
 		} else {
-			$ansArr[]=$b;
+			$ansArr[]=$b."#".$finalError;
 			$ans+=$finalError;
 		}
 	}

@@ -18,13 +18,14 @@ if(count($src)==0) {
 	$src[0]="tables";
 }
 
-
+$dataSRC="";
 $columns=[];
 $data=[];
 switch ($src[0]) {
 	case 'tables':
+		$dataSRC="tables/{$src[1]}";
 	case 'views':
-		$columns=_db($dbKey)->get_columnlist($src[1]);
+		$columns=_db($dbKey)->get_columnlist($src[1],false);
 
 		$newColumns=[];
 
@@ -37,13 +38,39 @@ switch ($src[0]) {
 				return;
 			}
 		} else {
-			$newColumns=array_flip($columns);
-			foreach ($newColumns as $key => $value) {
-				$newColumns[$key]=$q;
+// 			$newColumns=array_flip($columns);
+			$checkNum=is_numeric($q);
+			$checkFloat=is_float($q);
+			foreach($columns as $a=>$b) {
+				if(isset($b[1])) {
+					$fx=current(explode("(",$b[1]));
+					switch(strtolower($fx)) {
+						case "int":
+							if($checkNum) {
+								$newColumns[$a]=$q;
+							}
+							break;
+						case "float":
+							if($checkFloat) {
+								$newColumns[$a]=$q;
+							}
+							break;
+						default:
+							if(!$checkNum && !$checkFloat) {
+								$newColumns[$a]=$q;
+							}
+					}
+				} else {
+					$newColumns[$a]=$q;
+				}
 			}
+// 			foreach ($newColumns as $key => $value) {
+// 				$newColumns[$key]=$q;
+// 			}
 		}
-
-		$sql=_db($dbKey)->_selectQ($src[1],"*",[])->_where($newColumns,"OR","OR")->_limit(25,0);
+// printArray($newColumns);
+		$sql=_db($dbKey)->_selectQ($src[1],"*",[])->_where($newColumns,"OR","OR")->_limit(100,0);
+// 		exit($sql->_SQL());
 		$data=$sql->_get();
 		break;
 	
@@ -56,7 +83,9 @@ switch ($src[0]) {
 if($data==null) $data=[];
 
 if(count($data)>0) {
-	printDataInTable($data,$columns);//,["deleteField"=>"fa fa-trash","editField"=>"fa fa-pencil"]
+	echo "<div id='dataContent' class='searchContent' data-src='{$dataSRC}'>";
+	printDataInTable($data,array_keys($columns),["deleteRecord"=>"fa fa-trash","editRecord"=>"fa fa-pencil"]);//,["editField"=>"fa fa-pencil"]
+	echo "</div>";
 } else {
 	echo "<h5>No data in for search query <b>{$_GET['q']}</b></h5>";
 }

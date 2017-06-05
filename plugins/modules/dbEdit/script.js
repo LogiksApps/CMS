@@ -31,9 +31,52 @@ $(function() {
 		return false;
 	});
 
+	
+	initEvents();
+	
 	pgDbInfo();
 	loadTableList('pages');
 });
+function initEvents() {
+	$("#pgcontent").delegate(".searchContent td.action i[cmd]","click",function(e) {
+		cmd=$(this).attr('cmd');
+		selectedRecord=$(this).closest("tr");
+		
+		switch(cmd) {
+			case "deleteRecord":
+				lgksConfirm("Are sure about deleting the selected record?","Delete Record!",function(txt) {
+					key=$(selectedRecord).data("key");
+					col=$(selectedRecord).data("col");
+					src=$(selectedRecord).closest("#dataContent").data("src");
+					if(src==null || src.length<=0) return;
+					if(txt) {
+						q=col+"="+key;
+						lx=_service("dbEdit","deleteRecord")+"&src="+src;
+						processAJAXPostQuery(lx,q,function(txt) {
+							if(txt=="success") {
+								loadDataContent(currentDBQueryPanel);
+								lgksToast("Data deleted successfully");
+							} else {
+								lgksToast(txt);
+							}
+						});
+					}
+				})
+			break;
+			case "editRecord":
+				key=$(selectedRecord).data("key");
+				col=$(selectedRecord).data("col");
+				src=$(selectedRecord).closest("#dataContent").data("src");
+				if(src==null || src.length<=0) return;
+				if(col=="id") {
+					loadDataContent("edit","&src="+src+"&refid="+key);
+				} else {
+					lgksToast("Sorry, editing is supported only if the table has ID column.");
+				}
+			break;
+		}
+	});
+}
 
 function listItemAttr() {
 	if($('#componentTree .list-group-item input[name=selectFile]:checked').length>0) {
@@ -123,6 +166,7 @@ function pgDbTools() {
 }
 function pgSearch(qS) {
 	switchPanel(-1);
+	$("#pgcontent").html("<div class='text-center'><br><br><i class='fa fa-spinner fa-spin fa-4x'></i></div>");
 
 	lx=_service("dbEdit","panel")+"&panel=dbSearch&q="+qS+"&src="+openTableScehema;
 	$("#pgcontent").load(lx);

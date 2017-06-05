@@ -11,7 +11,7 @@ of project development with prime concern being Developer's ease of creating
 projects.
 
 ###Server Requirments
-+ Apache + PHP 5.3+
++ Apache + PHP 5.6+
 + Logiks Framework
 
 ###License
