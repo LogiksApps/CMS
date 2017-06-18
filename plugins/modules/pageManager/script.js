@@ -358,11 +358,26 @@ function renderKanaban(fs) {
 	
 }
 
-function getStatusIcon(status) {
-	if(status==null || status.toLowerCase()=="na") return "<i class='fa fa-check'></i>";
+function getStatusIcon(v) {
+	if(typeof(v)!="boolean") {
+		if(v==null || v.toLowerCase()=="true" || v.toLowerCase()=="na") {
+			v=true;
+		} else {
+			v=false;
+		}
+	}
+	if(v) return "<i class='fa fa-check'></i>";
+	else return "<i class='fa fa-times'></i>";
 }
 function getBoolIcon(v) {
-	if(status==null || status.toLowerCase()=="true") return "<i class='fa fa-check'></i>";
+	if(typeof(v)!="boolean") {
+		if(v==null || v.toLowerCase()=="true") {
+			v=true;
+		} else {
+			v=false;
+		}
+	}
+	if(v) return "<i class='fa fa-check'></i>";
 	else return "<i class='fa fa-times'></i>";
 
 }

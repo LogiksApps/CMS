@@ -360,13 +360,13 @@ function scanFetch($dir,$relativePath="") {
 }
 function fInfo($f,$relativePath) {
 	$info=[];
-	$info['created']=date ("Y/m/d F H:i:s.", filectime($f));
-	$info['updated']=date ("Y/m/d F H:i:s.", filemtime($f));
+	$info['created']=date("Y/m/d F H:i:s.", filectime($f));
+	$info['updated']=date("Y/m/d F H:i:s.", filemtime($f));
 	$info['size']=filesize($f);
 
 	$info['type']=$_REQUEST["comptype"];
 
-	$info['locked']=false;
+	$info['locked']=(!is_writable($f));
 	$info['is_open']=false;
 	$info['open_by']=false;
 	
