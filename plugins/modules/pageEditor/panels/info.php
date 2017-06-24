@@ -66,7 +66,7 @@ if(is_dir($templateDir)) {
                 <div class="col-sm-4">
                   <div class="checkbox">
                     <label>
-                      <input type=checkbox name='enabled' />
+                      <input type=checkbox name='enabled' <?=($jsonPage['enabled']===true || $jsonPage['enabled']=="true")?"checked":""?> />
                     </label>
                   </div>
                 </div>

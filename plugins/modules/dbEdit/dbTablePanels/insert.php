@@ -18,7 +18,7 @@ switch ($src[0]) {
 		return;
 		break;
 }
-//var_dump($columnDefination);
+// printArray($columnDefination);
 
 ?>
 <div class='col-xs-12' style='margin-top: 20px;'>
@@ -38,7 +38,7 @@ switch ($src[0]) {
 			if($column[5]=="auto_increment" && $column[3]=="PRI") {
 				continue;
 			}
-			if($column[2]=="YES") {
+			if($column[2]=="NO" && !in_array($column[0],['created_by','created_on','edited_by','edited_on',])) {
 				$required="required";
 			}
 			

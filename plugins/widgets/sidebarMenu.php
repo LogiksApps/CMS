@@ -8,7 +8,7 @@ $menuTree1=generateNavigationFromDB("cms","links","core");
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/cms/","core");
 
 $menuTree=array_merge_recursive($menuTree1,$menuTree2);
-//printArray($menuTree1);exit("XXX");
+// printArray($menuTree2);exit("A");
 ?>
 <style>
 .sidebarMenu {

@@ -3,14 +3,20 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 $autoFillColumns=[
 		"userid"=>$_SESSION['SESS_USER_ID'],
-		//"doc"=>date("Y-m-d"),
+		"edited_by"=>$_SESSION['SESS_USER_ID'],
+		"edited_on"=>date("Y-m-d H:i:s"),
 		"doe"=>date("Y-m-d"),
-		"dtoc"=>date("Y-m-d H:i:s"),
 		"dtoe"=>date("Y-m-d H:i:s"),
 		"client_ip"=>$_SERVER['REMOTE_ADDR'],
 	];
 
 
+$insertFillColumns=[
+		"created_by"=>$_SESSION['SESS_USER_ID'],
+		"created_on"=>date("Y-m-d H:i:s"),
+		"doc"=>date("Y-m-d"),
+		"dtoc"=>date("Y-m-d H:i:s"),
+	];
 $arrCmds=array(
 				"checktable"=>array("CHECK TABLE %s","single_run"),
 				"analyzetable"=>array("ANALYZE TABLE %s","single_run"),

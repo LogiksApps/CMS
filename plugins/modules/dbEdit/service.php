@@ -155,6 +155,9 @@ switch ($_REQUEST['action']) {
 					if(array_key_exists($c, $autoFillColumns)) {
 						$_POST[$c]=$autoFillColumns[$c];
 					}
+					if(array_key_exists($c, $insertFillColumns)) {
+						$_POST[$c]=$insertFillColumns[$c];
+					}
 				}
 				$sql=_db($dbKey)->_insertQ1($src[1],$_POST);
 				$res=$sql->_run();
