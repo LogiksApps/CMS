@@ -26,6 +26,32 @@ $srcName=basename($defnFile);
 $srcName=str_replace(".json", "", $srcName);
 
 switch ($_REQUEST['action']) {
+	case "getFile":
+		switch ($_REQUEST["type"]) {
+			case 'info':
+			case 'layout':
+			case 'meta':
+				$xFile=$defnFile;
+				break;
+			case 'markup':
+				$xFile=getAppFile("pages/viewpage/{$srcName}.tpl");
+				break;
+			case 'code':
+				$xFile=getAppFile("pages/viewpage/{$srcName}.php");
+				break;
+			case 'style':
+				$xFile=getAppFile("css/comps/{$srcName}.css");
+				break;
+			case 'script':
+			case 'javascript':
+				$xFile=getAppFile("js/comps/{$srcName}.js");
+				break;
+			default:
+				$xFile="";
+		}
+		printServiceMsg(['file'=>str_replace("#".ROOT.APPS_FOLDER.$_REQUEST['forsite']."/","","#{$xFile}")]);
+		//
+		break;
 	case "savePage":
 		//printArray($_POST);
 		switch ($_REQUEST["type"]) {

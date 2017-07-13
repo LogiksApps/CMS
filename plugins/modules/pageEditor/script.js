@@ -1,5 +1,6 @@
 var editorList={};
 
+var curHistoryFile="";
 $(function() {
     //$('#pageEditor .nav.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     $('#pageEditor .nav.nav-tabs a[data-toggle="tab"]').on('click', function (e) {
@@ -19,11 +20,14 @@ $(function() {
     		case "save":
     			saveFile();
     		break;
-				case "preview":
+    		case "history":
+    			loadHistory();
+    		break;
+    		case "preview":
     			type=$("#pageEditor .tab-pane.active").attr("id");
-					src=$("#pageEditor").attr("src");
-					lx=SiteLocation+src+"?site="+parent.CMS_FOR_SITE;
-					window.open(lx);
+    			src=$("#pageEditor").attr("src");
+    			lx=SiteLocation+src+"?site="+parent.CMS_FOR_SITE;
+    			window.open(lx);
     		break;
     	}
     });
@@ -100,4 +104,40 @@ function saveFile() {
 			lgksToast(txt.replace("failed:",""));
 		}
 	});
+}
+
+function loadHistory() {
+	type=$("#pageEditor .tab-pane.active").attr("id");
+	src=$("#pageEditor").attr("src");
+	curHistoryFile="";
+	
+	$("#editorAsidebar .historyContainer").html("<div class='ajaxloading ajaxloading5'></div>");
+	processAJAXPostQuery(_service("pageEditor","getFile"),"&type="+type+"&src="+src,function(ans) {
+		if(ans.Data.file!=null && ans.Data.file.length>0) {
+			curHistoryFile=ans.Data.file;
+			processAJAXPostQuery(_service("cmsEditor","gethistory"),"src="+ans.Data.file,function(ans) {
+					html=[];
+					try {
+						$.each(ans.Data.history,function(k,v) {
+							html.push("<li class='list-group-item' data-refid='"+v.id+
+												"'><i class='fa fa-calendar'></i> <a class='btn btn-default btn-xs pull-right' onclick='checkoutHistory("+v.id+")'><i class='fa fa-plus'></i></a>"+
+												v.created_on+" <br><small>"+v.created_by+"</small></li>");
+						});
+					} catch(e) {
+						console.log(e);
+					}
+					$("#editorAsidebar .historyContainer").html("<ul class='list-group'>"+html.join("")+"</ul>");
+				},"json");
+		} else {
+			$("#editorAsidebar .historyContainer").html("Not Supported Yet");
+		}
+	},"json");
+	
+	$("#editorAsidebar").show();
+}
+function checkoutHistory(refid) {
+	if(curHistoryFile==null || curHistoryFile.length<=0) return;
+	processAJAXPostQuery(_service("cmsEditor","gethistoryContent"),"src="+curHistoryFile+"&refid="+refid,function(ans) {
+				lgksOverlay("<textarea style='width:100%;height:70%;border:1px solid #AAA;' readonly>"+ans+"</textarea>");
+			});
 }

@@ -16,6 +16,7 @@ loadModuleLib("cmsEditor","embed");
 
     <li class='pull-right btn btn-success' cmd='save' title='Save Page'><i class='fa fa-save'></i></li>
     <li class='pull-right btn btn-warning' cmd='preview' title='Preview Page'><i class='fa fa-eye'></i></li>
+    <li class='pull-right btn btn-info' cmd='history' title='History of file'><i class='fa fa-clock-o'></i></li>
     <!-- <li class='pull-right btn btn-info hidden' cmd='open' title='Open External Link'><i class='fa fa-external-link'></i></li> -->
     <!-- <li class='pull-right btn btn-warning' cmd='version' title=''><i class='fa fa-code-fork'></i></li> -->
   </ul>
@@ -51,6 +52,12 @@ loadModuleLib("cmsEditor","embed");
     </div>
   </div>
 </div>
+<aside id='editorAsidebar' class=''>
+	<h4>History <i class='fa fa-times pull-right' onclick='$("#editorAsidebar").hide();' style='margin-right: 10px;'></i></h4>
+	<div class='historyContainer'>
+		<ul class="list-group"></ul>
+	</div>
+</aside>
 <script>
 var readonlyEditors=<?=(isset($_REQUEST['readonly']) && $_REQUEST['readonly']=="true")?"true":"false"?>;
 </script>

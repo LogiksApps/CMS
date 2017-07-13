@@ -19,6 +19,29 @@
 } 
 
 
+#editorAsidebar {
+	position: fixed;
+	top: 30px;
+	right: 0px;
+	width: 228px;
+	height: 100%;
+	background: white;
+	display:none;
+	overflow: auto;
+	
+	-webkit-box-shadow: -3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    -3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         -3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+}
+#editorAsidebar * {
+	border-radius:0px !important;
+}
+#editorAsidebar .fa-times {
+	cursor:pointer;
+}
+#editorAsidebar .list-group-item small {
+	color: #AAA;margin-left: 16px;font-size: 10px;
+}
 
 .editorArea {
     position: absolute;
