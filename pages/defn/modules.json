@@ -4,5 +4,6 @@
     "slug": "module",
     "template": "innerpage",
     "viewpage": "modules",
-    "enabled": true
+    "enabled": true,
+    "access": "protected"
 }

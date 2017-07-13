@@ -105,11 +105,19 @@ if(!function_exists("setupCMSEnviroment")) {
 		$_ENV['LOADERS_PLUGINPATHS']['modules']=$moduleDir;
 	}
 	function checkServiceAccess() {
-		$ls=new LogiksSecurity();
-		session_check();
-		$ls->checkUserSiteAccess($_REQUEST['forsite'],true);
-		user_admin_check(true);
-		//Check Role Controls
+		//Check Session and Role Controls
+		checkServiceSession();
+		
+		if(!user_admin_check()) {
+			printServiceErrorMsg(403, "You are not an Admin.");
+			exit();
+		}
+		
+		$acp=$_SESSION['SESS_ACCESS_SITES'];
+		if(!in_array($_REQUEST['forsite'],$acp)) {
+			printServiceErrorMsg(403, "{$_REQUEST['forsite']} is not available for you to adminster");
+			exit();
+		}
 	}
 	function getAppFile($file) {
 		if(substr($file, 0, 1)!="/") $file="/{$file}";
@@ -119,7 +127,36 @@ if(!function_exists("setupCMSEnviroment")) {
 		if(!is_dir(dirname($src))) {
 			mkdir(dirname($src),0777,true);
 		}
+		if(!is_writable($src)) {
+			return false;
+		}
 		$a=file_put_contents($src, $content);
+		
+		//Save history of file
+		_db(true)->_insertQ1(_dbTable("cache_editor",true),[
+				"guid"=>$_SESSION['SESS_GUID'],
+				"site"=>CMS_SITENAME,
+				"client_ip"=>$_SERVER['REMOTE_ADDR'],
+				"filepath"=>$src,
+				"content"=>$content,
+				"src_hash"=>md5($src),
+				"content_hash"=>md5($content),
+				"disksize"=>$a,
+				"created_by"=>$_SESSION['SESS_USER_ID'],
+				"created_on"=>date("Y-m-d H:i:s"),
+				"edited_by"=>$_SESSION['SESS_USER_ID'],
+				"edited_on"=>date("Y-m-d H:i:s"),
+			])->_RUN();
+		
+		//delete old versions
+		$maxHist=getConfig("MAX_EDITOR_HISTORY_PER_FILE");
+		if($maxHist==null || $maxHist<=0) $maxHist=100;
+		
+		$tbl=_dbTable("cache_editor",true);
+		$sql="SELECT id FROM {$tbl} WHERE filepath='{$src}' ORDER BY id DESC LIMIT 1000 OFFSET 50";
+		$sql="DELETE FROM $tbl WHERE id IN ($sql)";
+		_dbQuery($sql,true);
+		
 		if($a===false) return false;
 		return true;
 	}

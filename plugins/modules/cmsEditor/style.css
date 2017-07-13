@@ -63,6 +63,25 @@
   margin-top: 31px;
 }
 
+#editorAsidebar {
+	position: fixed;
+	top: 30px;
+	right: 0px;
+	width: 228px;
+	height: 100%;
+	background: white;
+	display:none;
+	overflow: auto;
+}
+#editorAsidebar * {
+	border-radius:0px !important;
+}
+#editorAsidebar .fa-times {
+	cursor:pointer;
+}
+#editorAsidebar .list-group-item small {
+	color: #AAA;margin-left: 16px;font-size: 10px;
+}
 /*#editorToolbar .open>.dropdown-menu {
   max-height: 300px;
   overflow-y: scroll;

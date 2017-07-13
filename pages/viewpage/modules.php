@@ -2,18 +2,22 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 
 $slug=_slug();
-
+// echo $_SESSION['SESS_GUID'].$_SESSION['SESS_PRIVILEGE_ID'].ROLE_PRIME;
 if(isset($slug["module"])) {
 	$modulePath=checkModule($slug["module"]);
 	if($modulePath) {
 		$modulePath=dirname($modulePath)."/cms.php";
 		
-		if(file_exists($modulePath)) {
-			_pageVar("PLUGINEDIT",true);
-			_pageVar("MODULE",$slug["module"].".cms");
+		if(checkUserScope($slug["module"])) {
+			if(file_exists($modulePath)) {
+				_pageVar("PLUGINEDIT",true);
+				_pageVar("MODULE",$slug["module"].".cms");
+			} else {
+				_pageVar("PLUGINEDIT",false);
+				_pageVar("MODULE",$slug["module"]);
+			}
 		} else {
-			_pageVar("PLUGINEDIT",false);
-			_pageVar("MODULE",$slug["module"]);
+			trigger_logikserror("Sorry, You don't have access to Module '{$slug["module"]}'.",E_ERROR,403);
 		}
 		//exit($modulePath);
 		//loadModule($slug["module"]);

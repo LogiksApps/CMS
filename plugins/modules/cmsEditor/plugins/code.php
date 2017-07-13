@@ -40,6 +40,8 @@ $favLang=[
 
 <div id='editorToolbar'>
 	<a href="#" class="btn" cmd="trash" title="Delete"><i class="icon fa fa-trash"></i></a>
+	|
+	<a href="#" class="btn" cmd="history" title="History of file"><i class="icon fa fa-clock-o"></i></a>
 	<a href="#" class="btn" cmd="save" title="Save"><i class="icon fa fa-save"></i></a>
 	<input name='fname' style='width:40%;' value='<?=$_REQUEST['src']?>' data-original='<?=$_REQUEST['src']?>' />
 	<?php
@@ -105,11 +107,17 @@ $favLang=[
 	</div>
 </div>
 <div id="editor"></div>
-
+<aside id='editorAsidebar' class=''>
+	<h4>History <i class='fa fa-times pull-right' onclick='$("#editorAsidebar").hide();' style='margin-right: 10px;'></i></h4>
+	<div class='historyContainer'>
+		<ul class="list-group"></ul>
+	</div>
+</aside>
 <script>
 var langTools = ace.require("ace/ext-language_tools");
 //var beautify = ace.require("ace/ext/beautify");
 var editor = ace.edit("editor");
+var srcFile = "<?=$_REQUEST['src']?>";
 var defaultEditorConfig={
 		"theme":"<?=$_REQUEST['theme']?>",
 		"fontsize":'12px',
@@ -183,7 +191,21 @@ function doEditorAction(cmd,src) {
 
 		break;
 		case "history":
-
+			$("#editorAsidebar .historyContainer").html("<div class='ajaxloading ajaxloading5'></div>");
+			processAJAXPostQuery(_service("cmsEditor","gethistory"),"src="+$("#editorToolbar input[name=fname]").val(),function(ans) {
+				html=[];
+				try {
+					$.each(ans.Data.history,function(k,v) {
+						html.push("<li class='list-group-item' data-refid='"+v.id+
+											"'><i class='fa fa-calendar'></i> <a class='btn btn-default btn-xs pull-right' onclick='checkoutHistory("+v.id+")'><i class='fa fa-plus'></i></a>"+
+											v.created_on+" <br><small>"+v.created_by+"</small></li>");
+					});
+				} catch(e) {
+					console.log(e);
+				}
+				$("#editorAsidebar .historyContainer").html("<ul class='list-group'>"+html.join("")+"</ul>");
+			},"json");
+			$("#editorAsidebar").show();
 		break;
 		case "settings":
 			editor.showSettingsMenu();
@@ -249,5 +271,10 @@ function deleteFile() {
 			}
 		});
 	})
+}
+function checkoutHistory(refid) {
+	processAJAXPostQuery(_service("cmsEditor","gethistoryContent"),"src="+$("#editorToolbar input[name=fname]").val()+"&refid="+refid,function(ans) {
+				lgksOverlay("<textarea style='width:100%;height:70%;border:1px solid #AAA;' readonly>"+ans+"</textarea>");
+			});
 }
 </script>

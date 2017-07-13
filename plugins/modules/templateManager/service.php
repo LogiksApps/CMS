@@ -9,6 +9,9 @@ if(SITENAME!="cms") {
 
 $fDir=CMS_APPROOT.TEMPLATE_FOLDER;
 
+if(!is_dir($fDir)) {
+	mkdir($fDir,0777, true);
+}
 switch($_REQUEST["action"]) {
 	case "list":
 		$fs=scandir($fDir);
@@ -104,6 +107,11 @@ switch($_REQUEST["action"]) {
 			$_POST['slug']=$_POST['slug'].".tpl";
 			
 			$f=$fDir.$_POST['slug'];
+			
+			if(!is_dir(dirname($f))) {
+				mkdir(dirname($f),0777, true);
+			}
+			
 			$sx=file_put_contents($f," ");
 			
 			if(file_exists($f)) {

@@ -87,5 +87,41 @@ switch ($_REQUEST['action']) {
 			printServiceErrorMsg("ERROR","Source File Not Defined.");
 		}
 	break;
+	
+	case "gethistory":
+		if(isset($_POST['src'])) {
+			$srcFile=getAppFile($_POST['src']);
+			$srcHash=md5($srcFile);
+			
+// 			echo $srcFile;
+			$hist=_db(true)->_selectQ(_dbTable("cache_editor",true),"id,created_on,created_by,disksize",['src_hash'=>$srcHash,'site'=>CMS_SITENAME])
+				->_orderBy("id DESC")->_GET();
+			if(count($hist)>0) {
+				printServiceMsg(["src_hash"=>$srcHash,"history"=>$hist]);
+			} else {
+				printServiceErrorMsg("ERROR","History for Source File Not Found.");
+			}
+		} else {
+			printServiceErrorMsg("ERROR","Source File Not Defined.");
+		}
+		break;
+	case "gethistoryContent":
+		if(isset($_POST['src']) && isset($_POST['refid'])) {
+			$srcFile=getAppFile($_POST['src']);
+			$srcHash=md5($srcFile);
+
+// 			echo $srcFile;
+			$hist=_db(true)->_selectQ(_dbTable("cache_editor",true),"*",['src_hash'=>$srcHash,'site'=>CMS_SITENAME,'id'=>$_POST['refid']])->_GET();
+			if(count($hist)>0) {
+				$txt=$hist[0]['content'];
+				$txt=stripcslashes($txt);
+				echo $txt;
+			} else {
+				printServiceErrorMsg("ERROR","History for Source File Not Found.");
+			}
+		} else {
+			printServiceErrorMsg("ERROR","Source File Not Defined.");
+		}
+		break;
 }
 ?>

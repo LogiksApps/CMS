@@ -63,7 +63,7 @@
 				}
 			}
 		},
-		"dtoc":{
+		"created_on":{
 			"label":"Created At",
 			"formatter":"date",
 			"searchable":true,
@@ -71,10 +71,13 @@
 				"type":"date"
 			}
 		},
-		"dtoe":{
+		"edited_on":{
 			"label":"Updated At",
-			"hidden":true,
-			"formatter":"time"
+			"formatter":"date",
+			"searchable":true,
+			"filter":{
+				"type":"date"
+			}
 		}
 	}
 }

@@ -67,9 +67,9 @@ if(count($dataPrivilegesFinal)<=0) {
 				if(isset($dataRolesFinal[$p['hash']])) {
 					$title=toTitle(_ling($p['name']));
 					if($dx==0)
-						echo "<li role='presentation' class='active'><a href='#{$p['hash']}' aria-controls='{$p['hash']}' role='tab' data-toggle='tab'>$title</a></li>";
+						echo "<li role='presentation' title='Privilege : $title ({$p['id']})' class='active'><a href='#{$p['hash']}' aria-controls='{$p['hash']}' role='tab' data-toggle='tab'>$title</a></li>";
 					else
-						echo "<li role='presentation'><a href='#{$p['hash']}' aria-controls='{$p['hash']}' role='tab' data-toggle='tab'>$title</a></li>";
+						echo "<li role='presentation' title='Privilege : $title ({$p['id']})' ><a href='#{$p['hash']}' aria-controls='{$p['hash']}' role='tab' data-toggle='tab'>$title</a></li>";
 					
 					$dx++;
 				}

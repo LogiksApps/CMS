@@ -76,6 +76,7 @@ if(is_dir($templateDir)) {
                   <select class='form-control' name='access'>
                       <option value='public'>Public</option>
                       <option value='private'>Private</option>
+                      <option value='protected'>Protected</option>
                   </select>
                 </div>
             </div>
