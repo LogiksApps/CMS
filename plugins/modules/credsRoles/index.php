@@ -37,7 +37,7 @@ if($r) {
 				$dataRolesFinal[$role['privilegehash']]=[];
 			}
 			
-			$dataRolesFinal[$role['privilegehash']][$role['module']][]=$role;//[$role['category']][$role['activity']]
+			$dataRolesFinal[$role['privilegehash']][strtolower($role['module'])][]=$role;//[$role['category']][$role['activity']]
 		}
 		
 		//printArray($dataRolesFinal);
@@ -46,13 +46,17 @@ if($r) {
 	$dataPrivilegesFinal=[];
 	$dataRolesFinal=[];
 }
-//printArray($dataPrivilegesFinal);
+// printArray($dataPrivilegesFinal);
 // printArray($dataRolesFinal);
 echo _css("credsRoles");
 
 if(count($dataPrivilegesFinal)<=0) {
 	print_error("Privleges Not Found for the site ".CMS_SITENAME);
 	return;
+}
+
+function roleSortModule($a,$b) {
+	return strcasecmp(strtolower($a), strtolower($b));
 }
 ?>
 <div class='col-xs-12'>
@@ -75,6 +79,7 @@ if(count($dataPrivilegesFinal)<=0) {
 				}
 			}
 		?>
+		<li class="pull-right"><input class="form-control" type="search" id="searchModule" placeholder='Search Module' ></li>
   </ul>
   <div id='roleTabModel' class="tab-content roleTabModel">
 		<?php
@@ -85,6 +90,7 @@ if(count($dataPrivilegesFinal)<=0) {
 				}
 				
 				if(isset($dataRolesFinal[$p['hash']])) {
+					uksort($dataRolesFinal[$p['hash']],"roleSortModule");
 					if($dx==0)
 						echo "<div role='tabpanel' class='tab-pane active' id='{$p['hash']}'>";
 					else
@@ -93,7 +99,7 @@ if(count($dataPrivilegesFinal)<=0) {
 					echo "<div class='panel-group' role='tablist' aria-multiselectable='false' id='accordion{$p['hash']}'>";
 					foreach($dataRolesFinal[$p['hash']] as $modName=>$modules) {
 						$modHash=md5($modName.$p['hash']);
-						echo "<div class='panel panel-default'>";
+						echo "<div class='panel panel-default' data-module='".strtolower($modName)."' >";
 						echo "<div class='panel-heading' role='tab' id='{$modHash}'>";
 							echo "<h4 class='panel-title'>";
 								//echo "<input class='pull-left' type='checkbox' name='checkAll' />";
@@ -138,7 +144,14 @@ $(function() {
 			this.checked=true;
 		}
 	});
-	
+	$("#searchModule").keyup(function(e) {
+		if($("#searchModule").val()==null || $("#searchModule").val().length<=0) {
+			$(".tab-pane.active .panel").show();
+			return;
+		}
+		$(".tab-pane.active .panel:not([data-module^='"+$("#searchModule").val()+"'])").hide();
+		$(".tab-pane.active .panel[data-module^='"+$("#searchModule").val()+"']").show();
+	});
 	$("#roleTabModel").delegate("input[name=checkAll]","change",function(e) {
 			uniStatus=this.checked;
 			$(this).closest(".panel.panel-default").find("input[name=roleCheckbox]").each(function() {

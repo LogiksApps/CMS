@@ -8,6 +8,15 @@ $(function() {
 			case "editPlugin":
 				
 				break;
+			case "removePlugin":
+				
+				break;
+			case "installPlugin":
+				
+				break;
+			case "blockPlugin":
+				
+				break;
 			default:
 				lgksToast("Plugin Action Not Defined.");
 		}

@@ -127,6 +127,9 @@ if(!function_exists("setupCMSEnviroment")) {
 		if(!is_dir(dirname($src))) {
 			mkdir(dirname($src),0777,true);
 		}
+		if(!file_exists($src)) {
+			file_put_contents($src,"");
+		}
 		if(!is_writable($src)) {
 			return false;
 		}

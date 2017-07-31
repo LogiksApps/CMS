@@ -1,6 +1,6 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
-checkServiceAccess();
+checkServiceSession();
 
 //echo $_REQUEST["forsite"];
 $site=$_REQUEST["forsite"];
