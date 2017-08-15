@@ -27,7 +27,7 @@ printPageComponent(false,[
 			//["preview"=>["icon"=>"<i class='fa fa-eye'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Preview Content"],
 			//
 			//["rename"=>["icon"=>"<i class='fa fa-terminal'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Rename Content"],
-			"removePackage"=>["icon"=>"<i class='fa fa-trash'></i>","class"=>"onsidebarSelect"],
+// 			"removePackage"=>["icon"=>"<i class='fa fa-trash'></i>","class"=>"onsidebarSelect"],
 		],
 		"sidebar"=>false,//"pageSidebar",
 		"contentArea"=>"pageContentArea"

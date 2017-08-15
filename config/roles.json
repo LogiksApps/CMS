@@ -12,6 +12,9 @@
 		"templateManager": {
 			"access_control": "public"
 		},
+		"dbEdit": {
+			"access_control": "public"
+		},
 		"logBook": {
 			"access_control": "public"
 		}

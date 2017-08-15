@@ -1,0 +1,14 @@
+table input {
+  border:0px !important;
+}
+#toolbtn_langDropdown a {
+  cursor:pointer;
+}
+
+table tbody tr.active .remove:before {
+  content: "\f00d";
+}
+table tbody tr.active .remove:before {
+  content: "\f00c";
+  margin-right: 0px !important;
+}
