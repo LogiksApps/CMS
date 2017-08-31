@@ -114,7 +114,8 @@ function roleSortModule($a,$b) {
 								foreach($modules as $role) {
 									$roleHash=md5($role['id'].$role['privilegehash']);
 									echo "<li class='list-group-item' guid='{$role['guid']}'><label>";
-									echo _ling(str_replace("_"," ",strtolower($role['activity'])))." <citie class='datalink' data-type='guid-users' data-value='{$role['guid']}'>[{$role['guid']}]</citie>";
+									echo toTitle(_ling(strtolower($role['category']))." @ "._ling(strtolower($role['activity'])));
+									echo " <citie class='datalink' data-type='guid-users' data-value='{$role['guid']}'>[{$role['guid']}]</citie>";
 									if($role['allow']===true || $role['allow']=="true") {
 										echo "<input class='pull-right' type='checkbox' name='roleCheckbox' data-hash='{$roleHash}' checked />";// data-x='".json_encode($p)."'
 									} else {
