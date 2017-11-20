@@ -1,0 +1,11 @@
+{
+    "title": "Module Popup",
+    "description": "",
+    "slug": "module",
+    "template": "popup",
+    "viewpage": "modules",
+    "keywords": "",
+    "robot": "",
+    "enabled": true,
+    "access": "private"
+}
