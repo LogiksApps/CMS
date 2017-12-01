@@ -12,6 +12,7 @@ $fDir=CMS_APPROOT.TEMPLATE_FOLDER;
 if(!is_dir($fDir)) {
 	mkdir($fDir,0777, true);
 }
+
 switch($_REQUEST["action"]) {
 	case "list":
 		$fs=scandir($fDir);
@@ -27,8 +28,10 @@ switch($_REQUEST["action"]) {
 						$sqlF="";
 					}
 					if(count($extArr)>2) {
+						$title=str_replace(".tpl","",$f);
+						$title=substr($title,strlen($extArr[0])+1);
 						$fData[$extArr[0]][]=[
-							"title"=>str_replace(".tpl","",$f),
+							"title"=>$title,
 							"slug"=>$f,
 // 							"file"=>$fDir.$f,
 							"sql"=>basename($sqlF),

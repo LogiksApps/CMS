@@ -1,21 +1,27 @@
 var currentType="installed";
 $(function() {
-	$("#pgworkspace").delegate(".cmdAction[cmd]","click",function(e) {
+	$("#pgtoolbar .nav.navbar-left").append("<li style='margin-top: 3px;width: 170px;'><select class='form-control' id='typeDropdown'></select></li>");
+	$("#pgtoolbar .nav.navbar-left").append("<li class='categoryDropown hidden' style='margin-top: 3px;width: 170px;margin-left:10px;'><select class='form-control' id='categoryDropdown'></select></li>");
+	
+	$("#typeDropdown").append("<option value='modules'>Modules</option><option value='widgets'>Widgets</option><option value='vendors'>Vendors</option><option value='packages'>Packages</option>");
+	$("#typeDropdown").change(listPackages);
+	$("#categoryDropdown").change(listPackages);
+	
+	$("#packageTable").delegate(".cmdAction[cmd]","click",function(e) {
 		cmd=$(this).attr("cmd");
-		app=$(this).attr("packkey");
+		packid=$(this).attr("packid");
 		
 		switch(cmd) {
+			case "configurePlugin":
+				
+				break;
 			case "editPlugin":
 				
 				break;
-			case "removePlugin":
-				
-				break;
-			case "installPlugin":
-				
-				break;
-			case "blockPlugin":
-				
+			case "infoPlugin":
+				processAJAXPostQuery(_service("packMan","packinfo"),"packid="+packid,function(ans) {
+					lgksMsg(ans);
+				});
 				break;
 			default:
 				lgksToast("Plugin Action Not Defined.");
@@ -30,100 +36,83 @@ $(function() {
 				return false;
 			}
 		});
-	
-	listPackages();
+	$("#categoryDropdown").load(_service("packMan","categories","select")+"&src="+currentType+"&type="+$("#typeDropdown").val(),function() {
+		listPackages();
+	});
 });
 function listPackages() {
-	$("#pgworkspace").html("<div class='ajaxloading ajaxloading5'>Fetching Plugins</div>");
+	$("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Packages</div></td></tr>");
 	
-	processAJAXQuery(_service("packMan","getlist")+"&type="+currentType,function(dataJSON) {
-		tmplHtml="<tr ><td>{{name}}</td><td>{{type}}</td><td>{{src}}</td>";//<th>{{k}}</th>class='{{#if is_global}}info{{/if}}'
-		tmplHtml+='<td>{{is_installed}}</td>';
-		tmplHtml+='<td>';
+	processAJAXQuery(_service("packMan","getlist")+"&src="+currentType+"&type="+$("#typeDropdown").val(),function(dataJSON) {
+		tmplCode = Handlebars.compile($("#packageRowTemplate").html());
+		html=tmplCode({"data":dataJSON.Data});
+		$("#packageTable").html(html);
 		
-		tmplHtml+='{{#unless is_global}}<i class="fa fa-pencil cmdAction pull-left" cmd="editPlugin" appkey="{{pkey}}" title="Edit App"></i>{{/unless}}';
-		tmplHtml+='</td></tr>';
-		tmplCode = Handlebars.compile(tmplHtml);
-		
-		
-		html="<div class='table-responsive' style='padding-right: 6px;'><table class='table table-striped table-hover table-condensed'>";
-		html+="<thead><tr>";
-		html+="<th>Plugin Name</th><th width=150px>Type</th><th width=150px>Source</th><th width=100px>Installed</th>";//<th width=50px>SL#</th>
-		//<th width=100px>Status</th><th width=100px>DevMode</th><th width=100px>Access</th>
-		html+="<th></th></tr></thead>";
-		html+="<tbody>";
-		
-		$.each(dataJSON.Data.MODULES,function(k,v) {
-			v['k']=k+1;
-			html+=tmplCode(v);
-		});
-		$.each(dataJSON.Data.VENDORS,function(k,v) {
-			v['k']=k+1;
-			html+=tmplCode(v);
-		});
-		$.each(dataJSON.Data.WIDGETS,function(k,v) {
-			v['k']=k+1;
-			html+=tmplCode(v);
-		});
-		
-		html+="</tbody>";
-		html+="</table></div>";
-		$("#pgworkspace").html(html);
+		if($("#packageTable tr").length<=0) {
+			$("#packageTable").html("<tr><td colspan=20><h3 align=center>No packages found</h3></td></tr>");
+		} else {
+			$("#packageTable tr").each(function() {
+				$(this).find("th").html($(this).index()+1);
+			});
+		}
 	},"json");
 }
 function searchPackages(txt) {
 	if(txt==null) {
 		return listPackages();
 	}
-	$("#pgworkspace").html("<div class='ajaxloading ajaxloading5'>Fetching Plugins</div>");
+	$("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Searching Packages</div></td></tr>");
 	
-	processAJAXQuery(_service("packMan","getlist")+"&type="+currentType+"&q="+txt,function(dataJSON) {
-		tmplHtml="<tr ><td>{{name}}</td><td>{{type}}</td><td>{{src}}</td>";//<th>{{k}}</th>class='{{#if is_global}}info{{/if}}'
-		tmplHtml+='<td>{{is_installed}}</td>';
-		tmplHtml+='<td>';
+	processAJAXQuery(_service("packMan","getlist")+"&src="+currentType+"&type="+$("#typeDropdown").val()+"&q="+txt,function(dataJSON) {
+		tmplCode = Handlebars.compile($("#packageRowTemplate").html());
+		html=tmplCode({"data":dataJSON.Data});
+		$("#packageTable").html(html);
 		
-		tmplHtml+='{{#unless is_global}}<i class="fa fa-pencil cmdAction pull-left" cmd="editPlugin" appkey="{{pkey}}" title="Edit App"></i>{{/unless}}';
-		
-		tmplHtml+='</td></tr>';
-		tmplCode = Handlebars.compile(tmplHtml);
-		
-		
-		html="<div class='table-responsive' style='padding-right: 6px;'><table class='table table-striped table-hover table-condensed'>";
-		html+="<thead><tr>";
-		html+="<th>Plugin Name</th><th width=150px>Type</th><th width=150px>Source</th><th width=100px>Installed</th>";//<th width=50px>SL#</th>
-		//<th width=100px>Status</th><th width=100px>DevMode</th><th width=100px>Access</th>
-		html+="<th></th></tr></thead>";
-		html+="<tbody>";
-		
-		$.each(dataJSON.Data.MODULES,function(k,v) {
-			v['k']=k+1;
-			html+=tmplCode(v);
-		});
-		$.each(dataJSON.Data.VENDORS,function(k,v) {
-			v['k']=k+1;
-			html+=tmplCode(v);
-		});
-		$.each(dataJSON.Data.WIDGETS,function(k,v) {
-			v['k']=k+1;
-			html+=tmplCode(v);
-		});
-		
-		html+="</tbody>";
-		html+="</table></div>";
-		$("#pgworkspace").html(html);
+		if($("#packageTable tr").length<=0) {
+			$("#packageTable").html("<tr><td colspan=20><h3 align=center>No packages found</h3></td></tr>");
+		} else {
+			$("#packageTable tr").each(function() {
+				$(this).find("th").html($(this).index()+1);
+			});
+		}
 	},"json");
 }
 function loadInstalled() {
+	$("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Indexing Packages</div></td></tr>");
+	
 	$("#pgtoolbar .navbar-right li").removeClass("active");
 	$("#pgtoolbar .navbar-right a#toolbtn_loadInstalled").parent().addClass("active");
+	$("#pgtoolbar li.categoryDropown").addClass("hidden");
 	
 	currentType="installed";
-	listPackages();
+	
+	$("#categoryDropdown").load(_service("packMan","categories","select")+"&src="+currentType+"&type="+$("#typeDropdown").val(), function() {
+		listPackages();
+	});
 }
 function loadRepo() {
+	$("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Indexing Packages</div></td></tr>");
+	
 	$("#pgtoolbar .navbar-right li").removeClass("active");
 	$("#pgtoolbar .navbar-right a#toolbtn_loadRepo").parent().addClass("active");
+	$("#pgtoolbar li.categoryDropown").removeClass("hidden");
 	
 	currentType="repos";
-	listPackages();
+	
+	$("#categoryDropdown").load(_service("packMan","categories","select")+"&src="+currentType+"&type="+$("#typeDropdown").val(), function() {
+		listPackages();
+	});
+}
+function loadStore() {
+	$("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Indexing Packages</div></td></tr>");
+	
+	$("#pgtoolbar .navbar-right li").removeClass("active");
+	$("#pgtoolbar .navbar-right a#toolbtn_loadStore").parent().addClass("active");
+	$("#pgtoolbar li.categoryDropown").removeClass("hidden");
+	
+	currentType="estore";
+	
+	$("#categoryDropdown").load(_service("packMan","categories","select")+"&src="+currentType+"&type="+$("#typeDropdown").val(), function() {
+		listPackages();
+	});
 }

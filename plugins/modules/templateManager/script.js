@@ -180,6 +180,8 @@ function loadEditor(rid,ext) {
 	initAutocompletion(editArea);
 	
 	$("#toolbtn_editTemplate").addClass("highlight");
+	editArea.session.selection.clearSelection();
+	editArea.session.getUndoManager().reset();
 	//editArea.setReadOnly(false);
 }
 function editTemplate() {

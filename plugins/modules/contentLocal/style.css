@@ -1,0 +1,81 @@
+.componentTree .list-group-item.list-file {
+	padding-left: 25px;
+}
+#pgtoolbar .nav.navbar-nav.navbar-left {
+	padding-right:20px;
+  border-right: 1px solid #EEE;
+}
+#pgtoolbar .fa.pull-right {
+	font-size: 20px !important;
+}
+#pgtoolbar .titleContent {
+	 padding: 10px
+}
+.modal-title {
+	color:#666;
+}
+.componentTree .list-group-item.active a {
+	color:white;
+}
+.contentPreview {
+	padding: 7px;
+	padding-right: 13px;
+	text-align: justify;
+}
+.contentPreview h1.metaTitle {
+	margin-top: 0px;
+}
+.contentPreview .metaLabel {
+	margin-left:5px;
+	margin-right:5px;
+	float:right;
+}
+
+
+.componentTree .list-group-item.list-file {
+	padding-left: 25px;
+}
+#pgtoolbar .nav.navbar-nav.navbar-left {
+	padding-right:20px;
+  border-right: 1px solid #EEE;
+}
+#pgtoolbar .fa.pull-right {
+	font-size: 20px !important;
+}
+#pgtoolbar .titleContent {
+	 padding: 10px
+}
+.modal-title {
+	color:#666;
+}
+.componentTree .list-group-item.active a {
+	color:white;
+}
+.contentPreview {
+	padding: 7px;
+	padding-right: 13px;
+	text-align: justify;
+}
+.contentPreview h1.metaTitle {
+	margin-top: 0px;
+}
+.contentPreview .metaLabel {
+	margin-left:5px;
+	margin-right:5px;
+	float:right;
+}
+
+#pgtoolbar .onOpenEditor {
+	text-decoration:none;
+	padding:12px;
+}
+#pgtoolbar .onOpenEditor:hover {
+	background:#CDCDCD;
+}
+
+#pgtoolbar .onOpenEditor.highlight {
+	background: #3c8dbc;
+	color:white;
+	display: inline-block;
+}
+#toolbtn_editContent {display:none;}

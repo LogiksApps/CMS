@@ -30,3 +30,28 @@
 .roleTabModel .panel-heading .accordion-toggle.collapsed:after {
     content: "\e080";    /* adjust as needed, taken from bootstrap.css */
 }
+
+.componentTree .list-group-item.active a {
+	color:white;
+}
+.panel-group .panel-heading-bold {
+	font-weight: bold;
+	text-align: left;
+	margin: 0px;
+	padding: 11px;
+	margin-bottom: 8px;
+	margin-top: -9px;
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #337ab7;
+	border-radius: 0px;
+	text-transform: uppercase;
+}
+
+.componentTree .list-group-item .glyphicon, .componentTree .list-group-item .fa {
+	margin-top: 3px;
+	display:none;
+}
+.componentTree .list-group-item.active .glyphicon, .componentTree .list-group-item.active .fa {
+	display:block;
+}

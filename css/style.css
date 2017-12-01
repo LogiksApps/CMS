@@ -798,6 +798,9 @@ table.dataTable>thead>tr>th {
 }
 
 
+.componentTree .list-group-item.list-file {
+	padding-left: 25px;
+}
 
 /******Animations******/
 /* Sidebar Animation */

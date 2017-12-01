@@ -2,9 +2,38 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 checkServiceAccess();
 
+loadModule("packages");
+
 $apps=_session("siteList");
 
 switch($_REQUEST["action"]) {
+	case "listImages":
+		if(function_exists("listLogiksAppImages")) {
+			if(isset($_REQUEST['recache']) && $_REQUEST['recache']=="true") {
+				$appImages=listLogiksAppImages(true);
+			} else {
+				$appImages=listLogiksAppImages();
+			}
+			
+			$appListFinal=["_"=>[]];
+			foreach($appImages as $a=>$b) {
+				$category=current(explode("_",$b['name']));
+				if($category=="") $category="_";
+				$appListFinal[$category][]=[
+					"hashid"=>$b['id'],
+					"name"=>$b['name'],
+					"full_name"=>$b['full_name'],
+					"descs"=>$b['description'],
+					"refid"=>$a,
+					"url"=>$b['html_url'],
+					"lsat_update"=>$b['pushed_at']
+				];
+			}
+			printServiceMsg($appListFinal);
+		} else {
+			printServiceMsg([]);
+		}
+		break;
 	case "listApps":
 		$appsFinal=[];
 		foreach($apps as $k=>$app) {
@@ -28,7 +57,8 @@ switch($_REQUEST["action"]) {
 					"cache"=>0,
 					"domain"=>0,
 					"services"=>0,
-					"allow_clone"=>($k!="cms")
+					"allow_clone"=>false,//($k!="cms"),
+					"allow_delete"=>false,
 					//"cfg"=>$cfgArr
 				];
 			}
@@ -92,6 +122,14 @@ switch($_REQUEST["action"]) {
 				
 				echo $app;
 			}
+		break;
+	case "appInfo":
+		if(isset($_POST['refid'])) {
+			$refid=$_POST['refid'];
+			include_once __DIR__."/appinfo.php";
+		} else {
+			echo "<h2 class='errorBox'>Sorry, could not find the refid, try again later.</h2>";
+		}
 		break;
 }
 ?>

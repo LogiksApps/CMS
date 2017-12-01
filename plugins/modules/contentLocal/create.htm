@@ -1,0 +1,39 @@
+<div class="modal fade" id="createContentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLabel">Create Content</h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Content Title (No Space Or special characters):</label>
+            <input type="text" class="form-control" name="fname">
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="message-text" class="col-form-label">Language:</label>
+              <select id='localeList' class='form-control' name='locale'>
+                <option value="gb">English</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="message-text" class="col-form-label">Type:</label>
+              <select class='form-control' name='type'>
+                <option value='htm'>HTML</option>
+                <option value='md'>Markdown</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="createContent(this)">Create</button>
+      </div>
+    </div>
+  </div>
+</div>

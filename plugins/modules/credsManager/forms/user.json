@@ -1,9 +1,11 @@
 {
+	"hooks":{
 	"preload": {
 		"helpers": ["countries"]
 	},
 	"postsubmit": {
 		"method": ["updateUserMetas"]
+		}
 	},
 	"source": {
 		"type": "sql",
@@ -143,7 +145,7 @@
 			"label": "User Reference Code",
 			"group": "admin"
 		},
-		"registerd_site":{
+		"registered_site":{
 			"label": "User Registered Site",
 			"group": "admin",
 			"type":"dataMethod",

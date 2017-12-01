@@ -1,0 +1,22 @@
+.componentTree .list-group-item.list-file {
+	padding-left: 25px;
+}
+#pgsidebar .page-title-bold {
+	margin: 0px;
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #337ab7;
+	border-radius: 0px;
+	text-transform: uppercase;
+	padding: 6px;
+}
+.appmodal .modal-dialog {
+	width: 850px;
+}
+
+.bootbox-body .btn.pull-right {
+	margin-left:10px;
+}
+.bootbox-body .btn.pull-left {
+	margin-right:10px;
+}

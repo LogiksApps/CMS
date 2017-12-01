@@ -144,3 +144,9 @@ function toTitle(s) {
 function getFileTree() {
   return $('#sidebarFileTree');
 }
+function showLoader(){
+    
+}
+function hideLoader(){
+    
+}

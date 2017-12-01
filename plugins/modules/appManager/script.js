@@ -1,5 +1,19 @@
 var currentItem="local";
 $(function() {
+	Handlebars.registerHelper('actionBtns', function(app) {
+		html={
+			"allow_delete":'<i class="fa fa-trash cmdAction pull-right" cmd="deleteApp" appkey="{{appkey}}" title="Delete App"></i>',
+			"allow_clone":'<i class="fa fa-copy cmdAction pull-right" cmd="copyApp" appkey="{{appkey}}" title="Clone App"></i>',
+		};
+		finalHTML="";
+		$.each(html,function(k,v) {
+			if(app[k]==true) {
+				finalHTML+=v;
+			}
+		});
+		return finalHTML;
+	});
+	
 	$("#pgworkspace").delegate(".cmdAction[cmd]","click",function(e) {
 		cmd=$(this).attr("cmd");
 		app=$(this).attr("appkey");
@@ -32,7 +46,7 @@ $(function() {
 				});
 				break;
 			case "cloneApp":
-				processAJAXPostQuery(_service("appManager","appEditor"),"app="+app,function(html) {
+				processAJAXPostQuery(_service("appManager","cloneApp"),"app="+app,function(html) {
 					
 				});
 				break;
@@ -49,55 +63,72 @@ $(function() {
 				lgksToast("App Action Not Defined.");
 		}
 	});
-	listApps();
-});
-
-function listApps() {
-	$("#pgworkspace").html("<div class='ajaxloading ajaxloading5'>Fetching Apps</div>");
 	
-	processAJAXQuery(_service("appManager","listApps"),function(dataJSON) {
-		tmplHtml="<tr class='{{#if readonly}}danger{{/if}}'><th>{{k}}</th><td>{{title}}</td><td>{{vers}}</td><td>{{router}}</td>";
-		tmplHtml+='<td>{{published}}</td>';
-		tmplHtml+='<td>{{status}}</td>';
-		tmplHtml+='<td>{{devmode}}</td>';
-		tmplHtml+='<td>{{access}}</td>';
-		tmplHtml+='<td>';
-		tmplHtml+='<a href="{{url}}" target=_blank class="pull-right fa fa-eye" title="Preview"></a>';
-		//tmplHtml+='<i class="fa fa-trash cmdAction pull-right" cmd="deleteApp" appkey="{{appkey}}" title=""></i>';
-		tmplHtml+='<i class="fa fa-pencil cmdAction pull-left" cmd="editApp" appkey="{{appkey}}" title="Edit App"></i>';
-		//tmplHtml+='{{#if allow_clone}}<i class="fa fa-copy cmdAction pull-left" cmd="copyApp" appkey="{{appkey}}" title="Clone App"></i>{{/if}}';
-		tmplHtml+='</td></tr>';
-		tmplCode = Handlebars.compile(tmplHtml);
+	$('#componentTree').delegate(".list-group-item.list-file a","click",function() {
+		file=$(this).closest(".list-group-item");
 		
+		title=$(file).data("fullname");
+		refid=$(file).data("refid");
 		
-		html="<div class='table-responsive' style='padding-right: 6px;'><table class='table table-striped table-hover table-condensed'>";
-		html+="<thead><tr>";
-		html+="<th width=50px>SL#</th><th>Title</th><th width=150px>Vers</th><th width=150px>Router</th><th width=100px>Published</th><th width=100px>Status</th><th width=100px>DevMode</th><th width=100px>Access</th>";
-		html+="<th></th></tr></thead>";
-		html+="<tbody>";
+		loadMarketAppInfo(title, refid);
+	});
+	
+	listApps();
+	listImages();
+});
+function relistImages() {
+	listImages(true);
+}
+function listImages(recache) {
+	$("#componentTree").html("<div class='ajaxloading5'></div>");
+	
+	if(recache===true) {
+		lx=_service("appManager","listImages")+"&recache=true";
+	} else {
+		lx=_service("appManager","listImages");
+	}
+	
+	processAJAXQuery(lx,function(txt) {
+		fs=txt.Data;
+		if(fs==null || fs.length<=0) {
+			$("#componentTree").html("<p align=center><br>No App Images Found.</p>");
+			return;
+		}
+		tmplCode = Handlebars.compile($("#imageTemplate").html());
+		html=tmplCode({"apps":fs});
 		
-		$.each(dataJSON.Data,function(k,v) {
-			v['k']=k+1;
-			html+=tmplCode(v);
-		});
-		
-		html+="</tbody>";
-		html+="</table></div>";
-		$("#pgworkspace").html(html);
+		$("#componentTree").html(html);
 	},"json");
 }
+function listApps() {
+	listImages();
+	
+	$("#appTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Apps</div></td></tr>");
+	
+	processAJAXQuery(_service("appManager","listApps"),function(dataJSON) {
+		tmplCode = Handlebars.compile($("#appRowTemplate").html());
+		html=tmplCode({"apps":dataJSON.Data});
+		
+		$("#appTable").html(html);
+		
+		$("#appTable tr").each(function() {
+			$(this).find("th").html($(this).index()+1);
+		});
+		
+	},"json");
+}
+
+function loadMarketAppInfo(title, refid) {
+	processAJAXPostQuery(_service("appManager","appInfo"),"refid="+refid,function(html) {
+					lgksMsg(html,"App Image : "+title,{closeButton:true,buttons: false,className:'appmodal'});
+				});
+}
+
+
 function removeApps() {
 	
 }
 
-function searchApps() {
-	
+function installApp(refid) {
+	alert("To Install : "+refid);
 }
-
-function loadLocalApps() {
-	
-}
-function loadMarket() {
-	
-}
-
