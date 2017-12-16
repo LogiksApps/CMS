@@ -145,11 +145,9 @@ function getFileTree() {
   return $('#sidebarFileTree');
 }
 function showLoader(){
-    
 	$("body .loader_bg").detach();
 	$("body").append("<div class='loader_bg'><div class='loader_wrapper'><div class='inner'><span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span></div></div></div>");
 }
 function hideLoader(){
-    
 	$("body .loader_bg").detach();
 }

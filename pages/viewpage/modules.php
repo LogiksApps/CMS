@@ -17,7 +17,7 @@ if(isset($slug["module"])) {
 				_pageVar("MODULE",$slug["module"]);
 			}
 		} else {
-			trigger_logikserror("Sorry, You don't have access to Module '{$slug["module"]}'.",E_ERROR,500);
+			trigger_logikserror("Sorry, You don't have access to Module '{$slug["module"]}'.",E_ERROR,403);
 		}
 		//exit($modulePath);
 		//loadModule($slug["module"]);
