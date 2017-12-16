@@ -20,7 +20,7 @@ switch ($src[0]) {
 
 		$db=_db($dbKey)->_selectQ($src[1],"*");
 		$db=$db->_orderby("id desc");
-		$db=$db->_limit(100,0);
+		$db=$db->_limit(10,0);
 		//echo $db->_SQL();
 
 		$data=$db->_get();

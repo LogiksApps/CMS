@@ -4,11 +4,25 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 $slug=_slug();
 
 if(isset($slug["module"])) {
-	if(checkModule($slug["module"])) {
-// 		loadModule($slug["module"]);
-      _pageVar("MODULESRC",$slug["module"]);
+	$modulePath=checkModule($slug["module"]);
+	if($modulePath) {
+		$modulePath=dirname($modulePath)."/cms.php";
+		
+		if(checkUserScope($slug["module"])) {
+			if(file_exists($modulePath)) {
+				_pageVar("PLUGINEDIT",true);
+				_pageVar("MODULE",$slug["module"].".cms");
+			} else {
+				_pageVar("PLUGINEDIT",false);
+				_pageVar("MODULE",$slug["module"]);
+			}
+		} else {
+			trigger_logikserror("Sorry, You don't have access to Module '{$slug["module"]}'.",E_ERROR,500);
+		}
+		//exit($modulePath);
+		//loadModule($slug["module"]);
 	} else {
-		trigger_logikserror("Sorry, Module '{$slug['module']}' not found.");
+		trigger_logikserror("Sorry, Module '{$slug["module"]}' not found.",E_ERROR,404);
 	}
 } else {
 	trigger_logikserror("Sorry, Module not defined.");

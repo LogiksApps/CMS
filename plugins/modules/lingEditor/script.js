@@ -71,7 +71,7 @@ function saveFile() {
 		nm=$(this).find("th.name input").val();
 		v=$(this).find("td.v1 input").val();
 		if(nm!=null && nm.length>0) {
-			q.push(nm+"="+v);
+			q.push(encodeURIComponent(nm)+"="+encodeURIComponent(v));
 		} else {
 			$(this).addClass("danger");
 		}
