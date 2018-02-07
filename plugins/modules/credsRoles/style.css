@@ -13,10 +13,20 @@
 	font-weight: normal;
 	margin: 0px;
 }
+.roleTabModel .list-group.list-group-activity {
+	width: 30%;
+	float:left;
+	margin:5px;
+}
 .roleTabModel .list-group-item {
 	width:45%;
 	float:left;
 	margin:5px;
+}
+.roleTabModel .list-group.list-group-activity .list-group-item { 
+	width: 100%;
+	float: none;
+	margin: 1px;
 }
 .roleTabModel input[name=checkAll] {
 	margin: 13px;
@@ -40,7 +50,7 @@
 	margin: 0px;
 	padding: 11px;
 	margin-bottom: 8px;
-	margin-top: -9px;
+/* 	margin-top: -9px; */
 	color: #fff;
 	background-color: #337ab7;
 	border-color: #337ab7;
