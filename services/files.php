@@ -73,6 +73,7 @@ function scanFolderTree($folder) {
 		$out=array_splice($out, 2);
 		asort($out);
 		foreach($out as $key => $value) {
+			if(in_array($value,["usermedia","tmp","temp"])) continue;
 			$bf=$folder.$value;
 			$bf=str_replace(ROOT.APPS_FOLDER."{$_GET['forsite']}/", "", $bf);
 			if(in_array($bf, $_ENV['HIDDEN'])) continue;
