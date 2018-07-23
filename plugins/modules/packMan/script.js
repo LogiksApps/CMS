@@ -1,3 +1,4 @@
+
 var currentType="installed";
 $(function() {
 	$("#pgtoolbar .nav.navbar-left").append("<li style='margin-top: 3px;width: 170px;'><select class='form-control' id='typeDropdown'></select></li>");
@@ -42,6 +43,7 @@ $(function() {
 });
 function listPackages() {
 	$("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Packages</div></td></tr>");
+	$("#categoryDropdown").show();
 	
 	processAJAXQuery(_service("packMan","getlist")+"&src="+currentType+"&type="+$("#typeDropdown").val(),function(dataJSON) {
 		tmplCode = Handlebars.compile($("#packageRowTemplate").html());
@@ -116,3 +118,16 @@ function loadStore() {
 		listPackages();
 	});
 }
+
+function loadUploader() {
+    $("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Loading Uploader</div></td></tr>");
+	
+	$("#pgtoolbar .navbar-right li").removeClass("active");
+	$("#pgtoolbar .navbar-right a#toolbtn_loadUploader").parent().addClass("active");
+	$("#pgtoolbar li.categoryDropown").removeClass("hidden");
+	
+	currentType="uploader";
+	
+	$("#categoryDropdown").hide();
+}
+

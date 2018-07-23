@@ -15,18 +15,24 @@ switch($_REQUEST["action"]) {
 				$appImages=listLogiksAppImages();
 			}
 			
-			$appListFinal=["_"=>[]];
+			$appListFinal=[];//["_"=>[]]
 			foreach($appImages as $a=>$b) {
 				$category=current(explode("_",$b['name']));
 				if($category=="") $category="_";
-				$appListFinal[$category][]=[
+				//if($b['name']=="Apps_CMS") continue;
+				
+				$appListFinal[]=[//[$category]
 					"hashid"=>$b['id'],
 					"name"=>$b['name'],
 					"full_name"=>$b['full_name'],
 					"descs"=>$b['description'],
+					"category"=>$category,
 					"refid"=>$a,
 					"url"=>$b['html_url'],
-					"lsat_update"=>$b['pushed_at']
+					"installed"=>0,
+					"noinstall"=>(in_array(strtoupper($b['name']),["APPS_CMS"])),
+					"last_update"=>current(explode("T",$b['pushed_at'])),
+					"timestamp"=>$b['pushed_at'],
 				];
 			}
 			printServiceMsg($appListFinal);
@@ -39,7 +45,7 @@ switch($_REQUEST["action"]) {
 		foreach($apps as $k=>$app) {
 			$cfg=ROOT.APPS_FOLDER.$k."/apps.cfg";
 			if(file_exists($cfg)) {
-				$cfgArr=LogiksConfig::parseConfigFile($cfg);
+			    $cfgArr=LogiksConfig::parseConfigFile($cfg);
 				$appsFinal[]=[
 					"appkey"=>$k,
 					"title"=>$cfgArr['DEFINE-APPS_NAME']['value'],
@@ -57,8 +63,8 @@ switch($_REQUEST["action"]) {
 					"cache"=>0,
 					"domain"=>0,
 					"services"=>0,
-					"allow_clone"=>false,//($k!="cms"),
-					"allow_delete"=>false,
+					"allow_clone"=>($k!=SITENAME),
+					"allow_delete"=>($_SESSION['SESS_PRIVILEGE_ID']==1 && $k!=SITENAME),
 					//"cfg"=>$cfgArr
 				];
 			}
@@ -104,31 +110,39 @@ switch($_REQUEST["action"]) {
 		} else {
 			echo "<h2 class='errorBox'>Sorry, could not find the app, or you do not have permission to operate on the app</h2>";
 		}
-		break;
-		case "cloneApp":
-			if(isset($_POST['app']) && in_array($_POST['app'],array_keys($apps))) {
-				$app=$_POST['app'];unset($_POST['app']);
-				
-				//Copy files -usermedia
-				
-				//For Database
-				//Create DB if possible
-				//Copy tables if possible
-				//Attach db to app
-				
-				//optionally attach to app
-				//cache
-				//msg
-				
-				echo $app;
-			}
-		break;
+	    break;
+	case "cloneApp":
+		if(isset($_POST['app']) && in_array($_POST['app'],array_keys($apps))) {
+			$app=$_POST['app'];unset($_POST['app']);
+			
+			//Copy files -usermedia
+			
+			//For Database
+			//Create DB if possible
+			//Copy tables if possible
+			//Attach db to app
+			
+			//optionally attach to app
+			//cache
+			//msg
+			
+			echo $app;
+		}
+	    break;
 	case "appInfo":
 		if(isset($_POST['refid'])) {
 			$refid=$_POST['refid'];
 			include_once __DIR__."/appinfo.php";
 		} else {
 			echo "<h2 class='errorBox'>Sorry, could not find the refid, try again later.</h2>";
+		}
+		break;
+	case "install":
+		if(isset($_POST['refid'])) {
+			$refid=$_POST['refid'];
+			printServiceMsg(installLogiksAppImage($refid));
+		} else {
+			printServiceMsg(["error"=>"Sorry, could not find the refid, try again later."]);
 		}
 		break;
 }

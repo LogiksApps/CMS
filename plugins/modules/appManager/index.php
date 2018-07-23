@@ -5,7 +5,7 @@ loadModule("pages");
 
 function pageContentArea() {
 	return "<div class='table-responsive' style='padding-right: 6px;'><table class='table table-striped table-hover table-condensed'>
-	<thead><tr>
+	<thead id='app1' class='hidden'><tr>
 		<th width=50px>SL#</th>
 		<th>Title</th>
 		<th width=150px>AppName</th>
@@ -15,7 +15,17 @@ function pageContentArea() {
 		<th width=100px>Status</th>
 		<th width=100px>DevMode</th>
 		<th width=100px>Access</th>
-		<th width=150px>-</th>
+		<th width=170px>-</th>
+	</tr></thead>
+	<thead id='app2' class='hidden'><tr>
+		<th width=50px>SL#</th>
+		<th>Title</th>
+		<th width=150px>AppCode</th>
+		<th width=150px>Category</th>
+		<th>Descs</th>
+		<th width=100px>Installed</th>
+		<th width=100px>Updated</th>
+		<th width=170px>-</th>
 	</tr></thead>
 	<tbody id='appTable'>
 		<tr><td colspan=20><h2 align=center>Checking Installation ...</h2></td></tr>
@@ -39,19 +49,19 @@ printPageComponent(false,[
 		"toolbar"=>[
 			//"searchApps"=>["title"=>"Search Apps","type"=>"search","align"=>"right"],
 	
-// 			"loadLocalApps"=>["title"=>"Installed","align"=>"right","class"=>"active"],
-			//"loadMarket"=>["title"=>"New Apps","align"=>"right"],
+			"loadLocalApps"=>["title"=>"Installed","align"=>"right","class"=>"active"],
+			"loadAppImages"=>["title"=>"New Apps","align"=>"right"],
 		
-			"listApps"=>["icon"=>"<i class='fa fa-refresh'></i>"],
-			['type'=>"bar"],
-			"newApp"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New"],
+			"reloadListUI"=>["icon"=>"<i class='fa fa-refresh'></i>"],
+			//['type'=>"bar"],
+			//"newApp"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New"],
 			//"rename"=>["icon"=>"<i class='fa fa-terminal'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Rename Content"],
 			//"openExternal"=>["icon"=>"<i class='fa fa-external-link'></i>","class"=>"onsidebarSelect"],
 			//"preview"=>["icon"=>"<i class='fa fa-eye'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Preview Content"],
 			//
 			//"removeApps"=>["icon"=>"<i class='fa fa-trash'></i>","class"=>"onsidebarSelect"],
 		],
-		"sidebar"=>"pageSidebar",
+		"sidebar"=>false,
 		"contentArea"=>"pageContentArea"
 	]);
 ?>
@@ -70,7 +80,24 @@ printPageComponent(false,[
 		<td>
 			<i class="fa fa-pencil cmdAction pull-left" cmd="editApp" appkey="{{appkey}}" title="Edit App"></i>
 			<a href="{{url}}" target=_blank class="pull-left fa fa-eye" title="Preview"></a>
+			
 			{{{actionBtns this}}}
+		</td>
+	</tr>
+	{{/each}}
+</script>
+<script id="imageRowTemplate" type="text/x-handlebars-template">
+	{{#each appimages}}
+	<tr class='{{#if noinstall}}danger{{/if}}' refid='{{appkey}}'>
+		<th>{{@index}}</th>
+		<td>{{name}}</td>
+		<td>{{full_name}}</td>
+		<td>{{category}}</td>
+		<td>{{descs}}</td>
+		<td>{{installed}}</td>
+		<td>{{last_update}}</td>
+		<td>
+			<i class="fa fa-plus fa-2x pull-right cmdAction pull-left" cmd="installAppImage" appkey="{{refid}}" title="Install This App"></i>
 		</td>
 	</tr>
 	{{/each}}

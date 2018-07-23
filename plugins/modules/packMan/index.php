@@ -39,7 +39,8 @@ printPageComponent(false,[
 	
 			"loadInstalled"=>["title"=>"Installed","align"=>"right","class"=>"active"],
 			"loadRepo"=>["title"=>"Repo","align"=>"right"],
-			"loadStore"=>["title"=>"eStore","align"=>"right"],
+			//"loadStore"=>["title"=>"eStore","align"=>"right"],
+			"loadUploader"=>["title"=>"Upload","align"=>"right"],
 		
 			"listPackages"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			['type'=>"bar"],
@@ -66,9 +67,9 @@ printPageComponent(false,[
 		<td>{{status}}</td>
 		<td>{{created_on}}</td>
 		<td>
-			{{#if is_installed}}<i class="fa fa-info-circle cmdAction pull-left" cmd="infoPlugin" packid="{{packid}}" title="Plugin Info"></i>{{/if}}
-			{{#if is_editable}}<i class="fa fa-pencil cmdAction pull-left" cmd="editPlugin" packid="{{packid}}" title="Edit Plugin"></i>{{/if}}
-			{{#if is_configurable}}<i class="fa fa-gear cmdAction pull-left" cmd="configurePlugin" packid="{{packid}}" title="Configure Plugin"></i>{{/if}}
+			{{#if is_installed}}<i class="fa fa-info-circle fa-2x cmdAction pull-left" cmd="infoPlugin" packid="{{packid}}" title="Plugin Info"></i>{{/if}}
+			{{#if is_editable}}<i class="fa fa-pencil fa-2x cmdAction pull-left" cmd="editPlugin" packid="{{packid}}" title="Edit Plugin"></i>{{/if}}
+			{{#if is_configurable}}<i class="fa fa-gear fa-2x cmdAction pull-left" cmd="configurePlugin" packid="{{packid}}" title="Configure Plugin"></i>{{/if}}
 		</td>
 	</tr>
 	{{/each}}

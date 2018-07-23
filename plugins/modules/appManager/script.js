@@ -1,5 +1,7 @@
-var currentItem="local";
+var currentItem="localapps";
 $(function() {
+    $("#appTable").closest("table").find("thead").removeClass("hidden").hide();
+    
 	Handlebars.registerHelper('actionBtns', function(app) {
 		html={
 			"allow_delete":'<i class="fa fa-trash cmdAction pull-right" cmd="deleteApp" appkey="{{appkey}}" title="Delete App"></i>',
@@ -50,6 +52,9 @@ $(function() {
 					
 				});
 				break;
+			case "installAppImage":
+			    loadMarketAppInfo($(this).text(),app);
+			    break;
 			case "exportApp":
 				
 				break;
@@ -73,14 +78,48 @@ $(function() {
 		loadMarketAppInfo(title, refid);
 	});
 	
-	listApps();
-	listImages();
+	//listApps();
+	//listImages();
+	loadLocalApps();
 });
+function loadLocalApps() {
+    $("#appTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Apps</div></td></tr>");
+	
+	$("#pgtoolbar .navbar-right li").removeClass("active");
+	$("#pgtoolbar .navbar-right a#toolbtn_loadLocalApps").parent().addClass("active");
+	
+	currentItem="localapps";
+	
+	listApps();
+}
+function loadAppImages() {
+    $("#appTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Available App List</div></td></tr>");
+	
+	$("#pgtoolbar .navbar-right li").removeClass("active");
+	$("#pgtoolbar .navbar-right a#toolbtn_loadAppImages").parent().addClass("active");
+	
+	currentItem="newapps";
+	
+	listImages();
+}
+function reloadListUI() {
+    if(currentItem=="localapps") {
+        listApps();
+    } else if(currentItem=="newapps") {
+        listImages();
+    } else {
+        lgksToast("Not supported");
+    }
+}
+
 function relistImages() {
 	listImages(true);
 }
 function listImages(recache) {
-	$("#componentTree").html("<div class='ajaxloading5'></div>");
+    $("#appTable").closest("table").find("thead").hide();
+    $("#appTable").closest("table").find("#app2").show();
+    
+	$("#appTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Available App Images</div></td></tr>");
 	
 	if(recache===true) {
 		lx=_service("appManager","listImages")+"&recache=true";
@@ -88,21 +127,21 @@ function listImages(recache) {
 		lx=_service("appManager","listImages");
 	}
 	
-	processAJAXQuery(lx,function(txt) {
-		fs=txt.Data;
-		if(fs==null || fs.length<=0) {
-			$("#componentTree").html("<p align=center><br>No App Images Found.</p>");
-			return;
-		}
-		tmplCode = Handlebars.compile($("#imageTemplate").html());
-		html=tmplCode({"apps":fs});
+	processAJAXQuery(lx,function(dataJSON) {
+		tmplCode = Handlebars.compile($("#imageRowTemplate").html());
+		html=tmplCode({"appimages":dataJSON.Data});
 		
-		$("#componentTree").html(html);
+		$("#appTable").html(html);
+		
+		$("#appTable tr").each(function() {
+			$(this).find("th").html($(this).index()+1);
+		});
 	},"json");
 }
 function listApps() {
-	listImages();
-	
+    $("#appTable").closest("table").find("thead").hide();
+    $("#appTable").closest("table").find("#app1").show();
+    
 	$("#appTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Apps</div></td></tr>");
 	
 	processAJAXQuery(_service("appManager","listApps"),function(dataJSON) {
@@ -130,5 +169,7 @@ function removeApps() {
 }
 
 function installApp(refid) {
-	alert("To Install : "+refid);
+	processAJAXPostQuery(_service("appManager","install"),"refid="+refid,function(dataJSON) {
+					console.log(dataJSON);
+				});
 }
