@@ -1,0 +1,48 @@
+{
+    "name": "CMS",
+    "version": "4.0",
+    "status": "released",
+    "type": "app",
+    "package":"olgks.cms",
+    "description": " Open Source Content Management System (CMS). ",
+    "keywords": "Open Source Content Management System CMS",
+    "license": "MIT",
+    "homepage": "http://openlogiks.org",
+    "logiks-core": {
+        "min": "4.0",
+        "max": "*"
+    },
+    "files": [],
+    "ignore": [
+        ".git",
+        "todos.txt",
+        "Readme.txt"
+    ],
+    "dependencies": {
+        "plugins":{
+            "forms":"*",
+            "reports":"*",
+            "infoview":"*",
+            "infoviewTable":"*",
+            "navigator":"*",
+            "page":"*",
+            "dashboard":"*"
+        }
+    },
+    "devDependencies": {},
+    "permissions":{},
+    "schema":{
+        "core":{
+
+        }
+    },
+    "dbdata":{
+
+    },
+    "authors": [
+        {
+            "name": "SILK Admin",
+            "email": "admin@openlogiks.org"
+        }
+    ]
+}
