@@ -1,5 +1,5 @@
 $(function() {
-  $.ajaxSetup({cache: true});
+  //$.ajaxSetup({cache: true});
   $("#header #toolsMenu").delegate("a[href]:not(.noauto)","click",function(e) {
       e.preventDefault();
       href=$(this).attr('href');
