@@ -6,7 +6,7 @@
     <div class="navbar-header" title='Switch Between Available Sites' style='float: left;background: transparent;'>
         <div class="btn-group site-select-form">
             <button type="button" class="btn btn-default show-sidebar-menu">
-		<span class="fa fa-bars"></span>
+          		<span class="fa fa-bars"></span>
             </button>
 						
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -38,6 +38,17 @@
                 </li>
             </ul>
         </li>
-
     </ul>
+    
+    <div class="searchForm pull-right hidden-xs" style="width: 350px;height: 49px;padding-top: 8px;">
+      <div class="input-group-1">
+        <input type="text" class="form-control" placeholder="Search Logiks Functions, etc" id='searchCodeBase'>
+        <div class="input-group-btn hidden">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#">Search Logiks Core</a></li>
+          </ul>
+        </div>
+    </div>
+  </div>
 </nav>

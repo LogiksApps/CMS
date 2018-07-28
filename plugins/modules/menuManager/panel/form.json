@@ -1,0 +1,128 @@
+{
+	"hooks": {
+		"preload": {
+			"helpers": ["countries"]
+		},
+		"presubmit": {
+		    "modules":["bizrules"]
+		},
+		"postsubmit": {
+		    "modules":["bizflow","bizlogger"]
+		}
+	},
+	"source": {
+		"type": "sql",
+		"table": "do_links",
+		"where": ["md5(id)"]
+	},
+	"forcefill" : {
+        "guid":"#SESS_GUID#",
+        "site":"*"
+	},
+	"gotolink":"infoview/form/{hashid}?",
+	"fields": {
+	    "menuid":{
+	        "label": "MenuGroup",
+		    "group": "Info",
+			"required":true,
+			"type": "dataSelectorFromTable",
+			"table": "do_links",
+			"columns": "menuid as title ,menuid as value",
+			"groupBy":"menuid"
+	    },
+	    "groupuid":{
+		    "label": "GroupID",
+		    "group": "Info",
+			"required":true,
+			"type":"dataMethod",
+			"method":"getGroupDropdown"
+		},
+		"title": {
+			"label": "Title",
+			"group": "Info",
+			"required":true
+		},
+		"link": {
+			"label": "Link",
+			"group": "Info",
+			"required":true
+		},
+		"menugroup":{
+		    "label": "Group",
+		    "group": "Info",
+			"type": "dataSelectorFromTable",
+			"table": "do_links",
+			"columns": "title as title ,id as value",
+			"where": {
+			    "(menugroup IS NULL OR length(menugroup)=0 OR menugroup='/') AND link='#'":"RAW"
+			}
+		},
+		"category":{
+			"label": "Subgroup",
+			"type": "suggest",
+			"group": "Info",
+			"autocomplete":true
+		},
+		"class": {
+			"label": "Class",
+			"group": "Info"
+		},
+		"iconpath":{
+		    "label": "Icon (Class/Path)",
+			"group": "Info"
+		},
+		"tips":{
+			"label": "Tips",
+			"group": "Info"
+		},
+		"weight":{
+		    "label": "Weight/Ordering",
+			"group": "Info",
+			"type":"number",
+			"default":0
+		},
+		"to_check":{
+		    "label":"Scope Rules/Permission",
+		    "group":"Admin"
+		},
+		"privilege":{
+		    "label":"Privilege Level",
+		    "group":"Admin",
+		    "default":"*"
+		},
+		"device":{
+		    "label":"Device",
+		    "group":"Admin",
+		    "default":"*"
+		},
+		"target":{
+		    "label":"Target",
+		    "group":"Admin",
+		    "default":""
+		},
+		"onmenu":{
+		    "label": "On Menu",
+    		"group": "Admin",
+    		"type": "select",
+    		"options": {
+    			"": "Select Status",
+    			"false": "False",
+    			"true": "True"
+    		},
+    		"required": true,
+    		"default":"true"
+		},
+		"blocked":{
+		    "label": "Block",
+    		"group": "Admin",
+    		"type": "select",
+    		"vmode": "edit",
+    		"options": {
+    			"": "Select Status",
+    			"false": "False",
+    			"true": "True"
+    		},
+    		"required": true
+		}
+	}
+}

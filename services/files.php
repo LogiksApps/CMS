@@ -6,6 +6,12 @@ $_ENV['HIDDEN']=[
 		"tmp",
 		".git",
 	];
+$_ENV['NOSCAN']=[
+        "usermedia",
+		"tmp",
+		"temp",
+		".git",
+	];
 
 switch ($_REQUEST['action']) {
 	case 'listFiles':
@@ -55,14 +61,28 @@ switch ($_REQUEST['action']) {
 		}
 		break;
 	case "rm":
+    if(isset($_POST['path'])) {
+			$fDir=str_replace("//","/",CMS_APPROOT.$_POST['path']);
+			if(!file_exists($fDir)) {
+				echo "File/Folder does not exist.";
+				return;
+			}
+      deleteFolder($fDir);
+      if(!file_exists($fDir)) echo "Deleted file successfully";
+      else echo "Error deleting file. Check if its readonly";
+		} else {
+			echo "New Path Not Found.";
+		}
 		break;
 	case "cp":
 		break;
 	case "mv":
 		break;
-	case "cl"://clone
+	case "clone"://clone
 		break;
-	case "rn"://rename
+	case "rename"://rename
+		break;
+  	case "permissions"://permissions
 		break;
 }
 function scanFolderTree($folder) {
@@ -73,7 +93,7 @@ function scanFolderTree($folder) {
 		$out=array_splice($out, 2);
 		asort($out);
 		foreach($out as $key => $value) {
-			if(in_array($value,["usermedia","tmp","temp"])) continue;
+		    if(in_array($value,$_ENV['NOSCAN'])) continue;
 			$bf=$folder.$value;
 			$bf=str_replace(ROOT.APPS_FOLDER."{$_GET['forsite']}/", "", $bf);
 			if(in_array($bf, $_ENV['HIDDEN'])) continue;
@@ -85,5 +105,22 @@ function scanFolderTree($folder) {
 		}
 	}
 	return array_merge_recursive(array_reverse($folders),$files);
+}
+/* 
+ * php delete function that deals with directories recursively
+ */
+function deleteFolder($target) {
+    if(is_dir($target)){
+        $files = glob( $target . '*', GLOB_MARK ); //GLOB_MARK adds a slash to directories returned
+
+        foreach( $files as $file ) {
+            deleteFolder( $file );      
+        }
+
+        rmdir( $target );
+    } elseif(is_file($target)) {
+        unlink( $target );  
+    }
+  return file_exists($target);
 }
 ?>
