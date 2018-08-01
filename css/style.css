@@ -815,6 +815,28 @@ table.dataTable>thead>tr>th {
     animation: slide-out 0.5s forwards;
     -webkit-animation: slide-out 0.5s forwards;
 }
+
+.text-success {
+    color: #3e9e40 !important;
+} 
+.text-info {
+    color: #31708f !important;
+}
+.text-warning {
+    color: #8a6d3b !important;
+}
+.text-danger {
+    color:#CE3330 !important;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
     
 @keyframes slide-in {
     100% { transform: translateX(0%); }

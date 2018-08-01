@@ -28,23 +28,6 @@ $(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
   $('#sidebarMenuTree').metisMenu();
-
-  $("#searchCodeBase").keyup(function(e) {
-    e.preventDefault();
-    
-    if(this.value==null || this.value.length<=0) {
-      lgksToast("Please type something to search");
-      return;
-    }
-    
-    if(e.keyCode==13) {
-      term=this.value;
-      lx=_link("modules/codeSearch")+"&query="+term;
-      top.openLinkFrame("Search : "+term,lx);
-    }
-    
-    return false;
-  });
 });
 
 //Loads the correct sidebar on window load,
