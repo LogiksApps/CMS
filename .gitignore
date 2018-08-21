@@ -3,6 +3,7 @@
 /usermedia/
 /pluginsDev/
 /todo.txt
+/misc/menus/cms/*
 
 .project
 .DS_Store

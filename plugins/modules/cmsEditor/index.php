@@ -2,6 +2,7 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 
 include dirname(__FILE__)."/config.php";
+include dirname(__FILE__)."/api.php";
 
 $editType=$_REQUEST['type'];
 
@@ -48,10 +49,14 @@ switch($editType) {
 		$srcInfo=finfo_file($finfo, $srcFile);
 		finfo_close($finfo);
 
+        $fname = basename($_REQUEST['src']);
 		$srcInfo=explode("/", $srcInfo);
 		$_REQUEST['srcinfo']=$srcInfo[0];
-
-		if(isset($editorConfig['layouts'][$_REQUEST['path']])) {
+        //exit($editorConfig['fname'][$fname].file_exists($editorConfig['fname'][$fname]));
+        
+		if(isset($editorConfig['fname'][$fname])) {
+			include_once $editorConfig['fname'][$fname];
+		} elseif(isset($editorConfig['layouts'][$_REQUEST['path']])) {
 			include_once $editorConfig['layouts'][$_REQUEST['path']];
 		} elseif(isset($editorConfig['mimes'][$_REQUEST['ext']])) {
 			include_once $editorConfig['mimes'][$_REQUEST['ext']];

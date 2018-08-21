@@ -147,7 +147,7 @@ function searchLocal($q,$lang=false) {
     
     return ["results"=>$finalResults,"maxcount"=>$results['totalFiles']];
 }
-function searchDirectory($term, $path,$extension=["php","js","css","htm","html","tpl","json","cfg","md"]) {
+function searchDirectory($term, $path, $extension=["php","js","css","htm","html","tpl","json","cfg","md"]) {
     if($extension===false) {
         //Automatic All Extension Detection
         $extension=["php","js","css","htm","html","tpl","json","cfg","md"];
@@ -156,8 +156,11 @@ function searchDirectory($term, $path,$extension=["php","js","css","htm","html",
     $files = array();
 
     $totalFiles = 0;
-    foreach ($dir as $file){
-        if (!$file->isDot()){
+    foreach ($dir as $file) {
+        if (!$file->isDot()) {
+            if(in_array($file->getBasename(),["vendors"]) || substr($file->getBasename(),0,1)==".") {
+                continue;
+            }
             if($file->isDir()) {
                 $dirScan = searchDirectory($term,$file->getPathname(),$extension);
                 $files = array_merge($files,$dirScan['files']);
@@ -170,18 +173,26 @@ function searchDirectory($term, $path,$extension=["php","js","css","htm","html",
                 
                 if(in_array($ext,$extension)) {
                     $content = file_get_contents($file->getPathname());
-                    $lineNo = strpos(strtolower($content), $term);
+                    $offset = 0;
                     
-                    if ($lineNo !== false) {
-                        $files[] = [
-                            "title"=>$file->getBasename(),
-                            "extension"=>$ext,
-                            "path"=>$pathName,
-                            "modified"=>date("d/m/Y",$file->getMTime()),
-                            "index"=>$lineNo,
-                            "codesnap"=>extractCodeFragment($content,$lineNo),
-                            "codetext"=>$term,
-                            ];
+                    $lineNo  = true;
+                    
+                    while($lineNo) {
+                        $lineNo = searchCode($content, $term, $offset);
+                        
+                        if ($lineNo !== false) {
+                            $offset= $lineNo+1;
+                            // $pathHash = md5($pathName);
+                            $files[] = [
+                                "title"=>$file->getBasename(),
+                                "extension"=>$ext,
+                                "path"=>$pathName,
+                                "modified"=>date("d/m/Y",$file->getMTime()),
+                                "index"=>$lineNo,
+                                "codesnap"=>[extractCodeFragment($content,$lineNo)],
+                                "codetext"=>$term,
+                                ];
+                        }
                     }
                     $content="";
                 }
@@ -190,6 +201,9 @@ function searchDirectory($term, $path,$extension=["php","js","css","htm","html",
     }
 
     return array('files' => $files, 'totalFiles' => $totalFiles);
+}
+function searchCode($content, $term, $offset = 0) {
+    return stripos($content, $term, $offset);
 }
 function extractCodeFragment($codeText,$index) {
     $fragLen=80;
