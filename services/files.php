@@ -11,6 +11,7 @@ $_ENV['NOSCAN']=[
 		"tmp",
 		"temp",
 		".git",
+		".."
 	];
 
 switch ($_REQUEST['action']) {
@@ -85,7 +86,8 @@ switch ($_REQUEST['action']) {
   	case "permissions"://permissions
 		break;
 }
-function scanFolderTree($folder) {
+function scanFolderTree($folder,$depth=0) {
+	if($depth>5) return [];
 	$files=array();
 	$folders=array();
 	if(is_dir($folder)) {
@@ -98,7 +100,7 @@ function scanFolderTree($folder) {
 			$bf=str_replace(ROOT.APPS_FOLDER."{$_GET['forsite']}/", "", $bf);
 			if(in_array($bf, $_ENV['HIDDEN'])) continue;
 			if(is_dir($folder.$value)) {
-				$folders[$value]=scanFolderTree($folder.$value."/");
+				$folders[$value]=scanFolderTree($folder.$value."/",$depth+1);
 			} else {
 				$files[]=$value;
 			}
