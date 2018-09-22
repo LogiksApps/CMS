@@ -1,0 +1,58 @@
+<div class="container">
+	<div class="row">
+        <div class="col-md-12 text-center">
+    		<h2>Logiks Code Search</h2>
+            <div id="code-search-input">
+                <div class="input-group col-md-12" style="height: 40px;">
+                    <input id='searchTextField' type="text" class="form-control input-lg" placeholder="Code Search" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="search-filters">
+                <div class='pull-left'>
+                    <label class="badge alert-info"><input type="radio" name="filters" value="github"> Github</label>
+                    <label class="badge alert-info"><input type="radio" name="filters" value="appsource"> App Source</label>
+                </div>
+                <div class='pull-right'>
+                    <label class="badge alert-warning"><input type="checkbox" name="lang" value="*" checked> All</label>
+                    <label class="badge alert-warning"><input type="checkbox" name="lang" value="php"> PHP</label>
+                    <label class="badge alert-warning"><input type="checkbox" name="lang" value="js"> JS</label>
+                    <label class="badge alert-warning"><input type="checkbox" name="lang" value="css"> CSS</label>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<div class="container searchResultContainer hidden">
+    <hgroup class="mb20"><br>
+		<h2 id='searchInfo' class="lead"><strong class="text-danger">3</strong> results were found for the search for <strong class="text-danger">Lorem</strong></h2>
+	</hgroup>
+    <section id='searchResults' class="col-xs-12 col-sm-6 col-md-12">
+		
+	</section>
+</div>
+
+<script id="search-template" type="text/x-handlebars-template">
+{{#each RESULTS}}
+    <article class="search-result row">
+    	<div class="col-xs-12 col-sm-12 col-md-2">
+    		<ul class="meta-search">
+    			<li>
+    			    <i class="glyphicon glyphicon-tags"></i> 
+    			    <a href="{{repo_url}}" target=_blank > {{repo}}</a>
+    			</li>
+    		</ul>
+    	</div>
+    	<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+    		<h3><a href="{{link}}" target=_blank>{{path}}</a></h3>
+            <pre><code>{{codesnap}}</code></pre>
+    	</div>
+    	<span class="clearfix"></span>
+    </article>
+{{/each}}
+</script>

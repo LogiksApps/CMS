@@ -109,7 +109,7 @@ $(function() {
 function fileEvents(cmd, eleTag, opts) {
     bpath = $(eleTag).attr("basepath");
     fpath = $(eleTag).attr("filepath");
-    bname = bpath.split("/");
+    bname = fpath.split("/");
     bname = bname[bname.length - 1];
 
     switch (cmd) {
@@ -117,7 +117,7 @@ function fileEvents(cmd, eleTag, opts) {
             loadFileTree();
             break;
         case "delete":
-            lgksConfirm("Are you sure about deleting this file :" + bname, "Delete File!", function(ans) {
+            lgksConfirm("Are you sure about deleting this file : " + bname, "Delete File!", function(ans) {
                 if (ans) {
                     processAJAXPostQuery(_service("files") + "&action=rm", "path=" + fpath, function(txt) {
                         if (txt != null && txt.length > 0) {
@@ -148,7 +148,11 @@ function fileEvents(cmd, eleTag, opts) {
 
 function folderEvents(cmd, eleTag, opts) {
     bpath = $(eleTag).attr("basepath");
-    bname = bpath.split("/");
+    bname = bpath;
+    if(bname.substr(bname.length-1)=="/") {
+        bname=bname.substr(0,bname.length-1);
+    }
+    bname = bname.split("/");
     bname = bname[bname.length - 1];
 
     switch (cmd) {
@@ -210,7 +214,7 @@ function folderEvents(cmd, eleTag, opts) {
             //openLinkFrame("New File",lx);
             break;
         case "delete":
-            lgksConfirm("Are you sure about deleting this folder :" + bname, "Delete File!", function(ans) {
+            lgksConfirm("Are you sure about deleting this folder : " + bname, "Delete File!", function(ans) {
                 if (ans) {
                     processAJAXPostQuery(_service("files") + "&action=rm", "path=" + bpath, function(txt) {
                         if (txt != null && txt.length > 0) {
