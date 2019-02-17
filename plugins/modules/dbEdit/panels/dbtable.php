@@ -21,7 +21,8 @@ switch ($src[0]) {
 		$tabsArr=[
 				"structure",
 				"browse",
-				"insert"
+				"insert",
+        "create",
 			];
 		break;
 
@@ -29,9 +30,18 @@ switch ($src[0]) {
 		$tabsArr=[
 				"structure",
 				"browse",
+        "create",
 			];
 		break;
-	
+
+  case "functions":
+  case "procedures":
+    $tabsArr = [
+        "structure",
+        "create",
+      ];
+    break;
+    
 	default:
 		echo "<h5 align=center>Sorry, viewing structure for type <b>{$src[0]}</b> is not supported yet</h5>";
 		return;
@@ -51,7 +61,7 @@ switch ($src[0]) {
 <div id="dataContent">
 	
 </div>
-<script>console.log($("#dbTableNav li>a").length);
+<script>
 $(function() {
 	$("#dbTableNav li>a").click(function() {
 		comptype=$(this).attr('href');

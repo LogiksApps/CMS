@@ -196,3 +196,11 @@ function switchPanel(nx) {
 	$("#pgtoolbar .navbar-right>li.active").removeClass("active")
 	$($("#pgtoolbar .navbar-right>li")[nx]).addClass("active");
 }
+
+function exportData() {
+  parent.openLinkFrame("Export Data",_link("modules/dataMigrator")+"&panel=export",true)
+}
+
+function importData() {
+  parent.openLinkFrame("Import Data",_link("modules/dataMigrator")+"&panel=import",true)
+}

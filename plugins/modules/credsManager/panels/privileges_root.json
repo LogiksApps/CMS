@@ -11,6 +11,7 @@
 	"source":{
 		"type":"sql",
 		"table":"lgks_privileges",
+    "cols":"*,(SELECT count(*) FROM lgks_users WHERE lgks_users.privilegeid=lgks_privileges.id GROUP BY lgks_users.privilegeid) as user_count",
 		"where":{
 
 		},
@@ -19,7 +20,7 @@
 	},
 	"buttons":{
 		"editRecord": {
-			"label":"Edit Access Point",
+			"label":"Edit Privilege",
 			"icon":"fa fa-pencil"
 		},
 		"viewUsers":{
@@ -39,14 +40,17 @@
 			"formatter":"text"
 		},
 		"name":{
-			"label":"Access Name",
+			"label":"Privilege Name",
 			"searchable":true
 		},
-		"name":{
+    "user_count":{
+      "label":"Users"
+    },
+		"remarks":{
 			"label":"Descs",
 			"searchable":true
 		},
-		"site":{
+    "site":{
 			"label":"For Site",
 			"searchable":true
 		},

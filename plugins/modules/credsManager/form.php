@@ -67,6 +67,19 @@ switch ($slug['param1']) {
 		}
 		include_once __DIR__."/comps/editor.php";
 		break;
+    
+   case 'guid':
+		$form="guid";
+		if($slug['param2']=="new") {
+			$mode="new";
+			$title="New Group";
+		} else {
+			$mode="update";
+			$title="Update Group";
+			$where=['md5(id)'=>$slug['param3']];
+		}
+		include_once __DIR__."/comps/editor.php";
+		break;
 		
 	default:
 		echo "<h2 align=center><br><br><br>User Element Not Supported Yet</h2>";

@@ -43,6 +43,7 @@ $favLang=[
 	|
 	<a href="#" class="btn" cmd="history" title="History of file"><i class="icon fa fa-clock-o"></i></a>
 	<a href="#" class="btn" cmd="save" title="Save"><i class="icon fa fa-save"></i></a>
+  <a href="#" class="btn" cmd="beautify" title="Format"><i class="icon fa fa-code"></i></a>
 	<input name='fname' style='width:40%;' value='<?=$_REQUEST['src']?>' data-original='<?=$_REQUEST['src']?>' />
 	<?php
 		foreach ($toolbarTools as $key => $value) {
@@ -115,7 +116,7 @@ $favLang=[
 </aside>
 <script>
 var langTools = ace.require("ace/ext-language_tools");
-//var beautify = ace.require("ace/ext/beautify");
+var beautify = ace.require("ace/ext/beautify");
 var editor = ace.edit("editor");
 var srcFile = "<?=$_REQUEST['src']?>";
 var defaultEditorConfig={
@@ -124,9 +125,13 @@ var defaultEditorConfig={
 		"tabsize":4,
 		"showPrintMargin":false,
 		"highlightActiveLine":true,
+    "highlightSelectedWord":true,
 		"displayIndentGuides":true,
 		"useWrapMode":true,
 		"showInvisibles":false,
+    "useSoftTabs":true,
+    "navigateWithinSoftTabs":true,
+    "enableMultiselect":true,
 		"showGutter":true
 	};
 var editorConfig={};
@@ -185,7 +190,11 @@ function doEditorAction(cmd,src) {
 
 		break;
 		case "beautify":
-
+      if(beautify!=null && editor!=null) {
+        dx = editor.getFirstVisibleRow()+2;
+        beautify.beautify(editor.session);
+        editor.scrollToRow(dx);
+      }
 		break;
 		case "checkerror":
 

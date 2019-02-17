@@ -30,6 +30,14 @@ $(function() {
 				}
 				tr.detach();
 				break;
+      case "editService":
+        type = $(this).data("path");
+        processAJAXPostQuery(_service("serviceManager","spath"),"&type="+type+"&skey="+skey, function(data) {
+          if(data.Data!=null && data.Data.length>2) {
+            parent.openLinkFrame(skey+".php",data.Data,true);
+          }
+        },"json");
+        break;
 		}
 	});
 	
@@ -45,8 +53,19 @@ $(function() {
         else
             return false;
     });
+  
+  Handlebars.registerHelper('select', function(msg, matchMsg, options) {
+        htmlSelector= [];
+        return "<select class='form-control'>"+htmlSelector.join("")+"</select>";
+    });
+  
 	loadLocal();
 });
+
+function resetServiceList() {
+  tempCopiedRecords={};
+  listServices();
+}
 
 function listServices() {
 	$("#serviceList").html("<tr><th colspan=10><div class='ajaxloading ajaxloading5'></div></th></tr>");
@@ -54,7 +73,7 @@ function listServices() {
 		
 		tmpl = Handlebars.compile(getRowTemplate(""));
 		
-		html = tmpl(txt);
+		html = tmpl({"LIST":txt.Data.LIST});
 		
 		$("#serviceList").html(html);
 		
@@ -75,15 +94,17 @@ function findServices() {
 	$("#serviceList").append("<tr><th colspan=10><div class='ajaxloading ajaxloading5'></div></th></tr>");
 	processAJAXQuery(_service("serviceManager","findmore"),function(txt) {
 		
-		tmpl = Handlebars.compile(getRowTemplate(classFound));
+		tmpl = Handlebars.compile(getRowTemplate());
 		
-		$.each(txt.Data,function(k,v) {
+		$.each(txt.Data.LIST,function(k,v) {
 			if($("#serviceList tr[data-key="+v.skey+"]").length>0) {
-				delete txt.Data[k];
-			}
+				delete txt.Data.LIST[k];
+			} else {
+        txt.Data.LIST[k].clz = classFound;
+      }
 		});
 		
-		html = tmpl(txt);
+		html = tmpl({"LIST":txt.Data.LIST});
 		$("#serviceList").find(".ajaxloading").closest("tr").detach();
 		$("#serviceList").append(html);
 	},"json");
@@ -135,6 +156,8 @@ function saveServiceConfig() {
 	
 	processAJAXPostQuery(_service("serviceManager","update"),q.join("&"),function(txt) {
 		if(txt.Data!=null && txt.Data.toLowerCase().indexOf("error")<0) {
+      tempCopiedRecords={};
+      
 			lgksToast("Service Configuration Updated Successfully");
 			loadLocal();
 		} else {
@@ -147,25 +170,6 @@ function saveServiceConfig() {
 	},"json");
 }
 
-
-
 function getRowTemplate(clz) {
-	return "{{#Data}}{{#if (is_notnull skey)}}<tr class='"+clz+"' data-key='{{skey}}'>"+
-					//"<td align=center><input type='checkbox' class='rowSelector' /></td>"+
-					"<th data-value='{{skey}}'>{{skey}}</th>"+
-					"<td data-value='{{src}}'>{{src}}</td>"+
-					"<td data-value='{{format}}'>{{format}}</td>"+
-					"<td align=center data-value='{{debug}}'>{{#if (is_status debug 'true')}}<input name='s[{{skey}}][debug]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][debug]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>"+
-					"<td align=center data-value='{{cache}}'>{{#if (is_status cache 'true')}}<input name='s[{{skey}}][cache]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][cache]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>"+
-					"<td align=center data-value='{{autoformat}}'>{{#if (is_status autoformat 'true')}}<input name='s[{{skey}}][autoformat]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][autoformat]' type='checkbox' {{#if readonly}}disabled{{/if}} />{{/if}}</td>"+
-					"<td data-value='{{access_control}}'>{{access_control}}<div class='popupinfo hidden'>{{privilege_model}}</div></td>"+
-					"<td class='action' align=center>{{#if (is_status type 'GLOBALS')}} <i class='fa fa-copy cmdbtn' cmd='copyService'></i> {{else}} <i class='fa fa-close cmdbtn' cmd='removeService'></i> {{/if}}"+
-					
-					"<input type='hidden' name='s[{{skey}}][src]' value='{{src}}' />"+
-					"<input type='hidden' name='s[{{skey}}][format]' value='{{format}}' />"+
-					"<input type='hidden' name='s[{{skey}}][access_control]' value='{{access_control}}' />"+
-					"<input type='hidden' name='s[{{skey}}][privilege_model]' value='{{privilege_model}}' />"+
-
-					"</td>"+
-					"</tr>{{/if}}{{/Data}}";
+	return $("#service-row").html();
 }

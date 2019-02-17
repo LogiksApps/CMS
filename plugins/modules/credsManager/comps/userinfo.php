@@ -96,6 +96,7 @@ $title=$data['name'];
 		<div class="col-sm-12 col-lg-12">
       <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#tab1">Personal</a></li>
+        <li><a data-toggle="tab" href="#tab4">Misc</a></li>
         <li><a data-toggle="tab" href="#tab2">Security</a></li>
         <li><a data-toggle="tab" href="#tab3">Group</a></li>
       </ul>
@@ -105,7 +106,8 @@ $title=$data['name'];
             <tbody>
               <?php
                   if(count($data)>0) {
-                    foreach($data as $key=>$info) {
+                    $data1 = array_slice($data,0,20);
+                    foreach($data1 as $key=>$info) {
                       if(in_array($key,$noShow) || $key=="id") continue;
 
                       $ttl=toTitle($key);
@@ -126,6 +128,37 @@ $title=$data['name'];
                   } else {
                     echo "<tr scrope='row'><th colspan=10 style='text-align: center;'>No user details found.</th></tr>";
                   }
+              ?>
+            </tbody>
+          </table>
+        </div>
+        <div id="tab4" class="tab-pane fade">
+          <table class="table table-condensed" style="margin-top: -30px;">
+            <tbody>
+              <?php
+                if(count($data)>0) {
+                  $data1 = array_splice($data,20);
+                  foreach($data1 as $key=>$info) {
+                    if(in_array($key,$noShow) || $key=="id") continue;
+
+                      $ttl=toTitle($key);
+
+                      if(isset($colType[$key])) {
+                        switch(strtolower($colType[$key])) {
+                          case "url":
+                            $info="<a class='pglink' href='{$info}' target=_blank>{$info}</a>";
+                            break;
+                          case "date":
+                            $info=_pDate($info);
+                            break;
+                        }
+                      }
+
+                      echo "<tr scrope='row' data-key='{$key}'><th>{$ttl}</th><td>{$info}</td></tr>";
+                  }
+                } else {
+                  echo "<tr scrope='row'><th colspan=10 style='text-align: center;'>No user details found.</th></tr>";
+                }
               ?>
             </tbody>
           </table>

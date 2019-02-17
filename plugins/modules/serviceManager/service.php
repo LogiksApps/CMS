@@ -51,7 +51,7 @@ switch($_REQUEST['action']) {
       $outJSON[$key]=array_merge($cfgDefaults,$cfg);
     }
     
-    printServiceMsg(array_values($outJSON));
+    printServiceMsg(["LIST"=>array_values($outJSON),"params"=>$cfgParams]);
     break;
   case "findmore":
     $out=[];
@@ -77,12 +77,23 @@ switch($_REQUEST['action']) {
       }
     }
     
+    $f1=CMS_APPROOT."pluginsDev/modules/";
+    if(is_dir($f1)) {
+      $fss=scandir($f1);
+      $fss=array_slice($fss,2);
+      foreach($fss as $f) {
+        if(file_exists("{$f1}{$f}/service.php")) {
+          $out[$f]=["skey"=>$f,"src"=>"moduleDev"];
+        }
+      }
+    }
+    
     foreach($out as $key=>$cfg) {
       $cfg['type']=SITENAME;
       $cfg['readonly']=false;
       $out[$key]=array_merge($cfgDefaults,$cfg);
     }
-    printServiceMsg(array_values($out));
+    printServiceMsg(["LIST"=>array_values($out),"params"=>$cfgParams]);
     break;
   case "update":
     if(!is_writable($serviceCFG)) {
@@ -112,6 +123,25 @@ switch($_REQUEST['action']) {
       }
     } else {
       printServiceMsg("error:Configuration Missing");
+    }
+    break;
+  case "spath":
+    if(isset($_POST['skey']) && isset($_POST['type'])) {
+      switch(strtolower($_POST['type'])) {
+        case "app":
+          printServiceMsg(_link("modules/cmsEditor")."&type=edit&src=/services/{$_POST['skey']}.php");
+          break;
+        case "module":
+          printServiceMsg(_link("modules/cmsEditor")."&type=edit&src=/plugins/modules/{$_POST['skey']}/service.php");
+          break;
+        case "moduledev":
+          printServiceMsg(_link("modules/cmsEditor")."&type=edit&src=/pluginsDev/modules/{$_POST['skey']}/service.php");
+          break;
+        default:
+          printServiceMsg("");
+      }
+    } else {
+      printServiceMsg("");
     }
     break;
 }

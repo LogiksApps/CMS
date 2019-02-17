@@ -3,7 +3,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 $dbInfo=_db($dbKey)->get_dbinfo();
 $dbStatus=_db($dbKey)->get_dbstatus();
-
+// $dbProcedures = _db($dbKey)->_raw("SHOW PROCEDURE STATUS")->_GET();
 //var_dump($dbStatus);
 ?>
 <div class=''>
@@ -60,10 +60,14 @@ $dbStatus=_db($dbKey)->get_dbstatus();
     <div role="tabpanel" class="tab-pane" id="dbStatus">
     	
     </div>
+    
   </div>
 </div>
 <script>
 $(function() {
-	$("#dbStatus").load(_service("dbEdit","panel")+"&panel=status");
+	loadDBStatus();
 });
+function loadDBStatus() {
+  $("#dbStatus").load(_service("dbEdit","panel")+"&panel=status");
+}
 </script>

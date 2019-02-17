@@ -1,6 +1,6 @@
 {
 	"schema":"1.0",
-	"title":"Group Manager",
+	"title":"GUID Manager",
 	"category":"CMS",
 	"privilege":"*",
 	"blocked":false,
@@ -10,17 +10,16 @@
 	"custombar":false,
 	"source":{
 		"type":"sql",
-		"table":"lgks_users_group",
-    "cols":"*,(SELECT count(*) FROM lgks_users WHERE lgks_users.groupid=lgks_users_group.id GROUP BY lgks_users.groupid) as user_count",
+		"table":"lgks_users_guid",
+    "cols":"*,(SELECT count(*) FROM lgks_users WHERE lgks_users.guid=lgks_users_guid.guid GROUP BY lgks_users.guid) as user_count",
 		"where":{
-
 		},
 		"sort":"id asc",
 		"limit":10
 	},
 	"buttons":{
 		"editRecord": {
-			"label":"Edit Access Point",
+			"label":"Edit GUID",
 			"icon":"fa fa-pencil"
 		},
 		"viewUsers":{
@@ -39,15 +38,37 @@
 			"style":"width:50px;",
 			"formatter":"text"
 		},
-		"group_name":{
-			"label":"Group Name",
+    "guid":{
+			"label":"GUID",
+      "sortable":true,
 			"searchable":true
 		},
     "user_count":{
       "label":"Users"
     },
-		"group_manager":{
-			"label":"Group Manager",
+		"org_name":{
+			"label":"Organization Name",
+      "sortable":true,
+			"searchable":true
+		},
+		"org_email":{
+			"label":"EMail",
+      "sortable":true,
+			"searchable":true
+		},
+    "org_mobile":{
+			"label":"Mobile",
+      "sortable":true,
+			"searchable":true
+		},
+    "org_region":{
+			"label":"Region",
+      "sortable":true,
+			"searchable":true
+		},
+    "org_country":{
+			"label":"Country",
+      "sortable":true,
 			"searchable":true
 		},
 		"created_on":{

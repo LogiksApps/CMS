@@ -65,3 +65,26 @@ form label.error {
 .errorMsg {
 	color: maroon;
 }
+
+
+code {
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+  display: block;
+  padding: 20px;
+  text-align: left;
+  color: #666;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 25px;
+}
+
+.textOutput {
+    background: #333;
+    color: white;
+    margin: 10px;
+    padding: 6px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 24px;
+}

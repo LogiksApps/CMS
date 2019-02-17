@@ -13,6 +13,10 @@ switch($slug['panel']) {
 	case 'group':case 'groups':
 		$data=_db(true)->_selectQ(_dbTable("users",true),$cols,['md5(groupid)'=>$slug['refid']])->_GET();
 		break;
+  case "guid":
+    $data=_db(true)->_selectQ(_dbTable("users",true),$cols,[])->
+      _whereRAW("guid IN ("._db(true)->_selectQ(_dbTable("users_guid",true),"guid",["md5(id)"=>$slug['refid']])->_SQL().")")->_GET();
+    break;
 	default:
 		print_error("User Listing Not Supported");return;
 		break;

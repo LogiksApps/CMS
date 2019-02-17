@@ -1,10 +1,10 @@
 {
-	"hooks":{
-	"preload": {
-		"helpers": ["countries"]
-	},
-	"postsubmit": {
-		"method": ["updateUserMetas"]
+	"hooks": {
+		"preload": {
+			"helpers": ["countries"]
+		},
+		"postsubmit": {
+			"method": ["updateUserMetas"]
 		}
 	},
 	"source": {
@@ -84,7 +84,7 @@
 			"label": "Zipcode/PIN Code",
 			"group": "address"
 		},
-		"tags":{
+		"tags": {
 			"label": "Tags",
 			"group": "others",
 			"type": "tags"
@@ -145,19 +145,19 @@
 			"label": "User Reference Code",
 			"group": "admin"
 		},
-		"registered_site":{
+		"registered_site": {
 			"label": "User Registered Site",
 			"group": "admin",
-			"type":"dataMethod",
-			"method":"siteList"
+			"type": "dataMethod",
+			"method": "siteList"
 		},
 		"expires": {
 			"label": "Account Expires On",
 			"group": "security",
 			"type": "date"
 		},
-		"security_policy":{
-			"label":"User Security Policy",
+		"security_policy": {
+			"label": "User Security Policy",
 			"group": "security",
 			"required": true,
 			"type": "select",
@@ -167,8 +167,8 @@
 				"closed": "Closed"
 			}
 		},
-		"privacy":{
-			"label":"Data Privacy Policy",
+		"privacy": {
+			"label": "Data Privacy Policy",
 			"group": "security",
 			"required": true,
 			"type": "select",

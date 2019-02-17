@@ -1,0 +1,48 @@
+<div class='table-responsive'>
+  <table class='table table-hover table-bordered table-condensed'>
+    <thead><tr>
+      <th>Service:</th>
+      <th>Src</th>
+      <th>Format</th>
+      <th>Debug</th>
+      <th>Cache</th>
+      <th>Autoformat</th>
+      <th>Access Logic</th>
+      <th align=center style='width:50px;'>#</th>
+    </tr></thead>
+    <tbody id='serviceList'>
+    </tbody>
+	</table>
+</div>
+<script id="service-row" type="text/x-handlebars-template">
+  {{#LIST}}
+      {{#if (is_notnull skey)}}<tr class='{{clz}}' data-key='{{skey}}'>
+					<!--<td align=center><input type='checkbox' class='rowSelector' /></td>-->
+					<th data-value='{{skey}}'>{{skey}}</th>
+					<td data-value='{{src}}'>{{src}}</td>
+					<td data-value='{{format}}'>{{format}}</td>
+					<td align=center data-value='{{debug}}'>{{#if (is_status debug 'true')}}<input name='s[{{skey}}][debug]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][debug]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>
+					<td align=center data-value='{{cache}}'>{{#if (is_status cache 'true')}}<input name='s[{{skey}}][cache]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][cache]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>
+					<td align=center data-value='{{autoformat}}'>{{#if (is_status autoformat 'true')}}<input name='s[{{skey}}][autoformat]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][autoformat]' type='checkbox' {{#if readonly}}disabled{{/if}} />{{/if}}</td>
+					<td data-value='{{access_control}}'>{{access_control}}<div class='popupinfo hidden'>{{privilege_model}}</div></td>
+					
+          <td class='action' align=left>
+            {{#if src}}
+              <i class='fa fa-code cmdbtn' cmd='editService' data-path='{{src}}'></i>
+            {{/if}}
+            
+            {{#if (is_status type 'GLOBALS')}} <i class='fa fa-copy cmdbtn' cmd='copyService'></i> 
+            {{else}} <i class='fa fa-close cmdbtn pull-right' cmd='removeService'></i> {{/if}}
+					
+            
+          
+            <input type='hidden' name='s[{{skey}}][src]' value='{{src}}' />
+            <input type='hidden' name='s[{{skey}}][format]' value='{{format}}' />
+            <input type='hidden' name='s[{{skey}}][access_control]' value='{{access_control}}' />
+            <input type='hidden' name='s[{{skey}}][privilege_model]' value='{{privilege_model}}' />
+
+					</td>
+					</tr>
+       {{/if}}
+  {{/LIST}}
+</script>

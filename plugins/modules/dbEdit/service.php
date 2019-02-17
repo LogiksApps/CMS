@@ -20,6 +20,21 @@ switch ($_REQUEST['action']) {
 			$db=[];
 		} else {
 			$db=_db($dbKey)->get_dbObjects();
+      
+      $db['functions'] = [];
+      $db['procedures'] = [];
+      
+      foreach ($db['routines'] as $key=>$dat) {
+        if(isset($dat['ROUTINE_TYPE'])) {
+          if($dat['ROUTINE_TYPE']=="FUNCTION") {
+            $db['functions'][$key] = $dat;
+            unset($db['routines'][$key]);
+          } elseif($dat['ROUTINE_TYPE']=="PROCEDURE") {
+            $db['procedures'][$key] = $dat;
+            unset($db['routines'][$key]);
+          }
+        }
+      }
 			foreach ($db as $key => $obj) {
 				$db[$key]=array_keys($obj);
 			}
@@ -84,7 +99,7 @@ switch ($_REQUEST['action']) {
 					if(isset($_REQUEST['showSQL']) && $_REQUEST['showSQL']=="true") {
 						echo "<citie>".$sql->_SQL()."</citie>";
 					}
-					if($qType=="SELECT") {
+					if($qType=="SELECT" || $qType=="SHOW") {
 						if($data) {
 							printDataInTable($data);
 						} else {
@@ -284,5 +299,19 @@ switch ($_REQUEST['action']) {
 			echo "<h5>Source table not defined</h5>";
 		}
 	break;	
+    
+  case "cmd":
+    if(isset($_REQUEST['src'])) {
+      $cmd=strtolower($_REQUEST['src']);
+			$cmdFile=__DIR__."/cmds/{$cmd}.php";
+			if(file_exists($cmdFile)) {
+				include_once $cmdFile;
+			} else {
+				echo "Command not found";
+			}
+    } else {
+      echo "Command not defined";
+    }
+    break;
 }
 ?>

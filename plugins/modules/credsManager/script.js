@@ -19,6 +19,9 @@ function pgPrivileges() {
 function pgGroups() {
 	window.location=_link(PAGE+"/groups")+"&panel=groups";
 }
+function pgGuid() {
+	window.location=_link(PAGE+"/guid")+"&panel=guid";
+}
 function pgRefresh() {
 	refreshNeeded=false;
 	$.each(LGKSReportsInstances,function(k,v) {

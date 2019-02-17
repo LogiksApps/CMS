@@ -9,15 +9,28 @@ if(count($src)==0) {
 	$src[0]="tables";
 }
 
+$fields = [];
+$actions = [];
+
 $columns=[];
 $data=[];
 switch ($src[0]) {
 	case 'tables':
+    $actions = ["deleteField"=>"fa fa-trash","editField"=>"fa fa-pencil"];
 	case 'views':
 		$data=_db($dbKey)->get_defination($src[1]);
+    $fields = ["Field","Type","NULL","KEY","DEFAULT","EXTRA"];
 		break;
 	
-	default:
+  case "functions":
+    $data=_db($dbKey)->_raw("SHOW FUNCTION STATUS WHERE Name = '{$src[1]}'")->_GET();
+    break;
+    
+  case "procedures":
+    $data=_db($dbKey)->_raw("SHOW PROCEDURE STATUS WHERE Name = '{$src[1]}'")->_GET();
+    break;
+    
+  default:
 		echo "<h5 align=center>Sorry, viewing structure for type <b>{$src[0]}</b> is not supported yet</h5>";
 		return;
 		break;
@@ -25,9 +38,7 @@ switch ($src[0]) {
 
 if($data==null) $data=[];
 
-
-
-printDataInTable($data,["Field","Type","NULL","KEY","DEFAULT","EXTRA"],["deleteField"=>"fa fa-trash","editField"=>"fa fa-pencil"]);
+printDataInTable($data,$fields,$actions);
 ?>
 <script>
 var selectedField=null;

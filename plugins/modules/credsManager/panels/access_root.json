@@ -11,6 +11,7 @@
 	"source":{
 		"type":"sql",
 		"table":"lgks_access",
+    "cols":"*,(SELECT count(*) FROM lgks_users WHERE lgks_users.accessid=lgks_access.id GROUP BY lgks_users.accessid) as user_count",
 		"where":{
 
 		},
@@ -42,6 +43,9 @@
 			"label":"Access Name",
 			"searchable":true
 		},
+    "user_count":{
+      "label":"Users"
+    },
 		"sites":{
 			"label":"Allowed Sites",
 			"searchable":true

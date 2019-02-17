@@ -4,21 +4,8 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 loadModule("pages");
 
 function pageContentArea() {
-	$html="<div><table class='table table-hover table-bordered table-condensed'>";
-	$html.="<thead><tr>";
-	$html.="<th>Service:</th>";
-	$html.="<th>Src</th>";
-	$html.="<th>Format</th>";
-	$html.="<th>Debug</th>";
-	$html.="<th>Cache</th>";
-	$html.="<th>Autoformat</th>";
-	$html.="<th>Access Logic</th>";
-	$html.="<th align=center style='width:50px;'>#</th>";
-	$html.="</tr></thead>";
-	$html.="<tbody id='serviceList'>";
-	$html.="</tbody>";
-	$html.="</table></div>";
-	
+	$html=file_get_contents(__DIR__."/layout.html");
+  
 	return $html;
 }
 function pageSidebar() {
@@ -34,7 +21,7 @@ printPageComponent(false,[
 			"loadGlobal"=>["title"=>"Global","align"=>"right"],
 
 			// ["title"=>"Search Site","type"=>"search","align"=>"left"]
-			"listServices"=>["icon"=>"<i class='fa fa-refresh'></i>"],
+			"resetServiceList"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			['type'=>"bar"],
 			"findServices"=>["icon"=>"<i class='fa fa-search-plus'></i>","tips"=>"Find and add new services"],
 			['type'=>"bar"],

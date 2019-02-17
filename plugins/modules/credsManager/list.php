@@ -6,12 +6,15 @@ loadModuleLib("reports","api");
 
 if(!isset($_REQUEST['panel'])) $_REQUEST['panel']="users";
 
+define("ADMIN_PRIVILEGE_ID",3);
+
 $pageOptions=[
 		"toolbar"=>[
 			"users"=>["title"=>"Users","align"=>"right","class"=>($_REQUEST['panel']=="users")?"active":""],
 			"privileges"=>["title"=>"Privileges","align"=>"right","class"=>($_REQUEST['panel']=="privileges")?"active":""],
 			"access"=>["title"=>"Access","align"=>"right","class"=>($_REQUEST['panel']=="access")?"active":""],
 			"groups"=>["title"=>"Groups","align"=>"right","class"=>($_REQUEST['panel']=="groups")?"active":""],
+      "guid"=>["title"=>"Organization","align"=>"right","class"=>($_REQUEST['panel']=="guid")?"active":""],
 			// ['type'=>"bar"],
 
 			// ["title"=>"Search Site","type"=>"search","align"=>"left"]
@@ -23,9 +26,10 @@ $pageOptions=[
 		"contentArea"=>"pageContentArea"
 	];
 
-if($_SESSION["SESS_PRIVILEGE_ID"]==1) {
+if($_SESSION["SESS_PRIVILEGE_ID"]<=ADMIN_PRIVILEGE_ID) {//ADMIN_USERIDS
 	
 } else {
+  unset($pageOptions['toolbar']['guid']);
 	unset($pageOptions['toolbar']['access']);
 }
 
@@ -35,7 +39,7 @@ echo _css("credsManager");
 echo _js("credsManager");
 
 function pageContentArea() {
-	if($_SESSION["SESS_PRIVILEGE_ID"]==1) {
+	if($_SESSION["SESS_PRIVILEGE_ID"]<=ADMIN_PRIVILEGE_ID) {
 		$rpt=__DIR__."/panels/{$_REQUEST['panel']}_root.json";
 	} else {
 		$rpt=__DIR__."/panels/{$_REQUEST['panel']}.json";

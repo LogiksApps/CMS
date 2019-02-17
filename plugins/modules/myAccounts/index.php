@@ -3,7 +3,9 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 //unset($_SESSION["USERINFO"]);
 
-$user=getUserInfo();
+loadHelpers("countries");
+
+$user=getUserInfo($_SESSION['SESS_USER_ID'],true);
 
 loadModuleLib("forms","api");
 ?>

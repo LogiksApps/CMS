@@ -1,81 +1,90 @@
 {
-	"preload":{
-		"helpers":["countries"]
+	"hooks": {
+		"preload": {
+			"helpers": ["countries"]
+		}
 	},
-	"postsubmit":{
-
+	"postsubmit": {},
+	"source": {
+		"type": "sql",
+		"table": "lgks_users",
+		"where": ["userid"]
 	},
-	"source":{
-		"type":"sql",
-		"table":"lgks_users",
-		"where":["userid"]
+	"forcefill": {
+		"userid": "#SESS_USER_ID#",
+    "privilegeid":"#SESS_PRIVILEGE_ID#",
+    "guid":"#SESS_GUID#"
 	},
 	"fields": {
 		"email": {
 			"label": "E-mail",
 			"type": "email",
-			"required":true,
-			"validate":{
-				"email":true
-			}
+			"required": true
 		},
 		"userid": {
 			"label": "Login ID",
-			"disabled":true,
-			"concat":{
-				"position":"after",
-				"field":"email"
-			}
+			"disabled": true
 		},
 		"name": {
-			"label": "Full Name",
-			"validate":{
-				"length-min":5,
-				"length-max":10
-			}
+			"label": "Full Name"
 		},
 		"mobile": {
-			"label": "Mobile",
-			"required":true
+			"label": "Mobile"
 		},
 		"remarks": {
 			"label": "Description\/Notes",
 			"type": "textarea",
-			"width": "12",
-			"validate":{
-				"length-min":15
-			}
+			"width": "12"
 		},
-		"address":{
-			"label":"Address",
-			"group":"address"
+		"address": {
+			"label": "Address",
+			"group": "address"
 		},
-		"country":{
-			"label":"Country",
-			"group":"address",
-			"type":"dataMethod",
-			"method":{
-				"name":"getCountrySelector",
-				"valuefield":"default"
-			}
+		"avatar_type": {
+			"label": "Avatar Type",
+			"group": "Logos",
+		    "type": "select",
+			"options":{
+			    "":"Select Avatar Type",
+			    "facebook":"Facebook",
+			    "google": "Google+",
+			    "twitter": "Twitter",
+			    "linkedin": "Linkedin"
+			},
+			"required": true
 		},
-		"region":{
-			"label":"Region/State",
-			"group":"address"
+		"country": {
+			"label": "Country",
+			"group": "address",
+			"type": "dataMethod",
+			"method": {
+				"name": "getCountrySelector",
+				"valuefield": "default"
+			},
+			"required": true
 		},
-		"zipcode":{
-			"label":"Zipcode/PIN Code",
-			"group":"address"
+		"region": {
+			"label": "Region/State",
+			"group": "address"
+		},
+		"zipcode": {
+			"label": "Zipcode/PIN Code",
+			"group": "address"
 		},
 		"gender": {
 			"label": "Gender",
-			"group":"address",
-			"type":"select",
-			"options":{
-				"":false,
-				"male":"Male",
-				"female":"Female"
+			"group": "address",
+			"type": "select",
+			"options": {
+				"": false,
+				"male": "Male",
+				"female": "Female"
 			}
+		},
+		"avatar":{
+			"label":"Avatar",
+			"type":"text",
+			"group":"Logos"
 		}
 	}
 }

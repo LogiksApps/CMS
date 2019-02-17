@@ -12,15 +12,17 @@ printPageComponent(false,[
 			"dbInfo"=>["icon"=>"<i class='fa fa-info-circle'></i>","tips"=>"Database info","align"=>"right"],
 			""=>["icon"=>"<i class='fa fa-table'></i>","tips"=>"Database tables","align"=>"right"],
 			"tableQuery"=>["icon"=>"<i class='fa fa-code'></i>","tips"=>"Execute queries","align"=>"right"],
-			//"dbTools"=>["icon"=>"<i class='fa fa-database'></i>","tips"=>"Additional Tools","align"=>"right"],
 
-			//views, routines, events, triggers, 
+// 			"dbTools"=>["icon"=>"<i class='fa fa-database'></i>","tips"=>"Additional Tools","align"=>"right"],
+			//routines, events, triggers, 
 			//designer
 
 			
 			"refresh"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			
 			"createNew"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New Object"],//Tables,Views,Triggers,etc.
+      "exportData"=>["icon"=>"<i class='fa fa-upload'></i>","tips"=>"Export Data"],
+      "importData"=>["icon"=>"<i class='fa fa-download'></i>","tips"=>"Import Data"],
 			
 			// "clone"=>["icon"=>"<i class='fa fa-copy'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Clone Me"],
 			['type'=>"bar"],

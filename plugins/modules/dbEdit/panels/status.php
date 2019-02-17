@@ -46,14 +46,22 @@ $cols=[
 						}
 						echo "<td class='{$c}'>{$value}</td>";
 					}
-					echo "<td data-tableid='{$row['Name']}'>";
+					echo "<td class='actionbtns' data-refid='{$row['Name']}'>";
 					if($row['Engine']) {
-    					echo "<i class='fa fa-pencil fa-2x' data-cmd='alterTable' title='Alter this table'></i>";
-    					echo "<i class='fa fa-check fa-2x' data-cmd='optimiseTable' title='Optimise this table'></i>";
-    					echo "<i class='fa fa-magic fa-2x' data-cmd='repairTable' title='Repair this table'></i>";
-    					//echo "<i class='fa fa-times fa-2x text-danger pull-right' data-cmd='truncateTable' title='Empty this table'></i>";
-    					//echo "<i class='fa fa-trash fa-2x text-danger pull-right' data-cmd='dropTable' title='Delete this table'></i>";    
-					}
+            echo "<i class='fa fa-pencil' data-cmd='alterTable' data-refid='{$row['Name']}' data-type='tables' title='Alter this table'></i>";
+            
+            echo "<i class='fa fa-check' data-cmd='optimiseTable' data-refid='{$row['Name']}' data-type='tables' title='Optimise this table'></i>";
+            echo "<i class='fa fa-magic' data-cmd='repairTable' data-refid='{$row['Name']}' data-type='tables' title='Repair this table'></i>";
+            
+            echo "<i class='fa fa-ticket' data-cmd='analyzeTable' data-refid='{$row['Name']}' data-type='tables' title='Analyze this table'></i>";
+            echo "<i class='fa fa-hashtag' data-cmd='checksum' data-refid='{$row['Name']}' data-type='tables' title='Checksum this table'></i>";
+
+            echo "<i class='fa fa-trash text-danger pull-right' data-cmd='dropTable' data-refid='{$row['Name']}' data-type='tables' title='Delete this table'></i>";    
+            echo "<i class='fa fa-ban text-danger pull-right' data-cmd='truncateTable' data-refid='{$row['Name']}' data-type='tables' title='Empty this table'></i>";
+					} else {
+            echo "<i class='fa fa-pencil' data-cmd='alterTable' data-refid='{$row['Name']}' data-type='views' title='Alter this view'></i>";
+            echo "<i class='fa fa-trash text-danger pull-right' data-cmd='dropView' data-refid='{$row['Name']}' data-type='views' title='Delete this view'></i>";    
+          }
 					echo "</td>";
 					echo "</tr>";
 				}
@@ -61,3 +69,63 @@ $cols=[
 		</tbody>
 	</table>
 </div>
+<style>
+  .actionbtns .fa {
+    font-size: 16px;
+  }
+</style>
+<script>
+$(".actionbtns i[data-cmd]").click(function() {
+  cmd = $(this).data("cmd");
+  refid = $(this).data("refid");
+  type = $(this).data("type");
+//   alert(cmd+" "+refid);
+  
+  switch(cmd) {
+    case "alterTable":
+      openTable(type+"/"+refid);
+      break;
+   
+    case "dropTable":
+      lgksConfirm("Do you want to delete the table ","Delete Table", function(a) {
+            if(a) {
+                lx=_service("dbEdit","cmd")+"&src="+cmd;
+                processAJAXPostQuery(lx,"&ref="+refid, function(data) {
+                  lgksAlert(data);
+                  loadDBStatus();
+                });
+              }
+          });
+      break;
+    case "truncateTable":
+      lgksConfirm("Do you want to truncate/empty the table ","Truncate Table", function(a) {
+            if(a) {
+                lx=_service("dbEdit","cmd")+"&src="+cmd;
+                processAJAXPostQuery(lx,"&ref="+refid, function(data) {
+                  lgksAlert(data);
+                  loadDBStatus();
+                });
+            }
+          });
+      break;
+    
+    case "dropView":
+      lgksConfirm("Do you want to delete the view ","Delete View", function(a) {
+          if(a) {
+              lx=_service("dbEdit","cmd")+"&src="+cmd;
+              processAJAXPostQuery(lx,"&ref="+refid, function(data) {
+                lgksAlert(data);
+                loadDBStatus();
+              });
+          }
+        });
+      break;
+    
+    default:
+      lx=_service("dbEdit","cmd")+"&src="+cmd;
+	    processAJAXPostQuery(lx,"&ref="+refid, function(data) {
+        lgksAlert(data);
+      });
+  }
+});
+</script>

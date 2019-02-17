@@ -1,0 +1,75 @@
+{
+	"hooks": {
+		"preload": {
+			"helpers": ["countries"]
+		}
+	},
+	"source": {
+		"type": "sql",
+		"table": "lgks_users_guid",
+		"where": ["id"]
+	},
+	"fields": {
+		"id": {
+			"label": "Ref ID",
+			"hidden": true
+		},
+		"guid": {
+			"label": "GUID",
+			"required": true,
+			"disabled": true
+		},
+		"org_name": {
+			"label": "Organization Name",
+			"required": true
+		},
+		"org_email": {
+			"label": "Organization Email",
+			"type": "email"
+		},
+		"org_mobile": {
+			"label": "Organization Mobile",
+			"type": "mobile"
+		},
+		"org_address": {
+			"label": "Organization Address",
+			"type": "textarea",
+			"group": "address"
+		},
+		"org_region": {
+			"label": "Organization Region",
+			"group": "address"
+		},
+		"org_country": {
+			"label": "Organization Country",
+			"group": "address",
+			"type": "dataMethod",
+			"method": {
+				"name": "getCountrySelector",
+				"valuefield": "default",
+				"": false
+			}
+		},
+		"org_zipcode": {
+			"label": "Organization Zipcode",
+			"group": "address"
+		},
+		"org_logo": {
+			"label": "Organization Logo URL"
+		},
+		"tags": {
+			"label": "Organization Tags",
+			"type": "tags"
+		},
+		"blocked": {
+			"label": "Blocked",
+			"required": true,
+			"type": "select",
+			"options": {
+				"": false,
+				"true": "Blocked",
+				"false": "Not Blocked"
+			}
+		}
+	}
+}
