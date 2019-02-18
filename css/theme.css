@@ -1,0 +1,64 @@
+/*Themeing*/
+#header .navbar {
+    background-color: #3294ce;
+    border-color: transparent;
+}
+#header .navbar a {
+    color: white;
+}
+/*#header .navbar a:hover {
+    color: #555;
+}*/
+#header .navbar .btn-group a {
+    color: black;
+}
+#header .navbar .navbar-header:first-child {
+    background-color: transparent;
+}
+#header .dropdown-menu a {
+    color: #333;
+}
+
+#sidebar {
+    background: #222d32;
+    color:white;
+}
+#sidebar .sidebar {
+    background: transparent;
+}
+#sidebar .sidebar li>a {
+    color: #b8c7ce;
+    border-left: 3px solid transparent;
+    background-color: transparent;
+}
+#sidebar .sidebar li>a:hover,#sidebar .sidebar li>a:active, #sidebar .sidebar li.active>a {
+    color: #fff;
+    background: #1e282c;
+    border-left-color: #3c8dbc;
+}
+#sidebar .sidebar .nav-second-level li a {
+    background: #2c3b41;
+}
+#sidebar .sidebar .nav-second-level li a:hover {
+    color: #fff;
+}
+#sidebar .sidebar ul li {
+    border-bottom:0px;
+}
+#sidebar .tree li {
+    color: #b6cad6;
+}
+#sidebar .tree li.context-menu-active {
+  color: white;
+}
+#sidebar .tree li.active {
+    color: white;
+}
+
+.box .box-content {
+  border: 1px solid #dddddd;
+  background: white;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+}

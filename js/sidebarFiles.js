@@ -7,6 +7,8 @@ $(function() {
         selector: 'li.folder',
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr("basepath");
+            $("#sidebarFileTree .focused").removeClass("focused");
+            $(this).addClass("focused");
             folderEvents(key, this, options);
         },
         items: {
@@ -26,6 +28,10 @@ $(function() {
             "refresh": {
                 name: "Refresh",
                 icon: "fa-refresh"
+            },
+            "collapseall":{
+                  name: "Collapse All",
+                  icon: "fa-compress"
             },
             "sep2": "---------",
             "rename": {
@@ -49,6 +55,10 @@ $(function() {
             "upload": {
                 name: "Upload",
                 icon: "fa-upload"
+            },
+            "generate": {
+                  name: "Generate !",
+                  icon: "fa-code"
             }
         }
     });
@@ -56,6 +66,8 @@ $(function() {
         selector: 'li.file',
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr("filepath");
+            $("#sidebarFileTree .focused").removeClass("focused");
+            $(this).addClass("focused");
             fileEvents(key, this, options);
         },
         items: {
@@ -76,6 +88,10 @@ $(function() {
                 name: "Refresh",
                 icon: "fa-refresh"
             },
+            "collapseall":{
+                  name: "Collapse All",
+                  icon: "fa-compress"
+            },
             "sep2": "---------",
             "rename": {
                 name: "Rename",
@@ -85,8 +101,34 @@ $(function() {
                 name: "Delete",
                 icon: "fa-trash"
             }
+//             "download": {
+//                 name: "Download",
+//                 icon: "fa-download"
+//             }
         }
     });
+  
+    $("#sidebarFileTree").parent().contextMenu({
+        selector: '#sidebarFileTree',
+        callback: function(key, options) {
+            var m = "clicked: " + key + " on " + $(this).attr("filepath");
+            folderEvents(key, this, options);
+        },
+        items: {
+            "rootdir": {
+                  name: "Make Master Folder",
+                  icon: "fa-copy"
+            },
+            "collapseall": {
+                  name: "Collapse All",
+                  icon: "fa-compress"
+            },
+            "generate": {
+                  name: "Generate !",
+                  icon: "fa-code"
+            }
+          }
+      });
 
 
     $("#sidebarFileTree").delegate("li.file[basepath]>span", "click", function(e) {
@@ -100,6 +142,12 @@ $(function() {
         ttl = file.text();
         lx = _link("modules/cmsEditor") + "&type=edit&src=" + encodeURIComponent(bp);
         openLinkFrame(ttl, lx);
+    });
+  
+    $("#searchField input").keydown(function(e) {
+      if(e.keyCode==13) {
+        searchFile();
+      }
     });
 
     loadFileTree();
@@ -116,8 +164,11 @@ function fileEvents(cmd, eleTag, opts) {
         case "refresh":
             loadFileTree();
             break;
+        case "collapseall":
+            collapseAll();
+            break;
         case "delete":
-            lgksConfirm("Are you sure about deleting this file : " + bname, "Delete File!", function(ans) {
+            lgksConfirm("You are about to delete file '"+bname+"'. Are you sure?", "Delete File!", function(ans) {
                 if (ans) {
                     processAJAXPostQuery(_service("files") + "&action=rm", "path=" + fpath, function(txt) {
                         if (txt != null && txt.length > 0) {
@@ -135,14 +186,41 @@ function fileEvents(cmd, eleTag, opts) {
             });
             break;
         case "rename":
+            lgksPrompt("Please give a new name for the selected file", "Rename File!", function(ans) {
+                if (ans && ans.length>0) {
+                    processAJAXPostQuery(_service("files") + "&action=rename", "path=" + fpath+"&newname="+ans, function(txt) {
+                        if (txt != null && txt.length > 0) {
+                            if (txt.indexOf("success") >= 0) {
+                                loadFileTree(txt.substr(5));
+                            } else {
+                                lgksToast(txt);
+                            }
+                        } else {
+                            lgksToast("Error deleting file.<br>Please check if files are not readonly.");
+                        }
+                    });
+                }
+            });
             break;
         case "cut":
+            oldFilePath = ["cut",fpath,"file"];
             break;
         case "copy":
+            oldFilePath = ["copy",fpath,"file"];
             break;
         case "clone":
+            processAJAXPostQuery(_service("files") + "&action=clone", "path=" + fpath, function(txt) {
+                    if (txt != null && txt.length > 0) {
+                        if (txt.indexOf("success") >= 0) {
+                            loadFileTree(txt.substr(5));
+                        } else {
+                            lgksToast(txt);
+                        }
+                    } else {
+                        lgksToast("Error coping file.<br>Please check if files are not readonly.");
+                    }
+                });
             break;
-
     }
 }
 
@@ -159,6 +237,26 @@ function folderEvents(cmd, eleTag, opts) {
         case "refresh":
             loadFileTree();
             break;
+        case "collapseall":
+            collapseAll();
+            break;
+        case "rootdir":
+            lgksPrompt("New Folder @ <smaller>" + bpath + "</smaller>", "New File", function(ans) {
+                if (ans != null && ans.length > 1) {
+                    processAJAXPostQuery(_service("files") + "&action=newtopdir", "fname=" + ans, function(txt) {
+                        if (txt != null && txt.length > 0) {
+                            if (txt.indexOf("FILE:") >= 0) {
+                                loadFileTree(txt.substr(5));
+                            } else {
+                                lgksToast(txt);
+                            }
+                        } else {
+                            lgksToast("Error creating folder.<br>Please check if folders are not readonly.");
+                        }
+                    });
+                }
+            });
+            break;
         case "upload":
             lx = _link("modules/cmsUploader");
             a = openLinkFrame("New Uploads", lx);
@@ -169,6 +267,19 @@ function folderEvents(cmd, eleTag, opts) {
                     } catch (e) {}
                 });
             }
+            break;
+        case "download"://Download ZIP
+            processAJAXPostQuery(_service("files") + "&action=download", "path=" + fpath, function(data) {
+                    if(data.Data.uri!=null) {
+                      window.open(data.uri);
+                    } else {
+                      if(typeof data.Data == "string") {
+                        lgksToast(data.Data);
+                      } else {
+                        lgksToast("Error downloading file");
+                      }
+                    }
+                },"json");
             break;
         case "newFile":
             lgksPrompt("New File @ <smaller>" + bpath + "</smaller>", "New File", function(ans) {
@@ -214,7 +325,7 @@ function folderEvents(cmd, eleTag, opts) {
             //openLinkFrame("New File",lx);
             break;
         case "delete":
-            lgksConfirm("Are you sure about deleting this folder : " + bname, "Delete File!", function(ans) {
+            lgksConfirm("You are about to delete folder '"+bname+"'. Are you sure?", "Delete File!", function(ans) {
                 if (ans) {
                     processAJAXPostQuery(_service("files") + "&action=rm", "path=" + bpath, function(txt) {
                         if (txt != null && txt.length > 0) {
@@ -231,18 +342,94 @@ function folderEvents(cmd, eleTag, opts) {
             });
             break;
         case "rename":
+            lgksPrompt("Please give a new name for the selected folder", "Rename Folder!", function(ans) {
+                if (ans && ans.length>0) {
+                    processAJAXPostQuery(_service("files") + "&action=rename", "path=" + bpath+"&newname="+ans, function(txt) {
+                        if (txt != null && txt.length > 0) {
+                            if (txt.indexOf("success") >= 0) {
+                                loadFileTree(txt.substr(5));
+                            } else {
+                                lgksToast(txt);
+                            }
+                        } else {
+                            lgksToast("Error deleting folder.<br>Please check if files are not readonly.");
+                        }
+                    });
+                }
+            });
             break;
 
         case "cut":
+            oldFilePath = ["cut",bpath,"dir"];
             break;
         case "copy":
+            oldFilePath = ["copy",bpath,"dir"];
             break;
         case "paste":
-            break;
-
-        case "download":
-            //Download ZIP
-            break;
+            if(oldFilePath!=null) {
+              switch(oldFilePath[2]) {
+                case "dir":
+                  switch(oldFilePath[0]) {
+                    case "copy":
+                      processAJAXPostQuery(_service("files") + "&action=cpdir", "path=" + oldFilePath[1] +"&newpath="+bpath, function(txt) {
+                            if (txt != null && txt.length > 0) {
+                                lgksAlert(txt);
+                            } else {
+                                loadFileTree(txt.substr(5));
+                                lgksToast("Copy Successfull");
+                            }
+                        });
+                      break;
+                    case "cut":
+                      processAJAXPostQuery(_service("files") + "&action=mvdir", "path=" + oldFilePath[1] +"&newpath="+bpath, function(txt) {
+                            if (txt != null && txt.length > 0) {
+                                lgksAlert(txt);
+                            } else {
+                                loadFileTree(txt.substr(5));
+                                lgksToast("Move Successfull");
+                            }
+                        });
+                      break;
+                  }
+                  break;
+                case "file":
+                  switch(oldFilePath[0]) {
+                    case "copy":
+                      processAJAXPostQuery(_service("files") + "&action=cp", "path=" + oldFilePath[1] +"&newpath="+bpath, function(txt) {
+                            if (txt != null && txt.length > 0) {
+                                if (txt.indexOf("success") >= 0) {
+                                    loadFileTree(txt.substr(5));
+                                } else {
+                                    lgksToast(txt);
+                                }
+                            } else {
+                                lgksToast("Error coping file.<br>Please check if files are not readonly.");
+                            }
+                        });
+                      break;
+                    case "cut":
+                      processAJAXPostQuery(_service("files") + "&action=mv", "path=" + oldFilePath[1] +"&newpath="+bpath, function(txt) {
+                            if (txt != null && txt.length > 0) {
+                                if (txt.indexOf("success") >= 0) {
+                                    loadFileTree(txt.substr(5));
+                                } else {
+                                    lgksToast(txt);
+                                }
+                            } else {
+                                lgksToast("Error move file.<br>Please check if files are not readonly.");
+                            }
+                        });
+                      break;
+                  }
+                  break;
+                default:
+                  lgksToast("File type not supported");
+              }
+            } else lgksToast("Nothing copied to clipboard");
+          break;
+        case "generate":
+          generateCodeAutomatically(bpath);
+          break;
     }
 }
 //Tree Functionality
@@ -315,10 +502,59 @@ function revealFile(fileS) {
     }
 }
 
+function collapseAll() {
+  getFileTree().find("ul>li").removeClass("active").parent().find(">li").css("display", "none");
+	getFileTree().find(">li").removeClass("active").css("display", "list-item");
+}
+
+function searchFile() {
+  q = $("#searchField input").val();
+  if(q==null || q.length<=0) {
+    collapseAll();
+    return;
+  }
+  q = q.toLowerCase();
+
+  qHTML = [];
+  getFileTree().find("li.file").each(function() {
+    if($(this).attr("filepath").toLowerCase().indexOf(q)>0) {
+      revealFile($(this).attr("filepath"));
+    }
+  });
+}
+
 function registerFileTreeListener(key, func) {
     fileTreeListener[key] = func;
 }
 
-function searchFileTree() {
-
+function generateCodeAutomatically(basePath) {
+  processAJAXQuery(_service("logiksGenerators","listforpath")+"&path="+basePath, function(data) {
+      if(data == null || data.length<=0) {
+        lgksToast("No generator defined for selected path, <br>or<br> logiksGenerator is not installed !!!");
+      } else {
+        data = JSON.parse(data);
+        if(typeof data.Data == "string") {
+          lgksToast(data.Data);
+        } else {
+          if(data.Data.generators==null || data.Data.generators.length<=0) {
+            lgksToast("No generator found for the selected path");
+          } else if(data.Data.generators.length==1) {
+            lgksPrompt("Provide a new name", "Generator Generates", function(ans) {
+                        if(ans && ans.length>0) {
+                            processAJAXPostQuery(_service("logiksGenerators","generate"),"&path="+basePath+"&src="+data.Data.generators[0]+"&name="+ans, function(ansData) {
+                                if(ansData.Data.status == "ok") {
+                                  loadFileTree();
+                                } else {
+                                  if(ansData.Data.msg==null || ansData.Data.msg.length<=0) ansData.Data.msg = "Error generating source code"; 
+                                  lgksToast(ansData.Data.msg);
+                                }
+                            }, "json");
+                        }
+                    });
+          } else {
+            lgksToast("Multiple generators are not supported yet");
+          }
+        }
+      }
+    });
 }

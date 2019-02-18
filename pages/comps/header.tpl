@@ -1,6 +1,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 	<div class="navbar-header">
+        <div class='pull-left thumbnail'><img src='{loadMedia("media/logos/logiks.png")}' class='photo' /></div>
         <a class="navbar-brand">{$APPS_NAME} {$APPS_VERS}</a>
     </div>
     <div class="navbar-header" title='Switch Between Available Sites' style='float: left;background: transparent;'>

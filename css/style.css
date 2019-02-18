@@ -111,6 +111,20 @@ h1 {
     left: auto;
 }
 
+.navbar-header .thumbnail {
+    height: 50px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    border-radius: 0px;
+    background: transparent;
+}
+.navbar-header .thumbnail img {
+    height: 100%;
+    background: transparent;
+    border: 0px;
+}
+
 .sidebar .sidebar-nav.navbar-collapse {
     padding-right: 0;
     padding-left: 0;
@@ -527,64 +541,19 @@ body.home #content {
 
 
 
-/*Themeing*/
-#header .navbar {
-    background-color: #3c8dbc;
-    border-color: transparent;
-}
-#header .navbar a {
-    color: white;
-}
-/*#header .navbar a:hover {
-    color: #555;
-}*/
-#header .navbar .btn-group a {
-    color: black;
-}
-#header .navbar .navbar-header:first-child {
-    background-color: transparent;
-}
-#header .dropdown-menu a {
-    color: #333;
-}
+
 #header .show-sidebar-menu {
 	margin-right: 20px;
 	margin-left: 10px;
 }
-#sidebar {
-    background: #222d32;
-    color:white;
-}
-#sidebar .sidebar {
-    background: transparent;
-}
 #sidebar .sidebar li>a {
-    color: #b8c7ce;
-    border-left: 3px solid transparent;
-    margin-right: 1px;
-    background-color: transparent;
+  margin-right: 1px;
 }
-#sidebar .sidebar li>a:hover,#sidebar .sidebar li>a:active, #sidebar .sidebar li.active>a {
-    color: #fff;
-    background: #1e282c;
-    border-left-color: #3c8dbc;
-}
-#sidebar .sidebar .nav-second-level li a {
-    background: #2c3b41;
-}
-#sidebar .sidebar .nav-second-level li a:hover {
-    color: #fff;
-}
-#sidebar .sidebar ul li {
-    border-bottom:0px;
-}
+
 #sidebar .tree li {
-    color: #b8c7ce;
     white-space: nowrap;
 }
-#sidebar .tree li.active {
-    color: aqua;
-}
+
 #sidebar .sidebarTree .ajaxloading {
     margin-left: -58px
 }
@@ -622,27 +591,25 @@ body.home #content {
 	width: 100%;
 	border: 0px;
 	background: transparent;
-	border: 0px;
-	border-bottom: 1px solid #8e8585;
 	margin-left: 0px;
 	margin-top: 1px;
 	color: white;
 	/* background: #ffffff; */
 	padding: 3px;
+  outline: none;
 }
-
+#sidebar .searchField input:focus-within {
+    background: white;
+    background: rgba(255,255,255,0.9);
+    color: #333;
+}
 .box {
     margin-bottom: 20px;
     position: relative;
 }
 .box .box-content {
     padding: 30px;
-    border: 1px solid #dddddd;
-    background: white;
     display: block;
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
 }
 .box .img-content {
     padding: 0px;

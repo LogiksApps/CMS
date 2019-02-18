@@ -4,7 +4,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 echo _css("jquery.contextMenu");
 echo _js(["jquery.contextMenu","sidebarFiles"]);
 ?>
-<div class="searchField">
+<div id='searchField' class="searchField">
     <input type='text' placeholder='Search files' />
 </div>
-<ul id="sidebarFileTree" class='sidebarTree'></ul>
+<ul id="sidebarFileTree" class='sidebarTree' basepath='/'></ul>
