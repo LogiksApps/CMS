@@ -251,12 +251,20 @@ function scanFolderTree($folder,$depth=0) {
  */
 function deleteFolder($target) {
     if(is_dir($target)){
-        $files = glob( $target . '*', GLOB_MARK ); //GLOB_MARK adds a slash to directories returned
-
+//         $files = glob( $target . '*', GLOB_MARK); //GLOB_MARK adds a slash to directories returned
+//         foreach( $files as $file ) {
+//             deleteFolder( $file );      
+//         }
+        $files = scandir($target);
+        $files = array_slice($files,2);
+      
         foreach( $files as $file ) {
-            deleteFolder( $file );      
-        }
-
+          if(is_dir($target.$file)) 
+            deleteFolder($target.$file."/");
+          else
+            deleteFolder($target.$file);
+        };
+        
         rmdir( $target );
     } elseif(is_file($target)) {
         unlink( $target );  
