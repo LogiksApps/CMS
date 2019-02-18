@@ -267,11 +267,11 @@ function loadFileTree(file) {
 }
 
 function loadFileTreeObj(obj, basePath) {
-    if (hiddenFolders.indexOf(basePath) >= 0) return;
+//     if (hiddenFolders.indexOf(basePath) >= 0) return;
     $.each(obj, function(k, v) {
         if ((typeof v) == "object") {
             newBasePath = basePath + k + "/";
-            if (hiddenFolders.indexOf(newBasePath) >= 0) return;
+//             if (hiddenFolders.indexOf(newBasePath) >= 0) return;
             html = "<li class='folder' basepath='" + newBasePath + "'><i class='indicator glyphicon glyphicon-folder-close'></i>" + k + "<ul></ul></li>";
             if (basePath.length > 1) {
                 $("#sidebarFileTree li[basepath='" + basePath + "']>ul").prepend(html);

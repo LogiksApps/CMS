@@ -30,13 +30,16 @@ $(function() {
 				}
 				tr.detach();
 				break;
-      case "editService":
+      case "openEditor":
         type = $(this).data("path");
         processAJAXPostQuery(_service("serviceManager","spath"),"&type="+type+"&skey="+skey, function(data) {
           if(data.Data!=null && data.Data.length>2) {
             parent.openLinkFrame(skey+".php",data.Data,true);
           }
         },"json");
+        break;
+      case "editServiceConfig":
+        editServiceConfig(this);
         break;
 		}
 	});
@@ -46,6 +49,12 @@ $(function() {
             return true;
         else
             return false;
+    });
+  Handlebars.registerHelper('is_not', function(msg, matchMsg, options) {
+        if(msg === matchMsg || msg===true)
+            return false;
+        else
+            return true;
     });
 	Handlebars.registerHelper('is_notnull', function(msg, matchMsg, options) {
         if(msg !=null && msg.length>0)
@@ -172,4 +181,59 @@ function saveServiceConfig() {
 
 function getRowTemplate(clz) {
 	return $("#service-row").html();
+}
+
+function createNewService() {
+  lgksPrompt("Give a new name for service (no space or special characters)", "New Service", function(ans) {
+      if(ans) {
+        processAJAXPostQuery(_service("serviceManager","createservice"),"name="+ans, function(data) {
+          if(data.Data!=null && data.Data.name != null) {
+            skey = data.Data.name;
+            uri =  data.Data.uri;
+            if(uri!=null && uri.length>0) {
+              parent.openLinkFrame(skey,uri,true);
+            }
+            if(data.Data.msg!=null && data.Data.msg.length>0) {
+              lgksToast(data.Data.msg);
+            }
+            if(data.Data.status=="ok") {
+              findServices();
+            }
+          } else {
+            lgksToast("Service could not be created");
+          }
+        },"json");
+      }
+    });
+}
+
+function editServiceConfig(src) {
+  cmd=$(src).attr("cmd");
+  tr=$(src).closest("tr");
+  skey=tr.data('key');
+
+  $("#serviceConfigEditor .serviceTitle").html(skey);
+  
+  $("#serviceConfigEditor *[name=skey]").val(skey);
+  $("#serviceConfigEditor *[name=format]").val($(tr).find("input[data-name='format']").val());
+  $("#serviceConfigEditor *[name=access_control]").val($(tr).find("input[data-name='access_control']").val());
+  $("#serviceConfigEditor *[name=privilege_model]").val($(tr).find("input[data-name='privilege_model']").val());
+  
+  $("#serviceConfigEditor").modal();
+}
+function updateService(srcBTN) {
+	skey = $("#serviceConfigEditor *[name=skey]").val();
+	tr = $("#serviceList tr[data-key='"+skey+"']");console.log(tr);
+	if(tr.length>0) {
+		$(tr).find("input[data-name='format']").val($("#serviceConfigEditor *[name=format]").val());
+		$(tr).find("input[data-name='access_control']").val($("#serviceConfigEditor *[name=access_control]").val());
+		$(tr).find("input[data-name='privilege_model']").val($("#serviceConfigEditor *[name=privilege_model]").val());
+		
+		$(tr).find("td[data-name='format']").text($("#serviceConfigEditor *[name=format]").val());
+		$(tr).find("td[data-name='access_control']").text($("#serviceConfigEditor *[name=access_control]").val());
+		$(tr).find("div[data-name='privilege_model']").text($("#serviceConfigEditor *[name=privilege_model]").val());
+    
+    $(tr).addClass(classEdited);
+	}
+  $("#serviceConfigEditor").modal("hide");
 }

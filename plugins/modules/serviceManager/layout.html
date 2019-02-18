@@ -14,35 +14,89 @@
     </tbody>
 	</table>
 </div>
+<div id='serviceConfigEditor' class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Service Configuration :: <span class='serviceTitle'></span></h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type='hidden' name='skey' value='' />
+          <div class="form-group">
+            <label for="format">Output Format:</label>
+            <select class="form-control" name='format'>
+              <option value='json'>JSON</option>
+              <option value='html'>HTML</option>
+              <option value='table'>TABLE</option>
+              <option value='select'>SELECT</option>
+              <option value='list'>LIST</option>
+              <option value='xml'>XML</option>
+              <option value='raw'>RAW</option>
+              <option value='txt'>TXT</option>
+              <option value='css'>CSS</option>
+              <option value='js'>JS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="access_control">Access Logic:</label>
+            <select class="form-control" name='access_control'>
+              <option value='public' class='remote'>Public</option>
+              <option value='private' class='remote'>Private</option>
+              <option value='apikey' class='remote'>Apikey</option>
+              <option value='development' class='local'>Development</option>
+              <option value='session' class='local'>Session</option>
+              <option value='postlogin' class='local'>Postlogin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="privilege_model">Privileges Allowed (optional):</label>
+            <textarea class="form-control" name='privilege_model'></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancel</button>
+        
+        <button type="button" class="btn btn-success pull-right" onclick='updateService(this)'>Update</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 <script id="service-row" type="text/x-handlebars-template">
   {{#LIST}}
       {{#if (is_notnull skey)}}<tr class='{{clz}}' data-key='{{skey}}'>
-					<!--<td align=center><input type='checkbox' class='rowSelector' /></td>-->
-					<th data-value='{{skey}}'>{{skey}}</th>
-					<td data-value='{{src}}'>{{src}}</td>
-					<td data-value='{{format}}'>{{format}}</td>
-					<td align=center data-value='{{debug}}'>{{#if (is_status debug 'true')}}<input name='s[{{skey}}][debug]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][debug]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>
-					<td align=center data-value='{{cache}}'>{{#if (is_status cache 'true')}}<input name='s[{{skey}}][cache]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][cache]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>
-					<td align=center data-value='{{autoformat}}'>{{#if (is_status autoformat 'true')}}<input name='s[{{skey}}][autoformat]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][autoformat]' type='checkbox' {{#if readonly}}disabled{{/if}} />{{/if}}</td>
-					<td data-value='{{access_control}}'>{{access_control}}<div class='popupinfo hidden'>{{privilege_model}}</div></td>
-					
-          <td class='action' align=left>
-            {{#if src}}
-              <i class='fa fa-code cmdbtn' cmd='editService' data-path='{{src}}'></i>
+          <!--<td align=center><input type='checkbox' class='rowSelector' /></td>-->
+          <th data-value='{{skey}}'>{{skey}}</th>
+          <td data-name='src' data-value='{{src}}'>{{src}}</td>
+          <td data-name='format' data-value='{{format}}'>{{format}}</td>
+          <td data-name='debug' align=center data-value='{{debug}}'>{{#if (is_status debug 'true')}}<input name='s[{{skey}}][debug]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][debug]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>
+          <td data-name='cache' align=center data-value='{{cache}}'>{{#if (is_status cache 'true')}}<input name='s[{{skey}}][cache]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][cache]' type='checkbox' {{#if readonly }}disabled{{/if}} />{{/if}}</td>
+          <td data-name='autoformat' align=center data-value='{{autoformat}}'>{{#if (is_status autoformat 'true')}}<input name='s[{{skey}}][autoformat]' type='checkbox' checked='true' {{#if readonly}}disabled{{/if}} />{{else}}<input name='s[{{skey}}][autoformat]' type='checkbox' {{#if readonly}}disabled{{/if}} />{{/if}}</td>
+          <td data-name='access_control' data-value='{{access_control}}'>{{access_control}}</td>
+          
+          <td data-class='action' align=left>
+            <div data-name='access_control' class='popupinfo hidden'>{{privilege_model}}</div>
+            
+            {{#if (is_status type 'GLOBALS')}} 
+              <i class='fa fa-copy cmdbtn' cmd='copyService'></i> 
+            {{else}} 
+              <i class='fa fa-pencil cmdbtn' cmd='editServiceConfig'></i> 
+              <i class='fa fa-close cmdbtn pull-right' cmd='removeService'></i> 
             {{/if}}
             
-            {{#if (is_status type 'GLOBALS')}} <i class='fa fa-copy cmdbtn' cmd='copyService'></i> 
-            {{else}} <i class='fa fa-close cmdbtn pull-right' cmd='removeService'></i> {{/if}}
-					
+            {{#if (is_not src 'core')}}
+              <i class='fa fa-code cmdbtn' cmd='openEditor' data-path='{{src}}'></i>
+            {{/if}}
             
-          
-            <input type='hidden' name='s[{{skey}}][src]' value='{{src}}' />
-            <input type='hidden' name='s[{{skey}}][format]' value='{{format}}' />
-            <input type='hidden' name='s[{{skey}}][access_control]' value='{{access_control}}' />
-            <input type='hidden' name='s[{{skey}}][privilege_model]' value='{{privilege_model}}' />
-
-					</td>
-					</tr>
+            <input type='hidden' data-name='src' name='s[{{skey}}][src]' value='{{src}}' />
+            <input type='hidden' data-name='format' name='s[{{skey}}][format]' value='{{format}}' />
+            <input type='hidden' data-name='access_control' name='s[{{skey}}][access_control]' value='{{access_control}}' />
+            <input type='hidden' data-name='privilege_model' name='s[{{skey}}][privilege_model]' value='{{privilege_model}}' />
+          </td>
+          </tr>
        {{/if}}
   {{/LIST}}
 </script>

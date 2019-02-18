@@ -48,6 +48,9 @@ switch($_REQUEST['action']) {
       } else {
         $cfg['readonly']=false;
       }
+      if($_REQUEST['comptype']=="GLOBALS") {
+        $cfg["src"]="core";
+      }
       $outJSON[$key]=array_merge($cfgDefaults,$cfg);
     }
     
@@ -139,6 +142,24 @@ switch($_REQUEST['action']) {
           break;
         default:
           printServiceMsg("");
+      }
+    } else {
+      printServiceMsg("");
+    }
+    break;
+  case "createservice":
+    if(isset($_POST['name'])) {
+      $skey = _slugify($_POST['name']).".php";
+      $sFile = CMS_APPROOT."services/$skey";
+      if(file_exists($sFile)) {
+        printServiceMsg(["name"=>$skey,"uri"=>_link("modules/cmsEditor")."&type=edit&src=/services/{$skey}","msg"=>"Service already exists"]);
+      } else {
+        file_put_contents($sFile, file_get_contents(__DIR__."/service_template.txt"));
+        if(file_exists($sFile)) {
+          printServiceMsg(["name"=>$skey,"uri"=>_link("modules/cmsEditor")."&type=edit&src=/services/{$skey}","msg"=>"","status"=>"ok"]);
+        } else {
+          printServiceMsg(["name"=>$skey,"msg"=>"File creation error, check if service folder is readonly"]);
+        }
       }
     } else {
       printServiceMsg("");
