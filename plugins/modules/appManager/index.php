@@ -20,7 +20,9 @@ function pageContentArea() {
 	<thead id='app2' class='hidden'><tr>
 		<th width=50px>SL#</th>
 		<th>Title</th>
-		<th width=150px>AppCode</th>
+		<th width=150px>Package</th>
+    <th width=150px>Type</th>
+    <th width=150px>Price</th>
 		<th width=150px>Category</th>
 		<th>Descs</th>
 		<th width=100px>Installed</th>
@@ -117,17 +119,52 @@ printPageComponent(false,[
 	<tr class='{{#if noinstall}}danger{{/if}}' refid='{{appkey}}'>
 		<th>{{@index}}</th>
 		<td>{{name}}</td>
-		<td>{{full_name}}</td>
+		<td>{{package}}</td>
+    <td>{{type}}</td>
+    <td>
+      {{pricing_type}}
+    </td>
 		<td>{{category}}</td>
 		<td>{{descs}}</td>
 		<td>{{installed}}</td>
-		<td>{{last_update}}</td>
+		<td>{{release_updated}}</td>
 		<td>
-			<i class="fa fa-plus fa-2x pull-right cmdAction pull-left" cmd="installAppImage" appkey="{{refid}}" title="Install This App"></i>
+      <i class="fa fa-info-circle fa-2x pull-right cmdAction pull-left" cmd="appimageInfo" appkey="{{refid}}" title="View and install this app"></i>
+      
+      <a href="{{homepage}}" target=_blank class="pull-left fa fa-external-link" title="Checkout homepage"></a>
+      
+      <div class="appinfo modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style='height: 70px;'>
+              <div class="thumbnail pull-left" style="border: 0px;width: 50px;text-align: center;">
+                {{# if logo_url}}
+                <img src="{{logo_url}}" class="img-responsive img-rounded">
+                {{else}}
+                <img src="https://avatars0.githubusercontent.com/u/1589427?s=50&v=4" class="img-responsive img-rounded">
+                {{/if}}
+              </div>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <a class='pull-right' href='{{homepage}}' target=_blank style='margin-top:4px;margin-right:10px;'><i class='fa fa-external-link'></i></a>
+              <h4 class="modal-title pull-left" style='line-height: 47px;'>{{name}} [{{package}}]</h4>
+            </div>
+            <div class="modal-body">
+              <p style='font-size: 14px;padding: 3px;margin: -3px;margin-bottom: 16px;'>{{{descs}}}</p>
+              {{{htmltable this}}}
+            </div>
+            <div class="modal-footer text-right">
+              <button class='btn btn-info pull-left' data-dismiss="modal">Cancel</button>
+              <button class='btn btn-success' onclick='installAppImage("{{refid}}")'>Install</button>
+            </div>
+          </div>
+        </div>
+      </div>
 		</td>
 	</tr>
 	{{/each}}
 </script>
+
+
 <script id="imageTemplate" type="text/x-handlebars-template">
 	{{#each apps}}
 	<div class='list-group-item list-folder'><a href='#item-{{@index}}' data-toggle='collapse'><i class='glyphicon glyphicon-folder-close'></i>{{@key}}</a></div>

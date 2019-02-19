@@ -8,31 +8,44 @@ $apps=_session("siteList");
 
 switch($_REQUEST["action"]) {
 	case "listImages":
-		if(function_exists("listLogiksAppImages")) {
+		if(function_exists("estore_list_apps")) {
 			if(isset($_REQUEST['recache']) && $_REQUEST['recache']=="true") {
-				$appImages=listLogiksAppImages(true);
+				$appImages=estore_list_apps(true);
 			} else {
-				$appImages=listLogiksAppImages();
+				$appImages=estore_list_apps();
 			}
 			
 			$appListFinal=[];//["_"=>[]]
 			foreach($appImages as $a=>$b) {
-				$category=current(explode("_",$b['name']));
-				if($category=="") $category="_";
+				//$category=current(explode("_",$b['name']));
+				//if($category=="") $category="_";
 				//if($b['name']=="Apps_CMS") continue;
 				
 				$appListFinal[]=[//[$category]
 					"hashid"=>$b['id'],
 					"name"=>$b['name'],
-					"full_name"=>$b['full_name'],
+					"appimage"=>$b['appimage'],
+          "package"=>$b['package'],
 					"descs"=>$b['description'],
-					"category"=>$category,
-					"refid"=>$a,
-					"url"=>$b['html_url'],
-					"installed"=>0,
-					"noinstall"=>(in_array(strtoupper($b['name']),["APPS_CMS"])),
-					"last_update"=>current(explode("T",$b['pushed_at'])),
-					"timestamp"=>$b['pushed_at'],
+					"category"=>$b['category'],
+          "keywords"=>$b['keywords'],
+          "type"=>$b['type'],
+// 					"refid"=>$a,
+					"homepage"=>$b['homepage'],
+          "logo_url"=>$b["logo_url"],
+          "license"=>$b['license'],
+          "pricing_type"=>$b['pricing_type'],
+          "pricing_cost"=>$b['pricing_cost'],
+          "core_build"=>$b["core_build"],
+          "type"=>$b["type"],
+          "langs"=>$b["langs"],
+          "release_status"=>$b["release_status"],
+          "release_vers"=>$b["release_vers"],
+          "release_updated"=>_date(current(explode(" ",$b["release_updated"]))),
+					"installed"=>"NA",
+// 					"noinstall"=>(in_array(strtoupper($b['name']),["APPS_CMS"])),
+					//"last_update"=>date('m/d/Y', $b['updatedAt']),
+          //"since"=>date('m/d/Y', $b['createdAt']),
 				];
 			}
 			printServiceMsg($appListFinal);
@@ -355,10 +368,12 @@ switch($_REQUEST["action"]) {
 			echo "<h2 class='errorBox'>Sorry, could not find the refid, try again later.</h2>";
 		}
 		break;
-	case "install":
+	case "installAppImage":
 		if(isset($_POST['refid'])) {
 			$refid=$_POST['refid'];
-			printServiceMsg(installLogiksAppImage($refid));
+      
+      
+			printServiceMsg("Installation candidate not found");//installLogiksAppImage($refid)
 		} else {
 			printServiceMsg(["error"=>"Sorry, could not find the refid, try again later."]);
 		}

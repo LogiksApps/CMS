@@ -17,6 +17,24 @@ $(function() {
 		});
 		return finalHTML;
 	});
+  
+  Handlebars.registerHelper('htmltable', function(appimage) {
+    finalHTML = [];
+    
+    finalHTML.push("<table class='table table-stripped table-hover'>");
+    cols = Object.keys(appimage);
+    $.each(cols, function(a,b) {
+      if(["hashid","logo_url","homepage","descs"].indexOf(b)>=0) return;
+      if(["homepage1"].indexOf(b)>=0) {
+        finalHTML.push("<tr data-refid='"+b.hashid+"'><td>"+toTitle(b)+"</td><td class='"+b+"'><a href='"+appimage[b]+"' target=_blank><i class='fa fa-external-link'></i></a></td></tr>");
+      } else {
+        finalHTML.push("<tr data-refid='"+b.hashid+"'><td>"+toTitle(b)+"</td><td class='"+b+"'>"+appimage[b]+"</td></tr>");
+      }
+    });
+    finalHTML.push("</table>");
+    
+    return finalHTML.join("");
+  });
 	
 	$("#pgworkspace").delegate(".cmdAction[cmd]","click",function(e) {
 		cmd=$(this).attr("cmd");
@@ -144,24 +162,24 @@ $(function() {
           });
         break;
       case "exportApp":
-				
-				break;
-      case "installAppImage":
-			    loadMarketAppInfo($(this).text(),app);
-			    break;
+      	break;
+        
+      case "appimageInfo":
+        $(this).closest("td").find(".appinfo").modal();
+        break;
 			default:
 				lgksToast("App Action Not Defined.");
 		}
 	});
 	
-	$('#componentTree').delegate(".list-group-item.list-file a","click",function() {
-		file=$(this).closest(".list-group-item");
+// 	$('#componentTree').delegate(".list-group-item.list-file a","click",function() {
+// 		file=$(this).closest(".list-group-item");
 		
-		title=$(file).data("fullname");
-		refid=$(file).data("refid");
+// 		title=$(file).data("fullname");
+// 		refid=$(file).data("refid");
 		
-		loadMarketAppInfo(title, refid);
-	});
+// 		loadMarketAppInfo(title, refid);
+// 	});
 	
 	//listApps();
 	//listImages();
@@ -272,23 +290,6 @@ function listArchivedApps() {
 	},"json");
 }
 
-function loadMarketAppInfo(title, refid) {
-	processAJAXPostQuery(_service("appManager","appInfo"),"refid="+refid,function(html) {
-					lgksMsg(html,"App Image : "+title,{closeButton:true,buttons: false,className:'appmodal'});
-				});
-}
-
-
-function removeApps() {
-	
-}
-
-function installApp(refid) {
-	processAJAXPostQuery(_service("appManager","install"),"refid="+refid,function(dataJSON) {
-					console.log(dataJSON);
-				});
-}
-
 function restoreApp(restoreIndex, src) {
   app = $(src).data('app');
   if(app == null) {
@@ -351,4 +352,15 @@ function purgeCache(cacheIndex,src) {
         },"json");
       break;
   }
+}
+
+//App Installation
+function installAppImage(refid) {
+  if(typeof lgksLoader == "function") lgksLoader("Installing appimage, please wait ...","");
+  else lgksMsg("Installing appimage, please wait ...");
+  
+	processAJAXPostQuery(_service("appManager","installAppImage"),"refid="+refid,function(dataJSON) {
+					console.log(dataJSON);
+          $(".modal").modal("hide");
+				},"json");
 }
