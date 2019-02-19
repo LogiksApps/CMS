@@ -51,6 +51,7 @@ printPageComponent(false,[
 	
 			"loadLocalApps"=>["title"=>"Installed","align"=>"right","class"=>"active"],
 			"loadAppImages"=>["title"=>"New Apps","align"=>"right"],
+      "loadArchived"=>["title"=>"Archived","align"=>"right"],
 		
 			"reloadListUI"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			//['type'=>"bar"],
@@ -67,7 +68,7 @@ printPageComponent(false,[
 ?>
 <script id="appRowTemplate" type="text/x-handlebars-template">
 	{{#each apps}}
-	<tr class='{{#if readonly}}danger{{/if}}' refid='{{appkey}}'>
+	<tr class='{{#if readonly}}danger{{/if}}' refid='{{appkey}}' uuid='{{uuid}}'>
 		<th>{{@index}}</th>
 		<td>{{title}}</td>
 		<td>{{appkey}}</td>
@@ -79,9 +80,34 @@ printPageComponent(false,[
 		<td>{{access}}</td>
 		<td>
 			<i class="fa fa-pencil cmdAction pull-left" cmd="editApp" appkey="{{appkey}}" title="Edit App"></i>
+      <i class="fa fa-gear cmdAction pull-left" cmd="configureApp" appkey="{{appkey}}" title="Configure App"></i>
+      
 			<a href="{{url}}" target=_blank class="pull-left fa fa-eye" title="Preview"></a>
+      
+      <i class="fa fa-eraser cmdAction pull-left" cmd="flushCache" appkey="{{appkey}}" title="Purge Cache for App"></i>
+      
 			
 			{{{actionBtns this}}}
+		</td>
+	</tr>
+	{{/each}}
+</script>
+<script id="archivedRowTemplate" type="text/x-handlebars-template">
+	{{#each apps}}
+	<tr class='{{#if readonly}}danger{{/if}}' refid='{{appkey}}' uuid='{{uuid}}'>
+		<th>{{@index}}</th>
+		<td>{{title}}</td>
+		<td>{{appkey}}</td>
+		<td>{{vers}}</td>
+		<td>{{router}}</td>
+		<td>{{published}}</td>
+		<td>{{status}}</td>
+		<td>{{devmode}}</td>
+		<td>{{access}}</td>
+		<td>
+      <i class="fa fa-undo cmdAction pull-left" cmd="restoreApp" appkey="{{appkey}}" title="Restore Archived App"></i>
+      
+      {{{actionBtns this}}}
 		</td>
 	</tr>
 	{{/each}}
