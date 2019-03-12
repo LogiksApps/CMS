@@ -115,6 +115,10 @@ $(function() {
             folderEvents(key, this, options);
         },
         items: {
+            "refresh": {
+                name: "Refresh",
+                icon: "fa-refresh"
+            },
             "rootdir": {
                   name: "Make Master Folder",
                   icon: "fa-copy"
