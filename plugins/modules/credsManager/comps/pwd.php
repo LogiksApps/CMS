@@ -30,7 +30,7 @@ $title="Password Manager";
 	<br/>
 	<div class="row">
 		<div class="col-sm-12 col-lg-12">
-				<form class="form-horizontal form-responsive password-form" style='max-width:350px;margin:auto;border:1px solid #DEDEDE;'>
+				<form class="form-horizontal form-responsive password-form" style='max-width:350px;margin:auto;border:1px solid #DEDEDE;' autocomplete=off>
 					<input type='hidden' name='q' value='<?=$slug['refid']?>' />
 					<legend style='padding:10px;'><i class='fa fa-user'></i> <?=substr($data['name'],0,30)?></legend>
 					<fieldset style='padding:10px;'>
