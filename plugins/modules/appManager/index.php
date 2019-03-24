@@ -53,11 +53,12 @@ printPageComponent(false,[
 	
 			"loadLocalApps"=>["title"=>"Installed","align"=>"right","class"=>"active"],
 			"loadAppImages"=>["title"=>"New Apps","align"=>"right"],
-      "loadArchived"=>["title"=>"Archived","align"=>"right"],
+            "loadArchived"=>["title"=>"Archived","align"=>"right"],
 		
+		    "reloadListUICache"=>["icon"=>"<i class='fa fa-retweet'></i>","tips"=>"Recache data"],
 			"reloadListUI"=>["icon"=>"<i class='fa fa-refresh'></i>"],
-			//['type'=>"bar"],
-			//"newApp"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New"],
+			['type'=>"bar"],
+			"uploadAppZip"=>["icon"=>"<i class='fa fa-upload'></i>","tips"=>"Create New"],
 			//"rename"=>["icon"=>"<i class='fa fa-terminal'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Rename Content"],
 			//"openExternal"=>["icon"=>"<i class='fa fa-external-link'></i>","class"=>"onsidebarSelect"],
 			//"preview"=>["icon"=>"<i class='fa fa-eye'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Preview Content"],
@@ -154,7 +155,7 @@ printPageComponent(false,[
             </div>
             <div class="modal-footer text-right">
               <button class='btn btn-info pull-left' data-dismiss="modal">Cancel</button>
-              <button class='btn btn-success' onclick='installAppImage("{{refid}}")'>Install</button>
+              <button class='btn btn-success' onclick='installAppImage("{{package}}")'>Install</button>
             </div>
           </div>
         </div>
@@ -177,3 +178,47 @@ printPageComponent(false,[
 	</div>
 	{{/each}}
 </script>
+
+
+<div id='appForm' class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 style='margin: 0px;'>Install New App</h3>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+              <input type='hidden' name='refid' />
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="appname">AppName:</label>
+                <div class="col-sm-10">
+                  <input type="email" class="form-control" name="appname" placeholder="App Name">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="db">DB Config:</label>
+                <div class="col-sm-10">
+                  <textarea name='db' class='form-control'>{
+            "driver": "mysqli",
+            "host": "localhost",
+            "port": "",
+            "database": "",
+            "user": "",
+            "pwd": "",
+            "prefix": "do",
+            "suffix": "",
+            "readonly": false,
+            "block": [],
+            "allowSQL": true
+        }</textarea>
+                </div>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer text-right">
+          <button class='btn btn-info pull-left' data-dismiss="modal">Cancel</button>
+          <button class='btn btn-success' onclick='startAppInstallation(this)'>Start Installation</button>
+        </div>
+      </div>
+    </div>
+</div>

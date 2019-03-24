@@ -41,6 +41,12 @@ function loadList() {
 		$.each(data.Data,function(k,v) {
 			html="<div class='list-group-item list-file' data-path='"+v.path+"'><a href='#'><i class='glyphicon glyphicon-cog'></i>"+v.name+"</a></div>";
 			$("#componentTree").append(html);
+			
+			if(cfgSrcTypeValue!=null && cfgSrcTypeValue.length>0) {
+			    if($("#componentTree .list-group-item.list-file[data-path='"+cfgSrcTypeValue+"']").length>0) {
+                	$("#componentTree .list-group-item.list-file[data-path='"+cfgSrcTypeValue+"'] a").click();
+                }
+			}
 		});
 	},"json");
 }

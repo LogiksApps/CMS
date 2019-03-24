@@ -6,6 +6,8 @@ loadModule("packages");
 
 $apps=_session("siteList");
 
+define("PACKAGE_CACHE_PERIOD",86400);
+
 switch($_REQUEST["action"]) {
 	case "listImages":
 		if(function_exists("estore_list_apps")) {
@@ -25,23 +27,24 @@ switch($_REQUEST["action"]) {
 					"hashid"=>$b['id'],
 					"name"=>$b['name'],
 					"appimage"=>$b['appimage'],
-          "package"=>$b['package'],
+					"package"=>$b['package'],
 					"descs"=>$b['description'],
 					"category"=>$b['category'],
-          "keywords"=>$b['keywords'],
-          "type"=>$b['type'],
+					"keywords"=>$b['keywords'],
+					"type"=>$b['type'],
 // 					"refid"=>$a,
 					"homepage"=>$b['homepage'],
-          "logo_url"=>$b["logo_url"],
-          "license"=>$b['license'],
-          "pricing_type"=>$b['pricing_type'],
-          "pricing_cost"=>$b['pricing_cost'],
-          "core_build"=>$b["core_build"],
-          "type"=>$b["type"],
-          "langs"=>$b["langs"],
-          "release_status"=>$b["release_status"],
-          "release_vers"=>$b["release_vers"],
-          "release_updated"=>_date(current(explode(" ",$b["release_updated"]))),
+					"logo_url"=>$b["logo_url"],
+					"license"=>$b['license'],
+					"pricing_type"=>$b['pricing_type'],
+					"pricing_cost"=>$b['pricing_cost'],
+					"core_build"=>$b["core_build"],
+				// 	"download_stable"=>$b["download_stable"],
+				// 	"download_nightly"=>$b["download_nightly"],
+					"langs"=>$b["langs"],
+					"release_status"=>$b["release_status"],
+					"release_vers"=>$b["release_vers"],
+					"release_updated"=>_date(current(explode(" ",$b["release_updated"]))),
 					"installed"=>"NA",
 // 					"noinstall"=>(in_array(strtoupper($b['name']),["APPS_CMS"])),
 					//"last_update"=>date('m/d/Y', $b['updatedAt']),
@@ -55,41 +58,41 @@ switch($_REQUEST["action"]) {
 		break;
 	case "listApps":
 		$appsFinal=[];
-    $_SESSION['SECUREAPPLIST'] = [];
+        $_SESSION['SECUREAPPLIST'] = [];
 		foreach($apps as $k=>$app) {
-      if($_SESSION['SESS_PRIVILEGE_ID']!=1) {
-        if(in_array($k,$_SESSION['SESS_ACCESS_SITES'])) continue;
-      }
+            if($_SESSION['SESS_PRIVILEGE_ID']!=1) {
+                if(in_array($k,$_SESSION['SESS_ACCESS_SITES'])) continue;
+            }
       
 			$cfg=ROOT.APPS_FOLDER.$k."/apps.cfg";
 			if(file_exists($cfg)) {
 			    $cfgArr=LogiksConfig::parseConfigFile($cfg);
-          $UUID = ceil(rand(1000,9999));
-          $appsFinal[]=[
-            "appkey"=>$k,
-            "title"=>$cfgArr['DEFINE-APPS_NAME']['value'],
-            "vers"=>$cfgArr['DEFINE-APPS_VERS']['value'],
-            "devmode"=>$cfgArr['DEFINE-DEV_MODE_ENABLED']['value'],
-            "status"=>$cfgArr['DEFINE-APPS_STATUS']['value'],
-            "published"=>$cfgArr['DEFINE-PUBLISH_MODE']['value'],
-            "router"=>$cfgArr['DEFINE-APPS_ROUTER']['value'],
-            "access"=>$cfgArr['DEFINE-ACCESS']['value'],
-            "url"=>SiteLocation."?site={$k}",
-            "urlcms"=>$app['url'],
-            "readonly"=>(!is_writable($cfg)),
-            "database"=>0,
-            "msgs"=>0,
-            "cache"=>0,
-            "domain"=>0,
-            "services"=>0,
-            "uuid"=>$UUID,
-            "allow_rename"=>($k!=SITENAME),
-            "allow_clone"=>($k!=SITENAME),
-            "allow_delete"=>false,//($_SESSION['SESS_PRIVILEGE_ID']==1 && $k!=SITENAME)
-            "allow_archive"=>($k!=SITENAME),
-            //"cfg"=>$cfgArr
-          ];
-        $_SESSION['SECUREAPPLIST']["app/{$k}"] = $UUID;
+                $UUID = ceil(rand(1000,9999));
+                $appsFinal[]=[
+                    "appkey"=>$k,
+                    "title"=>$cfgArr['DEFINE-APPS_NAME']['value'],
+                    "vers"=>$cfgArr['DEFINE-APPS_VERS']['value'],
+                    "devmode"=>$cfgArr['DEFINE-DEV_MODE_ENABLED']['value'],
+                    "status"=>$cfgArr['DEFINE-APPS_STATUS']['value'],
+                    "published"=>$cfgArr['DEFINE-PUBLISH_MODE']['value'],
+                    "router"=>$cfgArr['DEFINE-APPS_ROUTER']['value'],
+                    "access"=>$cfgArr['DEFINE-ACCESS']['value'],
+                    "url"=>SiteLocation."?site={$k}",
+                    "urlcms"=>$app['url'],
+                    "readonly"=>(!is_writable($cfg)),
+                    "database"=>0,
+                    "msgs"=>0,
+                    "cache"=>0,
+                    "domain"=>0,
+                    "services"=>0,
+                    "uuid"=>$UUID,
+                    "allow_rename"=>($k!=SITENAME),
+                    "allow_clone"=>($k!=SITENAME),
+                    "allow_delete"=>false,//($_SESSION['SESS_PRIVILEGE_ID']==1 && $k!=SITENAME)
+                    "allow_archive"=>($k!=SITENAME),
+                    //"cfg"=>$cfgArr
+                  ];
+                $_SESSION['SECUREAPPLIST']["app/{$k}"] = $UUID;
 			}
 		}
 		printServiceMsg($appsFinal);
@@ -368,108 +371,256 @@ switch($_REQUEST["action"]) {
 			echo "<h2 class='errorBox'>Sorry, could not find the refid, try again later.</h2>";
 		}
 		break;
+	case "uploadAppImage":
+	    if(isset($_FILES['attachment'])) {
+	        $tempDir = _dirTemp("appManager");
+	        $targetPath = $tempDir.$_FILES['attachment']["name"];
+	       // move_uploaded_file($_FILES['attachment']['tmp_name'],$targetPath);
+	        if(file_exists($targetPath)) {
+	            $_SESSION['APPMANAGER-FILE'] = $targetPath;
+	            $refid = time();
+                //printServiceMsg(["msg"=>"Unziping uploaded archive","nextstep"=>"unzip","refid"=>time()]);
+                echo "Uploaded successfully, Unzipping<script>parent.appInstallSteps('{$refid}','unzip');</script>";
+	        }
+	    } else {
+	        echo "Failed to upload file<script>parent.lgksAlert('Failed to upload file');</script>";
+	    }
+	    break;
 	case "installAppImage":
+	    //download
+	    //unzip
+	    //coping
+	    //configuring
+	        //jsonConfig
+	    //validating
+	        //sqlFolder
+            //schema
+            //permissions
+	    //install-addons
+	        //dependencies
 		if(isset($_POST['refid'])) {
+		    if(isset($_POST['stepid'])) {
+		        $stepid = strtolower($_POST['stepid']);
+		        unset($_POST['stepid']);
+		    } else {
+		        $stepid = "download";
+		    }
 			$refid=$_POST['refid'];
-      
-      
-			printServiceMsg("Installation candidate not found");//installLogiksAppImage($refid)
+			if(strlen($refid)<=0) {
+			    printServiceMsg(["error"=>"Installation candidate not defined","refid"=>$refid]);
+			    return;
+			}
+			
+			$appImages=estore_list_apps();
+            $appSelected = false;
+            foreach($appImages as $var) {
+                if(isset($var['package']) && strtolower($var['package']) == strtolower($_POST['refid'])) {
+                    $appSelected = $var;
+                    break;
+                }
+            }
+            if(!$appSelected) {
+                printServiceMsg(["error"=>"Installation candidate not found","refid"=>$refid]);
+                return;
+            }
+            
+            //printArray([$appSelected,$_POST['refid'],$appImages]);exit();
+            
+            set_time_limit(0); 
+            
+            $tempDir = _dirTemp("appManager");
+            
+            if($stepid!="download") {
+                if(!isset($_SESSION['APPMANAGER-PARAMS'])) {
+                    printServiceMsg(["error"=>"Installation parameters not found<br>Try installing again.","refid"=>$refid]);
+                    return;
+                }
+            }
+            
+            switch($stepid) {
+                case "download":
+                    $_SESSION['APPMANAGER-FILE'] = "";
+                    
+                    $_SESSION['APPMANAGER-PARAMS'] = [
+                            "appname"=>time()."_".$refid,
+                            "db"=>false,
+                            "cache"=>false,
+                            "msg"=>false,
+                        ];
+                        
+                    foreach(["db","cache","msg","fs"] as $a) {
+                        if(isset($_POST[$a])) {
+                            $_POST[$a] = json_decode($_POST[$a],true);
+                            if(!is_array($_POST[$a])) unset($_POST[$a]);
+                        }
+                    }
+                    $_SESSION['APPMANAGER-PARAMS'] = array_merge($_SESSION['APPMANAGER-PARAMS'],$_POST);
+                    
+                    if(!is_dir($tempDir)) mkdir($tempDir,0777,true);
+                    if(!is_dir($tempDir)) {
+                        printServiceMsg(["error"=>"Could not create tmp directory","refid"=>$refid]);
+                        return;
+                    }
+                    
+                    $downloadURL = $appSelected['download_stable'];
+                    if(!$downloadURL) {
+                        printServiceMsg(["error"=>"No downloadable candidate found","refid"=>$refid]);
+                        return;
+                    }
+                    
+                    $downloadFile = "{$tempDir}{$refid}.zip";
+                    if(file_exists($downloadFile)) {
+                        if((time() - filemtime($downloadFile))>=PACKAGE_CACHE_PERIOD) {
+                           unlink($downloadFile); 
+                        } else {
+                            $_SESSION['APPMANAGER-FILE'] = $downloadFile;
+                            printServiceMsg(["msg"=>"Unziping downloaded archive","nextstep"=>"unzip","refid"=>$refid]);
+                            return;
+                        }
+                    }
+                    file_put_contents($downloadFile, fopen($downloadURL, 'r'));
+                    
+                    if(file_exists($downloadFile)) {
+                        $_SESSION['APPMANAGER-FILE'] = $downloadFile;
+                        printServiceMsg(["msg"=>"Unziping downloaded archive","nextstep"=>"unzip","refid"=>$refid]);
+                    } else {
+                        printServiceMsg(["error"=>"Failed to download the application. <br>Check with server Admin","refid"=>$refid]);
+                    }
+                    break;
+                case "unzip":
+                    $_SESSION['APPMANAGER-CACHE'] = "";
+                    if(isset($_SESSION['APPMANAGER-FILE']) && strlen($_SESSION['APPMANAGER-FILE'])>0 && file_exists($_SESSION['APPMANAGER-FILE'])) {
+                        $downloadedFile = $_SESSION['APPMANAGER-FILE'];
+                        
+                        if(is_dir($tempDir."cache/")) {
+                            deleteFolder($tempDir."cache/");
+                        }
+                        if(!is_dir($tempDir."cache/")) mkdir($tempDir."cache/",0777,true);
+                        
+                        $zip = new ZipArchive;
+                        $res = $zip->open($downloadedFile);
+                        if ($res === TRUE) {
+                          $zip->extractTo($tempDir."cache/");
+                          $zip->close();
+                          
+                          $fs = scandir($tempDir."cache/");
+                          if(isset($fs[2])) {
+                              $_SESSION['APPMANAGER-CACHE'] = $tempDir."cache/{$fs[2]}/";
+                          }
+                          printServiceMsg(["msg"=>"Creating app instance","nextstep"=>"coping","refid"=>$refid]);
+                        } else {
+                          printServiceMsg(["error"=>"Unzip Failed. Try installing again.","refid"=>$refid]);
+                        }
+                    } else {
+                        printServiceMsg(["error"=>"Unable to find downloaded resource. Try installing again.","refid"=>$refid]);
+                    }
+                    break;
+                case "coping":
+                    $_SESSION['APPMANAGER-APPDIR'] = "";
+                    if(isset($_SESSION['APPMANAGER-CACHE']) && strlen($_SESSION['APPMANAGER-CACHE'])>0 && is_dir($_SESSION['APPMANAGER-CACHE'])) {
+                        $cacheDir = $_SESSION['APPMANAGER-CACHE'];
+                        $targetDir = ROOT.APPS_FOLDER."{$_SESSION['APPMANAGER-PARAMS']['appname']}/";
+                        if(is_dir($targetDir)) {
+                            printServiceMsg(["error"=>"Target app directory for {$refid} already exists","refid"=>$refid]);
+                            return;
+                        }
+                        // printArray([$cacheDir,$targetDir]);
+                        ob_start();
+                        copyFolder($cacheDir,$targetDir,false);
+                        $out = ob_get_contents();
+                        ob_clean();
+                        if(strlen($out)>0) {
+                            printServiceMsg(["error"=>strip_tags($out),"refid"=>$refid]);
+                            return;
+                        } else {
+                            $_SESSION['APPMANAGER-APPDIR'] = $targetDir;
+                            deleteFolder($cacheDir);
+                            printServiceMsg(["msg"=>"Configuring the app","nextstep"=>"configuring","refid"=>$refid]);
+                        }
+                    } else {
+                        printServiceMsg(["error"=>"Unable to find cache resource. Try installing again.","refid"=>$refid]);
+                    }
+                    break;
+                case "configuring":
+                    if(isset($_SESSION['APPMANAGER-APPDIR']) && strlen($_SESSION['APPMANAGER-APPDIR'])>0 && is_dir($_SESSION['APPMANAGER-APPDIR'])) {
+                        $logiksConfig = $_SESSION['APPMANAGER-APPDIR']."logiks.json";
+                        if(file_exists($logiksConfig)) {
+                            $logiksConfig = json_decode(file_get_contents($logiksConfig),true);
+                            if(!$logiksConfig) {
+                                
+                            }
+                        } else {
+                            $logiksConfig = [];
+                        }
+                        $_SESSION['APPMANAGER-PARAMS'] = array_merge($_SESSION['APPMANAGER-PARAMS'],$logiksConfig);
+                        $logiksConfig = $_SESSION['APPMANAGER-PARAMS'];
+                        
+                        if(isset($logiksConfig['db']) && $logiksConfig['db']) {
+                            insertAppConfig("db",$logiksConfig['appname'],["app"=>$logiksConfig['db']]);
+                        }
+                        if(isset($logiksConfig['cache']) && $logiksConfig['cache']) {
+                            insertAppConfig("cache",$logiksConfig['appname'],["app"=>$logiksConfig['cache']]);
+                        }
+                        if(isset($logiksConfig['msg']) && $logiksConfig['msg']) {
+                            insertAppConfig("message",$logiksConfig['appname'],["app"=>$logiksConfig['msg']]);
+                        }
+                        if(isset($logiksConfig['fs']) && $logiksConfig['fs']) {
+                            insertAppConfig("fs",$logiksConfig['appname'],["app"=>$logiksConfig['fs']]);
+                        }
+                        if(isset($logiksConfig['services']) && $logiksConfig['services']) {
+                            insertAppConfig("services",$logiksConfig['appname'],$logiksConfig['services']);
+                        }
+                        
+                        printServiceMsg(["msg"=>"Validating the app","nextstep"=>"validating","refid"=>$refid]);
+                    } else {
+                        printServiceMsg(["error"=>"Unable to find created app folder. Try installing again.","refid"=>$refid]);
+                    }
+                    break;
+                case "validating":
+                    $logiksConfig = $_SESSION['APPMANAGER-PARAMS'];
+                    $sqlFolder = $_SESSION['APPMANAGER-APPDIR']."sql/";
+                    
+                    if(is_dir($sqlFolder)) {
+                        //Install SQL Tables from the folder
+                    }
+                    
+                    if(isset($logiksConfig['schema']) && $logiksConfig['schema']) {
+                        //Install addon tables from schema
+                    }
+                    
+                    if(isset($logiksConfig['permissions']) && $logiksConfig['permissions']) {
+                        //Generate Permissions for App
+                    }
+                    
+                    // printArray([$sqlFolder,$logiksConfig]);
+                    printServiceMsg(["msg"=>"Installing additional packages","nextstep"=>"install-addons","refid"=>$refid]);
+                    break;
+                case "install-addons":
+                    $logiksConfig = $_SESSION['APPMANAGER-PARAMS'];
+                    
+                    if(isset($logiksConfig['dependencies']) && $logiksConfig['dependencies']) {
+                        $dependencies = $logiksConfig['dependencies'];
+                        if(is_string($dependencies)) {
+                            $dependencies = explode(",",$dependencies);
+                            array_flip($dependencies);
+                        }
+                        
+                        //$dependencies
+                    }
+                    
+                    printServiceMsg(["msg"=>"Finalizing the installation","nextstep"=>"completed","refid"=>$refid]);
+                    break;
+                case "completed":
+                    printServiceMsg(["msg"=>"App Installation is complete<br>Reload the page for updating the cms dropdown","refid"=>$refid]);
+                    break;
+                default:
+                    printServiceMsg(["error"=>"Installation Failed, Wrong StepID","refid"=>$refid]);
+            }
+            ////installLogiksAppImage($refid)
 		} else {
-			printServiceMsg(["error"=>"Sorry, could not find the refid, try again later."]);
+			printServiceMsg(["error"=>"Sorry, could not find the refid, try again later.","refid"=>""]);
 		}
 		break;
 }
 
-/* 
- * php delete function that deals with directories recursively
- */
-function deleteFolder($target) {
-    if(is_dir($target)){
-//         $files = glob( $target . '*', GLOB_MARK); //GLOB_MARK adds a slash to directories returned
-//         foreach( $files as $file ) {
-//             deleteFolder( $file );      
-//         }
-        $files = scandir($target);
-        $files = array_slice($files,2);
-      
-        foreach( $files as $file ) {
-          if(is_dir($target.$file)) 
-            deleteFolder($target.$file."/");
-          else
-            deleteFolder($target.$file);
-        };
-        
-        rmdir( $target );
-    } elseif(is_file($target)) {
-        unlink( $target );  
-    }
-    return file_exists($target);
-}
-
-/* 
- * php copying function that deals with directories recursively
- */
-function copyFolder($source, $dest, $overwrite = false,$basePath = ""){
-    if(!is_dir($basePath . $dest)) //Lets just make sure our new folder is already created. Alright so its not efficient to check each time... bite me
-    mkdir($basePath . $dest);
-    if($handle = opendir($basePath . $source)){        // if the folder exploration is sucsessful, continue
-        while(false !== ($file = readdir($handle))){ // as long as storing the next file to $file is successful, continue
-            if($file != '.' && $file != '..'){
-                $path = $source . '/' . $file;
-                if(is_file($basePath . $path)){
-                    if(!is_file($basePath . $dest . '/' . $file) || $overwrite)
-                    if(!@copy($basePath . $path, $basePath . $dest . '/' . $file)){
-                        echo '<font color="red">File ('.$path.') could not be copied, likely a permissions problem.</font>';
-                    }
-                } elseif(is_dir($basePath . $path)){
-                    if(!is_dir($basePath . $dest . '/' . $file))
-                    mkdir($basePath . $dest . '/' . $file); // make subdirectory before subdirectory is copied
-                    copyFolder($path, $dest . '/' . $file, $overwrite, $basePath); //recurse!
-                }
-            }
-        }
-        closedir($handle);
-    }
-}
-
-function cloneAppConfig($configName, $appOld, $appNew) {
-  $cfgFile = ROOT.CFG_FOLDER."jsonConfig/{$configName}.json";
-  if(!file_exists($cfgFile)) return;
-
-  $jsonConfig = file_get_contents($cfgFile);
-  $jsonConfig = json_decode($jsonConfig,true);
-
-  if(isset($jsonConfig[$appOld])) {
-    $jsonConfig[$appNew] = $jsonConfig[$appOld];
-
-    file_put_contents($cfgFile,json_encode($jsonConfig,JSON_PRETTY_PRINT));
-  }
-}
-function renameAppConfig($configName, $appOld, $appNew) {
-  $cfgFile = ROOT.CFG_FOLDER."jsonConfig/{$configName}.json";
-  if(!file_exists($cfgFile)) return;
-
-  $jsonConfig = file_get_contents($cfgFile);
-  $jsonConfig = json_decode($jsonConfig,true);
-
-  if(isset($jsonConfig[$appOld])) {
-    $jsonConfig[$appNew] = $jsonConfig[$appOld];
-    unset($jsonConfig[$appOld]);
-
-    file_put_contents($cfgFile,json_encode($jsonConfig,JSON_PRETTY_PRINT));
-  }
-}
-function deleteAppConfig($configName, $appOld) {
-  $cfgFile = ROOT.CFG_FOLDER."jsonConfig/{$configName}.json";
-  if(!file_exists($cfgFile)) return;
-
-  $jsonConfig = file_get_contents($cfgFile);
-  $jsonConfig = json_decode($jsonConfig,true);
-
-  if(isset($jsonConfig[$appOld])) {
-    unset($jsonConfig[$appOld]);
-
-    file_put_contents($cfgFile,json_encode($jsonConfig,JSON_PRETTY_PRINT));
-  }
-}
 ?>

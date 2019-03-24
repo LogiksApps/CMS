@@ -5,9 +5,9 @@ $(function() {
 	Handlebars.registerHelper('actionBtns', function(app) {
 		html={
 			"allow_delete":'<i class="fa fa-trash cmdAction pull-right" cmd="deleteApp" appkey="'+app.appkey+'" title="Delete App"></i>',
-      "allow_archive":'<i class="fa fa-archive cmdAction pull-right" cmd="archiveApp" appkey="'+app.appkey+'" title="Archive App"></i>',
+            "allow_archive":'<i class="fa fa-archive cmdAction pull-right" cmd="archiveApp" appkey="'+app.appkey+'" title="Archive App"></i>',
 			"allow_clone":'<i class="fa fa-copy cmdAction pull-right" cmd="cloneApp" appkey="'+app.appkey+'" title="Clone App"></i>',
-      "allow_rename":'<i class="fa fa-terminal cmdAction pull-right" cmd="renameApp" appkey="'+app.appkey+'" title="Rename App"></i>',
+            "allow_rename":'<i class="fa fa-terminal cmdAction pull-right" cmd="renameApp" appkey="'+app.appkey+'" title="Rename App"></i>',
 		};
 		finalHTML="";
 		$.each(html,function(k,v) {
@@ -39,7 +39,7 @@ $(function() {
 	$("#pgworkspace").delegate(".cmdAction[cmd]","click",function(e) {
 		cmd=$(this).attr("cmd");
 		app=$(this).attr("appkey");
-    uuid=$(this).closest("tr").attr("uuid");
+        uuid=$(this).closest("tr").attr("uuid");
 
 		switch(cmd) {
 			case "editApp":
@@ -66,8 +66,8 @@ $(function() {
                         return false;
                     }
                 }});
-				});
-				break;
+			});
+			break;
       case "configureApp":
 				parent.openLinkFrame("Config:"+app,_link("/modules/settings/apps")+"&forsite="+app);
 				break;
@@ -96,10 +96,10 @@ $(function() {
                           });
                   }
           });
-				break;
-      case "archiveApp":
-        appID = app;
-        lgksPrompt("<p class='alert alert-warning'>Unexpected bad things will happen if you don’t read this!</p>"+
+		break;
+        case "archiveApp":
+            appID = app;
+            lgksPrompt("<p class='alert alert-warning'>Unexpected bad things will happen if you don’t read this!</p>"+
                    "<div style='font-size: 14px;font-weight: normal;'><p>This will archive the "+
                    appID+" application. You can not access this app unless you restore it again.</p><p>Please type in the UUID "+uuid+" of the app to confirm.</p></div>", 
                    "Archive App", function(ans) {
@@ -115,11 +115,11 @@ $(function() {
                   } else {
                     lgksToast("UUID Mismatch. Try again");
                   }
-          });
+            });
 				break;
-			case "deleteApp":
-        appID = app;
-        lgksPrompt("<p class='alert alert-danger'>Unexpected bad things will happen if you don’t read this!</p>"+
+		case "deleteApp":
+            appID = app;
+            lgksPrompt("<p class='alert alert-danger'>Unexpected bad things will happen if you don’t read this!</p>"+
                    "<div style='font-size: 14px;font-weight: normal;'><p>This action cannot be undone. This will permanently delete the "+
                    appID+" application, database, cache and stats.</p><p>Please type in the UUID "+uuid+" of the app to confirm.</p></div>", 
                    "Delete App", function(ans) {
@@ -165,10 +165,10 @@ $(function() {
       	break;
         
       case "appimageInfo":
-        $(this).closest("td").find(".appinfo").modal();
+            $(this).closest("td").find(".appinfo").modal();
         break;
-			default:
-				lgksToast("App Action Not Defined.");
+	    default:
+			lgksToast("App Action Not Defined.");
 		}
 	});
 	
@@ -226,7 +226,17 @@ function reloadListUI() {
         lgksToast("Not supported");
     }
 }
-
+function reloadListUICache() {
+    if(currentItem=="localapps") {
+        listApps();
+    } else if(currentItem=="newapps") {
+        relistImages();
+    } else if(currentItem=="archivedapps") {
+        listArchivedApps();
+    } else {
+        lgksToast("Not supported");
+    }
+}
 function relistImages() {
 	listImages(true);
 }
@@ -356,11 +366,71 @@ function purgeCache(cacheIndex,src) {
 
 //App Installation
 function installAppImage(refid) {
-  if(typeof lgksLoader == "function") lgksLoader("Installing appimage, please wait ...","");
-  else lgksMsg("Installing appimage, please wait ...");
+	$(".modal").modal("hide");
+	
+	$("#appForm").find("input[name=refid]").val(refid);
+	$("#appForm").find("input[name=appname]").val("");
+	
+	$("#appForm").modal("show");
+}
+
+function startAppInstallation() {
+	if($("#appForm form input[name=appname]").val()==null || $("#appForm form input[name=appname]").val().length<=0) {
+		lgksToast("App Name cannot be empty");
+		return;
+	}
+
+	$(".modal").modal("hide");
+
+	msg = "Installing appimage, please wait ...";
+  	if(typeof lgksLoader == "function") lgksLoader(msg,"");
+  	else {
+  	    a = lgksMsg("<div class='clearfix'><i class='fa fa-spinner pull-left fa-4x fa-spin'></i><div style='line-height: 50px;'>"+msg+"</div></div>","", {
+        onEscape: false,
+        className: "loadingmodal"
+      });
+      $(".loadingmodal .bootbox-close-button,.loadingmodal .close").detach();
+  	}
   
-	processAJAXPostQuery(_service("appManager","installAppImage"),"refid="+refid,function(dataJSON) {
-					console.log(dataJSON);
-          $(".modal").modal("hide");
-				},"json");
+	processAJAXPostQuery(_service("appManager","installAppImage"),"stepid=download&"+$("#appForm form").serialize(),function(dataJSON) {
+    		if(dataJSON.Data.error) {
+				$(".modal").modal("hide");
+				lgksAlert(dataJSON.Data.error);
+    		} else if(dataJSON.Data.nextstep) {
+    		    if(dataJSON.Data.msg!=null && dataJSON.Data.msg.length>0) {
+    		        $(".modal.loadingmodal .bootbox-body>div>div").html(dataJSON.Data.msg);
+    		    }
+    		    appInstallSteps(dataJSON.Data.refid,dataJSON.Data.nextstep);
+    		} else if(dataJSON.Data.msg) {
+    		    lgksAlert(dataJSON.Data.msg);
+    		    $(".modal").modal("hide");
+			} else {
+				$(".modal").modal("hide");
+			}
+	    },"json");
+}
+
+function appInstallSteps(refid, stepid) {
+    if(stepid==null) stepid = "download";
+    // console.log(refid, stepid);
+    processAJAXPostQuery(_service("appManager","installAppImage"),"refid="+refid+"&stepid="+stepid,function(dataJSON) {
+    		if(dataJSON.Data.error) {
+				$(".modal").modal("hide");
+				lgksAlert(dataJSON.Data.error);
+    		} else if(dataJSON.Data.nextstep) {
+    		    if(dataJSON.Data.msg!=null && dataJSON.Data.msg.length>0) {
+    		        $(".modal.loadingmodal .bootbox-body>div>div").html(dataJSON.Data.msg);
+    		    }
+    		    appInstallSteps(dataJSON.Data.refid,dataJSON.Data.nextstep);
+    		} else if(dataJSON.Data.msg) {
+    		    $(".modal").modal("hide");
+    		    lgksAlert(dataJSON.Data.msg);
+			} else {
+				$(".modal").modal("hide");
+			}
+	    },"json");
+}
+
+function uploadAppZip() {
+    lgksAlert("Coming Soon ...");
 }

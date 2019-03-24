@@ -32,7 +32,7 @@ printPageComponent(false,[
 	]);
 
 echo _css("settings");
-echo "<script>cfgSrcType='{$slug['src']}';</script>";
+echo "<script>cfgSrcType='{$slug['src']}';cfgSrcTypeValue='{$slug['type']}';</script>";
 echo _js("settings");
 
 

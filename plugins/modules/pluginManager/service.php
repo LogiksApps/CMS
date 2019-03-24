@@ -8,10 +8,27 @@ if(!isset($_GET['forsite']) || !in_array($_GET['forsite'],array_keys($apps))) {
 	return;
 }
 
+loadModule("packages");
+
+define("PACKAGE_CACHE_PERIOD",86400);
+
 if(!isset($_REQUEST['src'])) $_REQUEST['src']="installed";
 if(!isset($_REQUEST['type'])) $_REQUEST['type']="modules";
 
 switch($_REQUEST["action"]) {
+	case "types":
+		$result=[];
+		
+		switch(strtolower($_REQUEST['src'])) {
+			case "installed":
+				$result=["modules"=>"modules"];
+				break;
+			case "repos":
+				$result=["modules"=>"modules"];
+				break;
+		}
+		printServiceMsg($result);
+		break;
 	case "categories":
 		$result=[];
 		
@@ -22,9 +39,6 @@ switch($_REQUEST["action"]) {
 			case "repos":
 				$result=["General"=>"general"];
 				break;
-			case "estore":
-				$result=["Featured"=>"featured"];
-				break;
 		}
 		printServiceMsg($result);
 		break;
@@ -33,11 +47,16 @@ switch($_REQUEST["action"]) {
 		
 		switch(strtolower($_REQUEST['src'])) {
 			case "installed":
-				$result=getPluginList($_REQUEST['type'],false,true);
+				$result=fetch_package_list($_REQUEST['type'],false,true);
+				usort($result, "sortPackages");
+				
+				foreach($result as $a=>$b) {
+				    unset($result[$a]['path']);
+				    unset($result[$a]['fullpath']);
+				    unset($result[$a]['logiksinfo']);
+				}
 				break;
 			case "repos":
-				break;
-			case "estore":
 				break;
 		}
 		
@@ -54,139 +73,180 @@ switch($_REQUEST["action"]) {
 		break;
 	case "packinfo":
 		if(isset($_POST['packid'])) {
-			$result=getPluginList($_REQUEST['type']);
-			
-			if(isset($result[$_POST['packid']])) {
-				$package=$result[$_POST['packid']];
-				unset($package['packid']);
-				
-				echo "<div class='table-responsive'>";
-				echo arrayToHTML($package,"table","table table-striped table-bordered");
-				echo "</div>";
-			} else {
-				echo "<h3 align=center>Package Information Could Be Found</h3>";
-			}
+			include_once __DIR__."/pages/packinfo.php";
 		} else {
 			echo "<h3 align=center>No Package Could Be Indentified</h3>";
 		}
 		break;
-}
-function getPluginList($type,$more=false,$recache=false) {
-	$type=strtoupper($type);
-	
-	if(!$recache && isset($_SESSION['PACKMAN'][$type])) return $_SESSION['PACKMAN'][$type];
-	
-	$data=[];
-	
-	$folders=[
-		"local"=>CMS_APPROOT.PLUGINS_FOLDER,
-		"global"=>ROOT.PLUGINS_FOLDER,
-		"dev"=>ROOT."pluginsDev/",
-	];
-	
-	switch($type) {
-		case "MODULES":
-			foreach($folders as $srcType=>$pluginFolder) {
-				if(is_dir($pluginFolder."modules/")) {
-					$fs=scandir($pluginFolder."modules/");
-					foreach($fs as $a) {
-						if($a=="." || $a=="..") continue;
-						if(is_dir($pluginFolder."modules/$a/")) {
-							$pinfo=fetchPluginInfo($pluginFolder."modules/$a/",'MODULES',$srcType,$more);
-							$data[$pinfo['packid']]=$pinfo;
-						}
-					}
-				}
-			}
-			break;
-		case "VENDORS":
-			foreach($folders as $srcType=>$pluginFolder) {
-				if(is_dir($pluginFolder."vendors/")) {
-					$fs=scandir($pluginFolder."vendors/");
-					foreach($fs as $a) {
-						if($a=="." || $a=="..") continue;
-						if(is_dir($pluginFolder."vendors/$a/")) {
-							$pinfo=fetchPluginInfo($pluginFolder."vendors/$a/",'VENDORS',$srcType,$more);
-							$data[$pinfo['packid']]=$pinfo;
-						}
-					}
-				}
-			}
-			break;
-		case "WIDGETS":
-			foreach($folders as $srcType=>$pluginFolder) {
-				if(is_dir($pluginFolder."widgets/")) {
-					$fs=scandir($pluginFolder."widgets/");
-					foreach($fs as $a) {
-						if($a=="." || $a=="..") continue;
-						if(is_dir($pluginFolder."modules/$a/") || strpos($a,".php")>1) {
-							$pinfo=fetchPluginInfo($pluginFolder."widgets/$a",'WIDGETS',$srcType,$more);
-							$data[$pinfo['packid']]=$pinfo;
-						}
-					}
-				}
-			}
-			break;
-		case "PACKAGES":
-			foreach($folders as $srcType=>$pluginFolder) {
-			}
-			break;
-	}
-	
-	$_SESSION['PACKMAN'][$type]=$data;
-	
-	return $data;
+	case "storeinfo":
+		if(isset($_POST['packid'])) {
+			include_once __DIR__."/pages/storeinfo.php";
+		} else {
+			echo "<h3 align=center>No Package Could Be Indentified</h3>";
+		}
+		break;
+	case "archive":
+	    if(isset($_POST['packid'])) {
+	        $packageInfo = fetch_package_info_fromid($_POST['packid']);
+	        $fullpath = $packageInfo['fullpath'];
+	        $fname = basename($fullpath);
+	        if(substr($fname,0,1)=="~") {
+	            //unarchive
+	            $newpath = dirname($fullpath)."/".substr($fname,1);
+	            $msg = "Restoration complete";
+	        } else {
+	            //archive
+	            $newpath = dirname($fullpath)."/~".$fname;
+	            $msg = "Archiving complete";
+	        }
+	        if(file_exists($newpath)) {
+	            printServiceMsg(["msg"=>"Package with same name exists"]);
+	            return;
+	        }
+	        $a = rename($fullpath,$newpath);
+	        if($a) {
+	            printServiceMsg(["msg"=>"Archiving Complete"]);
+	        } else {
+	            printServiceMsg(["msg"=>"Archiving Failed, may be you don't have permissions"]);
+	        }
+	    } else {
+	        printServiceMsg(["msg"=>">No Package Could Be Indentified"]);
+	    }
+	    break;
+	case "reinstall":case "reconfigure":
+	    if(isset($_POST['packid'])) {
+	        $packageInfo = fetch_package_info_fromid($_POST['packid']);
+	        $fullpath = $packageInfo['fullpath'];
+	        
+	        $msg = configure_package($fullpath);
+	        printServiceMsg(["msg"=>$msg]);
+	    } else {
+	        printServiceMsg(["msg"=>">No Package Could Be Indentified"]);
+	    }
+	    break;
+	case "upload":
+	    if(isset($_FILES["attachment"])) {
+	        if($_FILES["attachment"]['error']>0) {
+	            $msg = "Error Uploading file";
+                echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+	        } else {
+	            $tempDir = _dirTemp("packages");
+                $downloadFile = "{$tempDir}".$_FILES["attachment"]['name'];
+            
+                $extArr = explode(".",$_FILES["attachment"]['name']);
+                $ext = strtolower(end($extArr));
+                if(!in_array($ext,["zip","gzip"])) {
+                    $msg = "Only zip files can be uploaded";
+                    echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+                    return;
+                }
+            
+	            move_uploaded_file($_FILES["attachment"]['tmp_name'],$downloadFile);
+	            
+	            if(file_exists($downloadFile)) {
+                    installPackageZipFile($downloadFile);
+                } else {
+                    $msg = "Attachment could not be downloaded";
+                    echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+                }
+	        }
+	    } else {
+	        $msg = "Attachment not found";
+            echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+	    }
+	    break;
+    case "attachuri":
+        if(isset($_POST["attachment"])) {
+            $tempDir = _dirTemp("packages");
+            $downloadFile = "{$tempDir}".basename($_POST["attachment"]);
+            if(!is_dir($tempDir)) mkdir($tempDir,0777,true);
+            
+            file_put_contents($downloadFile, fopen($_POST["attachment"], 'r'));
+            
+            if(file_exists($downloadFile)) {
+                installPackageZipFile($downloadFile);
+            } else {
+                $msg = "Attachment could not be downloaded";
+                echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+            }
+        } else {
+            $msg = "Attachment not found";
+            echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+        }
+	    break;
+	case "installFromStore":
+	    printServiceMsg(["msg"=>">No Package Could Be Indentified"]);
+	    break;
 }
 
-function fetchPluginInfo($pluginPath, $type, $srcType,$more) {
-	$fname=basename($pluginPath);
-	$info=[
-		"packid"=>md5($pluginPath),
-		"name"=>basename($pluginPath),
-		"type"=>strtolower($type),
-		"category"=>$srcType,
-		"build"=>1,
-		"status"=>"OK",
-		"created_on"=>date("d M,Y",filectime($pluginPath)),// H:i:s
-		"updated_on"=>date("d M,Y",filemtime($pluginPath)),// H:i:s
-		"is_global"=>($srcType=="global"),
-		"is_local"=>($srcType!="global"),
-		"is_configurable"=>false,
-		"is_installed"=>false,
-		"is_editable"=>false,
-		"has_error"=>false,
-	];
-	
-	if($more) {
-		$info['path']=$pluginPath;
-	}
-	
-	$configFile=[
-		"local1"=>CMS_APPROOT.CFG_FOLDER."features/{$fname}.cfg",
-		"local2"=>CMS_APPROOT.CFG_FOLDER."{$fname}.cfg",
-		"global"=>ROOT.CFG_FOLDER."features/{$fname}.cfg",
-		"core"=>ROOT."config/{$fname}.cfg",
-	];
-	
-	foreach($configFile as $cfg) {
-		if(file_exists($cfg)) {
-			$info['is_configurable']=true;
-			break;
-		}
-	}
-	
-	switch($type) {
-		case "MODULES":
-			$info['is_installed']=is_file($pluginPath."logiks.json");
-			break;
-		case "VENDORS":
-			$info['is_installed']=true;
-			break;
-		case "WIDGETS":
-			$info['is_installed']=false;
-			$info['is_file']=is_file($pluginPath);
-			break;
-	}
-	return $info;
+function installPackageZipFile($downloadFile) {
+    $tempDir = _dirTemp("packages");
+    $cacheDir = $tempDir."cache/".basename($downloadFile)."/";
+    
+    if(is_dir($cacheDir)) {
+        deleteFolder($cacheDir);
+    }
+    if(!is_dir($cacheDir)) mkdir($cacheDir,0777,true);
+    
+    $zip = new ZipArchive;
+    $res = $zip->open($downloadFile);
+    if ($res === TRUE) {
+      $zip->extractTo($cacheDir);
+      $zip->close();
+      
+      $fs = scandir($cacheDir);
+      $fs = array_splice($fs,2);
+      if(count($fs)==1) {
+        $cacheDir = $cacheDir."{$fs[0]}/";
+        $fs = scandir($cacheDir);
+        $fs = array_splice($fs,2);
+      } elseif(count($fs)>1) {
+        
+      } else {
+          $msg = "Error unzipping the zip file";
+          echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+          return;
+      }
+      
+      if(in_array("logiks.json",$fs)) {
+        $fname = basename($cacheDir);
+        $fnameNew = str_replace("-master","",str_replace(".zip","",$fname));
+        $targetDir = CMS_APPROOT."plugins/modules/{$fnameNew}/";
+        
+        if(file_exists($targetDir) && is_dir($targetDir)) {
+            $msg = "Target module folder already exists. Please remove that first.";
+            echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+            return;
+        }
+        
+        if(file_exists($downloadFile)) unlink($downloadFile);
+          
+        $a = rename($cacheDir,$targetDir);
+          
+        if(is_dir($targetDir)) {
+            $msg = configure_package($targetDir);
+            echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+        } else {
+            $msg = "Could not copy into modules folder. Check permissions.";
+            echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+        }
+      } else {
+        $msg = "Uploaded package is corrupted. Cannot install this one.";
+        echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+        return;
+      }
+    } else {
+      $msg = "Unzip Failed. Try installing again.";
+      echo "{$msg}<script>parent.lgksAlert('{$msg}');</script>";
+    }
+}
+
+function sortPackages($a, $b) {
+    if($a['category']==$b['category']) {
+        return (strtolower($a['name'])>strtolower($b['name']));
+    } else {
+        return (strtolower($a['category'])<strtolower($b['category']));
+    }
+    
 }
 ?>
