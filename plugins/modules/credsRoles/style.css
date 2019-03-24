@@ -81,3 +81,12 @@ a[href] {
     color: white;
     border-bottom: 2px solid #333;
 }
+
+.componentSpace ul {
+    padding:0px;
+    margin:0px;
+}
+
+.list-group-item {
+    border-radius:0px !important;
+}
