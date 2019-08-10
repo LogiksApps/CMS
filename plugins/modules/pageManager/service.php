@@ -17,6 +17,14 @@ switch ($_REQUEST['action']) {
 				$pageFolder=CMS_APPROOT."pages/defn/";
 				if(!is_dir($pageFolder)) @mkdir($pageFolder,0777,true);
 				$fData=scanFetch($pageFolder);
+				foreach($fData as $kn => $pageInfo) {
+				    $pageJSONInfo = json_decode(file_get_contents($pageFolder.$pageInfo['path']),true);
+				    
+				    $fData[$kn]['title'] = $pageJSONInfo['title'];
+				    $fData[$kn]['enabled'] = ($pageJSONInfo['enabled']=="true")?true:false;
+				    $fData[$kn]['access'] = $pageJSONInfo['access'];
+				    $fData[$kn]['template'] = $pageJSONInfo['template'];
+				}
 				printServiceMsg($fData);
 				break;
 			case 'comps':
