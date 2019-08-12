@@ -346,9 +346,9 @@ function renderTable(fs) {
 					htmlFolders+="<td class='folder'><a class='fname' href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+n.title+"</a></td>";
 					htmlFolders+="<td>"+n.name+"</td>";
 					if(lastComponent=="pages") {
-        			    htmlFiles+="<td>"+v.template+"</td>";
-        			    htmlFiles+="<td>"+v.access+"</td>";
-        			    htmlFiles+="<td class='text-center'>"+getBoolIcon(v.enabled)+"</td>";
+        			    htmlFolders+="<td>"+v.template+"</td>";
+        			    htmlFolders+="<td>"+v.access+"</td>";
+        			    htmlFolders+="<td class='text-center'>"+getBoolIcon(v.enabled)+"</td>";
         			}
 					htmlFolders+="<td class='text-center'>"+getStatusIcon(n.status)+"</td>";
 					htmlFolders+="<td class='text-center'>"+getBoolIcon(n.locked)+"</td>";
