@@ -18,7 +18,20 @@ switch ($_REQUEST['action']) {
 				if(!is_dir($pageFolder)) @mkdir($pageFolder,0777,true);
 				$fData=scanFetch($pageFolder);
 				foreach($fData as $kn => $pageInfo) {
-				    if($pageInfo.folder==true) continue;
+				    if(isset($pageInfo['folder']) && $pageInfo['folder']==true) {
+				        
+				        foreach($pageInfo as $a=>$b) {
+				            if(is_array($b)) {
+				                $pageJSONInfo = json_decode(file_get_contents($pageFolder.$b['path']),true);
+				    
+            				    $fData[$kn][$a]['title'] = $pageJSONInfo['title'];
+            				    $fData[$kn][$a]['enabled'] = ($pageJSONInfo['enabled']=="true")?true:false;
+            				    $fData[$kn][$a]['access'] = $pageJSONInfo['access'];
+            				    $fData[$kn][$a]['template'] = $pageJSONInfo['template'];
+				            }
+				        }
+				        continue;
+				    }
 				    
 				    $pageJSONInfo = json_decode(file_get_contents($pageFolder.$pageInfo['path']),true);
 				    
