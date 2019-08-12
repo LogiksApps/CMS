@@ -18,6 +18,8 @@ switch ($_REQUEST['action']) {
 				if(!is_dir($pageFolder)) @mkdir($pageFolder,0777,true);
 				$fData=scanFetch($pageFolder);
 				foreach($fData as $kn => $pageInfo) {
+				    if($pageInfo.folder==true) continue;
+				    
 				    $pageJSONInfo = json_decode(file_get_contents($pageFolder.$pageInfo['path']),true);
 				    
 				    $fData[$kn]['title'] = $pageJSONInfo['title'];
