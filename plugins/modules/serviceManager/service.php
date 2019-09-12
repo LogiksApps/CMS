@@ -64,6 +64,7 @@ switch($_REQUEST['action']) {
       $fss=scandir($f1);
       $fss=array_slice($fss,2);
       foreach($fss as $f) {
+        if(substr($f,0,1)=="." || substr($f,0,1)=="~") continue;
         $f=str_replace(".php","",$f);
         $out[$f]=["skey"=>$f,"src"=>"app"];
       }
