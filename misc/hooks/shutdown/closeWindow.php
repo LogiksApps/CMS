@@ -1,4 +1,6 @@
 <?php
+if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "electron")) return;
+
 if(session_check() && PAGE=="home") {
 ?>
 <script>

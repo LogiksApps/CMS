@@ -38,6 +38,8 @@ switch($_REQUEST['action']) {
     } elseif(isset($jsonData[strtolower($_REQUEST['comptype'])])) {
       $_REQUEST['comptype']=strtolower($_REQUEST['comptype']);
       $outJSON=$jsonData[$_REQUEST['comptype']];
+    } elseif(isset($jsonData[$_REQUEST['comptype']])) {
+      $outJSON=$jsonData[$_REQUEST['comptype']];
     }
     
     foreach($outJSON as $key=>$cfg) {
@@ -53,6 +55,10 @@ switch($_REQUEST['action']) {
       }
       $outJSON[$key]=array_merge($cfgDefaults,$cfg);
     }
+    
+    // $jsonServices = json_decode(file_get_contents($serviceCFG),true);
+    
+    // printArray($jsonData);exit();
     
     printServiceMsg(["LIST"=>array_values($outJSON),"params"=>$cfgParams]);
     break;

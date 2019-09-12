@@ -1,4 +1,6 @@
 <?php
+if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "electron")) return;
+
 $noFix=explode(",", getConfig("LOGIN_EXEMPT"));
 $noFix[]="login";
 $noFix[]="home";

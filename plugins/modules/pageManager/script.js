@@ -303,12 +303,28 @@ function renderCards(fs) {
 function renderTable(fs) {
 	html="<div><table class='table table-hover table-bordered table-condensed'>";
 	html+="<thead><tr>";
-		html+="<th width=50px>SL#</th>";
-		html+="<th width=250px>Title</th>";
-		html+="<th>Source</th>";
-		html+="<th width=50px>Status</th>";
-		html+="<th width=50px>Locked</th>";
-		html+="<th width=150px></th>";
+	
+	switch(lastComponent) {
+	    case "pages":
+	        html+="<th width=50px>SL#</th>";
+    		html+="<th width=250px>Title</th>";
+    		html+="<th>Source</th>";
+    		html+="<th>Template</th>";
+    		html+="<th>Access</th>";
+    		html+="<th width=50px>Enabled</th>";
+    		html+="<th width=50px>Status</th>";
+    		html+="<th width=50px>Locked</th>";
+    		html+="<th width=150px></th>";
+	        break;
+	    default:
+	        html+="<th width=50px>SL#</th>";
+    		html+="<th width=250px>Title</th>";
+    		html+="<th>Source</th>";
+    		html+="<th width=50px>Status</th>";
+    		html+="<th width=50px>Locked</th>";
+    		html+="<th width=150px></th>";
+	}
+
 	html+="</tr></thead>";
 	html+="<tbody>";
 	
@@ -329,6 +345,11 @@ function renderTable(fs) {
 					htmlFolders+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
 					htmlFolders+="<td class='folder'><a class='fname' href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+n.title+"</a></td>";
 					htmlFolders+="<td>"+n.name+"</td>";
+					if(lastComponent=="pages") {
+        			    htmlFolders+="<td>"+n.template+"</td>";
+        			    htmlFolders+="<td>"+n.access+"</td>";
+        			    htmlFolders+="<td class='text-center'>"+getBoolIcon(n.enabled)+"</td>";
+        			}
 					htmlFolders+="<td class='text-center'>"+getStatusIcon(n.status)+"</td>";
 					htmlFolders+="<td class='text-center'>"+getBoolIcon(n.locked)+"</td>";
 					htmlFolders+="<td class='action text-right'>"+getActions(n)+"</td>";
@@ -340,6 +361,11 @@ function renderTable(fs) {
 			htmlFiles+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
 			htmlFiles+="<td><a class='fname' href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+v.title+"</a></td>";
 			htmlFiles+="<td>"+v.name+"</td>";
+			if(lastComponent=="pages") {
+			    htmlFiles+="<td>"+v.template+"</td>";
+			    htmlFiles+="<td>"+v.access+"</td>";
+			    htmlFiles+="<td class='text-center'>"+getBoolIcon(v.enabled)+"</td>";
+			}
 			htmlFiles+="<td class='text-center'>"+getStatusIcon(v.status)+"</td>";
 			htmlFiles+="<td class='text-center'>"+getBoolIcon(v.locked)+"</td>";
 			htmlFiles+="<td class='action text-right'>"+getActions(v)+"</td>";

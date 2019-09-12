@@ -74,9 +74,14 @@ if(is_dir($templateDir)) {
                 <label class="col-sm-2 control-label">Page Access</label>
                 <div class="col-sm-4">
                   <select class='form-control' name='access'>
-                      <option value='public'>Public</option>
-                      <option value='private'>Private</option>
-                      <option value='protected'>Protected</option>
+                      <?php
+                        foreach (["public","private","protected"] as $var) {
+                            if($jsonPage['access']==$var)
+                                echo "<option value='{$var}' selected>"._ling(toTitle($var))."</option>";
+                            else
+                                echo "<option value='{$var}'>"._ling(toTitle($var))."</option>";
+                        }
+                      ?>
                   </select>
                 </div>
             </div>
