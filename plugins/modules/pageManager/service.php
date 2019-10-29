@@ -28,6 +28,7 @@ switch ($_REQUEST['action']) {
             				    $fData[$kn][$a]['enabled'] = ($pageJSONInfo['enabled']=="true")?true:false;
             				    $fData[$kn][$a]['access'] = $pageJSONInfo['access'];
             				    $fData[$kn][$a]['template'] = $pageJSONInfo['template'];
+            				    $fData[$kn][$a]['slug'] = $pageJSONInfo['slug'];
 				            }
 				        }
 				        continue;
@@ -39,6 +40,7 @@ switch ($_REQUEST['action']) {
 				    $fData[$kn]['enabled'] = ($pageJSONInfo['enabled']=="true")?true:false;
 				    $fData[$kn]['access'] = $pageJSONInfo['access'];
 				    $fData[$kn]['template'] = $pageJSONInfo['template'];
+				    $fData[$kn]['slug'] = $pageJSONInfo['slug'];
 				}
 				printServiceMsg($fData);
 				break;

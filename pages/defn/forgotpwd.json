@@ -1,15 +1,15 @@
 {
-    "title": "Testing 001",
+    "title": "Forgot Password",
     "description": "",
-    "keywords": "Open,OpenSource,Framework,WebApp,OpenLogiks,Logiks,Logiks3,Logiks4",
-    "robot": "index,follow",
+    "keywords": "",
+    "robot": "",
     "slug": "",
-    "template": "basic",
+    "template": "default",
     "css": "style,login",
     "js_preload": "",
     "js_postload": "",
     "modules_preload": "",
     "modules_postload": "",
-    "enabled": true,
+    "enabled": "true",
     "access": "public"
 }

@@ -86,3 +86,15 @@ td.folder {
 tr.list-file[data-folder] {
     display:none;
 }
+
+.list-file-details {
+    margin-left: 20px;
+    color: #999;
+}
+.list-file-details .page {
+    color: #666;
+}
+.list-file-details label {
+    font-weight:bold;
+    font-size: 10px;
+}

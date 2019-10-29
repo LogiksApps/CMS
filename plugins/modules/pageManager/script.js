@@ -279,17 +279,37 @@ function renderCards(fs) {
 	$.each(fs,function(k,v) {
 		kx=md5(k);
 		if(v.folder) {
-			html1+="<div class='list-group-item list-folder'><a href='#item-"+kx+"' data-toggle='collapse'><i class='glyphicon glyphicon-folder-close'></i>"+k+"</a></div>";
-			html1+="<div class='list-group collapse' id='item-"+kx+"'>";
+// 			html1+="<div class='list-group-item list-folder'><a href='#item-"+kx+"' data-toggle='collapse'><i class='glyphicon glyphicon-folder-close'></i>"+k+"</a></div>";
+// 			html1+="<div class='list-group collapse' id='item-"+kx+"'>";
 			$.each(v,function(m,n) {
 				if(typeof n =="object") {
-					html1+="<div class='list-group-item list-file' data-path='"+n.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+m+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";//n.name
-					html+="<div class='list-group-item list-file' data-path='"+n.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+k+"_"+m+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";//n.name
+				// 	html1+="<div class='list-group-item list-file' data-path='"+n.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+n.title+"</a><input type='checkbox' name='selectFile' class='pull-right' />"+
+				// 	    "<div class='list-file-details'>"+
+    //     			        "<div class='page'>/"+n.name+"</div>"+
+    //     			        "<div>Access : "+n.access+"</div>"+
+    //     			        "<div>Layout : "+n.template+"</div>"+
+    //     			    "</div>"+
+				// 	    "</div>";
+					html+="<div class='list-group-item list-file' data-path='"+n.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+n.title+"</a><input type='checkbox' name='selectFile' class='pull-right' />"+
+					    "<div class='list-file-details'>"+
+					        "<span class='pull-right' title='Page Status'>"+getBoolIcon(n.enabled)+"</span>"+
+        			        "<div class='page'>/"+n.name+((n.slug)?"/["+n.slug+"]":"")+"</div>"+
+        			        "<div><label>Access :</label> "+n.access+"</div>"+
+        			        "<div><label>Layout :</label> "+n.template+"</div>"+
+        			    "</div>"+
+					    "</div>";
 				}
 			});
-			html1+="</div>";
+// 			html1+="</div>";
 		} else {
-			html+="<div class='list-group-item list-file' data-path='"+v.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+v.name+"</a><input type='checkbox' name='selectFile' class='pull-right' /></div>";
+			html+="<div class='list-group-item list-file' data-path='"+v.path+"'><a href='#'><i class='glyphicon glyphicon-file'></i>"+v.title+"</a><input type='checkbox' name='selectFile' class='pull-right' />"+
+			    "<div class='list-file-details'>"+
+			        "<span class='pull-right' title='Page Status'>"+getBoolIcon(v.enabled)+"</span>"+
+			        "<div class='page'>/"+v.name+((v.slug)?"/["+v.slug+"]":"")+"</div>"+
+			        "<div><label>Access :</label> "+v.access+"</div>"+
+			        "<div><label>Layout :</label> "+v.template+"</div>"+
+			    "</div>"+
+			    "</div>";
 		}
 	});
 	$("#componentSpace").html(html);//html1
@@ -308,9 +328,9 @@ function renderTable(fs) {
 	    case "pages":
 	        html+="<th width=50px>SL#</th>";
     		html+="<th width=250px>Title</th>";
-    		html+="<th>Source</th>";
-    		html+="<th>Template</th>";
-    		html+="<th>Access</th>";
+    		html+="<th class='source'>URI</th>";
+    		html+="<th class='template'>Template</th>";
+    		html+="<th class='access'>Access</th>";
     		html+="<th width=50px>Enabled</th>";
     		html+="<th width=50px>Status</th>";
     		html+="<th width=50px>Locked</th>";
@@ -344,7 +364,7 @@ function renderTable(fs) {
 					htmlFolders+="<tr class='list-file' id='item-"+kx+"' data-path='"+n.path+"' data-folder='"+k+"'>";
 					htmlFolders+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
 					htmlFolders+="<td class='folder'><a class='fname' href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+n.title+"</a></td>";
-					htmlFolders+="<td>"+n.name+"</td>";
+					htmlFolders+="<td>/"+n.name+((n.slug)?"/["+n.slug+"]":"")+"</td>";
 					if(lastComponent=="pages") {
         			    htmlFolders+="<td>"+n.template+"</td>";
         			    htmlFolders+="<td>"+n.access+"</td>";
@@ -360,7 +380,7 @@ function renderTable(fs) {
 			htmlFiles+="<tr class='list-file' id='item-"+kx+"' data-path='"+v.path+"'>";
 			htmlFiles+="<td class='text-center'><input type='checkbox' name='selectFile' /></td>";
 			htmlFiles+="<td><a class='fname' href='#'><i class='glyphicon glyphicon-file'></i>&nbsp;"+v.title+"</a></td>";
-			htmlFiles+="<td>"+v.name+"</td>";
+			htmlFiles+="<td>/"+v.name+((v.slug)?"/["+v.slug+"]":"")+"</td>";
 			if(lastComponent=="pages") {
 			    htmlFiles+="<td>"+v.template+"</td>";
 			    htmlFiles+="<td>"+v.access+"</td>";

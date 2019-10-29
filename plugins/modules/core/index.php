@@ -22,6 +22,7 @@ if(!function_exists("setupCMSEnviroment")) {
 		if(defined("PAGE") && (PAGE=="login" || PAGE=="register" || PAGE=="forgotpwd")) {
 			return true;
 		}
+		
 		if(!isset($_SESSION['SESS_PRIVILEGE_NAME'])) $_SESSION['SESS_PRIVILEGE_NAME']="";
 		if(!isset($_SESSION['SESS_ACCESS_SITES'])) $_SESSION['SESS_ACCESS_SITES']=[];
 		if(!isset($_SESSION['SESS_USER_NAME'])) $_SESSION['SESS_USER_NAME']="";
@@ -89,14 +90,19 @@ if(!function_exists("setupCMSEnviroment")) {
 			}
 		}
         
-    define("CMS_APPROOT",ROOT.APPS_FOLDER.$forSite."/");
+        define("CMS_APPROOT",ROOT.APPS_FOLDER.$forSite."/");
 		define("CMS_SITENAME",$_REQUEST['forsite']);
 		
 		if($_SESSION['SESS_PRIVILEGE_NAME']!="root") {
 			unset($siteList["cms"]);
 		}
 
-    _session("siteList",$siteList);
+        _session("siteList",$siteList);
+        
+        $cfgData = ConfigFileReader::LoadFile(CMS_APPROOT."apps.cfg");
+        if(isset($cfgData['DEFINE'])) {
+            $_SESSION["SITEPARAMS"] = $cfgData['DEFINE'];
+        }
 		
 		$moduleDir=getLoaderFolders('pluginPaths',"modules");
 		$moduleDir[]="apps/{$forSite}/plugins/modules/";
