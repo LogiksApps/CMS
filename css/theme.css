@@ -2,6 +2,7 @@
 #header .navbar {
     background-color: #3294ce;
     border-color: transparent;
+    background: linear-gradient(to bottom, #2a7fb1 0%, #0999ef 100%);
 }
 #header .navbar a {
     color: white;
@@ -22,6 +23,7 @@
 #sidebar {
     background: #222d32;
     color:white;
+    background: linear-gradient(to bottom, #070808 0%, #09a8f1 100%);
 }
 #sidebar .sidebar {
     background: transparent;
