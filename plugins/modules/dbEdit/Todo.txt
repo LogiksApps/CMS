@@ -14,3 +14,7 @@ Triggers
 
 Designer
 
+
+
+//////////
+CREATE TABLE `tmp`.`test1` ( `a` INT(2) NULL DEFAULT '123' , `b` INT NULL AUTO_INCREMENT , `c` VARCHAR(255) NOT NULL COMMENT 'asdasd' , `d` DATE BINARY NULL DEFAULT NULL , PRIMARY KEY (`b`), INDEX `asd` (`d`)) ENGINE = MyISAM CHARSET=utf8 COLLATE utf8_general_ci COMMENT = 'asdasda sdasd asdsadasdasd';

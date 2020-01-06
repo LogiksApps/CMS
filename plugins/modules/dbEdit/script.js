@@ -193,6 +193,8 @@ function pgTrash() {
 
 function changeDatabase() {
 	dkey = $("#toolbtn_changeDatabase li>a.active").data("drop");
+	$("#toolbtn_changeDatabase .btn").text($("#toolbtn_changeDatabase li>a.active").text())
+	
 	pgDbInfo();
 	loadTableList('pages');
 }
@@ -212,4 +214,29 @@ function exportData() {
 
 function importData() {
   parent.openLinkFrame("Import Data",_link("modules/dataMigrator")+"&panel=import",true)
+}
+
+//Tables,Triggers,Functions,etc.
+function createNew() {
+	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=create_table";
+	$("#pgcontent").load(lx);
+}
+
+function createView() {
+    query = $("#queryText").val();
+    if(query==null || query.length<=0) {
+        lgksAlert("Select Query Not Found");
+        return;
+    }
+    
+    queryType = query.toUpperCase().split(" ")[0];
+    if(queryType!="SELECT") {
+        lgksAlert("View can be generated only from a Select Query");
+        return;
+    }
+    
+    lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=create_view";
+	$("#pgcontent").load(lx, function(data) {
+	    $("#view_query").val(query);
+	});
 }

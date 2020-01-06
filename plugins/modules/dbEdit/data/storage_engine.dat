@@ -1,0 +1,21 @@
+<option value="MRG_MYISAM" title="Collection of identical MyISAM tables">
+        MRG_MYISAM
+    </option>
+    <option value="MEMORY" title="Hash based, stored in memory, useful for temporary tables">
+        MEMORY
+    </option>
+    <option value="BLACKHOLE" title="/dev/null storage engine (anything you write to it disappears)">
+        BLACKHOLE
+    </option>
+    <option value="CSV" title="CSV storage engine">
+        CSV
+    </option>
+    <option value="MyISAM" title="MyISAM storage engine" selected="selected">
+        MyISAM
+    </option>
+    <option value="ARCHIVE" title="Archive storage engine">
+        ARCHIVE
+    </option>
+    <option value="InnoDB" title="Supports transactions, row-level locking, and foreign keys">
+        InnoDB
+    </option>

@@ -17,6 +17,9 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 			<div class='' style='text-align: center;margin-top: 10px;'>
 				<button type='button' onclick="runQuery()" class='btn btn-success'><i class='fa fa-flash'></i>RUN</button>
 			</div>
+			<div class='select_query hidden' style='text-align: center;margin-top: 10px;'>
+				<button type='button' onclick="createView()" class='btn btn-warning'><i class='fa fa-save'></i>  CREATE VIEW</button>
+			</div>
 		</div>
 	</form>
 	<hr style='width: 100%;margin-top: 120px;'>
@@ -38,6 +41,8 @@ $(function() {
 	}
 });
 function runQuery() {
+    $(".select_query").addClass("hidden");
+    
 	type=$("#queryType").val();
 	qry=$("#queryText").val();
 
@@ -49,6 +54,11 @@ function runQuery() {
 	$("#resultSetPanel").html("<div class='ajaxloading5'></div>");
 	processAJAXPostQuery(lx,q,function(txt) {
 		$("#resultSetPanel").html(txt);
+		
+		queryType = qry.toUpperCase().split(" ")[0];
+		if(queryType=="SELECT") {
+		    $(".select_query").removeClass("hidden");
+		}
 	});
 }
 function saveQueryLocal() {

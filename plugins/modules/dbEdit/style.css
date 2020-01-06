@@ -88,3 +88,7 @@ code {
     font-weight: normal;
     line-height: 24px;
 }
+
+.modal-open .modal {
+    z-index: 999999999999999999999;
+}

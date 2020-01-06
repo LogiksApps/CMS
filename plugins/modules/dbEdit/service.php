@@ -21,20 +21,20 @@ switch ($_REQUEST['action']) {
 		} else {
 			$db=_db($dbKey)->get_dbObjects();
       
-      $db['functions'] = [];
-      $db['procedures'] = [];
+     		$db['functions'] = [];
+      		$db['procedures'] = [];
       
-      foreach ($db['routines'] as $key=>$dat) {
-        if(isset($dat['ROUTINE_TYPE'])) {
-          if($dat['ROUTINE_TYPE']=="FUNCTION") {
-            $db['functions'][$key] = $dat;
-            unset($db['routines'][$key]);
-          } elseif($dat['ROUTINE_TYPE']=="PROCEDURE") {
-            $db['procedures'][$key] = $dat;
-            unset($db['routines'][$key]);
-          }
-        }
-      }
+      		foreach ($db['routines'] as $key=>$dat) {
+        		if(isset($dat['ROUTINE_TYPE'])) {
+          			if($dat['ROUTINE_TYPE']=="FUNCTION") {
+            			$db['functions'][$key] = $dat;
+            			unset($db['routines'][$key]);
+          			} elseif($dat['ROUTINE_TYPE']=="PROCEDURE") {
+            			$db['procedures'][$key] = $dat;
+            			unset($db['routines'][$key]);
+          			}
+        		}
+      		}
 			foreach ($db as $key => $obj) {
 				$db[$key]=array_keys($obj);
 			}
@@ -300,18 +300,196 @@ switch ($_REQUEST['action']) {
 		}
 	break;	
     
-  case "cmd":
-    if(isset($_REQUEST['src'])) {
-      $cmd=strtolower($_REQUEST['src']);
-			$cmdFile=__DIR__."/cmds/{$cmd}.php";
-			if(file_exists($cmdFile)) {
-				include_once $cmdFile;
-			} else {
-				echo "Command not found";
-			}
-    } else {
-      echo "Command not defined";
-    }
+    case "cmd":
+        if(isset($_REQUEST['src'])) {
+          $cmd=strtolower($_REQUEST['src']);
+    			$cmdFile=__DIR__."/cmds/{$cmd}.php";
+    			if(file_exists($cmdFile)) {
+    				include_once $cmdFile;
+    			} else {
+    				echo "Command not found";
+    			}
+        } else {
+          echo "Command not defined";
+        }
     break;
+    case "data":
+        if(isset($_REQUEST['src'])) {
+            $cmd=strtolower($_REQUEST['src']);
+			$cmdFile=__DIR__."/data/{$cmd}.dat";
+			if(file_exists($cmdFile)) {
+				echo file_get_contents($cmdFile);
+			} else {
+				echo "";
+			}
+        } else {
+          echo "";
+        }
+    break;
+    case "createView":
+        if(isset($_POST['query']) && isset($_POST['title'])) {
+            $_POST['title'] = preg_replace("/[^A-Za-z0-9]/","_",$_POST['title']);
+            
+            if(!isset($_POST['algorithm']) || strlen($_POST['algorithm'])<=0) {
+                $_POST['algorithm'] = "UNDEFINED";
+            }
+            
+            if(!isset($_POST['sql_security']) || strlen($_POST['sql_security'])<=0) {
+                $_POST['sql_security'] = "";
+            } else {
+                $_POST['sql_security'] = "SQL SECURITY {$_POST['sql_security']}";
+            }
+            
+            if(!isset($_POST['columns']) || strlen($_POST['columns'])<=0) {
+                $_POST['columns'] = "";
+            } else {
+                $_POST['columns'] = "({$_POST['columns']})";
+            }
+            
+            if(!isset($_POST['with_options']) || strlen($_POST['with_options'])<=0) {
+                $_POST['with_options'] = "";
+            } else {
+                $_POST['with_options'] = "WITH {$_POST['columns']}  CHECK OPTION";
+            }
+            
+            //CREATE ALGORITHM = MERGE SQL SECURITY DEFINER VIEW `view_test124` (a,b,c,d,e) AS SELECT * FROM `accounts_banks` WITH CASCADED CHECK OPTION
+            $sqlView = "CREATE ALGORITHM = {$_POST['algorithm']} {$_POST['sql_security']} VIEW {$_POST['title']} {$_POST['columns']} AS {$_POST['query']}";
+            
+            exit($sqlView);
+            
+            $a = _db($dbKey)->queryBuilder()->fromSQL($sqlView,_db($dbKey)->queryBuilder()->getInstance())->_RUN();
+                
+            if($a) {
+                echo "success";
+            } else {
+                echo _db($dbKey)->get_error();
+            }
+        } else {
+            echo "View Code Not Found";
+        }
+    break;
+    case "createTable":
+        if(isset($_POST['tbl_name']) && strlen($_POST['tbl_name'])>0 && is_array($_POST['name']) && count($_POST['name'])>0) {
+            $_POST['tbl_name'] = preg_replace("/[^A-Za-z0-9]/","_",$_POST['tbl_name']);
+            $sqlTable = "CREATE TABLE {$_POST['tbl_name']}";
+            $sqlCols = [];
+            if(count($sqlCols)>=0) {
+                
+                foreach($_POST['name'] as $n => $name) {
+                    $name = preg_replace("/[^A-Za-z0-9]/","_",$name);
+                    $sqlCol = "{$name} ";
+                    
+                    switch(strtoupper($_POST['type'][$n])) {
+                        case "DATE":
+                        case "DATETIME":
+                        case "TIMESTAMP":
+                        case "TIME":
+                        case "YEAR":
+                        case "TINYTEXT":
+                        case "TEXT":
+                        case "MEDIUMTEXT":
+                        case "LONGTEXT":
+                        case "TINYBLOB":
+                        case "MEDIUMBLOB":
+                        case "BLOB":
+                        case "LONGBLOB":
+                            $sqlCol .= "{$_POST['type'][$n]}";
+                            break;
+                        default:
+                            if($_POST['length'][$n]) {
+                                $sqlCol .= "{$_POST['type'][$n]}({$_POST['length'][$n]}) ";
+                            } else {
+                                $sqlCol .= "{$_POST['type'][$n]} ";
+                            }
+                    }
+                    
+                    if($_POST['attributes'][$n]) {
+                        $sqlCol .= "{$_POST['attributes'][$n]} ";
+                    }
+                    
+                    if($_POST['default'][$n]) {
+                        if($_POST['default'][$n]=="NULL" || $_POST['default'][$n]=="CURRENT_TIMESTAMP") {
+                            $sqlCol .= "DEFAULT {$_POST['default'][$n]} ";
+                        } else {
+                            $sqlCol .= "DEFAULT '{$_POST['default'][$n]}' ";
+                        }
+                    }
+                    
+                    if($_POST['null'][$n] && $_POST['null'][$n]=="no") {
+                        $sqlCol .= "NOT NULL ";
+                    }
+                    if($_POST['ai'][$n] && $_POST['ai'][$n]=="yes") {
+                        $sqlCol .= "AUTO_INCREMENT ";
+                    }
+                    
+                    if($_POST['collation'][$n]) {
+                        $charSet1 = current(explode("_",$_POST['collation'][$n]));
+                        $sqlTable .= " CHARACTER SET {$charSet1} COLLATE {$_POST['collation'][$n]}";
+                    }
+                    
+                    if($_POST['comments'][$n]) {
+                        $sqlCol .= "COMMENT '{$_POST['comments'][$n]}' ";
+                    }
+                    
+                    $sqlCols[] = $sqlCol;
+                }
+                
+                if(isset($_POST['index'])) {
+                    $a = array_search("primary_0",$_POST['index'],true);
+                    if($a!==false) {
+                        $sqlCols[] = "PRIMARY KEY ({$_POST['name'][$a]}) ";
+                    }
+                    
+                    $a = array_search("unique_0",$_POST['index'],true);
+                    if($a!==false) {
+                        $sqlCols[] = "INDEX 'index_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
+                    }
+                    
+                    $a = array_search("index_0",$_POST['index'],true);
+                    if($a!==false) {
+                        $sqlCols[] = "UNIQUE 'unique_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
+                    }
+                    
+                    $a = array_search("fulltext_0",$_POST['index'],true);
+                    if($a!==false) {
+                        $sqlCols[] = "FULLTEXT 'fulltext_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
+                    }
+                    
+                    $a = array_search("spatial_0",$_POST['index'],true);
+                    if($a!==false) {
+                        $sqlCols[] = "SPATIAL 'spatial_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
+                    }
+                }
+                
+                $sqlTable .= " ( " . implode(", ", $sqlCols) . " ) ";
+                
+                if(isset($_POST['tbl_storage_engine']) && strlen($_POST['tbl_storage_engine'])>0) {
+                    $sqlTable .= " ENGINE = {$_POST['tbl_storage_engine']}";
+                }
+                if(isset($_POST['tbl_collation']) && strlen($_POST['tbl_collation'])>0) {
+                    $charSet = current(explode("_",$_POST['tbl_collation']));
+                    $sqlTable .= " CHARSET = {$charSet} COLLATE {$_POST['tbl_collation']}";
+                }
+                
+                if(isset($_POST['tbl_comments']) && strlen($_POST['tbl_comments'])>0) {
+                    $sqlTable .= " COMMENT = `{$_POST['tbl_comments']}`";
+                }
+                
+                $a = _db($dbKey)->queryBuilder()->fromSQL($sqlTable,_db($dbKey)->queryBuilder()->getInstance())->_RUN();
+                
+                if($a) {
+                    echo "success";
+                } else {
+                    echo _db($dbKey)->get_error();
+                }
+            } else {
+                echo "Fields are missing error";
+            }
+        } else {
+            echo "Table Name or Fields are missing";
+        }
+        
+        //printArray($_POST);
+        break;
 }
 ?>
