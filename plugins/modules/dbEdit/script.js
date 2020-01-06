@@ -31,6 +31,7 @@ $(function() {
 		return false;
 	});
 
+	$("#toolbtn_changeDatabase li>a[data-drop='"+dkey+"']").addClass("active");
 	
 	initEvents();
 	
@@ -51,7 +52,7 @@ function initEvents() {
 					if(src==null || src.length<=0) return;
 					if(txt) {
 						q=col+"="+key;
-						lx=_service("dbEdit","deleteRecord")+"&src="+src;
+						lx=_service("dbEdit","deleteRecord")+"&dkey="+dkey+"&src="+src;
 						processAJAXPostQuery(lx,q,function(txt) {
 							if(txt=="success") {
 								loadDataContent(currentDBQueryPanel);
@@ -99,7 +100,7 @@ function loadTableList(comp) {
 	lastComponent=comp;
 	$("#componentTree").html("<div class='ajaxloading5'></div>");
 	
-	processAJAXQuery(_service("dbEdit","dbList")+"&comptype="+lastComponent,function(txt) {
+	processAJAXQuery(_service("dbEdit","dbList")+"&dkey="+dkey+"&comptype="+lastComponent,function(txt) {
 		fs=txt.Data;
 		if(fs==null || fs.length<=0) {
 			$("#componentTree").html("");
@@ -132,7 +133,7 @@ function loadTableList(comp) {
 
 function openTable(tblPath) {
 	openTableScehema=tblPath;
-	lx=_service("dbEdit","panel")+"&panel=dbTable&src="+tblPath;
+	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=dbTable&src="+tblPath;
 	$("#pgcontent").load(lx);
 
 	$("#pgtoolbar .navbar-right>li.active").removeClass("active")
@@ -143,32 +144,33 @@ function pgRefresh() {
 	//window.document.location.reload();
 
 	loadTableList('pages');
+	pgDbInfo();
 }
 
 function pgDbInfo() {
 	switchPanel(0);
 
-	lx=_service("dbEdit","panel")+"&panel=dbInfo";
+	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=dbInfo";
 	$("#pgcontent").load(lx);
 }
 
 function pgTableQuery() {
 	switchPanel(2);
 
-	lx=_service("dbEdit","panel")+"&panel=dbQuery";
+	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=dbQuery";
 	$("#pgcontent").load(lx);
 }
 function pgDbTools() {
 	switchPanel(3);
 
-	lx=_service("dbEdit","panel")+"&panel=dbTools";
+	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=dbTools";
 	$("#pgcontent").load(lx);
 }
 function pgSearch(qS) {
 	switchPanel(-1);
 	$("#pgcontent").html("<div class='text-center'><br><br><i class='fa fa-spinner fa-spin fa-4x'></i></div>");
 
-	lx=_service("dbEdit","panel")+"&panel=dbSearch&q="+qS+"&src="+openTableScehema;
+	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=dbSearch&q="+qS+"&src="+openTableScehema;
 	$("#pgcontent").load(lx);
 }
 function pgTrash() {
@@ -181,13 +183,20 @@ function pgTrash() {
 				q.push($(this).closest(".list-group-item").data("schema"));
 			});
 			q="&src="+q.join(",");
-			lx=_service("dbEdit","deleteTable");
+			lx=_service("dbEdit","deleteTable")+"&dkey="+dkey;
 			processAJAXPostQuery(lx,q,function(dts) {
 				pgRefresh();
 			});
 		}
 	});
 }
+
+function changeDatabase() {
+	dkey = $("#toolbtn_changeDatabase li>a.active").data("drop");
+	pgDbInfo();
+	loadTableList('pages');
+}
+
 function switchPanel(nx) {
 	if(typeof saveQueryLocal=="function") {
 		saveQueryLocal();
