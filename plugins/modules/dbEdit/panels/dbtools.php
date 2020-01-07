@@ -24,7 +24,7 @@ function activateBtn(src) {
   
   $("#cmdOutput").html("<div class='ajaxloading5'></div>").removeClass("hidden");
 
-	lx=_service("dbEdit","cmd")+"&src="+cmd;
+	lx=_service("dbEdit","cmd")+"&dkey="+dkey+"&src="+cmd;
 	$("#cmdOutput").load(lx);
 }
 </script>

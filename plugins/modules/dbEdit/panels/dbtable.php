@@ -75,7 +75,7 @@ function loadDataContent(panel,q) {
 
 	$("#dataContent").html("<div class='ajaxloading5'></div>");
 
-	lx=_service("dbEdit","dbTablePanel")+"&panel="+panel+"&src=<?=$_GET['src']?>"+q;
+	lx=_service("dbEdit","dbTablePanel")+"&dkey="+dkey+"&panel="+panel+"&src=<?=$_GET['src']?>"+q;
 	$("#dataContent").load(lx);
 
 	if(panel!="edit") {

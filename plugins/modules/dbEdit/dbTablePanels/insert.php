@@ -70,7 +70,7 @@ $(function() {
 	$("#dataInsertForm").submit(function() {
 		if($("#dataInsertForm").valid()) {
 			q=$("#dataInsertForm").serialize();
-			lx=_service("dbEdit","insertRecord")+"&src=<?=$_GET['src']?>";
+			lx=_service("dbEdit","insertRecord")+"&dkey="+dkey+"&src=<?=$_GET['src']?>";
 			processAJAXPostQuery(lx,q,function(txt) {
 				if(txt=="success") {
 					$("#dataInsertForm")[0].reset();

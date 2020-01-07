@@ -52,7 +52,7 @@ $(function() {
 			case "addField":
 				lgksPrompt("Add new column field.<br>&nbsp;&nbsp;&nbsp;<small>column_name column_definations<small>","New Column!",function(txt) {
 					if(txt!=null && txt.length>1) {
-						lx=_service("dbEdit","addField")+"&src=<?=$_GET['src']?>";
+						lx=_service("dbEdit","addField")+"&dkey="+dkey+"&src=<?=$_GET['src']?>";
 						processAJAXPostQuery(lx,"field="+txt,function(dx) {
 							if(dx=="success") {
 								loadDataContent(currentDBQueryPanel);
@@ -69,7 +69,7 @@ $(function() {
 					key=$(selectedField).data("key");
 
 					if(txt) {
-						lx=_service("dbEdit","deleteField")+"&src=<?=$_GET['src']?>";
+						lx=_service("dbEdit","deleteField")+"&dkey="+dkey+"&src=<?=$_GET['src']?>";
 						processAJAXPostQuery(lx,"field="+key,function(txt) {
 							if(txt=="success") {
 								loadDataContent(currentDBQueryPanel);
@@ -86,7 +86,7 @@ $(function() {
 					if(txt!=null && txt.length>1) {
 						key=$(selectedField).data("key");
 
-						lx=_service("dbEdit","updateField")+"&src=<?=$_GET['src']?>";
+						lx=_service("dbEdit","updateField")+"&dkey="+dkey+"&src=<?=$_GET['src']?>";
 						processAJAXPostQuery(lx,"field="+key+"&field_new="+txt,function(dx) {
 							if(dx=="success") {
 								loadDataContent(currentDBQueryPanel);

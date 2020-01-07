@@ -46,7 +46,7 @@ function runQuery() {
 	type=$("#queryType").val();
 	qry=$("#queryText").val();
 
-	lx=_service("dbEdit","query")+"&type="+type;
+	lx=_service("dbEdit","query")+"&dkey="+dkey+"&type="+type;
 	q="q="+qry;
 
 	saveQueryLocal()

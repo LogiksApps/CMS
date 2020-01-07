@@ -68,6 +68,6 @@ $(function() {
 	loadDBStatus();
 });
 function loadDBStatus() {
-  $("#dbStatus").load(_service("dbEdit","panel")+"&panel=status");
+  $("#dbStatus").load(_service("dbEdit","panel")+"&dkey="+dkey+"&panel=status");
 }
 </script>

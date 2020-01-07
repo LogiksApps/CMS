@@ -89,7 +89,7 @@ $(".actionbtns i[data-cmd]").click(function() {
     case "dropTable":
       lgksConfirm("Do you want to delete the table ","Delete Table", function(a) {
             if(a) {
-                lx=_service("dbEdit","cmd")+"&src="+cmd;
+                lx=_service("dbEdit","cmd")+"&dkey="+dkey+"&src="+cmd;
                 processAJAXPostQuery(lx,"&ref="+refid, function(data) {
                   lgksAlert(data);
                   loadDBStatus();
@@ -100,7 +100,7 @@ $(".actionbtns i[data-cmd]").click(function() {
     case "truncateTable":
       lgksConfirm("Do you want to truncate/empty the table ","Truncate Table", function(a) {
             if(a) {
-                lx=_service("dbEdit","cmd")+"&src="+cmd;
+                lx=_service("dbEdit","cmd")+"&dkey="+dkey+"&src="+cmd;
                 processAJAXPostQuery(lx,"&ref="+refid, function(data) {
                   lgksAlert(data);
                   loadDBStatus();
@@ -112,7 +112,7 @@ $(".actionbtns i[data-cmd]").click(function() {
     case "dropView":
       lgksConfirm("Do you want to delete the view ","Delete View", function(a) {
           if(a) {
-              lx=_service("dbEdit","cmd")+"&src="+cmd;
+              lx=_service("dbEdit","cmd")+"&dkey="+dkey+"&src="+cmd;
               processAJAXPostQuery(lx,"&ref="+refid, function(data) {
                 lgksAlert(data);
                 loadDBStatus();
@@ -122,7 +122,7 @@ $(".actionbtns i[data-cmd]").click(function() {
       break;
     
     default:
-      lx=_service("dbEdit","cmd")+"&src="+cmd;
+      lx=_service("dbEdit","cmd")+"&dkey="+dkey+"&src="+cmd;
 	    processAJAXPostQuery(lx,"&ref="+refid, function(data) {
         lgksAlert(data);
       });

@@ -82,7 +82,7 @@ $(function() {
 	$("#dataInsertForm").submit(function() {
 		if($("#dataInsertForm").valid()) {
 			q=$("#dataInsertForm").serialize();
-			lx=_service("dbEdit","updateRecord")+"&src=<?=$_GET['src']?>&refid=<?=$_GET['refid']?>";
+			lx=_service("dbEdit","updateRecord")+"&dkey="+dkey+"&src=<?=$_GET['src']?>&refid=<?=$_GET['refid']?>";
 			processAJAXPostQuery(lx,q,function(txt) {
 				if(txt=="success") {
 					loadDataContent("browse");

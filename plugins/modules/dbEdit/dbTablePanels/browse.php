@@ -56,7 +56,7 @@ $(function() {
 
 					if(txt) {
 						q=col+"="+key;
-						lx=_service("dbEdit","deleteRecord")+"&src=<?=$_GET['src']?>";
+						lx=_service("dbEdit","deleteRecord")+"&dkey="+dkey+"&src=<?=$_GET['src']?>";
 						processAJAXPostQuery(lx,q,function(txt) {
 							if(txt=="success") {
 								loadDataContent(currentDBQueryPanel);
