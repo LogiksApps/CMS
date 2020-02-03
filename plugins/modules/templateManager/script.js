@@ -6,7 +6,7 @@ $(function() {
 	$("#pgtoolbar .nav.navbar-nav.navbar-left").css("width",$(".pageCompContainer.withSidebar .pageCompSidebar").width());
 	$("<a id='toolbtn_editTemplate' title='Edit Template' data-cmd='editTemplate' href='#' class='onOpenEditor hidden'><i class='fa fa-pencil'></i> </a>"+
 		"<a id='toolbtn_saveTemplate' title='Save Template' data-cmd='saveTemplate' href='#' class='onOpenEditor hidden'><i class='fa fa-save'></i> </a>"+
-			"<label id='titleContent' class='titleContent'></label>").
+			"<label id='titleContent' class='titleContent'></label><label id='wordCount' class='label label-success'></label>").
 			insertAfter($("#pgtoolbar .nav.navbar-nav.navbar-left"));
 	
 	$('#componentTree').delegate(".list-group-item.list-file a","click",function() {
@@ -15,8 +15,9 @@ $(function() {
 		title=$(this).text();
 		slug=$(file).data("slug");
 		vers=$(file).data("vers");
+		group=$(file).data("group");
 		
-		openTemplate(title,slug);
+		openTemplate(title,slug,group);
 	});
 	
 	loadEditorSettings();
@@ -42,7 +43,7 @@ function listTemplates() {
 			html1+="<div class='list-group-folder collapse' id='item-"+kx+"'>";
 			$.each(v,function(m,n) {
 				//data-schema='"+k+"/"+n+"' 
-				html1+="<div class='list-group-item list-file' title='"+n.title+"' data-id='"+n.id+"' data-vers='"+n.vers+"' data-slug='"+n.slug+"'>";
+				html1+="<div class='list-group-item list-file' title='"+n.title+"' data-id='"+n.id+"' data-vers='"+n.vers+"' data-slug='"+n.slug+"' data-group='"+k+"'>";
 				html1+="<a href='#'><i class='fa fa-file'></i><span class='text'>"+n.title+"</span></a>";
 				html1+="<input type='checkbox' name='selectFile' class='pull-right' data-slug='"+n.slug+"' data-title='"+n.title+"' /></div>";
 			});
@@ -57,17 +58,24 @@ function listTemplates() {
 			tag=$('#componentTree .list-group-item[data-slug="'+currentTemplate+'"]');
 			title=$(tag).text();
 			vers=$(tag).data("vers");
+			group=$(file).data("group");
 			
-			$("#pgtoolbar .titleContent").html(title);
+			if(group!==null)
+        	    $("#pgtoolbar .titleContent").html(group+"/"+title);
+        	else
+        	    $("#pgtoolbar .titleContent").html(title);
 		} else {
 			$("#pgtoolbar .nav.navbar-right li.active").removeClass('active');
 		}
 	},"json");
 }
 
-function openTemplate(title,slug) {
+function openTemplate(title,slug,group) {
 	currentTemplate=slug;
-	$("#pgtoolbar .titleContent").html(title);
+	if(group!==null)
+	    $("#pgtoolbar .titleContent").html(group+"/"+title);
+	else
+	    $("#pgtoolbar .titleContent").html(title);
 	$("#pgtoolbar .onOpenEditor").removeClass("hidden");
 	
 	$('#componentTree .list-group-item.active').removeClass("active");
@@ -77,7 +85,7 @@ function openTemplate(title,slug) {
 }
 
 function loadTextEditor() {
-	if(currentTemplate==null) {
+	if(currentTemplate===null) {
 		lgksToast("Please load an article to edit its content");
 		return;
 	}
@@ -100,6 +108,11 @@ function loadTextEditor() {
 			loadEditor(rid,"php");
 
 			editArea.setValue(txt);
+			
+			editArea.getSession().on('change', function() {
+              $("#wordCount").html(editArea.getValue().length);
+            });
+            $("#wordCount").html(editArea.getValue().length);
 		}
 	},"RAW");
 }
@@ -140,7 +153,7 @@ function createTemplate() {
 						if(err[0]=="error") {
 							lgksToast(err[1]);
 						} else {
-							openTemplate(newName,ans)
+							openTemplate(newName,ans,"NEW")
 							listTemplates();
 						}
 					},"RAW");
