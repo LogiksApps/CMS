@@ -28,7 +28,7 @@ switch ($src[0]) {
     if(isset($data[0])) {
       $data = $data[0]['Create Table'];
     }
-		break;
+	break;
     
   case 'views':
 //     $data = _db($dbKey)->_RAW("SELECT VIEW_DEFINITION FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = '{$src[1]}'")->_GET();
