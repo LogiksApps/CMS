@@ -227,6 +227,7 @@ switch ($_REQUEST['action']) {
 }
 function scanFolderTree($folder,$depth=0) {
 	if($depth>MAX_DEPTH) return [];
+	
 	$files=array();
 	$folders=array();
 	if(is_dir($folder)) {
@@ -235,9 +236,11 @@ function scanFolderTree($folder,$depth=0) {
 		asort($out);
 		foreach($out as $key => $value) {
 		    if(in_array($value,$_ENV['NOSCAN'])) continue;
+		    
 			$bf=$folder.$value;
 			$bf=str_replace(ROOT.APPS_FOLDER."{$_GET['forsite']}/", "", $bf);
 			if(in_array($bf, $_ENV['HIDDEN'])) continue;
+			
 			if(is_dir($folder.$value)) {
 				$folders[$value]=scanFolderTree($folder.$value."/",$depth+1);
 			} else {
@@ -245,6 +248,7 @@ function scanFolderTree($folder,$depth=0) {
 			}
 		}
 	}
+	$files = array_reverse($files);
 	return array_merge_recursive(array_reverse($folders),$files);
 }
 /* 

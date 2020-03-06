@@ -7,11 +7,15 @@ $menuTree1=generateNavigationFromDB("apps","links","core");
 
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/apps/","core");
 
-$menuTree3=generateNavigationFromDir(CMS_APPROOT."misc/menus/cms/","core");
+if(CMS_SITENAME!="cms") {
+  $menuTree3=generateNavigationFromDir(CMS_APPROOT."misc/menus/cms/","core");
+} else {
+  $menuTree3=[];
+}
 
 $menuTree=array_merge_recursive($menuTree1,$menuTree2);
 $menuTree=array_merge_recursive($menuTree,$menuTree3);
-//printArray($menuTree);
+// printArray($menuTree);return;
 ?>
 <style>
 .sidebarMenu {

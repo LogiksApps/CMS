@@ -103,9 +103,10 @@ $(function() {
 	
 	$("#filterDropdown").append("<option value=''>No Filter</option>"+
 	                    "<option value='error'>With Error</option>"+
-	                    "<option value='global'>Global Only</option>"+
 	                    "<option value='local'>Local Only</option>"+
 	                    "<option value='local-dev'>Local-Dev Only</option>"+
+	                    "<option value='global'>Global Only</option>"+
+	                    "<option value='global-dev'>Global Dev Only</option>"+
 	                    "<option value='archives'>Archives Only</option>");
     
 	$("#filterDropdown").val("");
@@ -225,6 +226,10 @@ function filterPackages() {
         case "local-dev":
             $("#packageTable tr").hide();
             $("#packageTable tr.local-dev").show();
+            break;
+        case "global-dev":
+            $("#packageTable tr").hide();
+            $("#packageTable tr.global-dev").show();
             break;
         case "archives":
             $("#packageTable tr").hide();
