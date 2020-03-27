@@ -109,7 +109,9 @@ $(function() {
 	                    "<option value='global-dev'>Global Dev Only</option>"+
 	                    "<option value='archives'>Archives Only</option>");
     
-	$("#filterDropdown").val("");
+    lastFilter = $.cookie("PLUGINMANAGER-LAST-FILTER");
+    $("#filterDropdown").val(lastFilter);
+    
 	$("#filterDropdown").change(filterPackages);
 	
 	$("#packageTable").delegate(".cmdAction[cmd]","click",function(e) {
@@ -193,7 +195,7 @@ function listPackages() {
 	$("#packageTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Packages</div></td></tr>");
 	$("#categoryDropdown").show();
 	
-	$("#filterDropdown").val("");
+	//$("#filterDropdown").val("");
 	
 	processAJAXQuery(_service("pluginManager","getlist")+"&src="+currentType+"&type="+$("#typeDropdown").val(),function(dataJSON) {
 		tmplCode = Handlebars.compile($("#packageRowTemplate").html());
@@ -206,10 +208,12 @@ function listPackages() {
 			$("#packageTable tr").each(function() {
 				$(this).find("th").html($(this).index()+1);
 			});
+			filterPackages();
 		}
 	},"json");
 }
 function filterPackages() {
+    $.cookie("PLUGINMANAGER-LAST-FILTER", $("#filterDropdown").val());
     switch($("#filterDropdown").val()) {
         case "error":
             $("#packageTable tr").hide();

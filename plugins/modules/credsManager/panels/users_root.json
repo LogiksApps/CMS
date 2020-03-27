@@ -32,6 +32,19 @@
 			"icon":"fa fa-key pull-left"
 		}
 	},
+	"sidebar":{
+	    "type":"list",
+	    "source":{
+	        "lgks_users.privilegeid":{
+    	        "table":"lgks_privileges",
+    	        "cols":"name as title, id as value",
+    	        "where":{
+    	            "blocked":"false",
+    	            "id IN (SELECT privilegeid FROM lgks_users GROUP BY privilegeid)":"RAW"
+    	        }
+    	    }
+	    }
+	},
 	"datagrid":{
 		"lgks_users.id":{
 			"label":"ID",
@@ -43,7 +56,7 @@
 			"style":"width:50px;",
 			"formatter":"text"
 		},
-    "lgks_users.guid":{
+        "lgks_users.guid":{
 			"label":"GUID",
 			"sortable":true,
 			"searchable":true
@@ -57,15 +70,15 @@
 			"label":"User Name",
 			"searchable":true
 		},
-    "privilege_name":{
+        "privilege_name":{
 			"label":"Privilege",
 			"searchable":true,
-      "alias":"lgks_privileges.name"
+            "alias":"lgks_privileges.name"
 		},
-    "access_name":{
+        "access_name":{
 			"label":"Access",
 			"searchable":true,
-      "alias":"lgks_access.name"
+            "alias":"lgks_access.name"
 		},
 		"organization_name":{
 			"label":"Organisation",
@@ -105,7 +118,8 @@
 				"options":{
 					"true":"Blocked",
 					"false":"Not Blocked"
-				}
+				},
+				"value":"false"
 			}
 		},
 		"lgks_users.created_on":{
