@@ -10,7 +10,7 @@ $forSite=$_REQUEST['forsite'];
 
 $webpath=getWebPath(__DIR__)."/";
 
-if(!is_dir(CMS_APPROOT) || !is_writable(CMS_APPROOT)) {
+if(!is_dir(CMS_APPROOT)) {
 	print_error("Sorry, APP does not exist or is readonly.");
 	return;
 }
