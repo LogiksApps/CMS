@@ -107,7 +107,8 @@ switch($_REQUEST["action"]) {
 		}
 		//if(checkUserID($userID,$site)) {}
 		
-		$hashSalt=strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+		//$hashSalt=strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+		$hashSalt = LogiksEncryption::generateSalt();
 		$pwdAns=getPWDHash($newPWD,$hashSalt);
 		if(is_array($pwdAns)) $pwdAns=$pwdAns['hash'];
 
