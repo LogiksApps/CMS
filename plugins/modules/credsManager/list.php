@@ -12,9 +12,10 @@ $pageOptions=[
 		"toolbar"=>[
 			"users"=>["title"=>"Users","align"=>"right","class"=>($_REQUEST['panel']=="users")?"active":""],
 			"privileges"=>["title"=>"Privileges","align"=>"right","class"=>($_REQUEST['panel']=="privileges")?"active":""],
+			"roles"=>["title"=>"Roles","align"=>"right","class"=>($_REQUEST['panel']=="roles")?"active":""],
 			"access"=>["title"=>"Access","align"=>"right","class"=>($_REQUEST['panel']=="access")?"active":""],
 			"groups"=>["title"=>"Groups","align"=>"right","class"=>($_REQUEST['panel']=="groups")?"active":""],
-      "guid"=>["title"=>"Organization","align"=>"right","class"=>($_REQUEST['panel']=="guid")?"active":""],
+            "guid"=>["title"=>"Orgs","align"=>"right","class"=>($_REQUEST['panel']=="guid")?"active":""],
 			// ['type'=>"bar"],
 
 			// ["title"=>"Search Site","type"=>"search","align"=>"left"]
@@ -29,8 +30,8 @@ $pageOptions=[
 if($_SESSION["SESS_PRIVILEGE_ID"]<=ADMIN_PRIVILEGE_ID) {//ADMIN_USERIDS
 	
 } else {
-  unset($pageOptions['toolbar']['guid']);
-	unset($pageOptions['toolbar']['access']);
+    unset($pageOptions['toolbar']['guid']);
+    unset($pageOptions['toolbar']['access']);
 }
 
 printPageComponent(false,$pageOptions);

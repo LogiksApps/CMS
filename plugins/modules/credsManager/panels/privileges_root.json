@@ -43,14 +43,14 @@
 			"label":"Privilege Name",
 			"searchable":true
 		},
-    "user_count":{
-      "label":"Users"
-    },
+        "user_count":{
+          "label":"Users"
+        },
 		"remarks":{
 			"label":"Descs",
 			"searchable":true
 		},
-    "site":{
+        "site":{
 			"label":"For Site",
 			"searchable":true
 		},

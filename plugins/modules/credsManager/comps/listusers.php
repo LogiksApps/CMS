@@ -13,14 +13,19 @@ switch($slug['panel']) {
 	case 'group':case 'groups':
 		$data=_db(true)->_selectQ(_dbTable("users",true),$cols,['md5(groupid)'=>$slug['refid']])->_GET();
 		break;
-  case "guid":
-    $data=_db(true)->_selectQ(_dbTable("users",true),$cols,[])->
-      _whereRAW("guid IN ("._db(true)->_selectQ(_dbTable("users_guid",true),"guid",["md5(id)"=>$slug['refid']])->_SQL().")")->_GET();
+    case "guid":
+        $data=_db(true)->_selectQ(_dbTable("users",true),$cols,[])->
+            _whereRAW("guid IN ("._db(true)->_selectQ(_dbTable("users_guid",true),"guid",["md5(id)"=>$slug['refid']])->_SQL().")")->_GET();
     break;
+    case "roles":
+        $data=_db(true)->_selectQ(_dbTable("users",true),$cols,['FIND_IN_SET((SELECT id FROM lgks_roles WHERE md5(id)="'.$slug["refid"].'"), lgks_users.roles)'=>"RAW"])->_GET();
+        // var_dump($data);exit();
+        break;
 	default:
 		print_error("User Listing Not Supported");return;
 		break;
 }
+if(!$data) $data = [];
 // printArray($data);
 
 $title="List Of Users";
@@ -42,10 +47,14 @@ $title="List Of Users";
 					<thead>
 						<tr>
 							<th>#</th>
+							<th>GUID</th>
 							<th>Userid</th>
 							<th>User Name</th>
 							<th>Gender</th>
 							<th>Mobile</th>
+							<th>Email</th>
+							<th>Blocked</th>
+							<th>Last Login</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -53,8 +62,8 @@ $title="List Of Users";
 								if(count($data)>0) {
 									foreach($data as $i=>$u) {
 										$ii=$i+1;
-										echo "<tr scrope='row'><th>{$ii}</th><td>{$u['userid']}</td><td>{$u['name']}</td><td>{$u['gender']}</td>".
-													"<td>{$u['mobile']}</td></tr>";
+										echo "<tr scrope='row'><th>{$ii}</th><td>{$u['guid']}</td><td>{$u['userid']}</td><td>{$u['name']}</td><td>{$u['gender']}</td>".
+													"<td>{$u['mobile']}</td><td>{$u['email']}</td><td>{$u['blocked']}</td><td>{$u['last_login']}</td></tr>";
 									}
 								} else {
 									echo "<tr scrope='row'><th colspan=10 style='text-align: center;'>No users listed under this section.</th></tr>";

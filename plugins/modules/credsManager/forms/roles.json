@@ -1,7 +1,7 @@
 {
 	"source":{
 		"type":"sql",
-		"table":"lgks_privileges",
+		"table":"lgks_roles",
 		"where":["id"]
 	},
 	"fields": {

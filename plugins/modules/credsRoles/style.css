@@ -77,7 +77,7 @@ a[href] {
 
 .panel-title {
     padding: 10px 10px;
-    background: #2997ab;
+    /*background: #2997ab;*/
     color: white;
     border-bottom: 2px solid #333;
 }

@@ -16,6 +16,9 @@ function pgAccess() {
 function pgPrivileges() {
 	window.location=_link(PAGE+"/privileges")+"&panel=privileges";
 }
+function pgRoles() {
+	window.location=_link(PAGE+"/roles")+"&panel=roles";
+}
 function pgGroups() {
 	window.location=_link(PAGE+"/groups")+"&panel=groups";
 }
@@ -96,7 +99,6 @@ function viewUsers(tr,grid) {
 	waitingDialog.show('Finding Users ...');//,{onHide: function () {alert('Callback!');}}
 	$("#credsEditor").attr("src",_link("modules/credsManager/"+currentSRC+"/listusers/"+trHash));
 }
-
 function openSidePanel() {
 	waitingDialog.hide();
 	$("#sliderPanel").removeClass("slide-out").addClass("slide-in");

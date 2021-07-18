@@ -5,7 +5,7 @@ loadModule("pages");
 
 function pageSidebar() {
   $html="<div id='componentTree' class='componentTree list-group list-group-root well'>
-            <div class='panel-heading panel-heading-bold'>Roles<input style='float:right;margin-right: -10px;' onchange='searchRoles(this)' placeholder='Search ...' /></div>";
+            <div class='panel-heading panel-heading-bold'>Roles<input style='float:right;margin-right: -10px;border: 1px dotted #AAA;' onchange='searchRoles(this)' placeholder='Search ...' /></div>";
   $html.="<ul id='roleList' class='list-group'>";
   $html.="<div class='ajaxloading ajaxloading5'></div>";
   $html.="</ul>";
@@ -15,12 +15,12 @@ function pageSidebar() {
 function pageContentArea() {
   return "<div id='componentSpace' class='componentSpace' style='padding-right: 10px;padding-left: 5px;width:100%;height;100%;'>
     <div class='col-md-4' style='height: 100%;overflow: auto;border-right: 1px solid #AAA;padding: 0px;background-color: #f5f5f5;'>
-        <div class='panel-heading panel-heading-bold'>Modules<input style='float:right;margin-right: -10px;' onchange='searchModules(this)' placeholder='Search ...' /></div><ul id='roleModel' ></ul></div>
+        <div class='panel-heading panel-heading-bold'>Modules<input style='float:right;margin-right: -10px;border: 1px dotted #AAA;' onchange='searchModules(this)' placeholder='Search ...' /></div><ul id='roleModel' ></ul></div>
     <div class='col-md-4' style='height: 100%;overflow: auto;border-right: 1px solid #AAA;padding: 0px;background-color: #f5f5f5;'>
-        <div class='panel-heading panel-heading-bold'>Feature<input style='float:right;margin-right: -10px;' onchange='searchFeatures(this)' placeholder='Search ...' /></div><ul id='activityList' ></ul></div>
+        <div class='panel-heading panel-heading-bold'>Feature<input style='float:right;margin-right: -10px;border: 1px dotted #AAA;' onchange='searchFeatures(this)' placeholder='Search ...' /></div><ul id='activityList' ></ul></div>
     <div class='col-md-4' style='height: 100%;overflow: auto;padding: 0px;overflow: auto;background-color: #f5f5f5;'>
         <div class='panel-heading panel-heading-bold'><input class='pull-left' type='checkbox' id='checkAllPermissions' style='margin-right: 4px;' /> Permissions 
-                <input style='float:right;margin-right: -10px;' onchange='searchPermissions(this)' placeholder='Search ...' />
+                <input style='float:right;margin-right: -10px;border: 1px dotted #AAA;' onchange='searchPermissions(this)' placeholder='Search ...' />
             </div><ul id='permissionList' ></ul></div>
     </div>";
 }

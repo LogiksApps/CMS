@@ -23,6 +23,9 @@ switch(strtolower($slug['task'])) {
 	case "listusers":
 		$taskFile="comps/listusers";
 		break;
+	case "listroleusers":
+		$taskFile="comps/listroleusers";
+		break;
 	case "userinfo":
 		$taskFile="comps/userinfo";
 		break;

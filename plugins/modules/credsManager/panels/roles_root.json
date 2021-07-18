@@ -1,6 +1,6 @@
 {
 	"schema":"1.0",
-	"title":"Privilege Manager",
+	"title":"Role Manager",
 	"category":"CMS",
 	"privilege":"*",
 	"blocked":false,
@@ -8,19 +8,20 @@
 	"rowsPerPage":20,
 	"showExtraColumn":"checkbox",
 	"custombar":false,
+	"DEBUG": false,
 	"source":{
 		"type":"sql",
-		"table":"lgks_privileges",
-    "cols":"*,(SELECT count(*) FROM lgks_users WHERE lgks_users.privilegeid=lgks_privileges.id AND lgks_users.guid = '#SESS_GUID#' GROUP BY lgks_users.privilegeid) as user_count",
+		"table":"lgks_roles",
+        "cols":"*,(SELECT count(*) FROM lgks_users WHERE FIND_IN_SET(lgks_roles.id,lgks_users.roles) AND lgks_users.guid = '#SESS_GUID#') as user_count",
 		"where":{
-			"guid":{"VALUE":"#SESS_GUID#","OP":"EQ"}
+
 		},
 		"sort":"id asc",
 		"limit":10
 	},
 	"buttons":{
 		"editRecord": {
-			"label":"Edit Privilege",
+			"label":"Edit Role",
 			"icon":"fa fa-pencil"
 		},
 		"viewUsers":{
@@ -40,17 +41,17 @@
 			"formatter":"text"
 		},
 		"name":{
-			"label":"Privilege Name",
+			"label":"Role Name",
 			"searchable":true
 		},
         "user_count":{
           "label":"Users"
         },
-        "remarks":{
+		"remarks":{
 			"label":"Descs",
 			"searchable":true
 		},
-		"site":{
+        "site":{
 			"label":"For Site",
 			"searchable":true
 		},

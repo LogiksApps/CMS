@@ -8,6 +8,9 @@ $apps=_session("siteList");
 
 define("PACKAGE_CACHE_PERIOD",86400);
 
+$trashPath = ROOT.APPS_FOLDER.".trash/";
+if(!is_dir($trashPath)) mkdir($trashPath,0777,true);
+
 switch($_REQUEST["action"]) {
 	case "listImages":
 		if(function_exists("estore_list_apps")) {
