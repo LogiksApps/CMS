@@ -2,10 +2,18 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 echo _js("bootstrap-typeahead");
 ?>
+<style>
+.btn-search {
+    border-radius: 20px !important;
+    opacity: 0.8;
+    font-weight: bold;
+    margin-top:1px;
+}
+</style>
 <div class="input-group pull-right">
     <input type="hidden" class="form-control" placeholder="Search Logiks Functions, etc" id='searchCodeBase'>
     <div class="input-group-btn-1">
-      <button onclick="searchMore()" type="button" class="btn btn-warning"><span class="fa fa-search"></span> Code Search</button>
+      <button onclick="searchMore()" type="button" class="btn btn-primary btn-search"><span class="fa fa-search"></span> Code Search</button>
     </div>
 </div>
 <script>

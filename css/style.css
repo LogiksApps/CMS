@@ -821,6 +821,19 @@ table.dataTable>thead>tr>th {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
+
+body.no_sidebar {
+    
+}
+body.no_sidebar #sidebar {
+    display: none;
+}
+body.no_sidebar #page-wrapper {
+    margin-left: 0px;
+}
+body.no_sidebar #myTab {
+    left: 0px !important;
+}
     
 @keyframes slide-in {
     100% { transform: translateX(0%); }

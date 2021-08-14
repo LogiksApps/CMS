@@ -491,5 +491,50 @@ switch ($_REQUEST['action']) {
         
         //printArray($_POST);
         break;
+    case "dumpSchema":
+        $fileJSON_SCHEMA = CMS_APPROOT."SQL/db_schema-".getApp_VERSCODE().".json";
+        $fileJSON_DATA = CMS_APPROOT."SQL/db_data-".getApp_VERSCODE().".json";
+        
+        if(file_exists($fileJSON_SCHEMA) || file_exists($fileJSON_DATA)) {
+            echo "<b style='color:red;'>Schema files for this version <u>".getApp_VERSCODE()."</u> exists, please increase the version no of the application to continue</b>";
+            exit();
+        }
+        
+        //$fields = ["Field","Type","NULL","KEY","DEFAULT","EXTRA"];
+        $dbStatus=_db($dbKey)->get_dbObjects();
+        $tables = _db($dbKey)->get_tablelist();
+        $dbData = [];
+        $finalDBConfig = [];
+        foreach($tables as $tbl) {
+            if(!isset($dbStatus['tables'][$tbl])) continue;
+            $finalDBConfig[$tbl] = ["info"=>[], "columns"=>[]];
+            
+            //$cols=_db($dbKey)->get_columnlist($tbl, false);
+            $cols=_db($dbKey)->get_defination($tbl);
+            $info=$dbStatus['tables'][$tbl];
+            
+            $finalDBConfig[$tbl]['info'] = $info;
+            
+            foreach($cols as $col) {
+                $finalDBConfig[$tbl]['columns'][$col[0]] = $col;
+            }
+            
+            $tblArr = explode("_", $tbl);
+            if(in_array($tblArr[0], ["do"])) {//, "data", "sys"
+                $tblData = _db($dbKey)->_selectQ($tbl, "*")->_GET();
+                $dbData[$tbl] = $tblData;
+            }
+        }
+        
+        //printArray($finalDBConfig);
+        
+        if(!is_dir(dirname($fileJSON_SCHEMA))) {
+            mkdir(dirname($fileJSON_SCHEMA), 0777, true);
+        }
+        file_put_contents($fileJSON_SCHEMA, json_encode($finalDBConfig, JSON_PRETTY_PRINT));
+        file_put_contents($fileJSON_DATA, json_encode($dbData, JSON_PRETTY_PRINT));
+        
+        echo "Successfully Saved Database Schema and Important Table Data to SQL folder";
+        break;
 }
 ?>

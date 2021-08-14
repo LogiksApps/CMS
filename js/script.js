@@ -8,6 +8,10 @@ $(function() {
           openLinkFrame(ttl,href);
       }
   });
+  
+  $("#leftMenuOpen").click(function() {
+      $("body").toggleClass("no_sidebar");
+  });
 
   $('body').delegate(".datalink[data-type]","click",function(e) {
     type=$(this).data("type");

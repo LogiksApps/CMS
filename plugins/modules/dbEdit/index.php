@@ -51,17 +51,19 @@ printPageComponent(false,[
 			"createNew"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New Object"],//Tables,Views,Triggers,etc.
       		"exportData"=>["icon"=>"<i class='fa fa-upload'></i>","tips"=>"Export Data"],
      		"importData"=>["icon"=>"<i class='fa fa-download'></i>","tips"=>"Import Data"],
-			
-			// "clone"=>["icon"=>"<i class='fa fa-copy'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Clone Me"],
+			['type'=>"bar"],
+			"saveSchema"=>["icon"=>"<i class='fa fa-file-export'></i>","tips"=>"Save Schema to SQL Folder usefull for migration scripts"],
+			"migrateSchema"=>["icon"=>"<i class='fa fa-not-equal'></i>","tips"=>"Compare and import schema changes and data from schema"],
 			
 			['type'=>"bar"],
+			"cloneTable"=>["icon"=>"<i class='fa fa-copy'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Clone Table"],
 			"trash"=>["icon"=>"<i class='fa fa-trash'></i>","class"=>"onsidebarSelect"],
 		],
 		"sidebar"=>"pageSidebar",
 		"contentArea"=>"pageContentArea"
 	]);
 
-echo _css("dbEdit");
+echo _css(["dbEdit", "font-awesome5"]);
 echo _js(["jquery.validate","dbEdit"]);
 
 
@@ -85,4 +87,15 @@ function pageContentArea() {
 ?>
 <script>
 var dkey = "<?=$default?>";
+function cloneTable() {
+    
+}
+function saveSchema() {
+    processAJAXQuery(_service("dbEdit","dumpSchema")+"&dkey="+dkey,function(txt) {
+		lgksAlert(txt);
+	});
+}
+function migrateSchema() {
+    parent.openLinkFrame("Migrator", _link("modules/migrator"), true);
+}
 </script>

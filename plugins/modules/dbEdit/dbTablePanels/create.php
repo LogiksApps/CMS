@@ -8,7 +8,8 @@ if(count($src)==0) {
 	$src[0]="tables";
 }
 $data = "";
-
+$dataInsert = "";
+$dataInsert1 = "";
 // $finalData=["info"=>_db()->get_dbinfo()];
 // $finalData=array_merge($finalData,_db()->get_dbObjects());
 
@@ -21,13 +22,22 @@ $data = "";
 //find how to save indexes
 //printArray($finalData);
 
-
 switch ($src[0]) {
 	case 'tables':
     $data = _db($dbKey)->_RAW("SHOW CREATE TABLE {$src[1]}")->_GET();
     if(isset($data[0])) {
       $data = $data[0]['Create Table'];
     }
+    
+    $cols = _db($dbKey)->get_defination($src[1]);
+    $dataInsert = [];
+    foreach($cols as $col) {
+        if(in_array($col[0], ["id"])) continue;
+        
+        $dataInsert[$col[0]] = "";
+    }
+    $dataInsert1 = json_encode($dataInsert, JSON_PRETTY_PRINT);
+    $dataInsert = _db()->_insertQ1($src[1], $dataInsert)->_SQL();
 	break;
     
   case 'views':
@@ -75,18 +85,39 @@ if(strlen($data)<=0) {
 ?>
 <div class='container-fluid' style='width: 90%;margin: auto;margin-top: 20px;'>
   <div class='text-right'>
-    <button class='btn btn-default' onclick="copyToClipboard()">
+    <button class='btn btn-default' onclick="copyToClipboard('#sqlCode')">
       <i class='fa fa-clipboard'></i>
       Copy
     </button>
+    <b class='pull-left'>Create Table</b>
   </div>
   <code id='sqlCode'>
       <?=$data?>
   </code>
+  <hr>
+  <div class='text-right'>
+    <button class='btn btn-default' onclick="copyToClipboard('#insertCode')">
+      <i class='fa fa-clipboard'></i>
+      Copy
+    </button>
+    <b class='pull-left'>Insert Query 1</b>
+  </div>
+  <code id='insertCode'>
+      <?=$dataInsert?>
+  </code>
+  <hr>
+  <div class='text-right'>
+    <button class='btn btn-default' onclick="copyToClipboard('#insertCode1')">
+      <i class='fa fa-clipboard'></i>
+      Copy
+    </button>
+    <b class='pull-left'>Insert Object</b>
+  </div>
+  <pre id='insertCode1'><?=$dataInsert1?></pre>
 </div>
 <script>
-function copyToClipboard() {
-    text = $("#sqlCode").text();
+function copyToClipboard(eleTag) {
+    text = $(eleTag).text();
   
     if (window.clipboardData && window.clipboardData.setData) {
         // IE specific code path to prevent textarea being shown while dialog is visible.

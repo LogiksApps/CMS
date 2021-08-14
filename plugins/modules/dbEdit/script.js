@@ -216,6 +216,15 @@ function importData() {
   parent.openLinkFrame("Import Data",_link("modules/dataMigrator")+"&panel=import",true)
 }
 
+function saveSchema() {
+    processAJAXQuery(_service("dbEdit","dumpSchema")+"&dkey="+dkey,function(txt) {
+		lgksAlert(txt);
+	});
+}
+function migrateSchema() {
+    parent.openLinkFrame("Migrator", _link("modules/migrator"), true);
+}
+
 //Tables,Triggers,Functions,etc.
 function createNew() {
 	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=create_table";

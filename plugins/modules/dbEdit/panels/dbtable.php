@@ -20,15 +20,17 @@ switch ($src[0]) {
 	case 'tables':
 		$tabsArr=[
 				"structure",
+				"columns",
 				"browse",
 				"insert",
-        "create",
+                "create",
 			];
 		break;
 
 	case 'views':
 		$tabsArr=[
 				"structure",
+				"columns",
 				"browse",
         "create",
 			];

@@ -20,8 +20,8 @@ switch($_REQUEST['srctype']) {
 	case "apps":
 		$cfgDir=CMS_APPROOT.CFG_FOLDER;
 		$xtraCfg=[
-							["path"=>"apps", "name"=>"Application",]
-						 ];
+    			["path"=>"apps", "name"=>"Application",]
+    		 ];
 		break;
 	case "cms":
 		$cfgDir=ROOT.APPS_FOLDER."cms/".CFG_FOLDER;

@@ -3,6 +3,20 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 //echo $dbKey;
 
+$limit = 10;
+if(isset($_GET['limit'])) {
+    setCookie('CMS-DBEDIT-BROWSER-PERPAGE', $_GET['limit']);
+    $limit = $_GET['limit'];
+} elseif(isset($_COOKIE['CMS-DBEDIT-BROWSER-PERPAGE'])) {
+    $limit = $_COOKIE['CMS-DBEDIT-BROWSER-PERPAGE'];
+} else {
+    setCookie('CMS-DBEDIT-BROWSER-PERPAGE', 10);
+    $limit = 10;
+}
+$_GET['limit'] = $limit;
+
+if(!isset($_GET['page'])) $_GET['page'] = 0;
+
 $src=explode("/", $_GET['src']);
 if(count($src)==0) {
 	$src[1]=$src[0];
@@ -20,8 +34,8 @@ switch ($src[0]) {
 
 		$db=_db($dbKey)->_selectQ($src[1],"*");
 		$db=$db->_orderby("id desc");
-		$db=$db->_limit(10,0);
-		//echo $db->_SQL();
+		$db=$db->_limit($_GET['limit'], $_GET['page']*$_GET['limit']);
+// 		echo $db->_SQL();
 
 		$data=$db->_get();
 		break;
@@ -37,7 +51,8 @@ if($data==null) $data=[];
 //var_dump($data);
 
 if(count($data)>0) {
-	printDataInTable($data,$columns,["deleteRecord"=>"fa fa-trash","editRecord"=>"fa fa-pencil"]);
+    include_once dirname(__DIR__)."/panels/browser_toolbar.php";
+	printDataInTable($data, $columns, ["deleteRecord"=>"fa fa-trash","editRecord"=>"fa fa-pencil"]);
 } else {
 	echo "<h5>No data in {$src[0]} : {$src[1]}</h5>";
 }
