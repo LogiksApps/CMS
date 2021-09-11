@@ -4,3 +4,21 @@
 tr.active i[cmd=copyService] {
 	display:none;
 }
+.funcList {
+    font-weight: normal;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+.funcList * {
+    font-weight: normal;
+    font-size: 12px;
+}
+.funcList .funcName {
+    cursor:pointer;
+}
+.funcList .funcName.noneService {
+    color: maroon;
+}
+.funcList .funcName:hover {
+    color: #000;
+}

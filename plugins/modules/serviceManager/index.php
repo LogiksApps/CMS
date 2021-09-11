@@ -25,7 +25,7 @@ printPageComponent(false,[
 			['type'=>"bar"],
 			"findServices"=>["icon"=>"<i class='fa fa-search-plus'></i>","tips"=>"Find and add new services"],
 			['type'=>"bar"],
-      "createNewService"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create new service"],
+            "createNewService"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create new service"],
 			"saveServiceConfig"=>["icon"=>"<i class='fa fa-save'></i>","tips"=>"Save service config"],
 			//"openExternal"=>["icon"=>"<i class='fa fa-external-link'></i>","class"=>"onsidebarSelect"],
 			//"preview"=>["icon"=>"<i class='fa fa-eye'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Preview Content"],

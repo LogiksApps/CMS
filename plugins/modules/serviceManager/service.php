@@ -2,9 +2,21 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 checkServiceAccess();
 
-$serviceCFG=ROOT.CFG_FOLDER."jsonConfig/services.json";
+if(!isset($_REQUEST['comptype']) || strtolower($_REQUEST['comptype'])=="local") {
+    $_REQUEST['comptype']=$_REQUEST['forSite'];
+}
 
-$jsonData=json_decode(file_get_contents($serviceCFG),true);
+if(strtolower($_REQUEST['comptype'])=="globals" || strtolower($_REQUEST['comptype'])=="global") {
+    $serviceCFG=ROOT.CFG_FOLDER."jsonConfig/services.json";
+} else {
+    $serviceCFG=CMS_APPROOT.CFG_FOLDER."services.json";
+}
+
+$jsonData = [];
+if(file_exists($serviceCFG)) {
+    $jsonData=json_decode(file_get_contents($serviceCFG),true);
+}
+if(!$jsonData) $jsonData = [];
 
 $cfgDefaults=[
         "format"=>"json",
@@ -27,10 +39,6 @@ $cfgParams=[
 
 switch($_REQUEST['action']) {
   case "getlist":
-    if(!isset($_REQUEST['comptype']) || strtolower($_REQUEST['comptype'])=="local") {
-      $_REQUEST['comptype']=$_REQUEST['forSite'];
-    }
-    
     $outJSON=[];
     if(isset($jsonData[strtoupper($_REQUEST['comptype'])])) {
       $_REQUEST['comptype']=strtoupper($_REQUEST['comptype']);
@@ -50,6 +58,7 @@ switch($_REQUEST['action']) {
       } else {
         $cfg['readonly']=false;
       }
+      $cfg['editable']=false;
       if($_REQUEST['comptype']=="GLOBALS") {
         $cfg["src"]="core";
       }
@@ -57,8 +66,37 @@ switch($_REQUEST['action']) {
     }
     
     // $jsonServices = json_decode(file_get_contents($serviceCFG),true);
-    
-    // printArray($jsonData);exit();
+    foreach($outJSON as $a=>$b) {
+        $f = getServicePath($b['skey'],$b['src']);
+        // println("$a, $f");
+        if(file_exists($f) && is_file($f)) {
+            $outJSON[$a]['funcs'] = get_functions_in_file($f);
+            $funcData = ["SERVICE"=>[],"NONE_SERVICE"=>[]];
+            foreach($outJSON[$a]['funcs'] as $func) {
+                if(substr($func,0,9)=="_service_") {
+                    $funcData["SERVICE"][] = $func;
+                } else {
+                    $funcData["NONE_SERVICE"][] = $func;
+                }
+            }
+            $html = "";
+            $html .= ($funcData['SERVICE']?"<label class='funcName'>".implode("</label>, <label class='funcName'>",$funcData['SERVICE'])."</label>":"");
+            $html .= ($funcData['NONE_SERVICE']?"<label class='funcName noneService'>".implode("</label>, <label class='funcName noneService'>",$funcData['NONE_SERVICE'])."</label>":"");
+            $outJSON[$a]['funcList'] = $html;
+        } elseif(file_exists($f) && is_dir($f)) {
+            $fs = scandir($f);
+            array_shift($fs);array_shift($fs);
+            
+            $outJSON[$a]['funcs'] = [];
+            foreach($fs as $f) {
+                $outJSON[$a]['funcs'][] = str_replace(".php", "", $f);
+            }
+            $outJSON[$a]['editable']=true;
+            $outJSON[$a]['funcList'] = ($outJSON[$a]['funcs']?"<label class='funcName'>".implode("</label>, <label class='funcName'>",$outJSON[$a]['funcs'])."</label>":"");
+        }
+    }
+    //exit();
+    // printArray($outJSON);exit();
     
     printServiceMsg(["LIST"=>array_values($outJSON),"params"=>$cfgParams]);
     break;
@@ -83,6 +121,8 @@ switch($_REQUEST['action']) {
       foreach($fss as $f) {
         if(file_exists("{$f1}{$f}/service.php")) {
           $out[$f]=["skey"=>$f,"src"=>"module"];
+        } elseif(is_dir("{$f1}{$f}/services/")) {
+          $out[$f]=["skey"=>$f,"src"=>"modservice", "readonly"=>true];
         }
       }
     }
@@ -93,14 +133,16 @@ switch($_REQUEST['action']) {
       $fss=array_slice($fss,2);
       foreach($fss as $f) {
         if(file_exists("{$f1}{$f}/service.php")) {
-          $out[$f]=["skey"=>$f,"src"=>"moduleDev"];
+            $out[$f]=["skey"=>$f,"src"=>"moduleDev"];
+        } elseif(is_dir("{$f1}{$f}/services/")) {
+            $out[$f]=["skey"=>$f,"src"=>"modserviceDev", "readonly"=>true];
         }
       }
     }
     
     foreach($out as $key=>$cfg) {
       $cfg['type']=SITENAME;
-      $cfg['readonly']=false;
+      if(!isset($cfg['readonly'])) $cfg['readonly']=false;
       $out[$key]=array_merge($cfgDefaults,$cfg);
     }
     printServiceMsg(["LIST"=>array_values($out),"params"=>$cfgParams]);
@@ -174,4 +216,47 @@ switch($_REQUEST['action']) {
     break;
 }
 
+function getServicePath($skey, $type) {
+    switch(strtolower($type)) {
+        case "app":
+          return CMS_APPROOT."services/{$skey}.php";
+          break;
+        case "module":
+          return CMS_APPROOT."plugins/modules/{$skey}/service.php";
+          break;
+        case "moduledev":
+          return CMS_APPROOT."pluginsDev/modules/{$skey}/service.php";
+          break;
+        case "modservice":
+          return CMS_APPROOT."plugins/modules/{$skey}/services/";
+          break;
+        case "modservicedev":
+          return CMS_APPROOT."pluginsDev/modules/{$skey}/services/";
+          break;
+    }
+    return false;
+}
+
+function get_functions_in_file($file, $sort = FALSE) {
+    $file = file($file);
+    $functions = array();
+    foreach ($file as $line) {
+        $line = trim($line);
+        if (stripos($line, 'function ') !== false) {
+            $function_name = str_ireplace([
+                'public', 'private', 'protected',
+                'static'
+                    ], '', $line);
+
+            if (!in_array($function_name, ['__construct', '__destruct'])) {
+                $functions[] = trim(substr($function_name, 9, strpos($function_name, '(') - 9));
+            }
+        }
+    }
+    if ($sort) {
+        asort($functions);
+        $functions = array_values($functions);
+    }
+    return $functions;
+}
 ?>

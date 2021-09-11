@@ -22,7 +22,7 @@ $(function() {
         return openCodeLink(this);
     })
     
-    $("input[name=filters]")[0].checked=true;
+    $("input[name=filters]")[1].checked=true;
     $("#searchTextField").val(firstSearchTerm);
     
     if($("#searchTextField").val()!=null && $("#searchTextField").val().length>0) {
