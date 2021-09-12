@@ -813,6 +813,17 @@ table.dataTable>thead>tr>th {
     color:#CE3330 !important;
 }
 
+.infoviewbox label {
+       color: #272626 !important;
+    font-size: 12px;
+    font-weight: 600 !important;
+}
+table.dataTable td.actionCol i, table.dataTable th.actionCol i{
+    font-size: 19px !important;
+   
+    margin-left: 10px !important;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

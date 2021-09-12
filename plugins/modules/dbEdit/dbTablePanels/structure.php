@@ -16,7 +16,7 @@ $columns=[];
 $data=[];
 switch ($src[0]) {
 	case 'tables':
-        $actions = ["deleteField"=>"fa fa-trash","editField"=>"fa fa-pencil"];
+        $actions = ["deleteField"=>"fa fa-trash","editField"=>"fa fa-pencil fa-pencil-alt"];
 	case 'views':
 		$data=_db($dbKey)->get_defination($src[1]);
         $fields = ["Field","Type","NULL","KEY","DEFAULT","EXTRA"];

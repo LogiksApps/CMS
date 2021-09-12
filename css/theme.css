@@ -64,3 +64,8 @@
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
 }
+
+.file-preview-thumbnails img, .field-container img {
+    max-width: 100%;
+    max-height: 300px;
+}

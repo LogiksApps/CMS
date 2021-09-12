@@ -44,7 +44,7 @@
         </li>
     </ul>
     
-    <div class="searchForm pull-right hidden-xs" style="width: 350px;height: 49px;padding-top: 8px;">
+    <div class="searchForm pull-right hidden-xs" style="width: 50px;height: 49px;padding-top: 8px;">
         {pluginComponent src='codeSearch.searchbar'}
     </div>
   </div>
