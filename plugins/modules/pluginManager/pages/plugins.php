@@ -84,8 +84,8 @@ printPageComponent(false,[
 			
 			
 			{{#if bugs}}<a href='{{bugs}}' target=_blank><i class="fa fa-bug pull-left" packid="{{packid}}" title="Plugin Issues"></i></a>{{/if}}
-			{{#if homepage}}<a href='{{homepage}}' target=_blank><i class="fa fa-link pull-left" packid="{{packid}}" title="Plugin Issues"></i></a>{{/if}}
-			{{#if docs}}<a href='{{docs}}' target=_blank><i class="fa fa-book pull-left" packid="{{packid}}" title="Plugin Issues"></i></a>{{/if}}
+			{{#if homepage}}<a href='{{homepage}}' target=_blank><i class="fa fa-link pull-left" packid="{{packid}}" title="Plugin Home"></i></a>{{/if}}
+			{{#if docs}}<a href='{{docs}}' target=_blank><i class="fa fa-book pull-left" packid="{{packid}}" title="Plugin Wiki"></i></a>{{/if}}
 		</td>
 	</tr>
 	{{/each}}

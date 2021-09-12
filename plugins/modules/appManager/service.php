@@ -4,7 +4,8 @@ checkServiceAccess();
 
 loadModule("packages");
 
-$apps=_session("siteList");
+$apps=getSiteList();//_session("siteList");
+//printArray($apps);exit();
 
 define("PACKAGE_CACHE_PERIOD",86400);
 
@@ -626,4 +627,28 @@ switch($_REQUEST["action"]) {
 		break;
 }
 
+function getSiteList() {
+	$arr=scandir(ROOT.APPS_FOLDER);
+	unset($arr[0]);unset($arr[1]);
+	$out=array();
+	foreach($arr as $a=>$b) {
+	    if($b=="cms" || $b=="studio") continue;
+		if(is_file(ROOT.APPS_FOLDER.$b)) {
+			unset($arr[$a]);
+		} elseif(is_dir(ROOT.APPS_FOLDER.$b) && !file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg")) {
+			unset($arr[$a]);
+		} else {
+			array_push($out,$b);
+		}
+	}
+	
+	$final = [];
+	foreach($out as $a) {
+	    $final[$a] = [
+	            "title"=>toTitle($a),
+	            "url"=>_link("", "", $a)
+	        ];
+	}
+	return $final;
+}
 ?>
