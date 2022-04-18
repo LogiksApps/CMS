@@ -37,6 +37,7 @@ table thead th {
 
 table .action {
 	text-align: right;
+    white-space: nowrap;
 }
 table .action .fa {
 	font-size: 15px;

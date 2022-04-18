@@ -30,7 +30,34 @@ $favLang=[
 		"html"
 	];
 
+if($_REQUEST['ext']=="inc") {
+    $_REQUEST['ext'] = "php";
+}
+
 ?>
+<style>
+#editorToolbar .open>.dropdown-menu a {
+    font-size: 12px;
+    padding: 3px 5px !important;
+}
+.dropdown-menu>li a, #editorToolbar .open>.dropdown-menu a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+.dropdown-menu li.active a, #editorToolbar .open>.dropdown-menu li.active a,
+.dropdown-menu .active a:focus, #editorToolbar .open>.dropdown-menu li.active a:focus,
+.dropdown-menu .active a:hover, #editorToolbar .open>.dropdown-menu li.active a:hover {
+    text-decoration: none;
+    background: rgb(26 132 209);
+    color: #fff;
+    outline: 0;
+}
+</style>
 <script src="<?=$webpath?>ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?=$webpath?>ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?=$webpath?>ext-beautify.js" type="text/javascript" charset="utf-8"></script>
@@ -60,7 +87,8 @@ $favLang=[
 		    Language <span class="caret"></span>
 		  </button>
 		  <ul class="dropdown-menu pull-right langlist">
-		  	<?php
+		      <span class='fav'>
+		  	  <?php
 		  		foreach ($favLang as $fx) {
 		  			$fx=str_replace(".js","",$fx);
 		  			if(strlen($fx)<=3) $ttl=strtoupper($fx);
@@ -71,7 +99,7 @@ $favLang=[
 		  				echo "<li cmd='language' rel='{$fx}' ><a href='#'>{$ttl}</a></li>";
 		  			}
 		  		}
-		  		echo "<hr>";
+		  		echo "</span><hr><span class='general'>";
 		  		foreach ($fsLang as $fx) {
 		  			$fx=str_replace(".js","",$fx);
 		  			if(in_array($fx, $favLang)) continue;
@@ -83,7 +111,8 @@ $favLang=[
 		  				echo "<li cmd='language' rel='{$fx}' ><a href='#'>{$ttl}</a></li>";
 		  			}
 		  		}
-		  	?>
+		  	  ?>
+		  	</span>
 		  </ul>
 		</div>
 		<div class="btn-group">
@@ -115,6 +144,7 @@ $favLang=[
 	</div>
 </aside>
 <script>
+var favLangs = [];
 var langTools = ace.require("ace/ext-language_tools");
 var beautify = ace.require("ace/ext/beautify");
 var editor = ace.edit("editor");
@@ -125,13 +155,13 @@ var defaultEditorConfig={
 		"tabsize":4,
 		"showPrintMargin":false,
 		"highlightActiveLine":true,
-    "highlightSelectedWord":true,
+        "highlightSelectedWord":true,
 		"displayIndentGuides":true,
 		"useWrapMode":true,
 		"showInvisibles":false,
-    "useSoftTabs":true,
-    "navigateWithinSoftTabs":true,
-    "enableMultiselect":true,
+        "useSoftTabs":true,
+        "navigateWithinSoftTabs":true,
+        "enableMultiselect":true,
 		"showGutter":true
 	};
 var editorConfig={};
@@ -141,7 +171,7 @@ $(function() {
 		cmd=$(this).attr('cmd');
 		doEditorAction(cmd,this);
 	});
-
+	
 	loadEditorSettings();
 
 	setupEditorConfig(editor,"<?=$_REQUEST['ext']?>");
@@ -160,6 +190,8 @@ $(function() {
 			editor.session.getUndoManager().reset();
 		},100);
 	});
+	
+	loadFavLangs();
 });
 function doEditorAction(cmd,src) {
 	switch(cmd) {
@@ -169,6 +201,8 @@ function doEditorAction(cmd,src) {
 
 			$("#editorToolbar .langlist .active").removeClass("active");
 			$(src).addClass("active");
+			
+			addFavLangs(lang);
 		break;
 		case "theme":
 			theme=$(src).attr("rel");
@@ -285,5 +319,32 @@ function checkoutHistory(refid) {
 	processAJAXPostQuery(_service("cmsEditor","gethistoryContent"),"src="+$("#editorToolbar input[name=fname]").val()+"&refid="+refid,function(ans) {
 				lgksOverlay("<textarea style='width:100%;height:70%;border:1px solid #AAA;' readonly>"+ans+"</textarea>");
 			});
+}
+
+function loadFavLangs() {
+    try {
+	    favLangs = localStorage.getItem("CMS-Editor-Lang");
+	    if(favLangs) favLangs = JSON.parse(favLangs);
+	    else favLangs = [];
+	    
+	    $.each(favLangs, function(a,b) {
+            var ttl = toTitle(b);
+            if(ttl.length<=4) ttl = ttl.toUpperCase();
+	        $("#editorToolbar .dropdown-menu.langlist>span.fav").append(`<li cmd='language' rel='${b}' ><a href='#'>${ttl}</a></li>`);
+	    });
+	} catch(e) {
+	    favLangs = [];
+	}
+}
+function addFavLangs(lang) {
+    if(lang==null || lang.length<1) return;
+    if(favLangs.indexOf(lang)<0) {
+        favLangs.push(lang);
+        localStorage.setItem("CMS-Editor-Lang", JSON.stringify(favLangs));
+        
+        var ttl = toTitle(lang);
+        if(ttl.length<=4) ttl = ttl.toUpperCase();
+        $("#editorToolbar .dropdown-menu.langlist>span.fav").append(`<li cmd='language' rel='${lang}' ><a href='#'>${ttl}</a></li>`);
+    }
 }
 </script>

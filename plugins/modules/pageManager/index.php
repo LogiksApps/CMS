@@ -7,7 +7,7 @@ $opts=[
 		"toolbar"=>[
 			"pages"=>["title"=>"Pages","align"=>"right"],
 			"comps"=>["title"=>"Components","align"=>"right"],
-			"snippets"=>["title"=>"Snippets","align"=>"right"],
+// 			"snippets"=>["title"=>"Snippets","align"=>"right"],
 			"layouts"=>["title"=>"Layouts","align"=>"right"],
 			// ['type'=>"bar"],
 

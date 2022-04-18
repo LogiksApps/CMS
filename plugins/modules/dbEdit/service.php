@@ -205,7 +205,7 @@ switch ($_REQUEST['action']) {
 				$res=$sql->_run();
 
 				if($res) echo "success";
-				else echo "Sorry, failed to update new record.".$sql->_SQL();
+				else echo "Sorry, failed to update new record."._db($dbKey)->get_error();//$sql->_SQL();
 			} else {
 				echo "<h5>Source format '{$src[0]}' not supported</h5>";
 			}

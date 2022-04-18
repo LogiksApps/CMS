@@ -52,7 +52,7 @@ if($data==null) $data=[];
 
 if(count($data)>0) {
     include_once dirname(__DIR__)."/panels/browser_toolbar.php";
-	printDataInTable($data, $columns, ["deleteRecord"=>"fa fa-trash","editRecord"=>"fa fa-pencil"]);
+	printDataInTable($data, $columns, ["deleteRecord"=>"fa fa-trash","editRecord"=>"fa fa-pen fa-pencil"]);
 } else {
 	echo "<h5>No data in {$src[0]} : {$src[1]}</h5>";
 }

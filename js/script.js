@@ -125,6 +125,13 @@ $.fn.extend({
     }
 });
 
+function openEStore() {
+    openLinkFrame("eStore", _link("modules/pluginManager"), true);
+}
+function openCMSTodos() {
+    openLinkFrame("Todos", _link("modules/cmsTodos"), true);
+}
+
 function dataInfo(type, val) {
   //console.log(type+" "+val);
   type=type.split("-");

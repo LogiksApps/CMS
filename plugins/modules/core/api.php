@@ -3,11 +3,11 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 if(!function_exists("getAPP_PROPS")) {
     
-    function getApp_PROPS($cfgKey, $configFile = false) {
+    function getApp_PROPS($cfgKey, $configFile = false, $defaultValue = "") {
         if(!$configFile) {
             $configFile = "apps.cfg";
         }
-        if(!file_exists(CMS_APPROOT.$configFile)) return "";
+        if(!file_exists(CMS_APPROOT.$configFile)) return $defaultValue;
          
         $fConfig = [];
         $fData = file_get_contents(CMS_APPROOT.$configFile);
@@ -22,7 +22,7 @@ if(!function_exists("getAPP_PROPS")) {
         }
         
         if(isset($fConfig[$cfgKey])) return $fConfig[$cfgKey];
-        return "";
+        return $defaultValue;
     }
     
     function getApp_VERSCODE() {
