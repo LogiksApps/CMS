@@ -1,6 +1,8 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
 
+include_once __DIR__."/api.php";
+
 switch($_REQUEST["action"]) {
 	case "info":
 		$sql1=_db(true)->_selectQ(_dbTable("rolemodel",true),"module,count(*) as count")
@@ -15,22 +17,84 @@ switch($_REQUEST["action"]) {
 		
 		printServiceMsg([$sql1,$sql2,$sq3]);
 		break;
+	case "list-roles-main":
+		$sql=_db(true)->_selectQ(_dbTable("roles",true),"id,guid,site,name,blocked,remarks,md5(concat(id,name)) as hash, (".
+		        _db(true)->_selectQ(_dbTable("users",true), "count(*)", ["blocked"=>"false"])->_whereRAW("FIND_IN_SET(lgks_roles.id ,roles)")->_SQL()
+		        .") as users")
+			->_where(array("blocked"=>"false"))
+			->_whereOR("site",['*',CMS_SITENAME])
+			->_whereOR("guid",[$_SESSION['SESS_GUID'],'global'])
+            ->_orderBy("name asc");
+
+		$dataRoles=$sql->_GET();
+		foreach($dataRoles as $a=>$b) {
+		    $dataRoles[$a]['privilegehash']=_slugify("{$b['id']}_{$b['name']}");
+			$dataRoles[$a]['title']=toTitle(_ling($b['name']));
+		}
+		printServiceMsg([
+		        "ROLES"=>$dataRoles
+		    ]);
+		break;
+	case "list-roles-permissions":
+	    $sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,guid,category,module,activity,action,remarks,privilegehash,allow", [])//"blocked"=>"false"
+            ->_whereOR("site",['*',CMS_SITENAME])
+            ->_orderBy("activity asc");
+		
+		if($_SESSION['SESS_PRIVILEGE_ID']<=ADMIN_PRIVILEGE_ID) {
+		    $sql->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
+		} else {
+		    $sql->_whereOR("guid",[$_SESSION['SESS_GUID']]);
+		}
+		
+		//For Limited Roles
+		if(isset($_POST['roleids']) && strlen($_POST['roleids'])>0) {
+		    $sqlRoles = _db(true)->_selectQ(_dbTable("roles",true),"id,name", ["id"=>[$_POST['roleids'], "IN"]])->_get();
+		    if(!$sqlRoles) $sqlRoles = [];
+		    
+		    $privliegeList = [];
+		    foreach($sqlRoles as $row) $privliegeList[] = _slugify("{$row['id']}_{$row['name']}");
+		    $sql->_whereIN("privilegehash", $privliegeList);
+		}
+        // echo $sql->_SQL();exit();
+		$data=$sql->_GET();
+		if(!$data) {
+		    $data = [];
+		}
+		
+		$finalData = [];
+		foreach($data as $a=>$b) {
+		    $moduleName = $b['module'];//preg_replace("([A-Z])", " $0", str_replace("_", " ", $b['module']));
+		    //$activityName = preg_replace("([A-Z])", " $0", str_replace("_", " ", $b['activity']));
+		    $activityName = $b['activity'];
+		    if(!isset($finalData[_ling($moduleName)])) $finalData[_ling($moduleName)] = [];
+		    if(!isset($finalData[_ling($moduleName)][_ling($activityName)])) $finalData[_ling($moduleName)][_ling($activityName)] = [];
+		    if(!isset($finalData[_ling($moduleName)][_ling($activityName)][$b['action']])) $finalData[_ling($moduleName)][_ling($activityName)][$b['action']] = [];
+		    
+		    
+			$b['title']=toTitle(_ling($b['action']));
+			
+			$finalData[_ling($moduleName)][_ling($activityName)][$b['action']][$b['privilegehash']] = $b;
+		}
+		printServiceMsg([
+		        "PERMISSIONS"=> $finalData
+		    ]);
+		break;
 	case "list-privileges":
 		$sql=_db(true)->_selectQ(_dbTable("privileges",true),"id,site,name,blocked,remarks,md5(concat(id,name)) as privilegehash,md5(concat(id,name)) as hash")
 			//->_where(array("blocked"=>"false"))//,"length(hash)"=>[0,">"]
 			->_whereOR("site",['*',CMS_SITENAME])
 			->_whereOR("guid",[$_SESSION['SESS_GUID'],'global'])
-      ->_orderBy("name asc");
+            ->_orderBy("name asc");
 
-			$data=$sql->_GET();
-			foreach($data as $a=>$b) {
-				if($b['id']<=ROLE_PRIME) {
-					unset($data[$a]);
-					continue;
-				}
-				$data[$a]['title']=toTitle(_ling($b['name']));
+		$data=$sql->_GET();
+		foreach($data as $a=>$b) {
+			if($b['id']<=ROLE_PRIME) {
+				unset($data[$a]);
+				continue;
 			}
-			printServiceMsg($data);
+			$data[$a]['title']=toTitle(_ling($b['name']));
+		}
+		printServiceMsg($data);
 		break;
 	case "list-modules":
 			$sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,guid,category,module as name,count(*) as count")
@@ -93,7 +157,7 @@ switch($_REQUEST["action"]) {
   //For UI0
   case "list-modules-for-role":
     if(isset($_POST['roleid'])) {
-      $sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,guid,category,module as name,count(*) as count")
+            $sql=_db(true)->_selectQ(_dbTable("rolemodel",true),"id,guid,category,module as name,count(*) as count")
             ->_whereOR("site",['*',CMS_SITENAME])
             ->_where(array("privilegehash"=>$_POST['roleid']))
             ->_orderBy("name asc")
@@ -199,6 +263,62 @@ switch($_REQUEST["action"]) {
 		}
     break;
   
+    case "update-role-module":
+        if(isset($_POST['module']) && isset($_POST['allow']) && isset($_POST['privilegehash'])) {
+            $where = [
+					"module"=>$_POST['module'],
+					"privilegehash"=>$_POST['privilegehash']
+				];
+			if(defined(CMS_SITENAME)) {
+			    $where['site'] = CMS_SITENAME;
+			}
+			if($_SESSION['SESS_GUID']!="global") {
+			    $where['guid'] = $_SESSION['SESS_GUID'];
+			}
+            $sql=_db(true)->_updateQ(_dbTable("rolemodel",true),[
+                    "allow"=>(($_POST['allow']=="true")?"true":"false"),
+                    "edited_on"=>date("Y-m-d H:i:s"),
+                    "edited_by"=>$_SESSION['SESS_USER_ID']
+                ],$where);
+
+			$a=$sql->_RUN();
+			if($a) {
+				printServiceMsg("Successfully Updated");
+			} else {
+				printServiceMsg("error :"._db(true)->get_error());
+			}
+        } else {
+            printServiceMsg("Error updating permission");
+        }
+        break;
+  
+    case "update-role":
+        if(isset($_POST['refid']) && isset($_POST['allow'])) {
+            $where = [
+					"id"=>$_POST['refid'],
+				];
+			if(defined(CMS_SITENAME)) {
+			    $where['site'] = CMS_SITENAME;
+			}
+			if($_SESSION['SESS_GUID']!="global") {
+			    $where['guid'] = $_SESSION['SESS_GUID'];
+			}
+            $sql=_db(true)->_updateQ(_dbTable("rolemodel",true),[
+                    "allow"=>(($_POST['allow']=="true")?"true":"false"),
+                    "edited_on"=>date("Y-m-d H:i:s"),
+                    "edited_by"=>$_SESSION['SESS_USER_ID']
+                ],$where);
+
+			$a=$sql->_RUN();
+			if($a) {
+				printServiceMsg("Successfully Updated");
+			} else {
+				printServiceMsg("error :"._db(true)->get_error());
+			}
+        } else {
+            printServiceMsg("Error updating permission");
+        }
+        break;
   
 	case "save":
 		$keys=array_keys($_POST);
@@ -220,12 +340,6 @@ switch($_REQUEST["action"]) {
 		} else {
 			printServiceMsg("error2");
 		}
-		break;
-	case "generate":
-	    
-		break;
-	case "generate-save":
-	    
 		break;
 	
 	case "downloadcsv":
@@ -341,6 +455,199 @@ switch($_REQUEST["action"]) {
             echo "<script>top.lgksAlert('{$errMsg}');</script>";
         }
 	    break;
+	case "role-users":
+	    if(isset($_POST['roleids']) && strlen($_POST['roleids'])>0) {
+	        $sql=_db(true)->_selectQ(_dbTable("users",true), "id,name,userid", ["blocked"=>"false"])->_whereIn("roles", $_POST['roleids']);
+	        if($_SESSION['SESS_PRIVILEGE_ID']<=ADMIN_PRIVILEGE_ID) {
+    		    $sql->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
+    		} else {
+    		    $sql->_whereOR("guid",[$_SESSION['SESS_GUID']]);
+    		}
+	        printServiceMsg($sql->_GET());
+	    } else {
+	        printServiceMsg([]);
+	    }
+	    break;
+    case "role-create-new":
+        if(isset($_POST['role_name']) && strlen($_POST['role_name'])>0) {
+            $sqlData = [
+                    "guid"=>$_SESSION['SESS_GUID'],
+                    "site"=>CMS_SITENAME,
+                    "name"=>$_POST['role_name'],
+                    "remarks"=>"",
+                    "created_by"=>$_SESSION['SESS_USER_ID'],
+    				"created_on"=>date("Y-m-d H:i:s"),
+    				"edited_by"=>$_SESSION['SESS_USER_ID'],
+    				"edited_on"=>date("Y-m-d H:i:s"),
+                ];
+            if($_SESSION['SESS_PRIVILEGE_ID']<=ADMIN_PRIVILEGE_ID) {
+    		    $sqlData["guid"] = $_SESSION['SESS_GUID'];
+    		} else {
+    		    $sqlData["guid"] = $_SESSION['SESS_GUID'];
+    		}
+    		
+	        $sql=_db(true)->_insertQ1(_dbTable("roles",true), $sqlData)->_RUN();
+	        
+	        if($sql) {
+	            $roleIdNew = _db(true)->get_insertID();
+                $privilegeHashNew = _slugify("{$roleIdNew}_{$_POST['role_name']}");
+                
+	            $roleData = _db(true)->_selectQ(_dbTable("rolemodel",true), "*")
+                    ->_whereOR("site",['*',CMS_SITENAME])
+                    ->_whereOR("guid",[$_SESSION['SESS_GUID'],'global'])
+                    ->_groupBy("policystr")
+                    ->_GET();
+            
+                if(!$roleData) $roleData = [];
+                
+                foreach($roleData as $k=>$role) {
+                    unset($roleData[$k]['id']);
+                    $roleData[$k]['allow'] = "false";
+                    $roleData[$k]['privilegehash'] = $privilegeHashNew;
+                    $roleData[$k]['remarks'] = $_POST['role_name'];
+                    $roleData[$k]['rolehash'] = md5($role['policystr'].$privilegeHashNew.$role['site'].$role['guid']);
+                    
+                    $roleData[$k]["created_by"] = $_SESSION['SESS_USER_ID'];
+    				$roleData[$k]["created_on"] = date("Y-m-d H:i:s");
+    				$roleData[$k]["edited_by"] = $_SESSION['SESS_USER_ID'];
+    				$roleData[$k]["edited_on"] = date("Y-m-d H:i:s");
+                }
+                
+                // printArray([$privilegeHashOld, $roleInfo, $roleData]);exit();
+                $a = _db(true)->_insert_batchQ(_dbTable("rolemodel",true), $roleData)->_RUN();
+                
+                if($a) {
+    	            printServiceMsg("success");
+    	        } else printServiceMsg("Error cloning Role "._db(true)->get_error());
+	        }
+	        else printServiceMsg("Error creating new Role");
+	    } else {
+	        printServiceMsg("Role Name Not Defined");
+	    }
+        break;
+    case "role-create-clone":
+        if(isset($_POST['role_name']) && strlen($_POST['role_name'])>0 && isset($_POST['src_role']) && strlen($_POST['src_role'])>0) {
+            $roleInfo = _db(true)->_selectQ(_dbTable("roles",true), "*", [
+                    "id"=>$_POST["src_role"],
+                ])
+                ->_whereOR("site",['*',CMS_SITENAME])
+                ->_whereOR("guid",[$_SESSION['SESS_GUID'],'global'])
+                ->_GET();
+            if(!$roleInfo) {
+                printServiceMsg("Role Could Not Be Found");
+                exit();
+            }
+            $roleInfo = $roleInfo[0];
+            $privilegeHashOld = _slugify("{$roleInfo['id']}_{$roleInfo['name']}");
+            
+            $roleData = _db(true)->_selectQ(_dbTable("rolemodel",true), "*", [
+                    "privilegehash"=>$privilegeHashOld,
+                ])
+                ->_whereOR("site",['*',CMS_SITENAME])
+                ->_whereOR("guid",[$_SESSION['SESS_GUID'],'global'])
+                ->_GET();
+            
+            if(!$roleData) $roleData = [];
+            
+            $sqlData = [
+                    "guid"=>$_SESSION['SESS_GUID'],
+                    "site"=>CMS_SITENAME,
+                    "name"=>$_POST['role_name'],
+                    "remarks"=>"",
+                    "created_by"=>$_SESSION['SESS_USER_ID'],
+    				"created_on"=>date("Y-m-d H:i:s"),
+    				"edited_by"=>$_SESSION['SESS_USER_ID'],
+    				"edited_on"=>date("Y-m-d H:i:s"),
+                ];
+            if($_SESSION['SESS_PRIVILEGE_ID']<=ADMIN_PRIVILEGE_ID) {
+    		    $sqlData["guid"] = isset($_POST['SESS_GUID'])?$_POST['SESS_GUID']:$_SESSION['SESS_GUID'];
+    		} else {
+    		    $sqlData["guid"] = $_SESSION['SESS_GUID'];
+    		}
+    		
+	        $sql=_db(true)->_insertQ1(_dbTable("roles",true), $sqlData)->_RUN();
+	        
+	        if($sql) {
+	            $roleIdNew = _db(true)->get_insertID();
+                $privilegeHashNew = _slugify("{$roleIdNew}_{$_POST['role_name']}");
+                foreach($roleData as $k=>$role) {
+                    unset($roleData[$k]['id']);
+                    $roleData[$k]['privilegehash'] = $privilegeHashNew;
+                    $roleData[$k]['remarks'] = $_POST['role_name'];
+                    $roleData[$k]['rolehash'] = md5($role['policystr'].$privilegeHashNew.$role['site'].$role['guid']);
+                    
+                    $roleData[$k]["created_by"] = $_SESSION['SESS_USER_ID'];
+    				$roleData[$k]["created_on"] = date("Y-m-d H:i:s");
+    				$roleData[$k]["edited_by"] = $_SESSION['SESS_USER_ID'];
+    				$roleData[$k]["edited_on"] = date("Y-m-d H:i:s");
+                }
+                
+                // printArray([$privilegeHashOld, $roleInfo, $roleData]);exit();
+                $a = _db(true)->_insert_batchQ(_dbTable("rolemodel",true), $roleData)->_RUN();
+                
+                if($a) {
+    	            printServiceMsg("success");
+    	        } else printServiceMsg("Error cloning Role "._db(true)->get_error());
+	            
+	            
+	        } else printServiceMsg("Error creating new Role");
+	    } else {
+	        printServiceMsg("Role Name Not Defined");
+	    }
+        break;
+    case "role-delete":
+        if(isset($_POST['roleid']) && strlen($_POST['roleid'])>0) {
+            $sql=_db(true)->_updateQ(_dbTable("roles",true), [
+                    "blocked"=>"true",
+                    "edited_by"=>$_SESSION['SESS_USER_ID'],
+    				"edited_on"=>date("Y-m-d H:i:s"),
+                ], [
+                    "id"=>$_POST["roleid"],
+                ])
+                ->_whereOR("site",['*',CMS_SITENAME])
+			    ->_whereOR("guid",[$_SESSION['SESS_GUID'],'global'])
+                ->_RUN();
+	        
+	        if($sql) {
+	            printServiceMsg("success");
+	        } else printServiceMsg("Error creating new Role");
+        } else {
+            printServiceMsg("Role Not Defined");
+        }
+        break;
+    case "generate":
+        set_time_limit(0);
+	    generateRoleModel();
+	    
+	    printServiceMsg("RoleModel generated successfully");
+		break;
+	case "role-stats":
+	    $roleStats = [
+	            "TOTAL ROLES"=>1,
+	            "TOTAL RULES"=>100
+	        ];
+	    //Total Role Count
+	    $sql1 = _db(true)->_selectQ(_dbTable("roles",true), "count(*)", ["blocked"=>"false"]);
+        if($_SESSION['SESS_PRIVILEGE_ID']<=ADMIN_PRIVILEGE_ID) {
+		    $sql1->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
+		} else {
+		    $sql1->_whereOR("guid",[$_SESSION['SESS_GUID']]);
+		}
+		$sql1 = $sql1->_GET();
+		$roleStats["TOTAL ROLES"] = $sql1[0]['count(*)'];
+		
+		//Total Role Rules Count
+		$sql2 = _db(true)->_selectQ(_dbTable("rolemodel",true), "count(*)", []);//"blocked"=>"false"
+        if($_SESSION['SESS_PRIVILEGE_ID']<=ADMIN_PRIVILEGE_ID) {
+		    $sql2->_whereOR("guid",[$_SESSION['SESS_GUID'],'global']);
+		} else {
+		    $sql2->_whereOR("guid",[$_SESSION['SESS_GUID']]);
+		}
+		$sql2 = $sql2->_GET();
+		$roleStats["TOTAL RULES"] = $sql2[0]['count(*)'];
+	    
+	    printServiceMsg($roleStats);
+		break;
 }
 
 function roleSortModule($a,$b) {

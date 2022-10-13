@@ -66,7 +66,6 @@ function reloadSidebar() {
 			loadModuleList();
 			break;
 		case "by_users":
-		default:
 			loadPrivilegeList();
 			break;
 	}

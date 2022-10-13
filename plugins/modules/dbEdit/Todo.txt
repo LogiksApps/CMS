@@ -1,16 +1,11 @@
 DB Manager
 
-Database Controls
-Export/Import
++ Export/Import
++ SQL Snippets - Advanced
 
-
-SQL Snippets
-
-
-Views
-Routines
-Events
-Triggers
++ Routines
++ Events
++ Triggers
 
 Designer
 

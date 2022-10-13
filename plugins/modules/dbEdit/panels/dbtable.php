@@ -32,17 +32,23 @@ switch ($src[0]) {
 				"structure",
 				"columns",
 				"browse",
-        "create",
+                "create",
 			];
 		break;
 
-  case "functions":
-  case "procedures":
-    $tabsArr = [
-        "structure",
-        "create",
-      ];
-    break;
+    case "functions":
+    case "procedures":
+        $tabsArr = [
+            "structure",
+            "create",
+          ];
+        break;
+    
+    case "events":
+        $tabsArr = [
+            "create",
+          ];
+        break;
     
 	default:
 		echo "<h5 align=center>Sorry, viewing structure for type <b>{$src[0]}</b> is not supported yet</h5>";
@@ -50,6 +56,7 @@ switch ($src[0]) {
 		break;
 }
 
+// printArray($tabsArr);
 //$dbKey
 ?>
 <ul id='dbTableNav' class="nav nav-tabs tabs-up">
@@ -64,12 +71,15 @@ switch ($src[0]) {
 	
 </div>
 <script>
+var TABARR = <?=json_encode($tabsArr)?>;
 $(function() {
 	$("#dbTableNav li>a").click(function() {
 		comptype=$(this).attr('href');
 		loadDataContent(comptype.substr(1));
 	});
-	if(currentDBQueryPanel==null) currentDBQueryPanel="structure";
+	if(currentDBQueryPanel==null) currentDBQueryPanel="<?=$tabsArr[0]?>";
+	if(TABARR.indexOf(currentDBQueryPanel)<0) currentDBQueryPanel = TABARR[0];
+	
 	loadDataContent(currentDBQueryPanel);
 });
 function loadDataContent(panel,q) {

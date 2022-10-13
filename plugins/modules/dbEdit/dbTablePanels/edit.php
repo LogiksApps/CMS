@@ -27,10 +27,9 @@ switch ($src[0]) {
 //var_dump($data);
 //var_dump($columnDefination);
 ?>
-<div class='col-xs-12' style='border-bottom: 1px solid #DEDEDE'>
-	<h4>Editing Record : #<?=$_GET['refid']?></h4>
-</div>
-<div class='col-xs-12' style='margin-top: 10px;'>
+<div class='col-xx-12' style='max-width: 1200px;width: 80%;margin: auto;margin-top: 20px;border: 1px solid #AAA;padding: 10px;'>
+    <h4>Editing Record : #<?=$_GET['refid']?></h4>
+    <hr>
 <form id='dataInsertForm'>
 	<?php
 		$autoFillColumns=array_keys($autoFillColumns);

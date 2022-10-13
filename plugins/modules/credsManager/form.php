@@ -24,7 +24,8 @@ switch ($slug['param1']) {
 		} else {
 			$mode="update";
 			$title="Update User";
-			$where=['md5(id)'=>$slug['param3']];
+			if(strlen($slug['param3'])==32) $where=['md5(id)'=>$slug['param3']];
+			else $where=['id'=>$slug['param3']];
 		}
 		include_once __DIR__."/comps/editor.php";
 		break;
@@ -37,7 +38,8 @@ switch ($slug['param1']) {
 		} else {
 			$mode="update";
 			$title="Update Privilege";
-			$where=['md5(id)'=>$slug['param3']];
+			if(strlen($slug['param3'])==32) $where=['md5(id)'=>$slug['param3']];
+			else $where=['id'=>$slug['param3']];
 		}
 		include_once __DIR__."/comps/editor.php";
 		break;
@@ -50,7 +52,8 @@ switch ($slug['param1']) {
 		} else {
 			$mode="update";
 			$title="Update Access Rule";
-			$where=['md5(id)'=>$slug['param3']];
+			if(strlen($slug['param3'])==32) $where=['md5(id)'=>$slug['param3']];
+			else $where=['id'=>$slug['param3']];
 		}
 		include_once __DIR__."/comps/editor.php";
 		break;
@@ -63,7 +66,8 @@ switch ($slug['param1']) {
 		} else {
 			$mode="update";
 			$title="Update Group";
-			$where=['md5(id)'=>$slug['param3']];
+			if(strlen($slug['param3'])==32) $where=['md5(id)'=>$slug['param3']];
+			else $where=['id'=>$slug['param3']];
 		}
 		include_once __DIR__."/comps/editor.php";
 		break;
@@ -76,13 +80,29 @@ switch ($slug['param1']) {
 		} else {
 			$mode="update";
 			$title="Update Group";
-			$where=['md5(id)'=>$slug['param3']];
+			if(strlen($slug['param3'])==32) $where=['md5(id)'=>$slug['param3']];
+			else $where=['id'=>$slug['param3']];
+		}
+		include_once __DIR__."/comps/editor.php";
+		break;
+		
+	case 'roles':
+		$form="roles";
+		if($slug['param2']=="new") {
+			$mode="new";
+			$title="New Role";
+		} else {
+			$mode="update";
+			$title="Update Role";
+			if(strlen($slug['param3'])==32) $where=['md5(id)'=>$slug['param3']];
+			else $where=['id'=>$slug['param3']];
 		}
 		include_once __DIR__."/comps/editor.php";
 		break;
 		
 	default:
 		echo "<h2 align=center><br><br><br>User Element Not Supported Yet</h2>";
+		echo "<script>parent.openSidePanel();</script>";
 		break;
 }
 ?>

@@ -50,10 +50,6 @@
 			"label":"Descs",
 			"searchable":true
 		},
-		"site":{
-			"label":"For Site",
-			"searchable":true
-		},
 		"blocked":{
 			"label":"Blocked",
 			"formatter":"checkbox",

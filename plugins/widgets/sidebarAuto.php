@@ -7,12 +7,12 @@ if(!isset($_COOKIE["LOGIKCMS-SIDEBAR-MODE"])) $_COOKIE["LOGIKCMS-SIDEBAR-MODE"] 
 // echo $_COOKIE["LOGIKCMS-SIDEBAR-MODE"];
 
 if(CMS_SITENAME=="cms") {
-    include_once __DIR__."/sidebarFiles1.php";
+    include_once __DIR__."/sidebarFiles.php";
 } else {
     if($_COOKIE["LOGIKCMS-SIDEBAR-MODE"]=="source") {
-        include_once __DIR__."/sidebarFiles1.php";
+        include_once __DIR__."/sidebarFiles.php";
     } else {
-        include_once __DIR__."/sidebarFiles2.php";
+        include_once __DIR__."/sidebarObjects.php";
     }
 }
 

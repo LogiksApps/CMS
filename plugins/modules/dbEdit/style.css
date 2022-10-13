@@ -13,7 +13,9 @@ a {
 }
 .componentTree .list-group-item .fa {
 	float: left;
-	margin-top: 4px;
+    margin-top: 3px !important;
+    margin-right: 4px !important;
+    margin-left: -4px !important;
 }
 .componentTree .list-group-item .text {
 	display: inline-block;

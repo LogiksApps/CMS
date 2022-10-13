@@ -28,6 +28,17 @@ $(function() {
       $("#sidebar").toggleClass("slide-in").removeClass("slide-out");
     }
   });
+  
+  $("#header .btn-open-file").click(function() {
+      lgksPrompt("Please give the file path relative to APPROOT.", "Open File", function(filePath) {
+            if(filePath) {
+                var fileName = filePath.split("/");
+                var ttl = fileName[fileName.length-1];
+                lx = _link("modules/cmsEditor") + "&type=edit&src=" + encodeURIComponent(filePath);
+                openLinkFrame(ttl, lx);
+            }
+        });
+  });
 
   $('[data-toggle="tooltip"]').tooltip();
 

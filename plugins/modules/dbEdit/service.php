@@ -2,14 +2,24 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 checkServiceAccess();
 
-include_once __DIR__."/commons.php";
-
 $dbKey="app";
 if(isset($_GET["dkey"])) {
 	$dbKey=$_GET["dkey"];
 }
 
 $dbList=Database::getConnectionList();
+
+$_ENV['DBKEY'] = $dbKey;
+$_ENV['DBLIST'] = $dbList;
+
+include_once __DIR__."/commons.php";
+
+$fs = scandir(__DIR__."/services");
+foreach($fs as $f) {
+    if($f!="." && $f!="..") {
+        include_once __DIR__."/services/$f";
+    }
+}
 
 switch ($_REQUEST['action']) {
 	case "listDatabase":
@@ -299,16 +309,92 @@ switch ($_REQUEST['action']) {
 			echo "<h5>Source table not defined</h5>";
 		}
 	break;	
-    
+    case "dataTableFilter":
+        $tables = _db($dbKey)->get_tablelist();
+        
+        $finalData = [];
+        
+        foreach($tables as $tbl) {
+            $ext = current(explode("_",$tbl));
+            if(!isset($finalData[$ext])) $finalData[$ext] = 1;
+            else $finalData[$ext]++;
+        }
+        
+        printServiceMsg($finalData);
+        break;
+    case "dumpSchema":
+        $fileJSON_SCHEMA = CMS_APPROOT."sql/db_schema-".getApp_VERSCODE().".json";
+        $fileJSON_DATA = CMS_APPROOT."sql/db_data-".getApp_VERSCODE().".json";
+        $fileSQL_SCHEMA = CMS_APPROOT."sql/db_schema-".getApp_VERSCODE().".sql";
+        $fileSQL_DATA = CMS_APPROOT."sql/db_data-".getApp_VERSCODE().".sql";
+        
+        if(file_exists($fileJSON_SCHEMA) || file_exists($fileJSON_DATA)) {
+            echo "<b style='color:red;'>Schema files for this version <u>".getApp_VERSCODE()."</u> exists, please increase the version no of the application to continue</b>";
+            exit();
+        }
+        
+        $dataFromTableFilter = explode(",", "do");//data,sys,my
+        if(isset($_POST['filter'])) {
+            $dataFromTableFilter = explode(",", $_POST['filter']);
+        }
+        
+        //$fields = ["Field","Type","NULL","KEY","DEFAULT","EXTRA"];
+        $dbStatus=_db($dbKey)->get_dbObjects();
+        $tables = _db($dbKey)->get_tablelist();
+        
+        $dbData = [];
+        $finalDBConfig = [];
+        $dbSQL = [];
+        $dbSQLData = [];
+        foreach($tables as $tbl) {
+            if(!isset($dbStatus['tables'][$tbl])) continue;
+            $finalDBConfig[$tbl] = ["info"=>[], "columns"=>[]];
+            
+            //$cols=_db($dbKey)->get_columnlist($tbl, false);
+            $cols=_db($dbKey)->get_defination($tbl);
+            $info=$dbStatus['tables'][$tbl];
+            $sqlCreate = _db($dbKey)->_RAW("SHOW CREATE TABLE {$tbl}")->_GET();
+            
+            $finalDBConfig[$tbl]['info'] = $info;
+            
+            foreach($cols as $col) {
+                $finalDBConfig[$tbl]['columns'][$col[0]] = $col;
+            }
+            
+            $tblArr = explode("_", $tbl);
+            if(in_array($tblArr[0], $dataFromTableFilter)) {
+                $tblData = _db($dbKey)->_selectQ($tbl, "*")->_GET();
+                
+                if($tblData) {
+                    $dbData[$tbl] = $tblData;
+                    $dbSQLData[$tbl] = _db($dbKey)->_insert_batchQ($tbl, $tblData)->_SQL().";";
+                }
+            }
+            
+            if($sqlCreate) $dbSQL[$tbl] = $sqlCreate[0]['Create Table'].";";
+        }
+        
+        //printArray($finalDBConfig);
+        
+        if(!is_dir(dirname($fileJSON_SCHEMA))) {
+            mkdir(dirname($fileJSON_SCHEMA), 0777, true);
+        }
+        file_put_contents($fileJSON_SCHEMA, json_encode($finalDBConfig, JSON_PRETTY_PRINT));
+        file_put_contents($fileJSON_DATA, json_encode($dbData, JSON_PRETTY_PRINT));
+        file_put_contents($fileSQL_SCHEMA, implode("\n\n", $dbSQL));
+        file_put_contents($fileSQL_DATA, implode("\n\n", $dbSQLData));
+        
+        echo "Successfully Saved Database Schema and Important Table Data to SQL folder";
+        break;
     case "cmd":
         if(isset($_REQUEST['src'])) {
           $cmd=strtolower($_REQUEST['src']);
-    			$cmdFile=__DIR__."/cmds/{$cmd}.php";
-    			if(file_exists($cmdFile)) {
-    				include_once $cmdFile;
-    			} else {
-    				echo "Command not found";
-    			}
+			$cmdFile=__DIR__."/cmds/{$cmd}.php";
+			if(file_exists($cmdFile)) {
+				include_once $cmdFile;
+			} else {
+				echo "Command not found";
+			}
         } else {
           echo "Command not defined";
         }
@@ -326,215 +412,7 @@ switch ($_REQUEST['action']) {
           echo "";
         }
     break;
-    case "createView":
-        if(isset($_POST['query']) && isset($_POST['title'])) {
-            $_POST['title'] = preg_replace("/[^A-Za-z0-9]/","_",$_POST['title']);
-            
-            if(!isset($_POST['algorithm']) || strlen($_POST['algorithm'])<=0) {
-                $_POST['algorithm'] = "UNDEFINED";
-            }
-            
-            if(!isset($_POST['sql_security']) || strlen($_POST['sql_security'])<=0) {
-                $_POST['sql_security'] = "";
-            } else {
-                $_POST['sql_security'] = "SQL SECURITY {$_POST['sql_security']}";
-            }
-            
-            if(!isset($_POST['columns']) || strlen($_POST['columns'])<=0) {
-                $_POST['columns'] = "";
-            } else {
-                $_POST['columns'] = "({$_POST['columns']})";
-            }
-            
-            if(!isset($_POST['with_options']) || strlen($_POST['with_options'])<=0) {
-                $_POST['with_options'] = "";
-            } else {
-                $_POST['with_options'] = "WITH {$_POST['columns']}  CHECK OPTION";
-            }
-            
-            //CREATE ALGORITHM = MERGE SQL SECURITY DEFINER VIEW `view_test124` (a,b,c,d,e) AS SELECT * FROM `accounts_banks` WITH CASCADED CHECK OPTION
-            $sqlView = "CREATE ALGORITHM = {$_POST['algorithm']} {$_POST['sql_security']} VIEW {$_POST['title']} {$_POST['columns']} AS {$_POST['query']}";
-            
-            exit($sqlView);
-            
-            $a = _db($dbKey)->queryBuilder()->fromSQL($sqlView,_db($dbKey)->queryBuilder()->getInstance())->_RUN();
-                
-            if($a) {
-                echo "success";
-            } else {
-                echo _db($dbKey)->get_error();
-            }
-        } else {
-            echo "View Code Not Found";
-        }
-    break;
-    case "createTable":
-        if(isset($_POST['tbl_name']) && strlen($_POST['tbl_name'])>0 && is_array($_POST['name']) && count($_POST['name'])>0) {
-            $_POST['tbl_name'] = preg_replace("/[^A-Za-z0-9]/","_",$_POST['tbl_name']);
-            $sqlTable = "CREATE TABLE {$_POST['tbl_name']}";
-            $sqlCols = [];
-            if(count($sqlCols)>=0) {
-                
-                foreach($_POST['name'] as $n => $name) {
-                    $name = preg_replace("/[^A-Za-z0-9]/","_",$name);
-                    $sqlCol = "{$name} ";
-                    
-                    switch(strtoupper($_POST['type'][$n])) {
-                        case "DATE":
-                        case "DATETIME":
-                        case "TIMESTAMP":
-                        case "TIME":
-                        case "YEAR":
-                        case "TINYTEXT":
-                        case "TEXT":
-                        case "MEDIUMTEXT":
-                        case "LONGTEXT":
-                        case "TINYBLOB":
-                        case "MEDIUMBLOB":
-                        case "BLOB":
-                        case "LONGBLOB":
-                            $sqlCol .= "{$_POST['type'][$n]}";
-                            break;
-                        default:
-                            if($_POST['length'][$n]) {
-                                $sqlCol .= "{$_POST['type'][$n]}({$_POST['length'][$n]}) ";
-                            } else {
-                                $sqlCol .= "{$_POST['type'][$n]} ";
-                            }
-                    }
-                    
-                    if($_POST['attributes'][$n]) {
-                        $sqlCol .= "{$_POST['attributes'][$n]} ";
-                    }
-                    
-                    if($_POST['default'][$n]) {
-                        if($_POST['default'][$n]=="NULL" || $_POST['default'][$n]=="CURRENT_TIMESTAMP") {
-                            $sqlCol .= "DEFAULT {$_POST['default'][$n]} ";
-                        } else {
-                            $sqlCol .= "DEFAULT '{$_POST['default'][$n]}' ";
-                        }
-                    }
-                    
-                    if($_POST['null'][$n] && $_POST['null'][$n]=="no") {
-                        $sqlCol .= "NOT NULL ";
-                    }
-                    if($_POST['ai'][$n] && $_POST['ai'][$n]=="yes") {
-                        $sqlCol .= "AUTO_INCREMENT ";
-                    }
-                    
-                    if($_POST['collation'][$n]) {
-                        $charSet1 = current(explode("_",$_POST['collation'][$n]));
-                        $sqlTable .= " CHARACTER SET {$charSet1} COLLATE {$_POST['collation'][$n]}";
-                    }
-                    
-                    if($_POST['comments'][$n]) {
-                        $sqlCol .= "COMMENT '{$_POST['comments'][$n]}' ";
-                    }
-                    
-                    $sqlCols[] = $sqlCol;
-                }
-                
-                if(isset($_POST['index'])) {
-                    $a = array_search("primary_0",$_POST['index'],true);
-                    if($a!==false) {
-                        $sqlCols[] = "PRIMARY KEY ({$_POST['name'][$a]}) ";
-                    }
-                    
-                    $a = array_search("unique_0",$_POST['index'],true);
-                    if($a!==false) {
-                        $sqlCols[] = "INDEX 'index_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
-                    }
-                    
-                    $a = array_search("index_0",$_POST['index'],true);
-                    if($a!==false) {
-                        $sqlCols[] = "UNIQUE 'unique_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
-                    }
-                    
-                    $a = array_search("fulltext_0",$_POST['index'],true);
-                    if($a!==false) {
-                        $sqlCols[] = "FULLTEXT 'fulltext_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
-                    }
-                    
-                    $a = array_search("spatial_0",$_POST['index'],true);
-                    if($a!==false) {
-                        $sqlCols[] = "SPATIAL 'spatial_{$_POST['name'][$a]}_0' ({$_POST['name'][$a]}) ";
-                    }
-                }
-                
-                $sqlTable .= " ( " . implode(", ", $sqlCols) . " ) ";
-                
-                if(isset($_POST['tbl_storage_engine']) && strlen($_POST['tbl_storage_engine'])>0) {
-                    $sqlTable .= " ENGINE = {$_POST['tbl_storage_engine']}";
-                }
-                if(isset($_POST['tbl_collation']) && strlen($_POST['tbl_collation'])>0) {
-                    $charSet = current(explode("_",$_POST['tbl_collation']));
-                    $sqlTable .= " CHARSET = {$charSet} COLLATE {$_POST['tbl_collation']}";
-                }
-                
-                if(isset($_POST['tbl_comments']) && strlen($_POST['tbl_comments'])>0) {
-                    $sqlTable .= " COMMENT = `{$_POST['tbl_comments']}`";
-                }
-                
-                $a = _db($dbKey)->queryBuilder()->fromSQL($sqlTable,_db($dbKey)->queryBuilder()->getInstance())->_RUN();
-                
-                if($a) {
-                    echo "success";
-                } else {
-                    echo _db($dbKey)->get_error();
-                }
-            } else {
-                echo "Fields are missing error";
-            }
-        } else {
-            echo "Table Name or Fields are missing";
-        }
-        
-        //printArray($_POST);
-        break;
-    case "dumpSchema":
-        $fileJSON_SCHEMA = CMS_APPROOT."SQL/db_schema-".getApp_VERSCODE().".json";
-        $fileJSON_DATA = CMS_APPROOT."SQL/db_data-".getApp_VERSCODE().".json";
-        
-        if(file_exists($fileJSON_SCHEMA) || file_exists($fileJSON_DATA)) {
-            echo "<b style='color:red;'>Schema files for this version <u>".getApp_VERSCODE()."</u> exists, please increase the version no of the application to continue</b>";
-            exit();
-        }
-        
-        //$fields = ["Field","Type","NULL","KEY","DEFAULT","EXTRA"];
-        $dbStatus=_db($dbKey)->get_dbObjects();
-        $tables = _db($dbKey)->get_tablelist();
-        $dbData = [];
-        $finalDBConfig = [];
-        foreach($tables as $tbl) {
-            if(!isset($dbStatus['tables'][$tbl])) continue;
-            $finalDBConfig[$tbl] = ["info"=>[], "columns"=>[]];
-            
-            //$cols=_db($dbKey)->get_columnlist($tbl, false);
-            $cols=_db($dbKey)->get_defination($tbl);
-            $info=$dbStatus['tables'][$tbl];
-            
-            $finalDBConfig[$tbl]['info'] = $info;
-            
-            foreach($cols as $col) {
-                $finalDBConfig[$tbl]['columns'][$col[0]] = $col;
-            }
-            
-            $tblArr = explode("_", $tbl);
-            if(in_array($tblArr[0], ["do"])) {//, "data", "sys"
-                $tblData = _db($dbKey)->_selectQ($tbl, "*")->_GET();
-                $dbData[$tbl] = $tblData;
-            }
-        }
-        
-        //printArray($finalDBConfig);
-        
-        if(!is_dir(dirname($fileJSON_SCHEMA))) {
-            mkdir(dirname($fileJSON_SCHEMA), 0777, true);
-        }
-        file_put_contents($fileJSON_SCHEMA, json_encode($finalDBConfig, JSON_PRETTY_PRINT));
-        file_put_contents($fileJSON_DATA, json_encode($dbData, JSON_PRETTY_PRINT));
-        
-        echo "Successfully Saved Database Schema and Important Table Data to SQL folder";
-        break;
+    default:
+        handleActionMethodCalls();
 }
 ?>

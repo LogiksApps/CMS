@@ -20,6 +20,11 @@
 		"limit":10
 	},
 	"buttons":{
+	    "editRoleRules": {
+			"label":"Manage Rules",
+			"icon":"fa fa-shield",
+			"class": "pull-left"
+		},
 		"editRecord": {
 			"label":"Edit Role",
 			"icon":"fa fa-pencil"
@@ -49,10 +54,6 @@
         },
 		"remarks":{
 			"label":"Descs",
-			"searchable":true
-		},
-        "site":{
-			"label":"For Site",
 			"searchable":true
 		},
 		"blocked":{

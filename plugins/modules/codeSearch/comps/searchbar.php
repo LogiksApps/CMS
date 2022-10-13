@@ -13,7 +13,7 @@ echo _js("bootstrap-typeahead");
 <div class="input-group pull-right">
     <input type="hidden" class="form-control" placeholder="Search Logiks Functions, etc" id='searchCodeBase'>
     <div class="input-group-btn-1">
-      <button onclick="searchMore()" type="button" class="btn btn-primary btn-search"><span class="fa fa-search"></span> Code Search</button>
+      <button onclick="searchMore()" type="button" class="btn btn-primary btn-search"><span class="fa fa-search"></span> Search</button>
     </div>
 </div>
 <script>

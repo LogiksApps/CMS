@@ -141,6 +141,14 @@
 			"type": "dataMethod",
 			"method": "groupList"
 		},
+		"roles": {
+			"label": "Roles",
+			"group": "admin",
+			"required": true,
+			"multiple": true,
+			"type": "dataMethod",
+			"method": "roleList"
+		},
 		"refid": {
 			"label": "User Reference Code",
 			"group": "admin"

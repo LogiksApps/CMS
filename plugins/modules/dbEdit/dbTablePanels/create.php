@@ -10,6 +10,7 @@ if(count($src)==0) {
 $data = "";
 $dataInsert = "";
 $dataInsert1 = "";
+$dataInsert2 = "";
 // $finalData=["info"=>_db()->get_dbinfo()];
 // $finalData=array_merge($finalData,_db()->get_dbObjects());
 
@@ -24,56 +25,60 @@ $dataInsert1 = "";
 
 switch ($src[0]) {
 	case 'tables':
-    $data = _db($dbKey)->_RAW("SHOW CREATE TABLE {$src[1]}")->_GET();
-    if(isset($data[0])) {
-      $data = $data[0]['Create Table'];
-    }
-    
-    $cols = _db($dbKey)->get_defination($src[1]);
-    $dataInsert = [];
-    foreach($cols as $col) {
-        if(in_array($col[0], ["id"])) continue;
+        $data = _db($dbKey)->_RAW("SHOW CREATE TABLE {$src[1]}")->_GET();
+        if(isset($data[0])) {
+          $data = $data[0]['Create Table'];
+        }
         
-        $dataInsert[$col[0]] = "";
-    }
-    $dataInsert1 = json_encode($dataInsert, JSON_PRETTY_PRINT);
-    $dataInsert = _db()->_insertQ1($src[1], $dataInsert)->_SQL();
+        $cols = _db($dbKey)->get_defination($src[1]);
+        $dataInsert = [];
+        $dataInsert2 = [];
+        foreach($cols as $col) {
+            if(in_array($col[0], ["id"])) continue;
+            
+            $dataInsert[$col[0]] = "";
+            $dataInsert2[] = "'{$col[0]}'=> '',";
+        }
+        $dataInsert1 = json_encode($dataInsert, JSON_PRETTY_PRINT);
+        $dataInsert = _db($dbKey)->_insertQ1($src[1], $dataInsert)->_SQL();
+        
+        $dataInsert2 = "_db()->_insertQ1('{$src[1]}', [\n\r<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".implode("\n\r<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $dataInsert2)."])->_RUN()";
 	break;
     
   case 'views':
-//     $data = _db($dbKey)->_RAW("SELECT VIEW_DEFINITION FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = '{$src[1]}'")->_GET();
-    $data = _db($dbKey)->_RAW("SHOW CREATE VIEW {$src[1]}")->_GET();
-    if(isset($data[0])) {
-      //$data = $data[0]['VIEW_DEFINITION'];
-      $data = $data[0]['Create View'];
-    }
+//      $data = _db($dbKey)->_RAW("SELECT VIEW_DEFINITION FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = '{$src[1]}'")->_GET();
+        $data = _db($dbKey)->_RAW("SHOW CREATE VIEW {$src[1]}")->_GET();
+        if(isset($data[0])) {
+          //$data = $data[0]['VIEW_DEFINITION'];
+          $data = $data[0]['Create View'];
+        }
   	break;
 	
   case "functions":
-    $data = _db($dbKey)->_RAW("SHOW CREATE FUNCTION {$src[1]}")->_GET();
-    if(isset($data[0])) {
-      $data = $data[0]['Create Function'];
-    }
+        $data = _db($dbKey)->_RAW("SHOW CREATE FUNCTION {$src[1]}")->_GET();
+        if(isset($data[0])) {
+          $data = $data[0]['Create Function'];
+        }
     break;
     
   case "procedures":
-    $data = _db($dbKey)->_RAW("SHOW CREATE PROCEDURE {$src[1]}")->_GET();
-    if(isset($data[0])) {
-      $data = $data[0]['Create Procedure'];
-    }
+        $data = _db($dbKey)->_RAW("SHOW CREATE PROCEDURE {$src[1]}")->_GET();
+        if(isset($data[0])) {
+          $data = $data[0]['Create Procedure'];
+        }
     break;
     
   case "events":
-    $data = _db($dbKey)->_RAW("SHOW CREATE EVENT {$src[1]}")->_GET();
-    if(isset($data[0])) {
-      $data = $data[0]['Create Event'];
-    }
+        $data = _db($dbKey)->_RAW("SHOW CREATE EVENT {$src[1]}")->_GET();
+        if(isset($data[0])) {
+          $data = $data[0]['Create Event'];
+        }
     break;
     
   default:
 		echo "<h5 align=center>Sorry, viewing create for type <b>{$src[0]}</b> is not supported yet</h5>";
 		return;
-		break;
+	break;
 }
 
 if(strlen($data)<=0) {
@@ -94,6 +99,18 @@ if(strlen($data)<=0) {
   <code id='sqlCode'>
       <?=$data?>
   </code>
+  <?php if($dataInsert1 && strlen($dataInsert1)>1) { ?>
+  <hr>
+  <div class='text-right'>
+    <button class='btn btn-default' onclick="copyToClipboard('#insertCode1')">
+      <i class='fa fa-clipboard'></i>
+      Copy
+    </button>
+    <b class='pull-left'>Data Model</b>
+  </div>
+  <pre id='insertCode1'><?=$dataInsert1?></pre>
+  <?php } ?>
+  <?php if($dataInsert && strlen($dataInsert)>1) { ?>
   <hr>
   <div class='text-right'>
     <button class='btn btn-default' onclick="copyToClipboard('#insertCode')">
@@ -105,16 +122,22 @@ if(strlen($data)<=0) {
   <code id='insertCode'>
       <?=$dataInsert?>
   </code>
+  <?php } ?>
+  <?php if($dataInsert2 && strlen($dataInsert2)>1) { ?>
   <hr>
   <div class='text-right'>
-    <button class='btn btn-default' onclick="copyToClipboard('#insertCode1')">
+    <button class='btn btn-default' onclick="copyToClipboard('#insertCode')">
       <i class='fa fa-clipboard'></i>
       Copy
     </button>
-    <b class='pull-left'>Insert Object</b>
+    <b class='pull-left'>Logiks Insert Code</b>
   </div>
-  <pre id='insertCode1'><?=$dataInsert1?></pre>
+  <code id='insertCode'>
+      <?=$dataInsert2?>
+  </code>
+  <?php } ?>
 </div>
+<br><br>
 <script>
 function copyToClipboard(eleTag) {
     text = $(eleTag).text();

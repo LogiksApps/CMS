@@ -43,9 +43,9 @@
 			"label":"Group Name",
 			"searchable":true
 		},
-    "user_count":{
-      "label":"Users"
-    },
+        "user_count":{
+          "label":"Users"
+        },
 		"group_manager":{
 			"label":"Group Manager",
 			"searchable":true

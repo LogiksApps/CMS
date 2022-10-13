@@ -1,45 +1,45 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default">
-                <div class="panel-heading">
-                    <img src='media/logos/logiks.png' />
-                </div>
-                <div class="panel-body">
-                    {if isset($ERROR_MSG) }
-                        <div class='alert alert-danger'>
-                            {$ERROR_MSG}
-                            <span class="close" data-dismiss="alert">&times;</span>
-                        </div>
-                    {/if}
-                    <form role="form" action="{_service("auth")}" method="POST">
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="userid" type="text" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                            </div>
-                            <!-- <div class="checkbox">
-                                <label>
-                                    <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                </label>
-                            </div> -->
-                            <!-- Change this to a button or input when using this as a form -->
-                            <button type="submit" class="btn btn-lg btn-info btn-block">Login</button>
-                        </fieldset>
-                    </form>
-                    <a class='pull-right' href='{_link("forgotpwd")}'>Forgot Password</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="background-wrap">
+    <div class="background"></div>
 </div>
+
+<form id="accesspanel" action="{_service('auth')}" method="POST">
+    {if isset($ERROR_MSG) }
+    <div class='alert alert-danger'>
+        {$ERROR_MSG}
+        <span class="close" data-dismiss="alert">&times;</span>
+    </div>
+    {/if}
+    <h1 id="litheader">
+        <img src='media/logos/logiks.png' />
+        <span> {$APPS_NAME} {$APPS_VERS}</span>
+    </h1>
+    <div class="inset">
+        <p>
+            <input type="text" name="userid" id="email" placeholder="Email address">
+        </p>
+        <p>
+           <input class="form-control" placeholder="Password" name="password" type="password" value="">
+        </p>
+        <!--<div style="text-align: center;">-->
+        <!--  <div class="checkboxouter">-->
+        <!--    <input type="checkbox" name="rememberme" id="remember" value="Remember">-->
+        <!--    <label class="checkbox"></label>-->
+        <!--  </div>-->
+        <!--  <label for="remember">Remember me for 14 days</label>-->
+        <!--</div>-->
+        <input class="loginLoginValue" type="hidden" name="service" value="login" />
+    </div>
+    <p class="p-container">
+        <input type="submit" name="Login" id="go" value="Submit">
+    </p>
+    <!--<a class='forgotLink' href='{_link("forgotpwd")}'>Forgot Password</a>-->
+</form>
+
 <script>
-if(top!=window) top.location.reload();
-$(function() {
-    $(".alert .close").click(function() {
-        $(this).closest(".alert").detach();
+    if(top!=window) top.location.reload();
+    $(function() {
+        $(".alert .close").click(function() {
+            $(this).closest(".alert").detach();
+        });
     });
-});
 </script>

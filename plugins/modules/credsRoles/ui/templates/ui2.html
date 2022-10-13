@@ -1,0 +1,983 @@
+<style>
+body{
+    padding: 0 !important;
+    font-family: 'Poppins', sans-serif;
+}
+/*.pcs:after {
+content: " pcs";
+}
+.cur:before {
+content: "$";
+}
+.per:after {
+content: "%";
+}*/
+* {
+    box-sizing: border-box;
+}
+body {
+padding: 0.2em 2em;
+}
+table {
+width: 100%;
+}
+table th {
+text-align: left;
+border-bottom: 1px solid #ccc;
+}
+table th,
+table td {
+padding: 0.4em;
+}
+table.fold-table > tbody > tr.view td,
+table.fold-table > tbody > tr.view th {
+cursor: pointer;
+}
+table.fold-table > tbody > tr.view td:first-child,
+table.fold-table > tbody > tr.view th:first-child {
+position: relative;
+padding-left: 20px;
+}
+table.fold-table > tbody > tr.view td:first-child:before,
+table.fold-table > tbody > tr.view th:first-child:before {
+position: absolute;
+top: 50%;
+left: 22px;
+width: 9px;
+height: 16px;
+margin-top: -8px;
+font: 19px fontawesome;
+color: #999;
+content: "\f107";
+transition: all 0.3s ease;
+}
+table.fold-table > tbody > tr.view:nth-child(4n-1) {
+background: #eee;
+}
+table.fold-table > tbody > tr.view:hover {
+/*background: #000;*/
+}
+table.fold-table > tbody > tr.view.open {
+/*background: #ff6347;
+color: #fff;*/
+}
+table.fold-table > tbody > tr.view.open td:first-child:before,
+table.fold-table > tbody > tr.view.open th:first-child:before {
+transform: rotate(-180deg);
+color: #333;
+}
+table.fold-table > tbody > tr.fold {
+display: none;
+}
+table.fold-table > tbody > tr.fold.open {
+display: table-row;
+}
+.fold-content {
+padding: 0.5em;
+}
+.fold-content h3 {
+margin-top: 0;
+}
+.fold-content > table {
+border: 2px solid #ccc;
+}
+.fold-content > table > tbody tr:nth-child(even) {
+background: #eee;
+}
+table th, table td{
+white-space: nowrap;
+padding: 10px 20px;
+border: 0;
+border-right: 1px solid #ddd;
+height: 50px;
+}
+.positionSticky{
+    position: sticky !important;
+    left: 0;
+    background: #fff;
+    z-index: 1;
+    font-weight:bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+.positionSticky:after{
+content: "";
+position: absolute;
+right: 0;
+height: 50px;
+width: 1px;
+background: #e5dede;
+top: 0;
+box-shadow: 1px 1px 4px 2px #e5e5e5;
+}
+tbody tr.view, tbody tr.view .positionSticky{
+background: #ededed;
+}
+/* The container */
+.containerBlock {
+display: block;
+position: relative;
+padding-left: 35px;
+margin-bottom: 12px;
+cursor: pointer;
+font-size: 22px;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+/* Hide the browser's default checkbox */
+.containerBlock input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+height: 0;
+width: 0;
+}
+/* Create a custom checkbox */
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 22px;
+width: 22px;
+background-color: #fff;
+border: 2px solid #ddd;
+}
+/* On mouse-over, add a grey background color */
+.containerBlock:hover input ~ .checkmark {
+background-color: #ccc;
+}
+/* When the checkbox is checked, add a blue background */
+.containerBlock input:checked ~ .checkmark {
+background-color: #ffffff;
+border: 2px solid #3eb30d;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+/* Show the checkmark when checked */
+.containerBlock input:checked ~ .checkmark:after {
+display: block;
+}
+/* Style the checkmark/indicator */
+.containerBlock .checkmark:after {
+left: 6px;
+top: 3px;
+width: 7px;
+height: 10px;
+border: solid #3eb30d;
+border-width: 0 3px 3px 0;
+-webkit-transform: rotate(45deg);
+-ms-transform: rotate(45deg);
+transform: rotate(45deg);
+}
+.containerBlock.minusCheck .checkmark:after {
+content: "";
+position: absolute;
+left: 4px;
+top: 8px;
+border: 0;
+width: 11px;
+height: 2px;
+background: #ddd;
+transform: none;
+display: block;
+}
+.containerBlock.minusCheck input:checked ~ .checkmark:after {
+background: #3eb30d;
+}
+
+.containerBlock.plusCheck .checkmark:after {
+content: "";
+position: absolute;
+left: 4px;
+top: 8px;
+border: 0;
+width: 11px;
+height: 2px;
+background: #ddd;
+transform: none;
+display: block;
+}
+.containerBlock.plusCheck .checkmark:before {
+        content: "";
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    border: 0;
+    width: 2px;
+    height: 11px;
+    background: #ddd;
+    /* transform: none; */
+    display: block;
+
+}
+.containerBlock.plusCheck input:checked ~ .checkmark:after,.containerBlock.plusCheck input:checked ~ .checkmark:before {
+	background: #3eb30d;
+}
+
+.nopadding{
+padding: 0;
+}
+.serachBox{
+margin-bottom: 0;
+position: relative;
+}
+.serachBox .form-control{
+margin-bottom: 0;
+border: 0;
+width: 300px;
+font-weight: normal;
+padding-right: 50px;
+box-shadow: none;
+padding-left: 20px;
+}
+.serachBox i{
+position: absolute;
+top: 9px;
+color: #a59f9f;
+right: 17px;
+font-size: 13px;
+}
+table th span{
+text-transform: uppercase;
+font-size: 10px;
+color: #999;
+cursor: pointer;
+}
+table th h5{
+font-weight: 600;
+margin-bottom: 3px;
+margin-top: 2px;
+color: #565656;
+width: 173px;
+}
+table th .btn{
+background: transparent;
+position: absolute;
+right: 0;
+top: 7px;
+font-size: 13px;
+color: #898484;
+}
+table th .btn i{
+}
+table th{
+position: relative;
+width: 300px;
+}
+.view .positionSticky {
+padding-left: 40px !important;
+}
+th.positionSticky.nopadding:after{
+height: 58px;
+}
+table{
+border: 1px solid #ddd;
+}
+.checkmark{
+top: -4px;
+left: 50%;
+transform: translateX(-50%);
+}
+.subText{
+display: flex;
+/* width: 222px; */
+justify-content: space-between;
+align-items: center;
+}
+.subText h6{
+    margin: 0;
+    font-size: 14px;
+    font-weight:bold;
+}
+.subText i{
+color: #9b9898;
+cursor: pointer;
+}
+.navbar-inverse {
+background-color: #3c3289;
+border-color: #3c3289;
+margin: 0;
+}
+.navbar-inverse .navbar-brand {
+color: #ffffff;
+}
+.fold .foldBlock{
+    padding: 0;
+}
+.table-responsive {
+    height: calc( 100vh - 52px);
+
+}
+.fold-table .label {
+    margin-top: 3px;
+    display: inline-block;
+    padding: 3px;
+    cursor: pointer;
+}
+tr.activityRow {
+    border-bottom: 1px solid #EEE;
+}
+tr.activityRow.active {
+    background: #f5f5dc;
+}
+.btn-options {
+    background: transparent;
+    position: absolute;
+    right: 0;
+    top: 7px;
+    font-size: 13px;
+    color: #898484;
+}
+.dropdown-menu {
+    margin-left: -157px;
+    width: 150px !important;
+    overflow: hidden;
+}
+.dropdown-menu>li>a.active, .active .dropdown-menu a[href] {
+    color: #333 !important;
+}
+.border_bottom {
+    border-bottom: 1px solid #ddd;
+}
+table thead {
+   position: sticky;
+    top: 0;
+    z-index: 99;
+}
+table th, table td{
+    width: 300px;
+}
+.credsRoles .pageComp{
+    height: auto !important;
+}
+.subText h6{
+    width: 240px;
+}
+</style>
+<div class="container-fluid nopadding">
+    <div id='role_main_view' class="table-responsive">
+        <table class="fold-table">
+            <thead>
+                <tr id='role-list'>
+                    <th class="positionSticky nopadding">
+                        <div class="form-group serachBox">
+                            <input type="text" id="searchRoles" placeholder="Search" class="form-control">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                    </th>
+                    <!--<th class='role-col'>
+                        <span>Name</span>
+                        <h5>User</h5>
+                        <button class="btn">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </th>
+                    <th class='role-col'>
+                        <span>Name</span>
+                        <h5>Driver</h5>
+                        <button class="btn">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </th>
+                    <th class='role-col'>
+                        <span>Name</span>
+                        <h5>Manager</h5>
+                        <button class="btn">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </th>
+                    <th class='role-col'>
+                        <span>Name</span>
+                        <h5>Aadmin</h5>
+                        <button class="btn">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </th>
+                    <th class='role-col'>
+                        <span>Name</span>
+                        <h5>Location manager</h5>
+                        <button class="btn">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </th>
+                    <th class='role-col'>
+                        <span>Name</span>
+                        <h5>User</h5>
+                        <button class="btn">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                    </th>-->
+                </tr>
+            </thead>
+            <tbody id='role-body'>
+                <!--<tr class="view open">
+                    <th class="positionSticky">Company Name</th>
+                    <td class="pcs">
+                        <label class="containerBlock  ">
+                        <input type="checkbox" disabled>
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="cur">
+                        <label class="containerBlock plusCheck">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="containerBlock plusCheck">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock minusCheck">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock minusCheck">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock ">
+                        <input type="checkbox" disabled="disabled" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="fold open">
+                    <td colspan="7" class="foldBlock">
+                        <table>
+                            <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                               <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                               <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                           
+                        </table>
+                    </td>
+                </tr>
+                <tr class="view open">
+                    <th class="positionSticky">Company Name</th>
+                    <td class="pcs">
+                        <label class="containerBlock  ">
+                        <input type="checkbox" disabled>
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="cur">
+                        <label class="containerBlock plusCheck">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="containerBlock plusCheck">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock minusCheck">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock minusCheck">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock ">
+                        <input type="checkbox" disabled="disabled" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="fold open">
+                    <td colspan="7" class="foldBlock">
+                        <table>
+                            <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                               <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                               <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                           
+                        </table>
+                    </td>
+                </tr>
+                <tr class="view open">
+                    <th class="positionSticky">Company Name</th>
+                    <td class="pcs">
+                        <label class="containerBlock  ">
+                        <input type="checkbox" disabled>
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="cur">
+                        <label class="containerBlock plusCheck">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="containerBlock plusCheck">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock minusCheck">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock minusCheck">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td class="per">
+                        <label class="containerBlock ">
+                        <input type="checkbox" disabled="disabled" >
+                        <span class="checkmark"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="fold open">
+                    <td colspan="7" class="foldBlock">
+                        <table>
+                            <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                               <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                               <tr>
+                                <th class="positionSticky">
+                                    <div class="subText">
+                                        <h6>Manage Locations</h6>
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Lorem ipsum dolor sit amet, consect adipis elit, "></i>
+                                    </div>
+                                </th>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock plusCheck">
+                                    <input type="checkbox" checked="checked">
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td >
+                                    <label class="containerBlock minusCheck">
+                                    <input type="checkbox" >
+                                    <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>-->
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="role-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body  text-center">
+        <table class='table table-striped'>
+            <thead>
+                
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+     $(".fold-table tr.view").on("click", function(){
+       $(this).toggleClass("open").next(".fold").toggleClass("open");
+     });
+     $('[data-toggle="tooltip"]').tooltip();
+});
+</script>

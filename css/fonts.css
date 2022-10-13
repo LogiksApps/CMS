@@ -1,0 +1,26 @@
+/*Fontawesome Fixes for Fontawesome5 */
+.fa {
+    font-weight: 600 !important;
+}
+
+.fa.fa-refresh:before {
+  content: "\f021"; }
+  
+.fa.fa-file-code-o:before {
+    content: "\f1c9";}
+.fa.fa-file-text-o:before {
+    content: "\f15c";}
+.fa.fa-pencil:before {
+    content: "\f303"; }
+    
+    
+    
+.context-menu-icon.context-menu-icon--fa {
+    font-family: 'Font Awesome 5 Free' !important;
+    font-weight: 600 !important;
+}
+
+.context-menu-icon.context-menu-icon--fa::before {
+    font-family: 'Font Awesome 5 Free' !important;
+    font-weight: 600 !important;
+}

@@ -9,13 +9,14 @@ echo _css("jquery.contextMenu");
 echo _js(["jquery.contextMenu"]);//,"sidebarFiles"
 ?>
 <style>
-.sidebarTree {
-    border-top: 1px solid #AAA;
-}
 #sidebarPane {
     height: 100%;
     overflow: auto;
     padding-bottom: 70px;
+}
+.sidebarTree {
+    border-top: 1px solid #AAA;
+    padding-bottom: 60px;
 }
 .sidebarTree .panel-group {
     
@@ -26,6 +27,9 @@ echo _js(["jquery.contextMenu"]);//,"sidebarFiles"
     background: transparent;
     border: 0px;
     border-bottom: 1px solid #999;
+}
+.sidebarTree .panel-group .panel:last-child {
+    /*border-bottom: 0px;*/
 }
 .sidebarTree .panel-group .panel * {
     background: transparent;
@@ -73,10 +77,12 @@ echo _js(["jquery.contextMenu"]);//,"sidebarFiles"
     opacity: 0.8;
 }
 .sidebarTree .panel-heading a {
-    font-size: 16px;
+    /*font-size: 16px;*/
+    padding-left: 3px;
+    line-height: 20px;
 }
 </style>
-<div id='searchField' class="searchField">
+<div id='searchField' class="searchField hidden d-none">
     <input type='text' placeholder='Search files' />
 </div>
 <div id="sidebarSourceTree" class='sidebarTree' basepath='/'>

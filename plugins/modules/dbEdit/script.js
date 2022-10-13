@@ -227,7 +227,7 @@ function migrateSchema() {
 
 //Tables,Triggers,Functions,etc.
 function createNew() {
-	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=create_table";
+	lx=_service("dbEdit","panel")+"&dkey="+dkey+"&panel=create";
 	$("#pgcontent").load(lx);
 }
 

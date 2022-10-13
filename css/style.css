@@ -112,7 +112,7 @@ h1 {
 }
 
 .navbar-header .thumbnail {
-    height: 50px;
+    height: 37px;
     margin: 0px;
     padding: 0px;
     border: 0px;
@@ -477,7 +477,7 @@ table tbody {
     width: 200px;
     margin-top: 8px;
 }
-#header .site-select-form {
+#header .site-select-form, #header .btn-action {
     margin-top: 8px;
 }
 #header .custom-search-form button,

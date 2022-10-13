@@ -70,7 +70,7 @@ if(!function_exists("getCompsList")) {
                 break;
             case "digioffice":case "bizsuite":
                 $data = [
-                    "User_Flow"=>[
+                    "Navigations"=>[
                         "label"=>"Navigations",
                         "icon"=>"bars",
                         "groups"=>false,
@@ -81,6 +81,31 @@ if(!function_exists("getCompsList")) {
                         "groups"=>false,
                     ],
                     "Helper"=>[
+                        "label"=>"Helpers",
+                        "icon"=>"star",
+                        "groups"=>false,
+                    ],
+                    "component"=>[
+                        "label"=>"Components",
+                        "icon"=>"cube",
+                        "groups"=>true,
+                    ],
+                    "service"=>[
+                        "label"=>"Services",
+                        "icon"=>"rss",
+                        "groups"=>true,
+                        "help_link"=>"https://github.com/Logiks/Logiks-Core/wiki/Services"
+                    ],
+                ];
+                break;
+            case "custom":
+                $data = [
+                    "controller"=>[
+                        "label"=>"Controllers",
+                        "icon"=>"code",
+                        "groups"=>false,
+                    ],
+                    "helper"=>[
                         "label"=>"Helpers",
                         "icon"=>"star",
                         "groups"=>false,

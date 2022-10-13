@@ -21,7 +21,9 @@ switch ($src[0]) {
 // printArray($columnDefination);
 
 ?>
-<div class='col-xs-12' style='margin-top: 20px;'>
+<div class='col-xx-12' style='max-width: 1200px;width: 80%;margin: auto;margin-top: 20px;border: 1px solid #AAA;padding: 10px;'>
+    <h4>New Record</h4>
+    <hr>
 <form id='dataInsertForm'>
 	<?php
 		$autoFillColumns=array_keys($autoFillColumns);

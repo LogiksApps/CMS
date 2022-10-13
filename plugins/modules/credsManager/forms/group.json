@@ -18,6 +18,21 @@
 			"type":"dataMethod",
 			"method":"userList"
 		},
+		"group_parent": {
+		    "label": "Parent Group",
+		    "dbkey": "core",
+			"type": "dataSelectorFromTable",
+			"table": "lgks_users_group",
+			"columns": "group_name as title,id as value",
+			"where": {
+				"blocked":"false"
+			},
+			"options": {
+			    "0": "No Parent Group"
+			},
+			"no-option": false,
+			"default": "0"
+		},
 		"group_descs": {
 			"label": "Description",
 			"type": "textarea"

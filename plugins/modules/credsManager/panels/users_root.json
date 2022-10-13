@@ -11,9 +11,9 @@
 	"source":{
 		"type":"sql",
 		"table":"lgks_users, lgks_access, lgks_privileges",
-    "cols":"lgks_users.id,lgks_users.guid,lgks_users.userid,lgks_users.name,lgks_users.gender,lgks_users.organization_name,lgks_users.organization_email,lgks_users.email,lgks_users.mobile,lgks_users.address,lgks_users.region,lgks_users.country,lgks_users.zipcode,lgks_users.geolocation,lgks_users.geoip,lgks_users.tags,lgks_users.avatar_type,lgks_users.avatar,lgks_users.blocked,lgks_users.expires,lgks_users.security_policy,lgks_users.edited_on,lgks_users.edited_by,lgks_users.created_on,lgks_users.created_by, lgks_access.name as access_name,lgks_privileges.name as privilege_name,lgks_privileges.remarks as privilege_remarks,lgks_users.accessid,lgks_users.privilegeid",
+        "cols":"lgks_users.id,lgks_users.guid,lgks_users.userid,lgks_users.name,lgks_users.gender,lgks_users.organization_name,lgks_users.organization_email,lgks_users.email,lgks_users.mobile,lgks_users.address,lgks_users.region,lgks_users.country,lgks_users.zipcode,lgks_users.geolocation,lgks_users.geoip,lgks_users.tags,lgks_users.avatar_type,lgks_users.avatar,lgks_users.blocked,lgks_users.expires,lgks_users.security_policy,lgks_users.edited_on,lgks_users.edited_by,lgks_users.created_on,lgks_users.created_by, lgks_access.name as access_name,lgks_privileges.name as privilege_name,lgks_privileges.remarks as privilege_remarks,lgks_users.accessid,lgks_users.privilegeid",
 		"where":{
-      "lgks_users.accessid=lgks_access.id AND lgks_users.privilegeid=lgks_privileges.id":"RAW"
+            "lgks_users.accessid=lgks_access.id AND lgks_users.privilegeid=lgks_privileges.id":"RAW"
 		},
 		"sort":"id asc",
 		"limit":10
@@ -30,6 +30,13 @@
 		"editPWD": {
 			"label":"Change Password",
 			"icon":"fa fa-key pull-left"
+		}
+	},
+	"actions": {
+		"editPrivilege": {
+			"label":"Edit Privilege",
+			"icon":"fa fa-pencil",
+			"class": "btn btn-default hidden"
 		}
 	},
 	"sidebar":{

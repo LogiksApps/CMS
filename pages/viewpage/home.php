@@ -13,7 +13,13 @@ _pageConfig("forSite",$_REQUEST['forSite']);
 _pageConfig("siteList",_session("siteList"));
 _pageVar("SESS_USER_NAME",_session("SESS_USER_NAME"));
 _pageVar("SESS_USER_ID",_session("SESS_USER_ID"));
+
+if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "electron")) {
+    _pageVar("IS_ELECTRON", true);
+} else {
+    _pageVar("IS_ELECTRON", false);
+}
+
+loadModuleLib("perspectives", "api");
+_pageVar("DASHBOARD_MODULE", perspectives_dashboard());
 ?>
-<script>
-CMS_FOR_SITE="<?=$_REQUEST["forsite"]?>";
-</script>

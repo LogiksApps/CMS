@@ -7,6 +7,8 @@
     
     <button id="leftMenuOpen" class="pull-left btn btn-default" style="margin-top: 8px;margin-right: 5px;height: 35px;padding-top: 5px;outline: none;"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
     
+    {pluginComponent src='perspectives.header_menu'}
+    
     <div class="navbar-header" title='Switch Between Available Sites' style='float: left;background: transparent;'>
         <div class="btn-group site-select-form">
             <button type="button" class="btn btn-default show-sidebar-menu">
@@ -18,15 +20,16 @@
                 <span class="caret"></span>
             </button>
             
-						<ul class="dropdown-menu" role="menu">
-							{foreach from=$PAGE.siteList item=site}
-									<li><a href='{$site.url}'>{$site.title} Site</a></li>
-							{/foreach}
-						</ul>
+			<ul class="dropdown-menu" role="menu">
+				{foreach from=$PAGE.siteList item=site}
+						<li><a href='{$site.url}'>{$site.title} Site</a></li>
+				{/foreach}
+			</ul>
 
             <a href='{$WEBROOT}?site={$PAGE.forSite}' target='_blank' type="button" class="btn btn-default" title='Preview Site'>
                 <i class='fa fa-rocket' style='margin: 3px;'></i></a>
         </div>
+        <a href='#' type="button" class="btn btn-default btn-action btn-open-file" title='Open File'><i class='fa fa-folder-open' style='margin: 3px;'></i></a>
     </div>
 
     <ul id='toolsMenu' class="nav navbar-top-links navbar-right" style='text-align: right;'>
@@ -43,13 +46,14 @@
             </ul>
         </li>
     </ul>
-    <div class="searchForm pull-right hidden-xs" style="width: 50px;height: 49px;padding-top: 8px;">
+    
+    <div class="searchForm pull-right hidden-xs" style="">
         {pluginComponent src='codeSearch.searchbar'}
     </div>
-    <div class="eStoreButton pull-right hidden-xs" style="width: 50px;height: 49px;padding-top: 8px;margin-right: 130px;">
+    <div class="eStoreButton pull-right hidden-xs" style="">
         <button onclick="openEStore()" type="button" class="btn btn-warning btn-search"><span class="fa fa-cubes"></span> eStore</button>
     </div>
-    <div class="todoButton pull-right hidden-xs" style="width: 50px;height: 49px;padding-top: 8px;margin-right: 30px;">
+    <div class="todoButton pull-right hidden-xs" style="">
         <button onclick="openCMSTodos()" type="button" class="btn btn-info btn-search">@TODO</button>
     </div>
   </div>

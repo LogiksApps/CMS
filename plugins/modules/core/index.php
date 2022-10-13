@@ -3,6 +3,8 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 if(!function_exists("setupCMSEnviroment")) {
     
+    if(!defined("ADMIN_PRIVILEGE_ID")) define("ADMIN_PRIVILEGE_ID",3);
+    
     include_once __DIR__."/api.php";
     
 	function setupCMSEnviroment() {
@@ -34,11 +36,6 @@ if(!function_exists("setupCMSEnviroment")) {
 		
 		if(isset($_REQUEST["forsite"])) {
 		    $forSite=$_REQUEST["forsite"];
-
-// 		    if($_REQUEST["forsite"]==SITENAME) {
-// 		    	$lx=_link("","&site=".SITENAME."&forsite=".DEFAULT_SITE);
-// 		    	header("Location:{$lx}");
-// 		    }
 		} elseif(defined("SERVICE_ROOT")) {
 				$_REQUEST["forsite"]=SITENAME;
 				$forSite=SITENAME;
@@ -71,18 +68,27 @@ if(!function_exists("setupCMSEnviroment")) {
 						$siteList[$b]=['title'=>$t,'url'=>$lnk];
 				}
 		}
-
+        
+        if($_SESSION['SESS_PRIVILEGE_NAME']!="root") {
+			unset($siteList["cms"]);
+		}
+        
+        $_SESSION['siteList']=$siteList;
+        _session("siteList",$siteList);
+        
 		if(count($siteList)>0 && !array_key_exists($forSite, $siteList)) {
 			echo "<h5 class='errormsg'>Site <b>'".$forSite."'</b> Does Not Have Access rights for you.<br>Redirecting ...</h5>";
 			if(count($siteList)>0) {
-				header("Location:".$siteList[array_keys($siteList)[0]]['url']);
+			    if(isset($siteList['cms'])) {
+			        unset($siteList['cms']);
+			    }
+			    header("Location:".$siteList[array_keys($siteList)[0]]['url']);
 			} else {
 				header("Location:".SiteLocation);
 			}
 			//trigger_logikserror("Site <b>'".$forSite."'</b> Does Not Have Access rights for you.<a href='"._link("")."'>Go Back</a>",E_ERROR);
 			exit();
 		}
-		$_SESSION['siteList']=$siteList;
 
 		$f=ROOT.CFG_FOLDER."/jsonConfig/db.json";
 		if(file_exists($f)) {
@@ -90,7 +96,7 @@ if(!function_exists("setupCMSEnviroment")) {
 
 			if(isset($jsonDB[$_REQUEST['forsite']])) {
 				foreach ($jsonDB[$_REQUEST['forsite']] as $dbKey => $dbParams) {
-					Database::connect($dbKey,$dbParams);
+				    Database::connect($dbKey,$dbParams);
 				}
 			}
 		}
@@ -98,12 +104,6 @@ if(!function_exists("setupCMSEnviroment")) {
         define("CMS_APPROOT",ROOT.APPS_FOLDER.$forSite."/");
 		define("CMS_SITENAME",$_REQUEST['forsite']);
 		
-		if($_SESSION['SESS_PRIVILEGE_NAME']!="root") {
-			unset($siteList["cms"]);
-		}
-
-        _session("siteList",$siteList);
-        
         $cfgData = ConfigFileReader::LoadFile(CMS_APPROOT."apps.cfg");
         if(isset($cfgData['DEFINE'])) {
             $_SESSION["SITEPARAMS"] = $cfgData['DEFINE'];

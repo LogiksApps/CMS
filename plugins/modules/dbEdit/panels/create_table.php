@@ -57,7 +57,9 @@ if(!defined('ROOT')) exit('No direct script access allowed');
         <tfoot class='buttonbar hidden'>
             <tr><th colspan=100 class='text-right'>
                     <button type='button' class='btn btn-danger pull-left' onclick="resetTableCreatorForm(this)"><i class='fa fa-trash'></i> Reset</button>
-                    <button type='button' class='btn btn-success pull-right' onclick="submitCreateTable(this)"><i class='fa fa-save'></i> Save</button>
+                    
+                    <button type='button' class='btn btn-success pull-right' onclick="submitCreateTable(this)" style='margin-right: 10px;'><i class='fa fa-save'></i> Save</button>
+                    <button type='button' class='btn btn-info pull-right' onclick="previewCreateTable(this)" style='margin-right: 10px;'><i class='fa fa-file-alt'></i> Preview</button>
                 </th>
             </tr>
         </tfoot>
@@ -86,6 +88,7 @@ $(function() {
     processAJAXQuery(_service("dbEdit","data")+"&src=collation_engine", function(data) {
         collationData = data;
         $("#tbl_collation").html(collationData);
+        $("#tbl_collation").val("utf8_general_ci");
     });
     
     $("#tableCreatorForm tbody")
@@ -184,6 +187,30 @@ function submitCreateTable(btn) {
             lgksAlert(data);
             $("#tableCreatorForm tfoot.buttonbar").removeClass("hidden");
         }
+    });
+}
+function previewCreateTable(btn) {
+    $("#tableCreatorForm tfoot.buttonbar").addClass("hidden");
+    
+    //validate structure
+    emptyFields = 0;
+    for(i=0;i<$("#tableCreatorForm input[required]").length;i++) {
+        if($($("#tableCreatorForm input[required]")[i]).val().length<=0) {
+            emptyFields++;
+        }
+    }
+    if(emptyFields>0) {
+        lgksAlert("All required fields are not filled.");
+        return;
+    }
+    //ajax submit
+    lx=_service("dbEdit","createTable")+"&preview=true&dkey="+dkey;
+    qData = $("#tableCreatorForm").serialize();
+    processAJAXPostQuery(lx,qData, function(data) {
+        if(data==null || data.length<=0) data = "Unknown Error Occured While Creating Table";
+        
+        lgksAlert(data);
+        $("#tableCreatorForm tfoot.buttonbar").removeClass("hidden");
     });
 }
 </script>

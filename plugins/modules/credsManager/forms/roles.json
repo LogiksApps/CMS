@@ -4,6 +4,7 @@
 		"table":"lgks_roles",
 		"where":["id"]
 	},
+	"1gotolink": "closepopup",
 	"fields": {
 		"id": {
 			"label": "Ref ID",
@@ -13,24 +14,12 @@
 			"label":"Role Name",
 			"required":true
 		},
-		"site":{
-			"label":"For Sites",
-			"required":true,
-			"type":"dataMethod",
-			"options":{
-				"":false
-			},
-			"method":{
-				"name":"siteList",
-				"valuefield":"default"
-			}
-		},
 		"blocked":{
 			"label":"Blocked",
 			"required":true,
 			"type":"select",
+			"default": "false",
 			"options":{
-				"":false,
 				"true":"Blocked",
 				"false":"Not Blocked"
 			}

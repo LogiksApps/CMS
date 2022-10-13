@@ -52,7 +52,7 @@ printPageComponent(false,[
       		"exportData"=>["icon"=>"<i class='fa fa-upload'></i>","tips"=>"Export Data"],
      		"importData"=>["icon"=>"<i class='fa fa-download'></i>","tips"=>"Import Data"],
 			['type'=>"bar"],
-			"saveSchema"=>["icon"=>"<i class='fa fa-file-export'></i>","tips"=>"Save Schema to SQL Folder usefull for migration scripts"],
+			//"saveSchema"=>["icon"=>"<i class='fa fa-file-export'></i>","tips"=>"Save Schema to SQL Folder usefull for migration scripts"],
 			"migrateSchema"=>["icon"=>"<i class='fa fa-not-equal'></i>","tips"=>"Compare and import schema changes and data from schema"],
 			
 			['type'=>"bar"],

@@ -8,6 +8,8 @@ form input[required], form input[required], form textarea[required] {
 }
 </style>
 <div class='container-fluid' style='margin:auto;width:90%;margin-top:20px;'>
+    <h4>Create View</h4>
+    <hr>
     <form id='viewCreateForm' class="form-horizontal">
       <div class="form-group">
         <label class="control-label col-sm-2" for="title">VIEW NAME:</label>

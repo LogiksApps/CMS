@@ -199,30 +199,30 @@ switch ($_REQUEST['action']) {
     }
     break;
 	case "rename"://rename
-    if(isset($_POST['path']) && isset($_POST['newname'])) {
-      $f1=str_replace("//","/",CMS_APPROOT.$_POST['path']);
-      $f2=str_replace("//","/",CMS_APPROOT.$_POST['path']);
-      $f2 = explode("/",$f2);
-      
-      if($f2[count($f2)-1]=="") {
-        unset($f2[count($f2)-1]);
-        $f1 = implode("/",$f2);
-      }
-      
-      $f2[count($f2)-1] = clean($_POST['newname']);
-      $f2 = implode("/",$f2);
-      
-      $a = rename($f1,$f2);
-      if($a) {
-        echo "Rename successfull";
-      } else {
-        echo "Rename failed";
-      }
-    } else {
-      echo "New Path Not Found.";
-    }
+        if(isset($_POST['path']) && isset($_POST['newname'])) {
+          $f1=str_replace("//","/",CMS_APPROOT.$_POST['path']);
+          $f2=str_replace("//","/",CMS_APPROOT.$_POST['path']);
+          $f2 = explode("/",$f2);
+          
+          if($f2[count($f2)-1]=="") {
+            unset($f2[count($f2)-1]);
+            $f1 = implode("/",$f2);
+          }
+          
+          $f2[count($f2)-1] = clean($_POST['newname']);
+          $f2 = implode("/",$f2);
+          
+          $a = rename($f1,$f2);
+          if($a) {
+            echo "Rename successfull";
+          } else {
+            echo "Rename failed";
+          }
+        } else {
+          echo "New Path Not Found.";
+        }
 		break;
-  case "permissions"://permissions
+	case "permissions"://permissions
 		break;
 }
 function scanFolderTree($folder,$depth=0) {

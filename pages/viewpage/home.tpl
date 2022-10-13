@@ -5,7 +5,9 @@
     </ul>
     <div id="myTab-content" class="tab-content">
         <div class="tab-pane active dashboard" id="dashboard">
-            {module src='dashboard'}
+            {if $DASHBOARD_MODULE}
+                {module src=$DASHBOARD_MODULE}
+            {/if}
         </div>
         <!-- <div class="tab-pane" id="profile"><div class="ajaxloading5"></div></div> -->
     </div>
@@ -17,6 +19,7 @@ $(function() {
         $(this).parent().parent().remove(); //remove li of tab
         $('#myTab a:last').tab('show'); // Select first tab
         $(tabContentId).remove(); //remove respective tab content
+        updateTabDependencies();
     });
     $('#myTab a').click(function (e) {
           e.preventDefault();
@@ -42,6 +45,7 @@ function openLink(tabName,tabLink,closable,multiTab) {
     }
     $("#"+ref).load(tabLink);
     $('#myTab a[href="#'+ref+'"]').tab("show");
+    updateTabDependencies();
     return true;
 }
 function openLinkFrame(tabName,tabLink,closable,multiTab) {
@@ -62,9 +66,32 @@ function openLinkFrame(tabName,tabLink,closable,multiTab) {
         $("#myTab").append('<li><a href="#'+ref+'" data-toggle="tab">'+tabName+'<i class="closeTab fa fa-times"></i></a></li>');
     }
     $('#myTab a[href="#'+ref+'"]').tab("show");
+    updateTabDependencies();
     return true;
 }
 function renameTab() {
   
+}
+function updateTabDependencies() {
+    {if $IS_ELECTRON}
+        return;
+    {/if}
+    
+    if($("#myTab").children().length>1) {
+        window.onbeforeunload = function (e) {
+            e = e || window.event;
+            lgksLoaderHide();
+            
+            // For IE and Firefox prior to version 4
+            if (e) {
+                e.returnValue = 'Do you want to leave this site?';
+            }
+        
+            // For Safari
+            return 'Do you want to leave this site?';
+        };
+    } else {
+        window.onbeforeunload = null;
+    }
 }
 </script>

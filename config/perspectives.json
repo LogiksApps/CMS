@@ -1,0 +1,75 @@
+{
+	"LIST": {
+		"cms": {
+			"title": "CMS Classic",
+			"sidebar": {
+			    "cms": {
+			        "title": "CMS",
+			        "icon": "fa fa-cubes fa-fw",
+			        "src":"sidebarMenu"
+			    },
+			    "apps": {
+			        "title": "APPS",
+			        "icon": "fa fa-object-group fa-fw",
+			        "src":"sidebarApps"
+			    }
+			}
+		},
+		"cms1": {
+			"title": "CMS Advanced",
+			"sidebar": {
+			    "cms": {
+			        "title": "CMS",
+			        "icon": "fa fa-cubes fa-fw",
+			        "src":"sidebarMenu"
+			    },
+			    "apps": {
+			        "title": "APPS",
+			        "icon": "fa fa-object-group fa-fw",
+			        "src":"sidebarApps"
+			    },
+			    "files": {
+			        "title": "SRC",
+			        "icon": "fa fa-folder fa-fw",
+			        "src":"sidebarObjects"
+			    }
+			}
+		},
+		"developer": {
+			"title": "Developer",
+			"sidebar": {
+			    "cms": {
+			        "title": "CMS",
+			        "icon": "fa fa-cubes fa-fw",
+			        "src":"sidebarMenu"
+			    },
+			    "files": {
+			        "title": "FILES",
+			        "icon": "fa fa-folder fa-fw",
+			        "src":"sidebarFiles"
+			    },
+			    "db": {
+			        "title": "DB",
+			        "icon": "fa fa-database fa-fw",
+			        "src":"sidebarDB"
+			    }
+			}
+		},
+		"designer": {
+			"title": "Design Studio",
+			"required_module": "designStudio",
+			"dashboard": "designStudio"
+		},
+		"user": {
+			"title": "User",
+			"sidebar": {
+			    "apps": {
+			        "title": "APPS",
+			        "icon": "fa fa-object-group fa-fw",
+			        "src":"sidebarApps"
+			    }
+			}
+		}
+	},
+	"DEFAULT": "cms"
+}

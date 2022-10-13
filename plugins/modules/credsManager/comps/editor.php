@@ -16,6 +16,7 @@ function userList() {
 	} else {
 		$data=_db(true)->_selectq(_dbTable("users",true),"userid,name",['guid'=>$_SESSION['SESS_GUID']])->_orderby("name")->_GET();
 	}
+	if(!$data) $data = [];
 	foreach ($data as $user) {
 		$html.="<option value='{$user['userid']}'>{$user['name']}</option>";
 	}
@@ -28,6 +29,7 @@ function privilegeList() {
 	} else {
 		$data=_db(true)->_selectq(_dbTable("privileges",true),"id,name",['guid'=>$_SESSION['SESS_GUID']])->_orderby("name")->_GET();
 	}
+	if(!$data) $data = [];
 	foreach ($data as $user) {
 		$html.="<option value='{$user['id']}'>{$user['name']}</option>";
 	}
@@ -40,6 +42,7 @@ function accessList() {
 	} else {
 		$data=_db(true)->_selectq(_dbTable("access",true),"id,name",['guid'=>$_SESSION['SESS_GUID']])->_orderby("name")->_GET();
 	}
+	if(!$data) $data = [];
 	foreach ($data as $user) {
 		$html.="<option value='{$user['id']}'>{$user['name']}</option>";
 	}
@@ -53,6 +56,7 @@ function groupList() {
 	} else {
 		$data=_db(true)->_selectq(_dbTable("users_group",true),"id,group_name as name",['guid'=>$_SESSION['SESS_GUID']])->_orderby("guid,group_name")->_GET();
 	}
+	if(!$data) $data = [];
 	
 	foreach ($data as $user) {
 		if(isset($user['guid'])) {
@@ -60,6 +64,24 @@ function groupList() {
 		} else {
 			$html.="<option value='{$user['id']}'>{$user['name']}</option>";
 		}
+	}
+	return $html;
+}
+
+function roleList() {
+    $sql=_db(true)->_selectQ(_dbTable("roles",true),"id,guid,site,name,blocked,remarks,md5(concat(id,name)) as privilegehash,md5(concat(id,name)) as hash")
+		//->_where(array("blocked"=>"false"))//,"length(hash)"=>[0,">"]
+		->_whereOR("site",['*',CMS_SITENAME])
+		->_whereOR("guid",[$_SESSION['SESS_GUID'],'global'])
+        ->_orderBy("name asc");
+
+	$data=$sql->_GET();
+	if(!$data) $data = [];
+	
+	$html = "";
+	foreach ($data as $row) {
+	    $row['name'] = toTitle(_ling($row['name']));
+		$html.="<option value='{$row['id']}'>{$row['name']}</option>";
 	}
 	return $html;
 }

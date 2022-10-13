@@ -12,7 +12,7 @@ if(count($data)<=0) {
 }
 $data=$data[0];
 
-$accessData=_db(true)->_selectQ(_dbTable("access",true),"id,sites,name as access_name")->_where([
+$accessData=_db(true)->_selectQ(_dbTable("access",true),"id,name as site_access_policy,sites as sites_for_access")->_where([
 		"id"=>$data['accessid'],
 		"blocked"=>"false"
 	])->_get();
@@ -43,8 +43,13 @@ if(count($groupData)>0) {
 // 	$data['group_manager']=$groupData[0]['group_manager'];
 }
 
+$roleData=_db(true)->_selectQ(_dbTable("roles",true),"id,guid,site,name,blocked,remarks,md5(concat(id,name)) as privilegehash,md5(concat(id,name)) as hash")
+	->_whereIn("id", explode(",", $data['roles']))
+    ->_orderBy("name asc");
 
-$noShow=["pwd","pwd_salt","avatar","avatar_type","accessid","privilegeid","groupid","","vcode","mauth"];
+$roleData = $roleData->_GET();
+
+$noShow=["pwd","pwd_salt","avatar","avatar_type","accessid","privilegeid","groupid","","vcode","mauth","roles", "last_login", "last_login_ip", "created_on", "created_by", "edited_on", "edited_by"];
 $colType=[
 	"user_avatar"=>"URL",
 	"dob"=>"DATE",
@@ -97,8 +102,9 @@ $title=$data['name'];
       <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#tab1">Personal</a></li>
         <li><a data-toggle="tab" href="#tab4">Misc</a></li>
-        <li><a data-toggle="tab" href="#tab2">Security</a></li>
+        <li><a data-toggle="tab" href="#tab2">Access Rights</a></li>
         <li><a data-toggle="tab" href="#tab3">Group</a></li>
+        <li><a data-toggle="tab" href="#tab5">More</a></li>
       </ul>
       <div class="tab-content">
         <div id="tab1" class="tab-pane fade in active">
@@ -172,7 +178,8 @@ $title=$data['name'];
                       if(in_array($key,$noShow)) continue;
 
                       $ttl=toTitle($key);
-                      if($key=="id") $ttl="Privilege ID";
+                      //if($key=="id") $ttl="Privilege ID";
+                      if($key=="id") continue;
 
                       if(isset($colType[$key])) {
                         switch(strtolower($colType[$key])) {
@@ -194,7 +201,8 @@ $title=$data['name'];
                       if(in_array($key,$noShow)) continue;
 
                       $ttl=toTitle($key);
-                      if($key=="id") $ttl="Access ID";
+                      //if($key=="id") $ttl="Access ID";
+                      if($key=="id") continue;
 
                       if(isset($colType[$key])) {
                         switch(strtolower($colType[$key])) {
@@ -206,10 +214,28 @@ $title=$data['name'];
                             break;
                         }
                       }
-                      echo "<tr scrope='row' data-key='{$key}'><th>{$ttl}</th><td>{$info}</td></tr>";
+                      if($key=="sites_for_access") {
+                          $info = explode(",", $info);
+                          foreach($info as $a=>$b) $info[$a] = "<label class='label label-primary'>{$b}</label>";
+                          $info = implode(" ", $info);
+                          
+                          echo "<tr scrope='row' data-key='{$key}'><th>{$ttl}</th><td>{$info}</td></tr>";
+                      } else {
+                          echo "<tr scrope='row' data-key='{$key}'><th>{$ttl}</th><td>{$info}</td></tr>";
+                      }
                     }
                   } else {
                     echo "<tr scrope='row'><th colspan=10 style='text-align: center;'>No access details found.</th></tr>";
+                  }
+                  
+                  if($roleData && count($roleData)>0) {
+                      $roleHTML = [];
+                      foreach($roleData as $key=>$row) {
+                          $roleHTML[] = "<label class='label label-warning'>{$row['name']}</label>";
+                      }
+                      
+                      $roleHTML = implode(" ", $roleHTML);
+                      echo "<tr scope='row' data-key=''><th>Roles Allocated</th><td>{$roleHTML}</td></tr>";
                   }
               ?>
             </tbody>
@@ -222,6 +248,7 @@ $title=$data['name'];
                   if(count($groupData)>0) {
                     foreach($groupData as $key=>$info) {
                       if(in_array($key,$noShow)) continue;
+                      if($key=="id") continue;
 
                       $ttl=toTitle($key);
 
@@ -241,6 +268,25 @@ $title=$data['name'];
                   } else {
                     echo "<tr scrope='row'><th colspan=10 style='text-align: center;'>No group details found.</th></tr>";
                   }
+              ?>
+            </tbody>
+          </table>
+        </div>
+        <div id="tab5" class="tab-pane fade">
+            <table class="table table-condensed" style="margin-top: -30px;">
+            <tbody>
+              <?php
+                if(count($data)>0) {
+                  foreach($data1 as $key=>$info) {
+                    if(!in_array($key,["last_login", "last_login_ip", "created_on", "created_by", "edited_on", "edited_by"])) continue;
+
+                    $ttl=toTitle($key);
+
+                    echo "<tr scrope='row' data-key='{$key}'><th>{$ttl}</th><td>{$info}</td></tr>";
+                  }
+                } else {
+                  echo "<tr scrope='row'><th colspan=10 style='text-align: center;'>No user details found.</th></tr>";
+                }
               ?>
             </tbody>
           </table>

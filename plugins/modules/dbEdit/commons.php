@@ -10,26 +10,26 @@ $autoFillColumns=[
 		"client_ip"=>$_SERVER['REMOTE_ADDR'],
 	];
 
-
 $insertFillColumns=[
 		"created_by"=>$_SESSION['SESS_USER_ID'],
 		"created_on"=>date("Y-m-d H:i:s"),
 		"doc"=>date("Y-m-d"),
 		"dtoc"=>date("Y-m-d H:i:s"),
 	];
+	
 $arrCmds=array(
-				"checktable"=>array("CHECK TABLE %s","single_run"),
-				"analyzetable"=>array("ANALYZE TABLE %s","single_run"),
-				"repairtable"=>array("REPAIR TABLE %s","single_run"),
-				"optimizetable"=>array("OPTIMIZE TABLE %s","single_run"),
-				//"flushtable"=>array("",""),
-				"emptytable"=>array("TRUNCATE TABLE %s","multi_run"),
-				"droptable"=>array("DROP TABLE %s","multi_run"),
-				
-				"exporttable"=>array("exportTable","func"),
-				"importtable"=>array("importTable","func"),
-				"templatetable"=>array("templatizeTable","func"),
-			);
+		"checktable"=>array("CHECK TABLE %s","single_run"),
+		"analyzetable"=>array("ANALYZE TABLE %s","single_run"),
+		"repairtable"=>array("REPAIR TABLE %s","single_run"),
+		"optimizetable"=>array("OPTIMIZE TABLE %s","single_run"),
+		//"flushtable"=>array("",""),
+		"emptytable"=>array("TRUNCATE TABLE %s","multi_run"),
+		"droptable"=>array("DROP TABLE %s","multi_run"),
+		
+		"exporttable"=>array("exportTable","func"),
+		"importtable"=>array("importTable","func"),
+		"templatetable"=>array("templatizeTable","func"),
+	);
 
 
 function getInputBlock($name,$required,$column) {
@@ -40,19 +40,20 @@ function getInputBlock($name,$required,$column) {
 	if($column[4]) {
 		$defaultValue=$column[4];
 	}
-
+    $placeHolderText = "Enter ".toTitle(strtolower($name));
+    
 	$fieldType=strtolower($column[1]);
 	if($fieldType=="date") {
-		return "<input type='date' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$name}' value='{$defaultValue}' />";
+		return "<input type='date' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$placeHolderText}' value='{$defaultValue}' />";
 	} elseif($fieldType=="time") {
-		return "<input type='time' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$name}' value='{$defaultValue}' />";
+		return "<input type='time' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$placeHolderText}' value='{$defaultValue}' />";
 	} elseif($fieldType=="datetime" || $fieldType=="timestamp") {
-		return "<input type='datetime' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$name}' value='{$defaultValue}' />";
+		return "<input type='datetime-local' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$placeHolderText}' value='{$defaultValue}' />";
 	} elseif(substr($fieldType, 0,3)=="int" || strpos($fieldType, "int")>1) {
 		//float,decimal,real,double
-		return "<input type='number' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$name}' value='{$defaultValue}' />";
+		return "<input type='number' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$placeHolderText}' value='{$defaultValue}' />";
 	} elseif(substr($fieldType, 0,4)=="blob" || strpos($fieldType, "blob")>1) {
-		return "<textarea class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$name}' value='{$defaultValue}' ></textarea>";
+		return "<textarea class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$placeHolderText}' value='{$defaultValue}' ></textarea>";
 	} elseif(substr($fieldType, 0,3)=="bit") {
 		if($defaultValue) {
 			return "<label><input type='radio' value='0' name='{$column[0]}' />No</label> &nbsp;&nbsp;<label><input type='radio' value='1' name='{$column[0]}' checked />Yes</label>";
@@ -64,7 +65,7 @@ function getInputBlock($name,$required,$column) {
 		$dx=substr($dx, 1,strlen($dx)-2);
 		$dx=str_replace("'", "", $dx);
 		$dx=explode(",", $dx);
-		$htmlDX="<select class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$name}' value='{$defaultValue}' data-selected='{$defaultValue}'>";
+		$htmlDX="<select class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$placeHolderText}' value='{$defaultValue}' data-selected='{$defaultValue}'>";
 		foreach ($dx as $vx) {
 			$htmlDX.="<option value='{$vx}'>".toTitle(_ling($vx))."</option>";
 		}
@@ -72,9 +73,7 @@ function getInputBlock($name,$required,$column) {
 		return $htmlDX;
 	}
 
-
-
-	return "<input type='{$type}' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$name}' value='{$defaultValue}' />";
+	return "<input type='{$type}' class='form-control {$required}' id='{$id}' name='{$column[0]}' placeholder='{$placeHolderText}' value='{$defaultValue}' />";
 }
 
 function printDataInTable($data,$cols=false,$actionCol=false) {

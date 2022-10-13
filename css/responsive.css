@@ -1,0 +1,16 @@
+@media(max-width:1400px){
+    .dashletContainer {
+            width: 84%;
+    }
+}
+@media(max-width:1199px){
+    .dashletContainer {
+            width: 100%;
+    }
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+            white-space: nowrap;
+    }
+    .reportTable .table-tools .control-primebar{
+            width: 1000px;
+    }
+}
