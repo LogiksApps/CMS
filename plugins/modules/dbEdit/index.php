@@ -8,6 +8,12 @@ if(Database::checkConnection()<=1) {
 	}
 }
 
+if(isset($_REQUEST['srctype'])) $srcType = $_REQUEST['srctype']; 
+else $srcType = false;
+
+if(isset($_REQUEST['src'])) $src = $_REQUEST['src'];
+else $src = false;
+
 include_once __DIR__."/commons.php";
 
 loadModule("pages");
@@ -28,6 +34,10 @@ if(isset($dbList['app'])) {
 	$default = "app";
 } else {
 	$default = "core";
+}
+
+if($srcType && $src) {
+    $default = "app";
 }
 
 printPageComponent(false,[
@@ -87,6 +97,13 @@ function pageContentArea() {
 ?>
 <script>
 var dkey = "<?=$default?>";
+$(function() {
+    <?php
+        if($srcType && $src) {
+            echo "setTimeout(function() {openTable('{$srcType}/{$src}');}, 100);";
+        }
+    ?>
+});
 function cloneTable() {
     
 }

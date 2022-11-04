@@ -21,6 +21,7 @@ $cols=[
 	<table class='table table-bordered table-hover table-condensed'>
 		<thead>
 			<tr>
+			    <th>-</th>
 				<?php
 					foreach ($cols as $c=>$ttl) {
 						if(!in_array($c, $colIndex)) {
@@ -39,6 +40,13 @@ $cols=[
 			<?php
 				foreach ($data as $key => $row) {
 					echo "<tr data-key='{$key}'>";
+					echo "<td>";
+					if($row['Engine']) {
+					    echo "<i class='fa fa-trash text-danger pull-right' data-cmd='dropTable' data-refid='{$row['Name']}' data-type='tables' title='Delete this table'></i>";  
+					} else {
+					    echo "<i class='fa fa-trash text-danger pull-right' data-cmd='dropView' data-refid='{$row['Name']}' data-type='views' title='Delete this view'></i>";    
+					}
+					echo "</td>";
 					foreach ($cols as $c=>$k) {
 						$value=$row[$c];
 						if($c=="Engine" && !$value) {
@@ -56,11 +64,9 @@ $cols=[
             echo "<i class='fa fa-ticket fa-ticket-alt' data-cmd='analyzeTable' data-refid='{$row['Name']}' data-type='tables' title='Analyze this table'></i>";
             echo "<i class='fa fa-hashtag' data-cmd='checksum' data-refid='{$row['Name']}' data-type='tables' title='Checksum this table'></i>";
 
-            echo "<i class='fa fa-trash text-danger pull-right' data-cmd='dropTable' data-refid='{$row['Name']}' data-type='tables' title='Delete this table'></i>";    
             echo "<i class='fa fa-ban text-danger pull-right' data-cmd='truncateTable' data-refid='{$row['Name']}' data-type='tables' title='Empty this table'></i>";
 					} else {
             echo "<i class='fa fa-pencil fa-pencil-alt' data-cmd='alterTable' data-refid='{$row['Name']}' data-type='views' title='Alter this view'></i>";
-            echo "<i class='fa fa-trash text-danger pull-right' data-cmd='dropView' data-refid='{$row['Name']}' data-type='views' title='Delete this view'></i>";    
           }
 					echo "</td>";
 					echo "</tr>";

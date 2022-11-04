@@ -59,6 +59,7 @@ switch ($src[0]) {
 // printArray($tabsArr);
 //$dbKey
 ?>
+<h4 style='margin: 5px 10px;'><?=strtoupper($_GET['src'])?></h4>
 <ul id='dbTableNav' class="nav nav-tabs tabs-up">
 	<?php
 		foreach ($tabsArr as $tab) {

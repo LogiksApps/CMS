@@ -6,6 +6,18 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 $dbInfo=_db($dbKey)->get_dbinfo();
 $dbStatus=_db($dbKey)->get_dbstatus();
 $dbVariables = _db($dbKey)->_raw("SHOW variables")->_GET();
+//var_dump(_db($dbKey)->dbParams("hooks"));
+
+$dbParams = CMS_APPROOT."config/db_params.json";
+if(file_exists($dbParams)) {
+    $dbParams = json_decode(file_get_contents($dbParams), true);
+    if(!$dbParams || !isset($dbParams["app"])) $dbParams = [];
+    else {
+        $dbParams = $dbParams["app"];
+    }
+} else {
+    $dbParams = [];
+}
 
 $miscInfo = [
         "event_scheduler"=>"SHOW variables WHERE variable_name ='event_scheduler'"
@@ -29,6 +41,12 @@ foreach($tables as $tbl) {
     else $finalTableFilterList[$ext]++;
 }
 ?>
+<style>
+.table hr {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+</style>
 <div class=''>
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#informations" aria-controls="informations" role="tab" data-toggle="tab">Information</a></li>
@@ -36,7 +54,11 @@ foreach($tables as $tbl) {
     <li role="presentation"><a href="#dbStatus" aria-controls="dbStatus" role="tab" data-toggle="tab">Table Status</a></li>
     <li role="presentation"><a href="#dbVariables" aria-controls="dbVariables" role="tab" data-toggle="tab">DB Variables</a></li>
     <li role="presentation"><a href="#dbMisc" aria-controls="dbMisc" role="tab" data-toggle="tab">Misc Info</a></li>
-    <li role="presentation"><a href="#dbSaveSchema" aria-controls="dbSaveSchema" role="tab" data-toggle="tab">Save Schema</a></li>
+    
+    <li role="presentation"><a href="#dbHooks" aria-controls="dbHooks" role="tab" data-toggle="tab">DBHooks</a></li>
+    <li role="presentation"><a href="#dbMetaQuery" aria-controls="dbMetaQuery" role="tab" data-toggle="tab">Meta Query</a></li>
+    
+    <li role="presentation" style="float: right;"><a href="#dbSaveSchema" aria-controls="dbSaveSchema" role="tab" data-toggle="tab">Save Schema</a></li>
   </ul>
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="informations">
@@ -136,6 +158,79 @@ foreach($tables as $tbl) {
     		</div>
     	</div>
     </div>
+    <div role="tabpanel" class="tab-pane" id="dbHooks">
+        <div class='col-xs-12' style='margin-top: 20px;'>
+            <label>DBHooks - Special Functions, Methods, Modules that get loaded or called when a query of type INSERT, UPDATE, SELECT, etc are executed</label>
+            <table class="table table-bordered table-hover table-condensed">
+    		    <thead>
+    		        <tr>
+    		            <th>SL#</th>
+    		            <th>App Status</th>
+    		            <th>Query Type</th>
+    		            <th>Caller Type</th>
+    		            <th>Object/Function</th>
+    		        </tr>
+    		    </thead>
+				<tbody>
+				<?php
+				    $counter = 1;
+					foreach ($dbParams as $key => $dbOpts) {
+					    if(!isset($dbOpts['hooks'])) continue;
+					    foreach($dbOpts['hooks'] as $key1 => $dbOpts1) {
+					        foreach($dbOpts1 as $key2 => $dbOpts2) {
+					            if(is_array($dbOpts2)) $dbOpts2 = implode(",", $dbOpts2);
+					            
+					            printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",$counter,strtoupper(_ling($key)), strtoupper($key1), strtoupper($key2), $dbOpts2);
+					            $counter++;
+					        }
+					    }
+					}
+				?>
+				</tbody>
+			</table>
+			<p>You can edit db_params.json under config folder to add more DB Hooks</p>
+			<div class='text-right'>
+			    <button class='btn btn-primary' onclick='openDBParamsFile(this)'>Open File</button>
+			</div>
+    	</div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="dbMetaQuery">
+        <div class='col-xs-12' style='margin-top: 20px;'>
+            <label>DB MetaQuery are special sql queries that get executed when a certain activity occurs on a certain table.</label>
+            <table class="table table-bordered table-hover table-condensed">
+    		    <thead>
+    		        <tr>
+    		            <th>SL#</th>
+    		            <th>App Status</th>
+    		            <th>Table</th>
+    		            <th>Query Type</th>
+    		            <th>Query</th>
+    		        </tr>
+    		    </thead>
+				<tbody>
+				<?php
+				    $counter = 1;
+    				foreach ($dbParams as $key => $dbOpts) {
+					    if(!isset($dbOpts['metaquery'])) continue;
+					    foreach($dbOpts['metaquery'] as $key1 => $dbOpts1) {
+					        foreach($dbOpts1 as $key2 => $dbOpts2) {
+					            //printArray([$key, $key1, $key2, $dbOpts2]);
+					            if(is_array($dbOpts2)) $dbOpts2 = implode("<hr>", $dbOpts2);
+					            
+					            printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",$counter,strtoupper(_ling($key)), strtoupper($key1), strtoupper($key2), $dbOpts2);
+					            $counter++;
+					        }
+					    }
+					}
+				?>
+				</tbody>
+			</table>
+			<p>You can edit db_params.json under config folder to add more Meta Queries</p>
+			<div class='text-right'>
+			    <button class='btn btn-primary' onclick='openDBParamsFile(this)'>Open File</button>
+			</div>
+    	</div>
+    </div>
   </div>
 </div>
 <script>
@@ -152,5 +247,9 @@ function saveSchema2() {
     processAJAXPostQuery(_service("dbEdit","dumpSchema")+"&dkey="+dkey, "filter="+filters.join(","),function(txt) {
 		lgksAlert(txt);
 	});
+}
+function openDBParamsFile() {
+    lx=_link("modules/cmsEditor")+"&type=autocreate&src=%2Fconfig%2Fdb_params.json";
+	parent.openLinkFrame("db_params.json",lx,true);
 }
 </script>

@@ -67,7 +67,7 @@ echo _js(["jquery.contextMenu"]);
             
             foreach($dbInfo as $a=>$b) {
                 $icon = "fa fa-table";
-                echo "<a href='#' data-type='{$category}' data-refkey='{$b}'><i class='menuIcon {$icon}'></i>&nbsp; {$b}</a>";
+                echo "<a class='db_item' href='#' data-type='{$category}' data-refkey='{$b}'><i class='menuIcon {$icon}'></i>&nbsp; {$b}</a>";
             }
             
             echo "    </div>";
@@ -78,6 +78,12 @@ echo _js(["jquery.contextMenu"]);
 </div>
 <script>
 $(function() {
-    
+    $("#sidebarSourceTree .db_item").click(function() {
+        var type = $(this).data("type");
+        var refkey = $(this).data("refkey");
+        
+        var lx = _link("modules/dbEdit")+"&srctype="+type+"&src="+refkey;
+        parent.openLinkFrame("DB-"+toTitle(type), lx, true);
+    });
 });
 </script>
