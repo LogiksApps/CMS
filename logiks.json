@@ -1,13 +1,13 @@
 {
-    "name": "CMS",
-    "version": "4.0",
+    "name": "Studio",
+    "version": "5.0",
     "status": "released",
     "type": "app",
-    "package":"olgks.cms",
-    "description": " Open Source Content Management System (CMS). ",
-    "keywords": "Open Source Content Management System CMS",
+    "package":"olgks.studio",
+    "description": "Default IDE for Logiks Framework",
+    "keywords": "LogiksStudion, IDE, Logiks",
     "license": "MIT",
-    "homepage": "http://openlogiks.org",
+    "homepage": "https://openlogiks.org",
     "logiks-core": {
         "min": "4.0",
         "max": "*"

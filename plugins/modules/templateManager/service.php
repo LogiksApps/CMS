@@ -2,7 +2,7 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 checkServiceSession();
 
-if(SITENAME!="cms") {
+if(SITENAME!="cms" && SITENAME!="studio") {
 	printServiceMSG("ONLY CMS can access this service.");
 	return;
 }

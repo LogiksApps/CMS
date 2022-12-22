@@ -4,7 +4,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 $siteCfg=ROOT.APPS_FOLDER.$_REQUEST['forSite']."/apps.cfg";
 
 if(!file_exists($siteCfg) || !array_key_exists($_REQUEST['forSite'], $_SESSION['siteList'])) {
-	$lx=SiteLocation."?site=cms";
+	$lx=SiteLocation."?site=".SITENAME;
 	echo "<h1 align=center>Sorry, the requested site is not available or does not exist.</h1>";
 	echo "<h2 align=center><a href='{$lx}'>Goto Default CMS Home Page</a></h2>";
 	exit();

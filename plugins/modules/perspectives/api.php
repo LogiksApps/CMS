@@ -7,7 +7,7 @@ if(!function_exists("perspectives_list")) {
     
     function perspectives_active() {
         $perspectiveList = perspectives_list();
-        if(!$perspectiveList) return "cms";
+        if(!$perspectiveList) return "studio";
         
         $currentPerspective = $_SESSION['SESSION_PERSPECTIVE_DEFAULT'];
         
@@ -31,7 +31,7 @@ if(!function_exists("perspectives_list")) {
         $configFile = APPROOT."config/perspectives.json";
         if(file_exists($configFile)) {
             $configJSON = json_decode(file_get_contents($configFile), true);
-            if(!$configJSON) $configJSON = ["LIST"=>[], "DEFAULT"=>"cms"];
+            if(!$configJSON) $configJSON = ["LIST"=>[], "DEFAULT"=>"studio"];
             
             foreach($configJSON['LIST']  as $key=>$config) {
                 $configJSON['LIST'][$key] = $config = array_merge([
@@ -70,7 +70,7 @@ if(!function_exists("perspectives_list")) {
             
             $_SESSION['SESSION_PERSPECTIVE_DEFAULT'] = $configJSON['DEFAULT'];
         } else {
-            $_SESSION['SESSION_PERSPECTIVE_DEFAULT'] = "cms";
+            $_SESSION['SESSION_PERSPECTIVE_DEFAULT'] = "studio";
         }
         
         return $configJSON['LIST'];

@@ -7,8 +7,11 @@ $menuTree1=generateNavigationFromDB("apps","links","core");
 
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/apps/","core");
 
-if(CMS_SITENAME!="cms" || CMS_SITENAME!="studio") {
+if(CMS_SITENAME!="cms" && CMS_SITENAME!="studio") {
   $menuTree3=generateNavigationFromDir(CMS_APPROOT."misc/menus/cms/","core");
+  $menuTree4=generateNavigationFromDir(CMS_APPROOT."misc/menus/studio/","core");
+
+  $menuTree3 = array_merge_recursive($menuTree3, $menuTree4);
 } else {
   $menuTree3=[];
 }

@@ -3,11 +3,13 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 loadModuleLib("navigator","api");
 
-$menuTree1=generateNavigationFromDB("cms","links","core");
+$menuTree1=generateNavigationFromDB(getConfig("DEFAULT_NAVIGATION"),"links","core");
 
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/cms/","core");
+$menuTree3=generateNavigationFromDir(APPROOT."misc/menus/studio/","core");
 
 $menuTree=array_merge_recursive($menuTree1,$menuTree2);
+$menuTree=array_merge_recursive($menuTree,$menuTree3);
 // printArray($menuTree2);exit("A");
 ?>
 <style>

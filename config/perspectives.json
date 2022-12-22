@@ -1,6 +1,6 @@
 {
 	"LIST": {
-		"cms": {
+		"studio": {
 			"title": "CMS Classic",
 			"sidebar": {
 			    "cms": {
@@ -15,7 +15,7 @@
 			    }
 			}
 		},
-		"cms1": {
+		"studio1": {
 			"title": "CMS Advanced",
 			"sidebar": {
 			    "cms": {
@@ -86,5 +86,5 @@
 			}
 		}
 	},
-	"DEFAULT": "cms"
+	"DEFAULT": "studio"
 }
