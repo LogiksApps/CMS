@@ -114,6 +114,10 @@ if(!function_exists("setupCMSEnviroment")) {
 		
 		$_ENV['MODULE_DIRS']=$moduleDir;
 		$_ENV['LOADERS_PLUGINPATHS']['modules']=$moduleDir;
+
+		if(function_exists("_pageConfig")) {
+			_pageConfig("SITENAME",SITENAME);
+		}
 	}
 	function checkServiceAccess() {
 		//Check Session and Role Controls
