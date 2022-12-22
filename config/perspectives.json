@@ -55,6 +55,21 @@
 			    }
 			}
 		},
+		"studio": {
+			"title": "Studio",
+			"sidebar": {
+			    "cms": {
+			        "title": "CMS",
+			        "icon": "fa fa-cubes fa-fw",
+			        "src":"sidebarMenu"
+			    },
+			    "mods": {
+			        "title": "MODS",
+			        "icon": "fa fa-cube fa-fw",
+			        "src":"sidebarModules"
+			    }
+			}
+		},
 		"designer": {
 			"title": "Design Studio",
 			"required_module": "designStudio",

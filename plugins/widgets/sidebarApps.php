@@ -7,7 +7,7 @@ $menuTree1=generateNavigationFromDB("apps","links","core");
 
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/apps/","core");
 
-if(CMS_SITENAME!="cms") {
+if(CMS_SITENAME!="cms" || CMS_SITENAME!="studio") {
   $menuTree3=generateNavigationFromDir(CMS_APPROOT."misc/menus/cms/","core");
 } else {
   $menuTree3=[];

@@ -70,7 +70,7 @@ echo _js(["jquery.contextMenu"]);//,"sidebarFiles"
     padding-left: 12px;
 }
 .sidebarTree .panel-group .panel .panel-title .fa {
-    margin-right: 2px;
+    margin-right: 5px;
 }
 .sidebarTree .group_icon {
     font-size: 18px;

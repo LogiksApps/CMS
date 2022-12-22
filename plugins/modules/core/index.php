@@ -18,7 +18,7 @@ if(!function_exists("setupCMSEnviroment")) {
 				}
 			}
 			if(!$checkPluginPass) {
-				exit("<hr>Please install the above plugins to start using CMS. More information can be found at <a href='http://openlogiks.org'>openlogiks.org</a>");
+				exit("<hr>Please install the above plugins to start using Studio. More information can be found at <a href='http://openlogiks.org'>openlogiks.org</a>");
 			} else {
 				$_SESSION['PLUGINCHECK']=true;
 			}
@@ -64,13 +64,13 @@ if(!function_exists("setupCMSEnviroment")) {
 		foreach($arr as $b) {
 				if(file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg")) {
 						$t=ucwords($b);
-						$lnk=SiteLocation."?site=cms&forsite=$b";
+						$lnk=SiteLocation."?site=".SITENAME."&forsite=$b";
 						$siteList[$b]=['title'=>$t,'url'=>$lnk];
 				}
 		}
         
         if($_SESSION['SESS_PRIVILEGE_NAME']!="root") {
-			unset($siteList["cms"]);
+			unset($siteList[SITENAME]);
 		}
         
         $_SESSION['siteList']=$siteList;
@@ -79,8 +79,8 @@ if(!function_exists("setupCMSEnviroment")) {
 		if(count($siteList)>0 && !array_key_exists($forSite, $siteList)) {
 			echo "<h5 class='errormsg'>Site <b>'".$forSite."'</b> Does Not Have Access rights for you.<br>Redirecting ...</h5>";
 			if(count($siteList)>0) {
-			    if(isset($siteList['cms'])) {
-			        unset($siteList['cms']);
+			    if(isset($siteList[SITENAME])) {
+			        unset($siteList[SITENAME]);
 			    }
 			    header("Location:".$siteList[array_keys($siteList)[0]]['url']);
 			} else {
