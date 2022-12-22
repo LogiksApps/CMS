@@ -632,7 +632,7 @@ function getSiteList() {
 	unset($arr[0]);unset($arr[1]);
 	$out=array();
 	foreach($arr as $a=>$b) {
-	    if($b=="cms" || $b=="studio") continue;
+	    if($b=="cms") continue;
 		if(is_file(ROOT.APPS_FOLDER.$b)) {
 			unset($arr[$a]);
 		} elseif(is_dir(ROOT.APPS_FOLDER.$b) && !file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg")) {

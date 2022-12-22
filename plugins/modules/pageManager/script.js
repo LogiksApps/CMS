@@ -1,7 +1,7 @@
 var lastComponent="";
 var lastRender="table";
 $(function() {
-	lastRender=localStorage.getItem('logikstudio.pageManager.displaytype');
+	lastRender=localStorage.getItem('logikcms.pageManager.displaytype');
 	if(lastRender==null) {
 		lastRender="table";
 	}
@@ -85,7 +85,7 @@ function listItemAttr() {
 }
 
 function loadComponents(comp) {
-	localStorage.setItem('logikstudio.pageManager.displaytype',lastRender);
+	localStorage.setItem('logikcms.pageManager.displaytype',lastRender);
 
 	lastComponent=comp;
 	$("#componentSpace").html("<div class='ajaxloading ajaxloading5'></div>");

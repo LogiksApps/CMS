@@ -7,15 +7,11 @@ if(isset($slug["module"])) {
 	$modulePath=checkModule($slug["module"]);
 	if($modulePath) {
 		$modulePath=dirname($modulePath)."/cms.php";
-		$modulePath1=dirname($modulePath)."/studio.php";
 		
 		if(checkUserScope($slug["module"])) {
 			if(file_exists($modulePath)) {
 				_pageVar("PLUGINEDIT",true);
 				_pageVar("MODULE",$slug["module"].".cms");
-			} elseif(file_exists($modulePath1)) {
-				_pageVar("PLUGINEDIT",true);
-				_pageVar("MODULE",$slug["module"].".studio");
 			} else {
 				_pageVar("PLUGINEDIT",false);
 				_pageVar("MODULE",$slug["module"]);

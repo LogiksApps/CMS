@@ -6,7 +6,7 @@ if(!isset($_COOKIE["LOGIKCMS-SIDEBAR-MODE"])) $_COOKIE["LOGIKCMS-SIDEBAR-MODE"] 
 
 // echo $_COOKIE["LOGIKCMS-SIDEBAR-MODE"];
 
-if(CMS_SITENAME=="cms" || CMS_SITENAME=="studio") {
+if(CMS_SITENAME=="cms") {
     include_once __DIR__."/sidebarFiles.php";
 } else {
     if($_COOKIE["LOGIKCMS-SIDEBAR-MODE"]=="source") {
@@ -105,7 +105,7 @@ if(CMS_SITENAME=="cms" || CMS_SITENAME=="studio") {
 }
 </style>
 <?php
-if(CMS_SITENAME!="cms" && CMS_SITENAME!="studio") {
+if(CMS_SITENAME!="cms") {
 ?>
 <div class='sidebarToggleModes'>
     <span class='text-span-left'>Modern</span>

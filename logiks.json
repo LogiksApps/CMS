@@ -3,7 +3,7 @@
     "version": "5.0",
     "status": "released",
     "type": "app",
-    "package":"olgks.studio",
+    "package":"olgks.cms",
     "description": "Default IDE for Logiks Framework",
     "keywords": "LogiksStudion, IDE, Logiks",
     "license": "MIT",
