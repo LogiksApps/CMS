@@ -41,7 +41,7 @@
                 <li><a href="{_link("modules/myAccounts")}"><i class="fa fa-user fa-fw"></i> My Profile</a></li>
                 <li><a href="{_link("modules/myPassword")}"><i class="fa fa-user fa-fw"></i> My Password</a></li>
                 <li class="divider"></li>
-                <li><a class='noauto' href="{$WEBROOT}logout.php?site={$SITENAME}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a class='noauto' href="{$WEBROOT}logout.php?site=#SITENAME#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>
         </li>
