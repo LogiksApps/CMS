@@ -1,12 +1,12 @@
 function saveEditorSettings(key,value) {
 	editorConfig[key]=value;
-	localStorage.setItem('logikscms.editorconfig',JSON.stringify(editorConfig));
+	localStorage.setItem('logikstudio.editorconfig',JSON.stringify(editorConfig));
 }
 function loadEditorSettings() {
-	config=localStorage.getItem('logikscms.editorconfig');
+	config=localStorage.getItem('logikstudio.editorconfig');
 	if(config==null || config.length<=2) {
 		editorConfig=defaultEditorConfig;
-		localStorage.setItem('logikscms.editorconfig',JSON.stringify(editorConfig));
+		localStorage.setItem('logikstudio.editorconfig',JSON.stringify(editorConfig));
 	} else {
 		config=$.parseJSON(config);
 		editorConfig=$.extend(defaultEditorConfig,config)
