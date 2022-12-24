@@ -2,7 +2,23 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 //Main Sidebar
 
-$sidebars = perspectives_sidebar();
+$sidebars = [
+			    "studio"=> [
+			        "title"=> "CMS",
+			        "icon"=> "fa fa-cubes fa-fw",
+			        "src"=> "sidebarMenu"
+			    ],
+			    "apps"=> [
+			        "title"=> "APPS",
+			        "icon"=> "fa fa-object-group fa-fw",
+			        "src"=> "sidebarApps"    
+			    ],
+			    "files"=> [
+			        "title"=> "FILES",
+			        "icon"=> "fa fa-folder fa-fw",
+			        "src"=> "sidebarFiles"
+			    ]
+			];
 if(!$sidebars) {
 ?>
 <style>

@@ -7,8 +7,6 @@
     
     <button id="leftMenuOpen" class="pull-left btn btn-default" style="margin-top: 8px;margin-right: 5px;height: 35px;padding-top: 5px;outline: none;"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
     
-    {pluginComponent src='perspectives.header_menu'}
-    
     <div class="navbar-header" title='Switch Between Available Sites' style='float: left;background: transparent;'>
         <div class="btn-group site-select-form">
             <button type="button" class="btn btn-default show-sidebar-menu">

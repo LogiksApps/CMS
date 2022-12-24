@@ -20,6 +20,5 @@ if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "electron")) {
     _pageVar("IS_ELECTRON", false);
 }
 
-loadModuleLib("perspectives", "api");
-_pageVar("DASHBOARD_MODULE", perspectives_dashboard());
+_pageVar("DASHBOARD_MODULE", "dashboard");
 ?>
