@@ -47,7 +47,7 @@ if(!function_exists("setupCMSEnviroment")) {
 		$_GET['forSite']=$forSite;
 		
 		if(defined("SERVICE_ROOT")) {
-			if(isset($_REQUEST['scmd']) && $_REQUEST['scmd']=="auth") {
+			if(isset($_REQUEST['scmd']) && in_array($_REQUEST['scmd'], ["auth", "resources",])) {
 				return true;
 			}
 		}
