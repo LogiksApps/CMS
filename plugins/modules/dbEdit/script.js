@@ -35,7 +35,13 @@ $(function() {
 	
 	initEvents();
 	
-	pgDbInfo();
+	if(preloadSrc==null || preloadSrc.length<=2) {
+	    pgDbInfo();
+	} else {
+	    $("#pgcontent").html("<div align=center><br><br><br><div class='ajaxloading ajaxloading5'></div></div>");
+	    openTable(preloadSrc);
+	}
+	
 	loadTableList('pages');
 });
 function initEvents() {

@@ -98,12 +98,9 @@ function pageContentArea() {
 ?>
 <script>
 var dkey = "<?=$default?>";
+var preloadSrc = "<?="{$srcType}/{$src}"?>";
 $(function() {
-    <?php
-        if($srcType && $src) {
-            echo "setTimeout(function() {openTable('{$srcType}/{$src}');}, 100);";
-        }
-    ?>
+    
 });
 function cloneTable() {
     
