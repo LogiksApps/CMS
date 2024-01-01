@@ -3,7 +3,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 if(!function_exists("getCfgField")) {
 	
-	$supportedCFGTypes=["core","apps","cms","plugins"];
+	$supportedCFGTypes=["core","apps","cms","studio","plugins"];
 	
 	function getCfgField($cfgName,$bType,$key,$value,$title=false,$disabled=false,$keyHash=false,$cfgSchema=[]) {
 		if(!$keyHash) $keyHash=md5($cfgName.$type.$key);

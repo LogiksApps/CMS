@@ -9,6 +9,10 @@ if(!in_array(PAGE, $noFix)) {
 	if(_server('HTTP_REFERER')==null || strlen(_server('HTTP_REFERER'))<=1) {
 		header("Location:"._link(""));
 		exit("This page is allowed within Studio only.");
+	} elseif(current(explode("/",PAGE))=="modules") {
+	?>
+	<script>if(top==window) window.location = "<?=_link("")?>";</script>
+	<?php
 	}
 }
 ?>

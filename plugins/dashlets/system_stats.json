@@ -1,0 +1,21 @@
+{
+	"title":"System Stats",
+	"descs":"Show various system statistics",
+	"photo":false,
+	"author":{
+		"name":"Bismay Kumar",
+		"email":"bismay@smartinfologiks.com"
+	},
+	"market":{
+
+	},
+	"type":"php",
+	"source":"system_stats",
+	"params":{
+		"autoOpen":true,
+		"spanClass":"span_12",
+		"style":"",
+		"styleContent":"text-align:center;",
+		"noheader":false
+	}
+}

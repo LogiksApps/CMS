@@ -2,7 +2,7 @@
 
 <html {$PAGE.HTML_ATTRIBUTES}>
   <head {$PAGE.HEAD_ATTRIBUTES}>
-    <title>{$APPS_NAME}</title>
+    <title>{$APPS_TITLE}</title>
     {$PAGE.FAVICON}
     
     <!-- start: META -->

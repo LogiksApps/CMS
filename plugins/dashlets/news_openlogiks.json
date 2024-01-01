@@ -1,0 +1,21 @@
+{
+	"title":"Openlogiks News",
+	"descs":"News feeds from OpenLogiks about latest releases and more",
+	"photo":false,
+	"author":{
+		"name":"Openlogiks Admin",
+		"email":"admin@openlogiks.org"
+	},
+	"market":{
+
+	},
+	"type":"php",
+	"source":"news_openlogiks",
+	"params":{
+		"autoOpen":true,
+		"spanClass":"span_1",
+		"style":"",
+		"styleContent":"text-align:center;",
+		"noheader":false
+	}
+}

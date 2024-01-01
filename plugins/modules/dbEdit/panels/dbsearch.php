@@ -28,10 +28,10 @@ switch ($src[0]) {
 		$columns=_db($dbKey)->get_columnlist($src[1],false);
 
 		$newColumns=[];
-
+		
 		$q=explode(":", $q);
 		if(count($q)>1) {
-			if(in_array($q[0], $columns)) {
+			if(in_array($q[0], array_keys($columns))) {
 				$newColumns=[$q[0]=>$q[1]];
 			} else {
 				echo "<h5>Sorry, search column not found in table.</h5>";

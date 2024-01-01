@@ -310,3 +310,8 @@ i.actionBtn {
     margin-right: 5px;
 }
 
+.pageCompToolBar .navbar-nav li .gg {
+    margin-top: 4px;
+    margin-right: 2px;
+    float: left;
+}

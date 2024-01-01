@@ -45,7 +45,7 @@ printPageComponent(false,[
 			"changeDatabase"=>["type"=>"dropdown","tips"=>"Change Database","options"=>$dbList, "title"=>ucwords($default)],
 			"refresh"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			
-			["title"=>"Search Table ...","type"=>"search","align"=>"right","class"=>"onsidebarActive","tips"=>"Search individual column by -> column:term"],
+			["title"=>"Search Word or Column:Word ...","type"=>"search","align"=>"right","class"=>"onsidebarActive","tips"=>"Search individual column by -> column:term"],
 
 			"dbInfo"=>["icon"=>"<i class='fa fa-info-circle'></i>","tips"=>"Database info","align"=>"right"],
 			""=>["icon"=>"<i class='fa fa-table'></i>","tips"=>"Database tables","align"=>"right"],
@@ -63,7 +63,8 @@ printPageComponent(false,[
      		"importData"=>["icon"=>"<i class='fa fa-download'></i>","tips"=>"Import Data"],
 			['type'=>"bar"],
 			//"saveSchema"=>["icon"=>"<i class='fa fa-file-export'></i>","tips"=>"Save Schema to SQL Folder usefull for migration scripts"],
-			"migrateSchema"=>["icon"=>"<i class='fa fa-not-equal'></i>","tips"=>"Compare and import schema changes and data from schema"],
+			"migrateSchema"=>["icon"=>"<i class='fa fa-angle-double-right'></i>","tips"=>"Compare and import schema changes and data from schema"],
+			"dbDiff"=>["icon"=>"<i class='fa fa-not-equal'></i>","tips"=>"Compare Databases and generate Alter Query"],
 			
 			['type'=>"bar"],
 			"cloneTable"=>["icon"=>"<i class='fa fa-copy'></i>","class"=>"onsidebarSelect onOnlyOneSelect","tips"=>"Clone Table"],
@@ -114,5 +115,8 @@ function saveSchema() {
 }
 function migrateSchema() {
     parent.openLinkFrame("Migrator", _link("modules/migrator"), true);
+}
+function dbDiff() {
+    parent.openLinkFrame("Migrator", _link("modules/dbDiff"), true);
 }
 </script>

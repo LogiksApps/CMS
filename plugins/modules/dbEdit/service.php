@@ -323,10 +323,10 @@ switch ($_REQUEST['action']) {
         printServiceMsg($finalData);
         break;
     case "dumpSchema":
-        $fileJSON_SCHEMA = CMS_APPROOT."sql/db_schema-".getApp_VERSCODE().".json";
-        $fileJSON_DATA = CMS_APPROOT."sql/db_data-".getApp_VERSCODE().".json";
-        $fileSQL_SCHEMA = CMS_APPROOT."sql/db_schema-".getApp_VERSCODE().".sql";
-        $fileSQL_DATA = CMS_APPROOT."sql/db_data-".getApp_VERSCODE().".sql";
+        $fileJSON_SCHEMA = CMS_APPROOT.".install/sql/db_schema-".getApp_VERSCODE().".json";
+        $fileJSON_DATA = CMS_APPROOT.".install/sql/db_data-".getApp_VERSCODE().".json";
+        $fileSQL_SCHEMA = CMS_APPROOT.".install/sql/db_schema-".getApp_VERSCODE().".sql";
+        $fileSQL_DATA = CMS_APPROOT.".install/sql/db_data-".getApp_VERSCODE().".sql";
         
         if(file_exists($fileJSON_SCHEMA) || file_exists($fileJSON_DATA)) {
             echo "<b style='color:red;'>Schema files for this version <u>".getApp_VERSCODE()."</u> exists, please increase the version no of the application to continue</b>";

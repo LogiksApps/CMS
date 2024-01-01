@@ -10,3 +10,9 @@ if(file_exists(__DIR__."/pages/{$slug['b']}.php")) {
     echo "<h2 align=center>Subpage not supported yet</h2>";
 }
 ?>
+<style>
+.modal-body {
+    max-height: 90%;
+    overflow: auto;
+}
+</style>

@@ -53,6 +53,11 @@
 			"label":"SITE",
 			"sortable":true,
 			"searchable":true
+		},
+		"edited_on": {
+		    "label":"Dated",
+			"sortable":true,
+			"searchable":true
 		}
 	}
 }

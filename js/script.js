@@ -140,7 +140,7 @@ function openEStore() {
     openLinkFrame("eStore", _link("modules/pluginManager"), true);
 }
 function openCMSTodos() {
-    openLinkFrame("Todos", _link("modules/cmsTodos"), true);
+    openLinkFrame("Todos", _link("modules/devTodos"), true);
 }
 
 function dataInfo(type, val) {
