@@ -153,15 +153,14 @@ table thead{
     font-size: 13px;
 }
 .sidebarMenu .panel .panel-body a{
-        font-size: 14px;
+    font-size: 14px;
+    padding: 10px;
+    padding-left: 25px;
+    white-space: nowrap;
 }
 
 #componentTree .active a, #componentSpace .active a{
         color: #fff;
-}
-.sidebarMenu .panel .panel-body a{
-      padding: 10px;
-          padding-left: 25px;
 }
 .table td i {
     float: none !important;

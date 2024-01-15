@@ -173,3 +173,4 @@ function showLoader(){
 function hideLoader(){
 	$("body .loader_bg").detach();
 }
+
