@@ -7,34 +7,8 @@ $menuTree1=generateNavigationFromDB(getConfig("DEFAULT_NAVIGATION"),"links","cor
 
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/cms/","core");
 
-if(CMS_SITENAME!="cms") {
-  $menuTree3=generateNavigationFromDir(CMS_APPROOT."misc/menus/cms/","core");
-} else {
-  $menuTree3=[];
-}
-
 $menuTree=array_merge_recursive($menuTree1,$menuTree2);
-$menuTree=array_merge_recursive($menuTree,$menuTree3);
-
-$generalGroup = [];
-foreach($menuTree as $a=>$group) {
-    foreach($group as $b=>$menu) {
-        $menuTree[$a][$b]['menugroup'] = $a;
-        $generalGroup[] = $menuTree[$a][$b];
-    }
-}
-usort($generalGroup, "sortMenuByWeight");
-
-function sortMenuByWeight($a, $b) {
-    if($a['weight'] == $b['weight']) return 0;
-    return ($a['weight'] < $b['weight']) ? -1 : 1;
-}
-$finalMenuTree = [];
-foreach($generalGroup as $a=>$b) {
-    if(!isset($finalMenuTree[$b['menugroup']])) $finalMenuTree[$b['menugroup']] = [];
-    $finalMenuTree[$b['menugroup']][] = $b;
-}
-$menuTree = $finalMenuTree;
+// printArray($menuTree2);exit("A");
 ?>
 <style>
 .sidebarMenu {
