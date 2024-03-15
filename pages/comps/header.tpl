@@ -5,7 +5,7 @@
         <a class="navbar-brand">{$APPS_NAME} {$APPS_VERS}</a>
     </div>
     
-    <button id="leftMenuOpen" class="pull-left btn btn-default" style="margin-top: 8px;margin-right: 5px;height: 35px;padding-top: 5px;outline: none;"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
+    <button id="leftMenuOpen" class="pull-left btn btn-default" style="margin-top: 8px;margin-right: 5px;height: 35px;padding-top: 5px;outline: none;"><i class="fi fi-rr-bars-staggered"></i></button>
     
     <div class="navbar-header" title='Switch Between Available Sites' style='float: left;background: transparent;'>
         <div class="btn-group site-select-form">
@@ -33,7 +33,7 @@
     <ul id='toolsMenu' class="nav navbar-top-links navbar-right" style='text-align: right;'>
     	<li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-user fa-fw"></i> {$SESS_USER_NAME} <i class="fa fa-caret-down"></i>
+                <i class="fa fa-user fa-fw"></i> <span>{$SESS_USER_NAME}</span> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="{_link("modules/myAccounts")}"><i class="fa fa-user fa-fw"></i> My Profile</a></li>

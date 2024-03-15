@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('fonts.css');
 
+
+
 body{
    font-family: 'Mulish', sans-serif;
 }
@@ -236,7 +238,7 @@ button#leftMenuOpen,button#leftMenuOpen:hover,button#leftMenuOpen:focus {
 #pgsidebar .list-group-item .fa {
     margin-top: 7px;
     font-size: 12px;
-    margin-right: -7px;
+    /*margin-right: -7px;*/
     margin-left: 10px;
     color: #766e6e;
 }
@@ -313,4 +315,44 @@ i.actionBtn {
     margin-top: 4px;
     margin-right: 2px;
     float: left;
+}
+#sidebar{
+    
+}
+body.no_sidebar #sidebar {
+    transform: translateX(-81%);
+    -webkit-transform: translateX(-81%);
+    display: block;
+}
+.no_sidebar #header, body.no_sidebar #myTab {
+    left: 49px !important;
+}
+body.no_sidebar #page-wrapper {
+    margin-left: 49px;
+}
+body.no_sidebar #sidebar *{
+        opacity:0;
+    }
+body.no_sidebar button#leftMenuOpen {
+        margin-top: 8px;
+    margin-right: 5px;
+    height: 35px;
+    padding-top: 5px;
+    outline: none;
+    background: #2c2929;
+    position: absolute;
+    left: -24px;
+    z-index: 999;
+    color: #fff;
+    border-radius: 5px !important;
+    border: 1px solid #ddd;
+    font-size: 13px;
+}
+body.no_sidebar button#leftMenuOpen .fi-rr-bars-staggered:before{
+    
+    content: "\f134";
+}
+body.no_sidebar #header .navbar-header{
+        background: transparent;
+    padding-left: 30px;
 }

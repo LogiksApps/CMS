@@ -89,3 +89,10 @@ switch($editType) {
 
 //printArray($_REQUEST);
 ?>
+<style>
+    @media(max-width:767px){
+        .ace_editor{
+                display: none;
+        }
+    }
+</style>

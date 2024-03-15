@@ -670,6 +670,9 @@ body.home #content {
     #header .navbar .navbar-header:first-child {
         display: none;
     }
+    #header{
+        left: 0;
+    }
 }
 
 body.error #page-wrapper {

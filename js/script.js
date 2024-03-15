@@ -174,3 +174,7 @@ function hideLoader(){
 	$("body .loader_bg").detach();
 }
 
+
+$(".sidebarMenu .panel .panel-body a").click(function() {
+      $("body").removeClass("no_sidebar");
+  });

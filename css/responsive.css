@@ -14,3 +14,244 @@
             width: 1000px;
     }
 }
+@media(max-width:800px){
+    #header {
+        left: 0;
+    }
+    .no_sidebar #sidebar{
+            transform: translateX(0) !important;
+    -webkit-transform: translateX(0) !important;
+        display: block !important;
+    }
+    .no_sidebar button#leftMenuOpen{
+              position: absolute;
+    z-index: 2;
+    left: 254px !important;
+    bottom: auto;
+    color: #000 !important;
+    border-color: #c1bebe !important;
+    }
+    .cacheBlock{
+            margin-bottom: 20px;
+    }
+    /*button#leftMenuOpen{*/
+    /*    display: none;*/
+    /*}*/
+    .clearCacheTable>.cacheData:first-child {
+        padding-left: 10px !important;
+            padding-right: 10px !important;
+    }
+    #header .show-sidebar-menu{
+        display: none;
+    }
+    .nav-tabs.nav-justified>li {
+        float: left;
+        width: 33.33%;
+    }
+    #componentSpace .table thead tr th:nth-child(2), #componentSpace .table tbody tr td:nth-child(2){
+            position: sticky;
+        left: 0;
+        background: #f1f1f1;
+        z-index: 1;
+    }
+    .pageCompToolBar .navbar-collapse{
+        padding-left: 12px;
+        display: block;
+        margin: 0;
+    }
+    ul.nav.navbar-nav.navbar-left {
+        float: left;
+        /*width: 50%;*/
+        display: flex;
+        margin: 0;
+    }
+    .pageCompToolBar.navbar .navbar-right {
+        margin-right: 0px;
+        float: right;
+        display: flex;
+        margin: 0;
+    }
+    .pageCompToolBar .navbar-nav>li>a{
+        padding-left: 5px;
+        padding-right: 5px;
+
+    }
+    .reportTable .table-tools .control-primebar {
+        width: 100%;
+    }
+    .pageCompContainer.withSidebar .pageCompSidebar{
+            height: auto !important;
+    }
+    .btn-primary.btn-search span{
+            display: none;
+    }
+    #sidebar{
+            transform: translateX(-81%);
+     -webkit-transform: translateX(-81%);
+    }
+     button#leftMenuOpen{
+          left: 23px;
+    position: fixed;
+    z-index: 99999999 !important;
+    color: #fff;
+    /* border: 1px solid #ccc; */
+        background: #3063a5 !important;
+    border-radius: 4px !important;
+    width: 33px;
+    padding: 0 !important;
+    line-height: 10px;
+    font-size: 14px;
+    }
+    #sidebar *{
+        opacity:0;
+    }
+    #header, #header .navbar{
+            /*position: static;*/
+    }
+    .no_sidebar #sidebar *{
+        opacity:1;
+    }
+    .no_sidebar button#leftMenuOpen{
+        color: #fff !important;
+    background: #3063a5 !important;
+    }
+    body.no_sidebar #sidebar * {
+        opacity: 1;
+    }
+    #sidebar{
+            z-index: 99;
+    }
+    #header {
+        left: 49px;
+    }
+    #header .navbar-header{
+            padding-left: 20px;
+    }
+    .no_sidebar #sidebar {
+        z-index: 999;
+    }
+    #page-wrapper{
+            padding-left: 50px;
+    }
+    body.home #content>ul#myTab {
+        left: 50px;
+    }
+    body.home #content>ul#myTab{
+        display: flex;
+    white-space: nowrap;
+    overflow: auto;
+    }
+    body.home #content>ul#myTab li>a{
+            display: flex;
+            font-size: 13px;
+    }
+    .navbar-nav .open .dropdown-menu{
+        position: absolute;
+   
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+            background: #fff;
+    }
+    .reportTable .table-tools h1.reportTitle{
+            width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    }
+    .reportTable .table-tools .btn small{
+            display: none;
+    }
+    #sidebarTab li:nth-child(2){
+        display: none;
+    }
+     #sidebarTab>li {
+    float: left;
+    width: 50%;
+}
+}
+   
+
+@media(max-width:480px){
+    .navbar-top-links{
+            float: right;
+    }
+    #header .navbar-header{
+            width: auto;
+    }
+    .clearCacheTable>.cacheData{
+            padding-right: 10px !important;
+    }
+    .pageCompContainer.withSidebar .pageCompSidebar{
+        height: auto;
+    }
+    .no_sidebar .navbar-top-links{
+        display: none;
+    }
+    .pageComp.withFixedBar .pageCompContainer *{
+        font-size: 12px;
+    }
+    #pgcontent form{
+            margin:20px !important;
+    }
+    .navbar-top-links li a span{
+            display: none;
+    }
+     #header .site-select-form button{
+            max-width: 108px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            
+   }
+   table.dataTable td.actionCol i, table.dataTable th.actionCol i {
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+.actions2 i, .actions2 a, .action i, .action a, .actionCol i, .actionCol a, .actionbtns i, .actionbtns a{
+        width: 32px;
+    height: 32px;
+}
+  .pageCompToolBar .navbar-collapse{
+      display: flex;
+   
+    overflow: auto;
+  }  
+  .nopadding {
+    padding: 0px 15px !important;
+}
+.reportTable .table-tools .control-primebar{
+    margin-left: 0px;
+    margin-right: 0;
+}
+.pageCompToolBar .navbar-collapse li a{
+        white-space: nowrap;
+}
+.componentSpace .list-group-item{
+    
+    width: 100% !important;
+}
+#dashboardSettingsModal .row.noinfo .list-group-item{
+    width: 100% !important;
+        margin: 5px 0 !important;
+}
+.sliderPanel{
+    width: 100%;
+}
+.pageCompToolBar.navbar .navbar-right{
+        white-space: nowrap;
+}
+}
+@media(max-width:360px){
+   .pageCompToolBar .navbar-nav>li>a{
+       font-size: 12px;
+   }
+   #header .site-select-form button{
+           width: 89px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          
+   }
+   .reportTable .table-tools h1.reportTitle{
+           font-size: 16px !important;
+               width: 112px;
+   }
+}
+    

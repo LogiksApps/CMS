@@ -46,7 +46,7 @@ function printCFGCard($src,$key,$params,$config) {
 	elseif($src=="APP" && $key=="app")  $src="<span class='label label-success pull-right'>{$src}</span>";
 	else  $src="<span class='label label-default pull-right'>{$src}</span>";
 ?>
-<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumb">
     <div class="card">
 	    <h2 class="card-heading simple">
 	     	<?=$params['title']?>
