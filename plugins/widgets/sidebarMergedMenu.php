@@ -42,6 +42,22 @@ foreach($generalGroup as $a=>$b) {
     $finalMenuTree[$b['menugroup']][] = $b;
 }
 $menuTree = $finalMenuTree;
+
+foreach($menuTree as $k=>$menuSet) {
+    $linkList = [];
+    foreach($menuSet as $k1=>$menu) {
+        $linkList[$k1] = $menu['title'].$menu['link'];
+    }
+    $linkList = array_keys(array_unique($linkList));
+    foreach($menuSet as $k1=>$menu) {
+        if(!in_array($k1, $linkList)) {
+            unset($menuSet[$k1]);
+        }
+    }
+    $menuTree[$k] = array_values($menuSet);
+}
+
+// printArray($menuTree);exit();
 ?>
 <style>
 .sidebarMenu {

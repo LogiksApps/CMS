@@ -119,6 +119,8 @@ if(!function_exists("setupCMSEnviroment")) {
 		//Check Session and Role Controls
 		checkServiceSession();
 		
+		if($_SESSION['SESS_PRIVILEGE_ID']<=1) return true;
+		
 		if(!user_admin_check()) {
 			printServiceErrorMsg(403, "You are not an Admin.");
 			exit();

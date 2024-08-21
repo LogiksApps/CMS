@@ -1,13 +1,13 @@
 {
     "sidebars": {
         "cms": {
-            "title": "CMS",
+            "title": "CMS Old",
             "icon": "fa fa-cubes fa-fw",
             "src": "sidebarMenu",
             "enabled": false
         },
         "apps": {
-            "title": "Apps",
+            "title": "Apps Old",
             "icon": "fa fa-hamburger fa-fw",
             "src": "sidebarApps",
             "enabled": false
