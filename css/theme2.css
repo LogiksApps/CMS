@@ -356,3 +356,7 @@ body.no_sidebar #header .navbar-header{
         background: transparent;
     padding-left: 30px;
 }
+
+i.fa.fa-cloud-upload:after {
+    content: "\f093";
+}

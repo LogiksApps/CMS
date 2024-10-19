@@ -14,6 +14,8 @@ switch($_REQUEST["action"]) {
     case "search":
         if(!isset($_POST['filters'])) $_POST['filters']="github";
         if(!isset($_POST['lang'])) $_POST['lang']=false;
+        if(!isset($_POST['path'])) $_POST['path']=false;
+        
         if(!isset($_POST['term'])) {
             printServiceMsg([]);
         } else {
@@ -24,7 +26,7 @@ switch($_REQUEST["action"]) {
                     $ans=searchGithub($q,$_POST['lang']);
                     break;
                 case "local":case "appsource":
-                    $ans=searchLocal($q,$_POST['lang']);
+                    $ans=searchLocal($q,$_POST['lang'],$_POST['path']);
                     break;
             }
             if(isset($ans['error'])) {
@@ -120,10 +122,14 @@ function searchGithub($q,$lang=false,$repo="Logiks/Logiks-Core") {
       }
     }
 }
-function searchLocal($q,$lang=false) {
+function searchLocal($q,$lang=false,$relativePath=false) {
     $path=APPROOT;
     if(defined("CMS_APPROOT")) {
         $path=CMS_APPROOT;
+    }
+    if($relativePath && strlen($relativePath)>1) {
+        $path .= "/{$relativePath}";
+        $path = str_replace("//", "/", $path);
     }
     $appName = basename($path);
     

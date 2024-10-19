@@ -973,3 +973,6 @@ body.no_sidebar #myTab {
 .system_stats_div_container .card-title + .font-weight-bold{
         font-weight: 800 !important;
 }
+i.fa.fa-cloud-upload:after {
+    content: "\f093";
+}

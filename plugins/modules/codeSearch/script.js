@@ -7,17 +7,28 @@ $(function() {
         
         if(e.keyCode==13) {
             if(this.value==null || this.value.length<=0) {
-          lgksToast("Please type something to search");
-          return;
-        }
-        
-        //   lx=_link("modules/codeSearch")+"&query="+term;
-        //   top.openLinkFrame("Search : "+term,lx);
+              lgksToast("Please type something to search");
+              return;
+            }
             searchCode($("#searchTextField").val());
         }
         
         return false;
       });
+    $("#toolpath").keyup(function(e) {
+        e.preventDefault();
+        
+        if(e.keyCode==13) {
+            if($("#searchTextField").val()==null || $("#searchTextField").val().length<=0) {
+              lgksToast("Please type something to search");
+              return;
+            }
+            
+            searchCode($("#searchTextField").val());
+        }
+        
+        return false;
+    });
     $("#searchResults").delegate("a","click", function(e) {
         return openCodeLink(this);
     })
@@ -85,8 +96,12 @@ function searchCode(term) {
     $(".searchResultContainer").removeClass("hidden");
     startTime = new Date().getTime();
     
+    try {
+        $.cookie("LOGIKS_CMS_SEARCH", $("#toolpath").val())
+    } catch(e) {}
+    
     //"&filters="+q.join(",")+"&lang="+q2.join(",")+q1
-    processAJAXPostQuery(_service("codeSearch","search"),"term="+term+"&"+q.join("&"), function(data) {
+    processAJAXPostQuery(_service("codeSearch","search"),"term="+term+"&"+q.join("&")+"&path="+$("#toolpath").val(), function(data) {
         requestTime = (new Date().getTime() - startTime)/1000;
         
         template = Handlebars.compile($("#search-template").html());
@@ -113,4 +128,6 @@ function resetSearch() {
     $("#searchTextField").val("");
     $("#searchInfo").html("");
     $("#searchResults").html("");
+    
+    $("#toolpath").val($.cookie("LOGIKS_CMS_SEARCH"));
 }
