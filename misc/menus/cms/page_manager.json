@@ -1,0 +1,19 @@
+{
+    "title": "Page Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Webmaster",
+    "class": "",
+    "target": "",
+    "link": "modules/pageManager",
+    "iconpath": "",
+    "tips": "Manage pages for your site",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": -1000,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#pageManager",
+    "guid": "global"
+}

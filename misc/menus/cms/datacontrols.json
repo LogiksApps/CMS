@@ -1,0 +1,21 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Data Controls",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Datacontrols",
+	"descs":"Manage Forms, Reports, Infoviews, etc",
+	"class":"",
+	"target":"",
+	"link":"modules/datacontrols",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Datalists",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Datacontrols",
+	"class":"",
+	"target":"",
+	"link":"modules/datalists",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

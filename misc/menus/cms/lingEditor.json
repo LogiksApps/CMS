@@ -1,0 +1,19 @@
+{
+    "title": "Language Editor",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Developers",
+    "class": "",
+    "target": "",
+    "link": "modules/lingEditor",
+    "iconpath": "",
+    "tips": "Central Place to look into all the logs",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 500,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#logBook",
+    "guid": "global"
+}

@@ -1,0 +1,19 @@
+{
+    "title": "All Connections",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Configurations",
+    "class": "",
+    "target": "",
+    "link": "modules/settingsJSON",
+    "iconpath": "",
+    "tips": "Manage System Settings",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight": "1000",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#settingsJSON",
+    "guid": "global"
+}

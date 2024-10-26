@@ -1,0 +1,19 @@
+{
+    "title": "CMS Branding",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Configurations",
+    "class": "",
+    "target": "",
+    "link": "modules/settings/cms",
+    "iconpath": "",
+    "tips": "Brand and own your own CMS",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight": "500",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#settings",
+    "guid": "global"
+}

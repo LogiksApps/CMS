@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Server Info",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Log Reports",
+	"class":"",
+	"target":"",
+	"link":"modules/serverInfo",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

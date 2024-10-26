@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"SEO Manager",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Webmaster",
+	"class":"",
+	"target":"",
+	"link":"modules/seomanager",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":-1,
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

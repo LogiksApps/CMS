@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Webdrive",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Media",
+	"class":"",
+	"target":"",
+	"link":"modules/webdrive",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":false,
+	"blocked":true,
+	"rules":""
+}

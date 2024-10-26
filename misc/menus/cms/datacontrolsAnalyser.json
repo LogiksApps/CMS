@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"DataControl Analyser",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Datacontrols",
+	"class":"",
+	"target":"",
+	"link":"modules/datacontrolsAnalyser",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

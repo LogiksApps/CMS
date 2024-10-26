@@ -1,0 +1,19 @@
+{
+    "title": "Permissions Control",
+    "mode": "*",
+    "category": "",
+    "menugroup": "User & Roles",
+    "class": "",
+    "target": "",
+    "link": "modules/credsRoles",
+    "iconpath": "",
+    "tips": "Check and manage User permissions",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight": 20,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#credsRoles",
+    "guid": "global"
+}

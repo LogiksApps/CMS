@@ -1,0 +1,19 @@
+{
+    "title": "App Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "System",
+    "class": "",
+    "target": "",
+    "link": "modules/appManager",
+    "iconpath": "",
+    "tips": "Maintenance all apps.",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight": "50",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#appManager",
+    "guid": "global"
+}

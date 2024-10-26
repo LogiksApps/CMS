@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Menu Manager",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Webmaster",
+	"class":"",
+	"target":"",
+	"link":"modules/menuManager",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

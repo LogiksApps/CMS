@@ -1,0 +1,19 @@
+{
+    "title": "Media Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Media & Assets",
+    "class": "",
+    "target": "",
+    "link": "modules/mediaManager",
+    "iconpath": "",
+    "tips": "Manage your images, icons and user data",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": "0",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#mediaManager",
+    "guid": "global"
+}

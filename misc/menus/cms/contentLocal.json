@@ -1,0 +1,19 @@
+{
+    "title": "Content Manager 2",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Webmaster",
+    "class": "",
+    "target": "",
+    "link": "modules/contentLocal",
+    "iconpath": "",
+    "tips": "Manage Content for site",
+    "site": "studio",
+    "device": "*",
+    "privilege": "*",
+    "weight": "30",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "",
+    "guid": "global"
+}

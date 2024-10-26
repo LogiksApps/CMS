@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Database Diff",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Advanced Tools",
+	"class":"",
+	"target":"",
+	"link":"modules/dbDiff",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":1000,
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

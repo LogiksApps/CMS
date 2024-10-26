@@ -1,0 +1,19 @@
+{
+    "title": "Redirector",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Developers",
+    "class": "",
+    "target": "",
+    "link": "modules/redirector",
+    "iconpath": "",
+    "tips": "Redirection managment",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 500,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#logBook",
+    "guid": "global"
+}

@@ -1,0 +1,19 @@
+{
+    "title": "App Settings",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Configurations",
+    "class": "",
+    "target": "",
+    "link": "modules/settings/apps",
+    "iconpath": "",
+    "tips": "Manage Current App Related Settings",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": "100",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#settings",
+    "guid": "global"
+}

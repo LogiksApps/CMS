@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Code Analysis",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Developers",
+	"class":"",
+	"target":"",
+	"link":"modules/codeQuality",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

@@ -1,0 +1,19 @@
+{
+    "title": "Core Settings",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Configurations",
+    "class": "",
+    "target": "",
+    "link": "modules/settings/core",
+    "iconpath": "",
+    "tips": "Manage Core Configurations",
+    "site": "cms",
+    "device": "pc",
+    "privilege": "root",
+    "weight": "0",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#settings",
+    "guid": "global"
+}

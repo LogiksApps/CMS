@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Change Logs",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Advanced Tools",
+	"class":"",
+	"target":"",
+	"link":"modules/changeLog",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":1000,
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

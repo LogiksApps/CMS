@@ -1,0 +1,19 @@
+{
+    "title": "Log Book",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Log Reports",
+    "class": "",
+    "target": "",
+    "link": "modules/logBook",
+    "iconpath": "",
+    "tips": "Central Place to look into all the logs",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 500,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#logBook",
+    "guid": "global"
+}

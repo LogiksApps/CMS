@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Version Control",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Developers",
+	"class":"",
+	"target":"",
+	"link":"modules/versionControl",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

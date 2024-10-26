@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"TestKit",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Advanced Tools",
+	"class":"",
+	"target":"",
+	"link":"modules/testkit",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"",
+	"weight":"",
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

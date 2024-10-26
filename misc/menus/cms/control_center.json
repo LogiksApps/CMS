@@ -1,0 +1,20 @@
+{
+	"guid":"global",
+	"menuid":"default",
+	"title":"Control Center",
+	"mode":"*",
+	"category":"",
+	"menugroup":"Advanced Tools",
+	"class":"",
+	"target":"",
+	"link":"modules/controlCenter",
+	"iconpath":"",
+	"tips":"",
+	"site":"",
+	"device":"",
+	"privilege":"*",
+	"weight":1000,
+	"onmenu":true,
+	"blocked":false,
+	"rules":""
+}

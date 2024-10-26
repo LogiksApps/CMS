@@ -1,0 +1,19 @@
+{
+    "title": "User Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "User & Roles",
+    "class": "",
+    "target": "",
+    "link": "modules/credsManager",
+    "iconpath": "",
+    "tips": "Manage users and roles",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight": 20,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#credsManager",
+    "guid": "global"
+}

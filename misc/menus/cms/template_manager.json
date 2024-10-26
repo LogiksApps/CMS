@@ -1,0 +1,19 @@
+{
+    "title": "Template Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Webmaster",
+    "class": "",
+    "target": "",
+    "link": "modules/templateManager",
+    "iconpath": "",
+    "tips": "Manage templates for your site.",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": "0",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#templateManager",
+    "guid": "global"
+}

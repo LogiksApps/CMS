@@ -1,0 +1,19 @@
+{
+    "title": "Plugin Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "System",
+    "class": "",
+    "target": "",
+    "link": "modules/pluginManager",
+    "iconpath": "",
+    "tips": "Plugin Management",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight": "400",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#pluginManager",
+    "guid": "global"
+}

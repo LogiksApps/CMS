@@ -1,0 +1,19 @@
+{
+    "title": "Service Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Webmaster",
+    "class": "",
+    "target": "",
+    "link": "modules/serviceManager",
+    "iconpath": "",
+    "tips": "Manage services (REST API), etc for your site.",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": "0",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#serviceManager",
+    "guid": "global"
+}

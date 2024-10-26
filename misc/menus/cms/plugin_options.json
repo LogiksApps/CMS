@@ -1,0 +1,19 @@
+{
+    "title": "Plugin Options",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Configurations",
+    "class": "",
+    "target": "",
+    "link": "modules/settings/plugins",
+    "iconpath": "",
+    "tips": "Manage Plugin Related Options",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": "300",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#settings",
+    "guid": "global"
+}

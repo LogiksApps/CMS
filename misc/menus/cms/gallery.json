@@ -1,0 +1,19 @@
+{
+    "title": "Gallery",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Site Manager",
+    "class": "",
+    "target": "",
+    "link": "modules/gallery",
+    "iconpath": "",
+    "tips": "Manage your gallery photos here",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": "30",
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#gallery",
+    "guid": "global"
+}

@@ -1,0 +1,19 @@
+{
+    "title": "Domain Map",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Advanced Tools",
+    "class": "",
+    "target": "",
+    "link": "modules/domainManager",
+    "iconpath": "",
+    "tips": "Update Domain-APP map",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight":1000,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#domainManager",
+    "guid": "global"
+}

@@ -1,0 +1,19 @@
+{
+    "title": "Active Sessions",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Log Reports",
+    "class": "",
+    "target": "",
+    "link": "modules/reports/sessions",
+    "iconpath": "",
+    "tips": "All user sessions for site",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 400,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#reports",
+    "guid": "global"
+}

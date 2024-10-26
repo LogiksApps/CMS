@@ -1,0 +1,19 @@
+{
+    "title": "DBMS Manager",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Advanced Tools",
+    "class": "",
+    "target": "",
+    "link": "modules/dbEdit",
+    "iconpath": "",
+    "tips": "Manage DBMS from within CMS",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight":1000,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#dbEdit",
+    "guid": "global"
+}
