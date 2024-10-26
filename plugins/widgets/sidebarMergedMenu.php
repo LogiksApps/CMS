@@ -21,7 +21,8 @@ $menuTree=array_merge_recursive($menuTree1,$menuTree2);
 $menuTree=array_merge_recursive($menuTree,$menuTree3);
 $menuTree=array_merge_recursive($menuTree,$menuTree4);
 $menuTree=array_merge_recursive($menuTree,$menuTree5);
-// printArray($menuTree2);exit("A");
+
+//printArray($menuTree);
 
 $generalGroup = [];
 foreach($menuTree as $a=>$group) {
@@ -33,6 +34,12 @@ foreach($menuTree as $a=>$group) {
 usort($generalGroup, "sortMenuByWeight");
 
 function sortMenuByWeight($a, $b) {
+    if(!isset($a['weight']) || strlen($a['weight'])<=0) $a['weight']=100;
+    if(!isset($b['weight']) || strlen($b['weight'])<=0) $b['weight']=100;
+    
+    $a['weight'] = (int)$a['weight'];
+    $b['weight'] = (int)$b['weight'];
+    
     if($a['weight'] == $b['weight']) return 0;
     return ($a['weight'] < $b['weight']) ? -1 : 1;
 }
