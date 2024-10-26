@@ -3,7 +3,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 loadModuleLib("navigator","api");
 
-$menuTree1=generateNavigationFromDB(getConfig("DEFAULT_NAVIGATION"),"links","core");
+$menuTree1=[];//generateNavigationFromDB(getConfig("DEFAULT_NAVIGATION"),"links","core");
 
 $menuTree2=generateNavigationFromDir(APPROOT."misc/menus/cms/","core");
 
