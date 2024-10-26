@@ -71,6 +71,8 @@ if(!function_exists("setupCMSEnviroment")) {
         
         if($_SESSION['SESS_PRIVILEGE_NAME']!="root") {
 			unset($siteList[SITENAME]);
+			if(isset($siteList['cms'])) unset($siteList['cms']);
+			if(isset($siteList['studio'])) unset($siteList['studio']);
 		}
         
         $_SESSION['siteList']=$siteList;

@@ -28,5 +28,30 @@ if(!function_exists("getAPP_PROPS")) {
     function getApp_VERSCODE() {
         return strtolower(str_replace(" ", "-",getApp_PROPS("APPS_VERS")));
     }
+    
+    function getSiteList() {
+    	$arr=scandir(ROOT.APPS_FOLDER);
+    	unset($arr[0]);unset($arr[1]);
+    	$out=array();
+    	foreach($arr as $a=>$b) {
+    	    if($b=="cms") continue;
+    		if(is_file(ROOT.APPS_FOLDER.$b)) {
+    			unset($arr[$a]);
+    		} elseif(is_dir(ROOT.APPS_FOLDER.$b) && !file_exists(ROOT.APPS_FOLDER.$b."/apps.cfg")) {
+    			unset($arr[$a]);
+    		} else {
+    			array_push($out,$b);
+    		}
+    	}
+    	
+    	$final = [];
+    	foreach($out as $a) {
+    	    $final[$a] = [
+    	            "title"=>toTitle($a),
+    	            "url"=>_link("", "", $a)
+    	        ];
+    	}
+    	return $final;
+    }
 }
 ?>
