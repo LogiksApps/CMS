@@ -1,0 +1,67 @@
+.tab-pane {
+	padding: 10px;
+	padding-right:15px;
+}
+.panel-group .panel {
+	border-radius:0px;
+}
+.roleTabModel a {
+	text-decoration:none;
+}
+.roleTabModel label {
+	width: 100%;
+	font-weight: normal;
+	margin: 0px;
+}
+.roleTabModel .list-group.list-group-activity {
+	width: 30%;
+	float:left;
+	margin:5px;
+}
+.roleTabModel .list-group-item {
+	width:45%;
+	float:left;
+	margin:5px;
+}
+.roleTabModel .list-group.list-group-activity .list-group-item { 
+	width: 100%;
+	float: none;
+	margin: 1px;
+}
+.roleTabModel input[name=checkAll] {
+	margin: 13px;
+}
+.roleTabModel .panel-heading .accordion-toggle:after {
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.roleTabModel .panel-heading .accordion-toggle.collapsed:after {
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+
+.componentTree .list-group-item.active a {
+	color:white;
+}
+.panel-group .panel-heading-bold {
+	font-weight: bold;
+	text-align: left;
+	margin: 0px;
+	padding: 11px;
+	margin-bottom: 8px;
+/* 	margin-top: -9px; */
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #337ab7;
+	border-radius: 0px;
+	text-transform: uppercase;
+}
+
+.componentTree .list-group-item .glyphicon, .componentTree .list-group-item .fa {
+	margin-top: 3px;
+	display:none;
+}
+.componentTree .list-group-item.active .glyphicon, .componentTree .list-group-item.active .fa {
+	display:block;
+}

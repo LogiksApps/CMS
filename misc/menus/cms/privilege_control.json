@@ -1,0 +1,19 @@
+{
+    "title": "Privilege Controls",
+    "mode": "*",
+    "category": "",
+    "menugroup": "User & Roles",
+    "class": "",
+    "target": "",
+    "link": "modules/credsPrivileges",
+    "iconpath": "",
+    "tips": "Check and manage permissions based on Privileges",
+    "site": "cms",
+    "device": "*",
+    "privilege": "root",
+    "weight": 20,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#credsPrivileges",
+    "guid": "global"
+}
