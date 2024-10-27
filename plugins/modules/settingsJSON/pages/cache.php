@@ -14,7 +14,20 @@ else $locals=[];
 ?>
 <div class="row">
 <?php
+    foreach ($locals as $key => $config) {
+		$cfgPrint=$config;
+		unset($cfgPrint['params']);
+		$html1="";
+		if(isset($config['params'])) {
+			$html1="<h5>PARAMS</h5>".arrayToHTML($config['params'],"table","table table-condensed table-striped");
+		}
+		printCFGCard("APP",$key,[
+					"title"=>toTitle(_ling("{$key} Key")),
+					"body"=>arrayToHTML($cfgPrint,"table","table table-condensed table-striped").$html1,
+				],$config,$cfgFile);
+	}
 	if($_SESSION['SESS_PRIVILEGE_ID']==1) {
+	    echo "<hr class='cardHR'>";
 		foreach ($globals as $key => $config) {
 			$cfgPrint=$config;
 			unset($cfgPrint['params']);
@@ -25,21 +38,8 @@ else $locals=[];
 			printCFGCard("GLOBALS",$key,[
 						"title"=>toTitle(_ling("{$key} Key")),
 						"body"=>arrayToHTML($cfgPrint,"table","table table-condensed table-striped").$html1,
-					],$config);
+					],$config,$cfgFile);
 		}
-		echo "<hr class='cardHR'>";
-	}
-	foreach ($locals as $key => $config) {
-		$cfgPrint=$config;
-		unset($cfgPrint['params']);
-		$html1="";
-		if(isset($config['params'])) {
-			$html1="<h5>PARAMS</h5>".arrayToHTML($config['params'],"table","table table-condensed table-striped");
-		}
-		printCFGCard("APP",$key,[
-					"title"=>toTitle(_ling("{$key} Key")),
-					"body"=>arrayToHTML($cfgPrint,"table","table table-condensed table-striped").$html1,
-				],$config);
 	}
 ?>
 </div>

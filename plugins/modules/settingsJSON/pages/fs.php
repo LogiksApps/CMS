@@ -14,8 +14,18 @@ else $locals=[];
 ?>
 <div class="row">
 <?php
-if($_SESSION['SESS_PRIVILEGE_ID']==1) {
-		foreach ($globals as $key => $config) {
+    foreach ($locals as $key => $config) {
+    	if(isset($config['dirs'])) unset($config['dirs']);
+    	if(isset($config['exclude_dirs'])) unset($config['exclude_dirs']);
+    		
+    	printCFGCard("APP",$key,[
+    				"title"=>toTitle(_ling("{$key} Key")),
+    				"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
+    			],$config,$cfgFile);
+    }
+    if($_SESSION['SESS_PRIVILEGE_ID']==1) {
+        echo "<hr class='cardHR'>";
+	    foreach ($globals as $key => $config) {
 			if($key=="app") continue;
 			if($key=="dir_rules") continue;
 			
@@ -25,18 +35,8 @@ if($_SESSION['SESS_PRIVILEGE_ID']==1) {
 			printCFGCard("GLOBALS",$key,[
 						"title"=>toTitle(_ling("{$key} Key")),
 						"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
-					],$config);
+					],$config,$cfgFile);
 		}
-		echo "<hr class='cardHR'>";
-	}
-	foreach ($locals as $key => $config) {
-		if(isset($config['dirs'])) unset($config['dirs']);
-		if(isset($config['exclude_dirs'])) unset($config['exclude_dirs']);
-			
-		printCFGCard("APP",$key,[
-					"title"=>toTitle(_ling("{$key} Key")),
-					"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
-				],$config);
 	}
 ?>
 </div>

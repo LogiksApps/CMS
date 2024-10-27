@@ -10,30 +10,31 @@ if(isset($jsonMap[$_REQUEST['forSite']])) $locals=$jsonMap[$_REQUEST['forSite']]
 else $locals=[];
 
 //printArray($globals);
-
 ?>
 <div class="row">
 <?php
-	if($_SESSION['SESS_PRIVILEGE_ID']==1) {
-		foreach ($globals as $key => $config) {
-			//if(count($config)<=0) continue;
-			if(isset($config['pwd'])) $config['pwd']="***";
-			unset($config['block']);
-			printCFGCard("GLOBALS",$key,[
-						"title"=>toTitle(_ling("{$key} Key")),
-						"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
-					],$config);
-		}
-		echo "<hr class='cardHR'>";
-	}
-	foreach ($locals as $key => $config) {
+    foreach ($locals as $key => $config) {
+        $configOriginal = $config;
 		//if(count($config)<=0) continue;
 		if(isset($config['pwd'])) $config['pwd']="***";
 		unset($config['block']);
 		printCFGCard("APP",$key,[
 					"title"=>toTitle(_ling("{$key} Key")),
 					"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
-				],$config);
+				],$configOriginal,$cfgFile);
+	}
+	if($_SESSION['SESS_PRIVILEGE_ID']==1) {
+	    echo "<hr class='cardHR'>";
+		foreach ($globals as $key => $config) {
+		    $configOriginal = $config;
+			//if(count($config)<=0) continue;
+			if(isset($config['pwd'])) $config['pwd']="***";
+			unset($config['block']);
+			printCFGCard("GLOBALS",$key,[
+						"title"=>toTitle(_ling("{$key} Key")),
+						"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
+					],$configOriginal,$cfgFile);
+		}
 	}
 ?>
 </div>

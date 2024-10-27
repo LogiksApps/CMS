@@ -44,8 +44,10 @@ form .bootstrap-switch {
 	color: white;
 }
 .card .bottomLink {
-	position: absolute;
-    bottom: 20px;
+    position: absolute;
+    bottom: 12px;
+    width: 91%;
+    text-align: right;
 }
 .card .label {
 	font-size: 12px;

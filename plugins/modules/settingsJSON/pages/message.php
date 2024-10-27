@@ -14,20 +14,20 @@ else $locals=[];
 ?>
 <div class="row">
 <?php
+    foreach ($locals as $key => $config) {
+		printCFGCard("APP",$key,[
+					"title"=>toTitle(_ling("{$key} Key")),
+					"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
+				],$config,$cfgFile);
+	}
 	if($_SESSION['SESS_PRIVILEGE_ID']==1) {
+	    echo "<hr class='cardHR'>";
 		foreach ($globals as $key => $config) {
 			printCFGCard("GLOBALS",$key,[
 						"title"=>toTitle(_ling("{$key} Key")),
 						"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
-					],$config);
+					],$config,$cfgFile);
 		}
-		echo "<hr class='cardHR'>";
-	}
-	foreach ($locals as $key => $config) {
-		printCFGCard("APP",$key,[
-					"title"=>toTitle(_ling("{$key} Key")),
-					"body"=>arrayToHTML($config,"table","table table-condensed table-striped"),
-				],$config);
 	}
 ?>
 </div>

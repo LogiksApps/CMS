@@ -53,5 +53,14 @@ if(!function_exists("getAPP_PROPS")) {
     	}
     	return $final;
     }
+    
+    function checkRootAccess() {
+        if($_SESSION['SESS_PRIVILEGE_ID']<=2) {
+            return true;
+        } else {
+            echo "<h3 align=center>Sorry, you need ROOT permissions to access this module</h3>";
+            return false;
+        }
+    }
 }
 ?>

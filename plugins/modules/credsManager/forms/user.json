@@ -15,11 +15,14 @@
 	"fields": {
 		"userid": {
 			"label": "Login ID",
-			"disabled": true,
-			"hidden": true,
-			"concat": {
-				"position": "after",
-				"field": "email"
+			"required": true,
+			"x": {
+			    "concat": {
+    				"position": "after",
+    				"field": "email"
+    			},
+			    "disabled": true,
+			    "hidden": true
 			}
 		},
 		"name": {
@@ -27,7 +30,7 @@
 			"required": true
 		},
 		"email": {
-			"label": "E-mail (LoginID)",
+			"label": "E-Mail",
 			"type": "email",
 			"required": true,
 			"validate": {
@@ -102,13 +105,15 @@
 		"dob": {
 			"label": "Date Of Birth",
 			"group": "others",
-			"type": "date"
+			"type": "date",
+			"vmode": "edit"
 		},
 		"blocked": {
 			"label": "Blocked",
 			"group": "others",
 			"required": true,
 			"type": "select",
+			"vmode": "edit",
 			"options": {
 				"": false,
 				"true": "Blocked",
@@ -162,6 +167,7 @@
 		"expires": {
 			"label": "Account Expires On",
 			"group": "security",
+			"required": true,
 			"type": "date"
 		},
 		"security_policy": {
@@ -169,6 +175,7 @@
 			"group": "security",
 			"required": true,
 			"type": "select",
+			"default": "closed",
 			"options": {
 				"": false,
 				"open": "Open",
@@ -180,6 +187,7 @@
 			"group": "security",
 			"required": true,
 			"type": "select",
+			"default": "protected",
 			"options": {
 				"": false,
 				"public": "Public",

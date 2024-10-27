@@ -19,17 +19,19 @@
 		"limit":10
 	},
 	"buttons":{
-		"infoRecord": {
-			"label":"User Information",
-			"icon":"fa fa-info-circle"
-		},
-		"editRecord": {
-			"label":"Edit User",
-			"icon":"fa fa-pencil"
-		},
-		"editPWD": {
-			"label":"Change Password",
-			"icon":"fa fa-key pull-left"
+		"more": {
+		    "infoRecord": {
+    			"label":"User Information",
+    			"icon":"fa fa-info-circle"
+    		},
+		    "editRecord": {
+    			"label":"Edit User",
+    			"icon":"fa fa-pencil"
+    		},
+    		"editPWD": {
+    			"label":"Change Password",
+    			"icon":"fa fa-key pull-left"
+    		}
 		}
 	},
 	"actions": {

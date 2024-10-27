@@ -21,7 +21,8 @@ $pageOptions=[
 
 			// ["title"=>"Search Site","type"=>"search","align"=>"left"]
 			 "reload"=>["icon"=>"<i class='fa fa-refresh'></i>"],
-			 "createNew"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New"],
+			 "createUser"=>["icon"=>"<i class='fa fa-plus'></i>","title"=>"Create User"],
+			 "createPrivilege"=>["icon"=>"<i class='fa fa-plus'></i>","title"=>"Create Privilege"],
 			['type'=>"bar"],
 			"trash"=>["icon"=>"<i class='fa fa-trash'></i>"],//,"class"=>"onRowSelect"
 		],
@@ -110,6 +111,15 @@ function pageContentArea() {
 .reportTable .table-tools .btn {
         height: 34px !important;
 }
+.dropdown-menu>li>a {
+    background: transparent;
+    padding: 0px;
+    display: inline;
+}
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    background-color: transparent;
+    opacity: 0.8;
+}
 </style>
 <script>
 $(function() {
@@ -131,6 +141,10 @@ function postReportLoad() {
 }
 function onLoadSidebar() {
     
+}
+function createUser() {
+    waitingDialog.show('Loading Editor ...');
+    pgCreateNew();
 }
 
 function editPrivilege() {
