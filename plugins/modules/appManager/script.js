@@ -4,8 +4,8 @@ $(function() {
     
 	Handlebars.registerHelper('actionBtns', function(app) {
 		html={
+		    "allow_archive":'<i class="fa fa-archive cmdAction pull-right" cmd="archiveApp" appkey="'+app.appkey+'" title="Archive App"></i>',
 			"allow_delete":'<i class="fa fa-trash cmdAction pull-right" cmd="deleteApp" appkey="'+app.appkey+'" title="Delete App"></i>',
-            "allow_archive":'<i class="fa fa-archive cmdAction pull-right" cmd="archiveApp" appkey="'+app.appkey+'" title="Archive App"></i>',
 			"allow_clone":'<i class="fa fa-copy cmdAction pull-right" cmd="cloneApp" appkey="'+app.appkey+'" title="Clone App"></i>',
             "allow_rename":'<i class="fa fa-terminal cmdAction pull-right" cmd="renameApp" appkey="'+app.appkey+'" title="Rename App"></i>',
 		};
@@ -124,7 +124,7 @@ $(function() {
                    appID+" application, database, cache and stats.</p><p>Please type in the UUID "+uuid+" of the app to confirm.</p></div>", 
                    "Delete App", function(ans) {
                   if(ans==uuid) {
-                        processAJAXPostQuery(_service("appManager","deleteApp"),"app="+appID+"&uuid="+ans,function(data) {
+                        processAJAXPostQuery(_service("appManager","deleteApp"),"app="+appID+"&uuid="+ans+"&panel="+currentItem,function(data) {
                             if(data.indexOf("success")>=0) {
                               reloadListUI();
                               lgksToast("Deleted App Successfully");
@@ -139,8 +139,8 @@ $(function() {
 				break;
       case "restoreApp":
 				lgksMsg("<ul class='list-group' style='padding-right:15px'>"+
-            "<div class='list-group-item'><button class='btn btn-warning' onclick='restoreApp(1,this)' data-app='"+app+"'><i class='fa fa-undo'></i> Restore</button> Restore the app and clear from archive</div>"+
-            "<div class='list-group-item'><button class='btn btn-danger' onclick='restoreApp(2,this)' data-app='"+app+"'><i class='fa fa-undo'></i> Restore</button> Restore the app and still keep in archive</div>"+
+            "<div class='list-group-item'><button class='btn btn-danger' onclick='restoreApp(1,this)' data-app='"+app+"'><i class='fa fa-undo'></i> Restore</button> Restore the app and clear from archive</div>"+
+            "<div class='list-group-item'><button class='btn btn-warning' onclick='restoreApp(2,this)' data-app='"+app+"'><i class='fa fa-undo'></i> Restore</button> Restore the app and still keep in archive</div>"+
             "</div>","Restore App");
 				break;
       case "renameApp":
@@ -215,6 +215,16 @@ function loadArchived() {
   
   listArchivedApps();
 }
+function loadTrashed() {
+  $("#appTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Trashed Apps</div></td></tr>");
+	
+	$("#pgtoolbar .navbar-right li").removeClass("active");
+	$("#pgtoolbar .navbar-right a#toolbtn_loadTrashed").parent().addClass("active");
+	
+	currentItem="trashedapps";
+  
+  listTrashedApps();
+}
 function reloadListUI() {
     if(currentItem=="localapps") {
         listApps();
@@ -222,6 +232,8 @@ function reloadListUI() {
         listImages();
     } else if(currentItem=="archivedapps") {
         listArchivedApps();
+    } else if(currentItem=="trashedapps") {
+        listTrashedApps();
     } else {
         lgksToast("Not supported");
     }
@@ -300,6 +312,25 @@ function listArchivedApps() {
 	},"json");
 }
 
+function listTrashedApps() {
+  $("#appTable").closest("table").find("thead").hide();
+  $("#appTable").closest("table").find("#app1").show();
+    
+	$("#appTable").html("<tr><td colspan=20><div class='ajaxloading ajaxloading5'>Fetching Apps</div></td></tr>");
+	
+	processAJAXQuery(_service("appManager","listTrashedApps"),function(dataJSON) {
+		tmplCode = Handlebars.compile($("#trashedRowTemplate").html());
+		html=tmplCode({"apps":dataJSON.Data});
+		
+		$("#appTable").html(html);
+		
+		$("#appTable tr").each(function() {
+			$(this).find("th").html($(this).index()+1);
+		});
+		
+	},"json");
+}
+
 function restoreApp(restoreIndex, src) {
   app = $(src).data('app');
   if(app == null) {
@@ -308,7 +339,7 @@ function restoreApp(restoreIndex, src) {
   }
   $(".my-modal").modal("hide");
   
-  processAJAXPostQuery(_service("appManager","restoreApp"),"app="+app+"&type="+restoreIndex,function(data) {
+  processAJAXPostQuery(_service("appManager","restoreApp"),"app="+app+"&type="+restoreIndex+"&panel="+currentItem,function(data) {
         if(data.indexOf("success")>=0) {
           reloadListUI();
           lgksToast("Restored App Successfully");

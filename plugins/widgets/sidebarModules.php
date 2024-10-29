@@ -36,7 +36,7 @@ echo _js(["jquery.contextMenu"]);
 <div id='searchField' class="searchField d-none hidden">
     <input type='text' placeholder='Search tables' />
 </div>
-<div id="sidebarSourceTree" class='panel-group sidebarMenu' style="top: 100px !important;">
+<div id="sidebarSourceTree" class='panel-group sidebarMenu'>
     <?php
         foreach ($moduleList as $category=>$moduleInfo) {
             $categoryTitle = toTitle($category);

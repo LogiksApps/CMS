@@ -137,7 +137,7 @@ $.fn.extend({
 });
 
 function openEStore() {
-    openLinkFrame("eStore", _link("modules/pluginManager"), true);
+    openLinkFrame("eStore", _link("modules/estore"), true);
 }
 function openCMSTodos() {
     openLinkFrame("Todos", _link("modules/devTodos"), true);

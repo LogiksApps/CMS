@@ -16,5 +16,5 @@
 	"weight":1000,
 	"onmenu":true,
 	"blocked":false,
-	"rules":""
+	"rules":"module#logiksTerminal"
 }

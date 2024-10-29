@@ -1,6 +1,5 @@
 {
 	"guid":"global",
-	"menuid":"default",
 	"title":"SEO Manager",
 	"mode":"*",
 	"category":"",
@@ -9,12 +8,12 @@
 	"target":"",
 	"link":"modules/seomanager",
 	"iconpath":"",
-	"tips":"",
+	"tips": "SEO Management System",
 	"site":"",
 	"device":"",
 	"privilege":"",
-	"weight":-1,
+	"weight":0,
 	"onmenu":true,
 	"blocked":false,
-	"rules":""
+	"rules": "module#seomanager"
 }

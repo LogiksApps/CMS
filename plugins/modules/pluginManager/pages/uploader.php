@@ -57,7 +57,7 @@ printPageComponent(false,[
 		    "reloadPage"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 		    
 			"loadPluginManager"=>["title"=>"Installed","align"=>"right"],
-			"loadRepo"=>["title"=>"eStore","align"=>"right"],
+// 			"loadRepo"=>["title"=>"eStore","align"=>"right"],
             "loadUploader"=>["title"=>"Upload","align"=>"right","class"=>"active"],
 		],
 		"sidebar"=>false,//"pageSidebar",

@@ -16,5 +16,5 @@
 	"weight":"",
 	"onmenu":false,
 	"blocked":true,
-	"rules":""
+	"rules":"module#webdrive"
 }

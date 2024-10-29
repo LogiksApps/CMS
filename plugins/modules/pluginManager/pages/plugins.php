@@ -40,7 +40,7 @@ printPageComponent(false,[
 // 			"loadGlobal"=>["title"=>"Global","align"=>"right"],
 // 			"loadDev"=>["title"=>"Dev","align"=>"right"],
 			
-			"loadRepo"=>["title"=>"eStore","align"=>"right"],
+// 			"loadRepo"=>["title"=>"eStore","align"=>"right"],
 			"loadUploader"=>["title"=>"Upload","align"=>"right"],
 // 			"loadUploader"=>["title"=>"Upload","align"=>"right"],
 		

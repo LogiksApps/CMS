@@ -31,27 +31,37 @@ body{
 }
 #sidebar{
     top: 0;
-    background: #0f172a;
+    /*background: #0f172a;*/
+    background: linear-gradient(to bottom, #186565 0%, #002c50 100%);
 }
 .sidebarMenu{
-    top: 100px !important;;
+    top: 80px !important;
 }
 #sidebar .nav-tabs>li>a{
-    padding: 6px 0;
+    padding: 4px 0;
 }
 #sidebar .nav-tabs>li.active>a, #sidebar .nav-tabs>li.active>a:focus, #sidebar .nav-tabs>li.active>a:hover{
    background-color: #1391dc00;
     border: 0 !important;
     border-bottom-color: #ccc;
-    border-radius: 0px !important;
+    /*border-radius: 0px !important;*/
     color: #fff !important;
-    border-bottom: 3px solid #1391dc !important;
+    /*border-bottom: 3px solid #1391dc !important;*/
     
-    font-weight: 600;
+    /*font-weight: 600;*/
 }
 #sidebar .nav-tabs.nav-justified>li>a{
-           border-bottom: 0;
-    color: #1391dc;
+    border-bottom: 0;
+    color: #57d1c3;
+}
+#sidebar .nav-tabs.nav-justified>li>a:hover {
+    border: 0px;
+    background: transparent;
+    color: #d3e4e2;
+}
+#sidebar .nav-tabs>li.active>a, #sidebar .nav-tabs>li.active>a:hover {
+    background: #15ac85 !important;
+    border-radius: 100px !important;
 }
 #header .navbar{
         background: #fff;
@@ -78,15 +88,15 @@ body{
     font-size: 31px !important;
 }
 .sidebarMenu .panel a{
-        font-weight: 300 !important;
+    font-weight: 300 !important;
 }
 #sidebar .navbar-header {
     float: left;
     width: 100%;
     text-align: center;
-    margin-bottom: 6px;
+    margin-bottom: 0px;
     padding: 7px 10px;
-    border-bottom: 1px solid #1f242e;
+    /*border-bottom: 1px solid #929396;*/
 }
 #sidebar .navbar-brand{
     font-size: 20px;
@@ -100,13 +110,11 @@ body{
     padding: 0 10px;
 }
 #sidebarFileTree{
-    top: 147px;
+    top: 135px;
 }
 #sidebar .searchField input{
-      
-    background: #1a2540;
-    
-    padding: 9px 15px;
+    background: #EFEFEF;
+    padding: 6px 15px;
     border-radius: 20px;
 }
 #sidebar .searchField {
@@ -359,4 +367,31 @@ body.no_sidebar #header .navbar-header{
 
 i.fa.fa-cloud-upload:after {
     content: "\f093";
+}
+
+
+.btn-primary {
+    background-color: #08a183;
+    border-color: #217d6b;
+}
+
+#header i.fa, #header i.glyphicon {
+    color: #186565;
+}
+
+.pageCompToolBar .navbar-collapse {
+    background: linear-gradient(to bottom, #186565 0%, #388b87 100%);
+    color: white;
+}
+.pageCompToolBar .navbar-collapse a {
+    color: white !important;
+}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    background: linear-gradient(to bottom, #388b87 0%, #186565 100%);
+    color: white;
+}
+.pageCompToolBar .navbar-nav li>a:focus, .pageCompToolBar .navbar-nav li>a:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    opacity: 0.5;
 }

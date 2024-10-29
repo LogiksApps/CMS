@@ -228,7 +228,7 @@ function saveSchema() {
 	});
 }
 function migrateSchema() {
-    parent.openLinkFrame("Migrator", _link("modules/migrator"), true);
+    parent.openLinkFrame("Migrator", _link("modules/dbMigrator")+"&dkey="+dkey, true);
 }
 
 //Tables,Triggers,Functions,etc.

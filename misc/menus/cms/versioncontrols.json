@@ -16,5 +16,5 @@
 	"weight":"",
 	"onmenu":true,
 	"blocked":false,
-	"rules":""
+	"rules":"module#versionControl"
 }

@@ -12,6 +12,9 @@ define("PACKAGE_CACHE_PERIOD",86400);
 $trashPath = ROOT.APPS_FOLDER.".trash/";
 if(!is_dir($trashPath)) mkdir($trashPath,0777,true);
 
+$archivePath = ROOT.APPS_FOLDER.".archive/";
+if(!is_dir($archivePath)) mkdir($archivePath,0777,true);
+
 switch($_REQUEST["action"]) {
 	case "listImages":
 		if(function_exists("estore_list_apps")) {
@@ -101,11 +104,49 @@ switch($_REQUEST["action"]) {
 		}
 		printServiceMsg($appsFinal);
 		break;
-  case "listArchivedApps":
-    $appsFinal=[];
-    $_SESSION['SECUREAPPLIST'] = [];
-    $apps = scandir(ROOT.APPS_FOLDER.".trash/");
-    $apps = array_slice($apps,2);
+    case "listArchivedApps":
+        $appsFinal=[];
+        $_SESSION['SECUREAPPLIST'] = [];
+        $apps = scandir(ROOT.APPS_FOLDER.".archive/");
+        $apps = array_slice($apps,2);
+		foreach($apps as $k) {
+			$cfg=ROOT.APPS_FOLDER.".archive/".$k."/apps.cfg";
+			if(file_exists($cfg)) {
+			    $cfgArr=LogiksConfig::parseConfigFile($cfg);
+          $UUID = ceil(rand(1000,9999));
+          $appsFinal[]=[
+            "appkey"=>$k,
+            "title"=>$cfgArr['DEFINE-APPS_NAME']['value'],
+            "vers"=>$cfgArr['DEFINE-APPS_VERS']['value'],
+            "devmode"=>$cfgArr['DEFINE-DEV_MODE_ENABLED']['value'],
+            "status"=>$cfgArr['DEFINE-APPS_STATUS']['value'],
+            "published"=>$cfgArr['DEFINE-PUBLISH_MODE']['value'],
+            "router"=>$cfgArr['DEFINE-APPS_ROUTER']['value'],
+            "access"=>$cfgArr['DEFINE-ACCESS']['value'],
+            "url"=>SiteLocation."?site={$k}",
+            "urlcms"=>"#",
+            "readonly"=>(!is_writable($cfg)),
+            "database"=>0,
+            "msgs"=>0,
+            "cache"=>0,
+            "domain"=>0,
+            "services"=>0,
+            "uuid"=>$UUID,
+            "allow_clone"=>false,
+            "allow_delete"=>true,
+            "allow_archive"=>false,
+            //"cfg"=>$cfgArr
+          ];
+          $_SESSION['SECUREAPPLIST'][".trash/{$k}"] = $UUID;
+			}
+		}
+		printServiceMsg($appsFinal);
+    break;
+    case "listTrashedApps":
+        $appsFinal=[];
+        $_SESSION['SECUREAPPLIST'] = [];
+        $apps = scandir(ROOT.APPS_FOLDER.".trash/");
+        $apps = array_slice($apps,2);
 		foreach($apps as $k) {
 			$cfg=ROOT.APPS_FOLDER.".trash/".$k."/apps.cfg";
 			if(file_exists($cfg)) {
@@ -275,7 +316,7 @@ switch($_REQUEST["action"]) {
         return;
       }
       
-      $newAppPath = ROOT.APPS_FOLDER.".trash/".$newApp;
+      $newAppPath = ROOT.APPS_FOLDER.".archive/".$newApp;
       
       copyFolder($oldPath,$newAppPath);
       
@@ -294,11 +335,22 @@ switch($_REQUEST["action"]) {
     }
     break;
   case "restoreApp":
+    if(!isset($_POST['panel'])) {
+        $_POST['panel'] = "trashedapps";
+    }
+    switch($_POST['panel']) {
+        case "trashedapps":
+            $_POST['panel'] = ".trash";
+            break;
+        case "archivedapps":
+            $_POST['panel'] = ".archive";
+            break;
+    }
     if(isset($_POST['app'])) {
       if(!isset($_POST['type'])) $_POST['type'] = 1;
       $app=$_POST['app'];unset($_POST['app']);
       
-      $oldPath = ROOT.APPS_FOLDER.".trash/".$app;
+      $oldPath = ROOT.APPS_FOLDER.$_POST['panel']."/".$app;
       if(!file_exists($oldPath) || !is_dir($oldPath)) {
         echo "Archived App does not exist.";
         return;
@@ -319,10 +371,10 @@ switch($_REQUEST["action"]) {
       }
       
       switch($_POST['type']) {
-        case 1://restore and keep
-          break;
-        case 2://restore and clear
+        case 1://restore and clear
           deleteFolder("{$oldPath}/");
+          break;
+        case 2://restore and keep
           break;
       }
       
@@ -332,37 +384,73 @@ switch($_REQUEST["action"]) {
     }
     break;
   case "deleteApp":
-    if(isset($_POST['app'])) {
-      $app=$_POST['app'];unset($_POST['app']);
-      
-      $appPath = ROOT.APPS_FOLDER.".trash/".$app."/";
-      if(!file_exists($appPath) || !is_dir($appPath)) {
-        echo "Archived App does not exist.";
-        return;
-      }
-      deleteFolder($appPath);
-      if(file_exists($appPath)) {
-        echo "Error deleting app<br>May be app is readonly";
-      } else {
-        $appNew = explode("_T",$app);
-        $appNew = $appNew[0];
-        
-        $appPath1 = ROOT.APPS_FOLDER.$appNew;
-        if(!is_dir($appPath1)) {
-          deleteAppConfig("db",$appNew);
-          deleteAppConfig("cache",$appNew);
-          deleteAppConfig("message",$appNew);
-          deleteAppConfig("fs",$appNew);
-          deleteAppConfig("errorlogs",$appNew);
-          deleteAppConfig("services",$appNew);
-          
-          echo "{$app} Deleted successfully<br>Also removed related configurations";
-        } else {
-          echo "{$app} Deleted successfully<br>But config was not deleted as its being used by other app";
-        }
-      }
-    } else {
-      echo "Delete command structure error";
+    if(!isset($_POST['panel'])) {
+        $_POST['panel'] = "archivedapps";
+    }
+    switch($_POST['panel']) {
+        case "trashedapps":
+            if(isset($_POST['app'])) {
+              $app=$_POST['app'];unset($_POST['app']);
+              
+              $appPath = ROOT.APPS_FOLDER.".trash/$app/";
+              if(!file_exists($appPath) || !is_dir($appPath)) {
+                echo "Archived App does not exist.";
+                return;
+              }
+              deleteFolder($appPath);
+              if(file_exists($appPath)) {
+                echo "Error deleting app<br>May be app is readonly";
+              } else {
+                $appNew = explode("_T",$app);
+                $appNew = $appNew[0];
+                
+                $appPath1 = ROOT.APPS_FOLDER.$appNew;
+                if(!is_dir($appPath1)) {
+                  deleteAppConfig("db",$appNew);
+                  deleteAppConfig("cache",$appNew);
+                  deleteAppConfig("message",$appNew);
+                  deleteAppConfig("fs",$appNew);
+                  deleteAppConfig("errorlogs",$appNew);
+                  deleteAppConfig("services",$appNew);
+                  
+                  echo "{$app} Deleted successfully<br>Also removed related configurations";
+                } else {
+                  echo "{$app} Deleted successfully<br>But config was not deleted as its being used by other app";
+                }
+              }
+            } else {
+              echo "Delete command structure error";
+            }
+            break;
+        case "archivedapps":
+            if(isset($_POST['app'])) {
+              $app=$_POST['app'];unset($_POST['app']);
+              $newApp = $app."_T".time();//.ceil(rand(1000,9999));
+              
+              $oldPath = ROOT.APPS_FOLDER.".archive/".$app;
+              if(!file_exists($oldPath) || !is_dir($oldPath)) {
+                echo "Source App does not exist.";
+                return;
+              }
+              
+              $newAppPath = ROOT.APPS_FOLDER.".trash/".$newApp;
+              
+              copyFolder($oldPath,$newAppPath);
+              
+              if(!is_dir($newAppPath) || !is_file($newAppPath."/apps.cfg")) {
+                echo "Error moving to trash";
+                return;
+              }
+              deleteFolder("{$oldPath}/");
+              if(file_exists($oldPath)) {
+                echo "{$app} Move to Trash successfully but could not be removed from apps folder<br>May be app is readonly";
+              } else {
+                echo "{$app} Move to Trash successfully";
+              }
+            } else {
+              echo "Trash command structure error";
+            }
+            break;
     }
     break;
   

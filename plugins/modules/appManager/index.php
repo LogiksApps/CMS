@@ -1,6 +1,10 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
 
+if(!checkRootAccess()) {
+    return;
+}
+
 loadModule("pages");
 
 function pageContentArea() {
@@ -54,6 +58,7 @@ printPageComponent(false,[
 			"loadLocalApps"=>["title"=>"Installed","align"=>"right","class"=>"active"],
 			"loadAppImages"=>["title"=>"New Apps","align"=>"right"],
             "loadArchived"=>["title"=>"Archived","align"=>"right"],
+            "loadTrashed"=>["title"=>"Trash","align"=>"right"],
 		
 		    "reloadListUICache"=>["icon"=>"<i class='fa fa-retweet'></i>","tips"=>"Recache data"],
 			"reloadListUI"=>["icon"=>"<i class='fa fa-refresh'></i>"],
@@ -69,6 +74,11 @@ printPageComponent(false,[
 		"contentArea"=>"pageContentArea"
 	]);
 ?>
+<style>
+#appTable tr td.actions {
+    white-space: nowrap;
+}
+</style>
 <script id="appRowTemplate" type="text/x-handlebars-template">
 	{{#each apps}}
 	<tr class='{{#if readonly}}danger{{/if}}' refid='{{appkey}}' uuid='{{uuid}}'>
@@ -81,7 +91,7 @@ printPageComponent(false,[
 		<td>{{status}}</td>
 		<td>{{devmode}}</td>
 		<td>{{access}}</td>
-		<td>
+		<td class='actions'>
 			<i class="fa fa-pencil cmdAction pull-left" cmd="editApp" appkey="{{appkey}}" title="Edit App"></i>
       <i class="fa fa-gear cmdAction pull-left" cmd="configureApp" appkey="{{appkey}}" title="Configure App"></i>
       
@@ -107,7 +117,27 @@ printPageComponent(false,[
 		<td>{{status}}</td>
 		<td>{{devmode}}</td>
 		<td>{{access}}</td>
-		<td>
+		<td class='actions'>
+      <i class="fa fa-undo cmdAction pull-left" cmd="restoreApp" appkey="{{appkey}}" title="Restore Archived App"></i>
+      
+      {{{actionBtns this}}}
+		</td>
+	</tr>
+	{{/each}}
+</script>
+<script id="trashedRowTemplate" type="text/x-handlebars-template">
+	{{#each apps}}
+	<tr class='{{#if readonly}}danger{{/if}}' refid='{{appkey}}' uuid='{{uuid}}'>
+		<th>{{@index}}</th>
+		<td>{{title}}</td>
+		<td>{{appkey}}</td>
+		<td>{{vers}}</td>
+		<td>{{router}}</td>
+		<td>{{published}}</td>
+		<td>{{status}}</td>
+		<td>{{devmode}}</td>
+		<td>{{access}}</td>
+		<td class='actions'>
       <i class="fa fa-undo cmdAction pull-left" cmd="restoreApp" appkey="{{appkey}}" title="Restore Archived App"></i>
       
       {{{actionBtns this}}}
@@ -129,7 +159,7 @@ printPageComponent(false,[
 		<td>{{descs}}</td>
 		<td>{{installed}}</td>
 		<td>{{release_updated}}</td>
-		<td>
+		<td class='actions'>
       <i class="fa fa-info-circle fa-2x pull-right cmdAction pull-left" cmd="appimageInfo" appkey="{{refid}}" title="View and install this app"></i>
       
       <a href="{{homepage}}" target=_blank class="pull-left fa fa-external-link" title="Checkout homepage"></a>

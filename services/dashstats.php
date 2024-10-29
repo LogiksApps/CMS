@@ -16,12 +16,12 @@ function _service_system_stats() {
                 // "subtext"=> "Since Last Month"
             ],
             [
-                "title"=> "Users",
-                "icon"=> "fas fa-users",
-                "stats"=> getDBRecordsCount("lgks_users", true, ["blocked"=>"false"]),
-                // "status"=> "xxx",
+                "title"=> "Widgets",
+                "icon"=> "fas fa-cubes",
+                "stats"=> getFileCountInDir(CMS_APPROOT."plugins/widgets/") ."/". getFileCountInDir(CMS_APPROOT."pluginsDev/widgets/"),
+                // "status"=> "increase",
                 // "subtext_stats"=> "3.48%",
-                "subtext"=> "Total Active Users"
+                "subtext"=> "App Widgets/Dev Widgets"
             ],
             [
                 "title"=> "Modules",
@@ -38,6 +38,14 @@ function _service_system_stats() {
                 // "status"=> "decrease",
                 // "subtext_stats"=> "3.48%",
                 "subtext"=> "App Tables"
+            ],
+            [
+                "title"=> "Users",
+                "icon"=> "fas fa-users",
+                "stats"=> getDBRecordsCount("lgks_users", true, ["blocked"=>"false"]),
+                // "status"=> "xxx",
+                // "subtext_stats"=> "3.48%",
+                "subtext"=> "Total Active Users"
             ],
             [
                 "title"=> "Sessions",

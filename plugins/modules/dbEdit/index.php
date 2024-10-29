@@ -54,8 +54,6 @@ printPageComponent(false,[
 // 			"dbTools"=>["icon"=>"<i class='fa fa-database'></i>","tips"=>"Additional Tools","align"=>"right"],
 			//routines, events, triggers, 
 			//designer
-
-			
 			
 			
 			"createNew"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New Object"],//Tables,Views,Triggers,etc.
@@ -63,7 +61,7 @@ printPageComponent(false,[
      		"importData"=>["icon"=>"<i class='fa fa-download'></i>","tips"=>"Import Data"],
 			['type'=>"bar"],
 			//"saveSchema"=>["icon"=>"<i class='fa fa-file-export'></i>","tips"=>"Save Schema to SQL Folder usefull for migration scripts"],
-			"migrateSchema"=>["icon"=>"<i class='fa fa-angle-double-right'></i>","tips"=>"Compare and import schema changes and data from schema"],
+			"migrateSchema"=>["icon"=>"<i class='fa fa-database'></i>","tips"=>"Compare and import schema changes and data from schema"],
 			"dbDiff"=>["icon"=>"<i class='fa fa-not-equal'></i>","tips"=>"Compare Databases and generate Alter Query"],
 			
 			['type'=>"bar"],
@@ -110,10 +108,10 @@ function saveSchema() {
 		lgksAlert(txt);
 	});
 }
-function migrateSchema() {
-    parent.openLinkFrame("Migrator", _link("modules/migrator"), true);
-}
 function dbDiff() {
-    parent.openLinkFrame("Migrator", _link("modules/dbDiff"), true);
+    parent.openLinkFrame("DBDiff", _link("modules/dbDiff"), true);
+}
+function migrateSchema() {
+    parent.openLinkFrame("Migrator", _link("modules/dbMigrator")+"&dkey="+dkey, true);
 }
 </script>

@@ -14,6 +14,6 @@
     "weight": 500,
     "onmenu": true,
     "blocked": false,
-    "rules": "module#logBook",
+    "rules": "module#redirector",
     "guid": "global"
 }
