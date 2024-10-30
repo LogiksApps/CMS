@@ -57,7 +57,7 @@ foreach($fs2 as $f) {
     		</div>
     		<div class='col-md-6'>
     		    <div class='row'>
-    		        <p class='alert alert-danger' style='padding: 10px 30px;'>This process will add/remove columns from the existing system based on selected migration rules. <b>This is not reversable.</b></p>
+    		        <p class='alert alert-danger' style='padding: 10px 30px;'>This process will add/remove columns from the existing system based on selected migration rules. <b>This is not reversable.<br><br>Data migration is not supported yet.</b></p>
     		    </div>
     		    <br><br><br><br>
     		    <div class='text-center'>
@@ -97,7 +97,7 @@ function startMigration() {
     }
     lgksConfirm("Are you sure about starting Migration Process?<br><b>This is not reversible</b>", "Start Migration", function(ans) {
         if(ans) {
-            lgksLoader("Running Migration");
+            lgksLoader("Running Migration, This may take some time");
             processAJAXPostQuery(_service("dbMigrator", "migrate"),"mod="+$("#target").val()+"&vers="+$("#version").val(), function(data) {
                 lgksLoaderHide();
                 lgksAlert(data.Data);

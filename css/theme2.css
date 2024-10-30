@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');*/
 @import url('fonts.css');
-
-
 
 body{
    font-family: 'Mulish', sans-serif;
@@ -356,8 +354,7 @@ body.no_sidebar button#leftMenuOpen {
     border: 1px solid #ddd;
     font-size: 13px;
 }
-body.no_sidebar button#leftMenuOpen .fi-rr-bars-staggered:before{
-    
+body.no_sidebar button#leftMenuOpen .fi-rr-bars-staggered:before {
     content: "\f134";
 }
 body.no_sidebar #header .navbar-header{
@@ -369,14 +366,21 @@ i.fa.fa-cloud-upload:after {
     content: "\f093";
 }
 
-
 .btn-primary {
     background-color: #08a183;
     border-color: #217d6b;
 }
 
+.btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary {
+    background-color: #05483b;
+    border-color: #217d6b;
+}
+
 #header i.fa, #header i.glyphicon {
     color: #186565;
+}
+#sidebarPane h3 {
+    color: white;
 }
 
 .pageCompToolBar .navbar-collapse {
@@ -385,6 +389,9 @@ i.fa.fa-cloud-upload:after {
 }
 .pageCompToolBar .navbar-collapse a {
     color: white !important;
+}
+.pageCompToolBar .navbar-collapse ul.dropdown-menu a {
+    color: black !important;
 }
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
     background: linear-gradient(to bottom, #388b87 0%, #186565 100%);
