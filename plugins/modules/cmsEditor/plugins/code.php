@@ -70,7 +70,9 @@ if($_REQUEST['ext']=="inc") {
 	|
 	<a href="#" class="btn" cmd="history" title="History of file"><i class="icon fa fa-clock-o"></i></a>
 	<a href="#" class="btn" cmd="save" title="Save"><i class="icon fa fa-save"></i></a>
-  <a href="#" class="btn" cmd="beautify" title="Format"><i class="icon fa fa-code"></i></a>
+    <a href="#" class="btn" cmd="beautify" title="Format"><i class="icon fa fa-code"></i></a>
+    |
+    <a href="#" class="btn" cmd="aicloud" title="Generate Code"><i class="icon fa fa-robot"></i></a>
 	<input name='fname' style='width:40%;' value='<?=$_REQUEST['src']?>' data-original='<?=$_REQUEST['src']?>' />
 	<?php
 		foreach ($toolbarTools as $key => $value) {
@@ -179,7 +181,7 @@ $(function() {
 	$("#editorToolbar .themelist li[rel='"+editorConfig.theme+"']").addClass("active");
 
 	initAutocompletion(editor);
-	addCustomCommands(editor);
+	addCustomCommands(editor, "code");
 
 	lx=_service("cmsEditor")+"&action=getsrc&src=<?=$_REQUEST['src']?>";
 	processAJAXQuery(lx,function(txt) {
@@ -224,11 +226,14 @@ function doEditorAction(cmd,src) {
 
 		break;
 		case "beautify":
-      if(beautify!=null && editor!=null) {
-        dx = editor.getFirstVisibleRow()+2;
-        beautify.beautify(editor.session);
-        editor.scrollToRow(dx);
-      }
+          if(beautify!=null && editor!=null) {
+            dx = editor.getFirstVisibleRow()+2;
+            beautify.beautify(editor.session);
+            editor.scrollToRow(dx);
+          }
+		break;
+		case "aicloud":
+		    lgksAlert("Coming Soon");
 		break;
 		case "checkerror":
 
@@ -327,6 +332,7 @@ function loadFavLangs() {
 	    if(favLangs) favLangs = JSON.parse(favLangs);
 	    else favLangs = [];
 	    
+	    $("#editorToolbar .dropdown-menu.langlist>span.fav").html("");
 	    $.each(favLangs, function(a,b) {
             var ttl = toTitle(b);
             if(ttl.length<=4) ttl = ttl.toUpperCase();

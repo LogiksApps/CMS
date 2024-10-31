@@ -11,7 +11,7 @@
     "site": "cms",
     "device": "*",
     "privilege": "root",
-    "weight": 20,
+    "weight": 21,
     "onmenu": true,
     "blocked": false,
     "rules": "module#credsPrivileges",

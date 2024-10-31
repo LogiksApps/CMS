@@ -1,0 +1,21 @@
+{
+	"title":"Build Code",
+	"descs":"Build Code, Indexes etc",
+	"photo":false,
+	"author":{
+		"name":"Bismay Kumar",
+		"email":"bismay4u@gmail.com"
+	},
+	"market":{
+
+	},
+	"type":"php",
+	"source":"build_code",
+	"params":{
+		"autoOpen":true,
+		"spanClass":"span_1",
+		"style":"",
+		"styleContent":"text-align:center;",
+		"noheader":false
+	}
+}

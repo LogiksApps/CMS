@@ -13,7 +13,7 @@
 	"site":"",
 	"device":"",
 	"privilege":"",
-	"weight":"",
+	"weight":23,
 	"onmenu":true,
 	"blocked":false,
 	"rules":"module#securityPolicies"

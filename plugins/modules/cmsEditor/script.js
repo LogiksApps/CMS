@@ -36,17 +36,25 @@ function setupEditorConfig(aceEditor,ext) {
 	aceEditor.setReadOnly(true);
 }
 
-function initAutocompletion(aceEditor) {
+function initAutocompletion(aceEditor, editorType) {
 	aceEditor.completers.push({
 		    getCompletions: function(editor, session, pos, prefix, callback) {
-		      	var wordList = ["foo", "bar", "baz"];
-		        callback(null, wordList.map(function(word) {
-		            return {
-		                caption: word,
-		                value: word,
-		                meta: "static"
-		            };
-		        }));
+		      //  console.log("INTELISENSE", editor, session, pos, prefix);  
+		        processAJAXPostQuery(_service("cmsEditor", "intellisense"), `lang=${editor.session.getMode().$id}&src=${srcFile}&context=${prefix}`, function(data) {
+		            if(data.Data==null) data.Data = [];
+		            
+		            callback(null, data.Data);
+		        }, "json");
+		        
+		        
+		      //	var wordList = ["foo", "bar", "baz"];
+		      //  callback(null, wordList.map(function(word) {
+		      //      return {
+		      //          caption: word,
+		      //          value: word,
+		      //          meta: "static"
+		      //      };
+		      //  }));
 		    }
 		  });
 

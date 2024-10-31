@@ -123,5 +123,54 @@ switch ($_REQUEST['action']) {
 			printServiceErrorMsg("ERROR","Source File Not Defined.");
 		}
 		break;
+	
+	case "intellisense":
+	    if(!isset($_POST['lang'])) $_POST['lang'] = "ace/mode/php";
+	    if(!isset($_POST['src'])) $_POST['src'] = ".";
+	    if(!isset($_POST['context'])) {
+	        printServiceMsg([]);
+	        exit();
+	    }
+	    
+	    $lang = explode("/", $_POST['lang']);
+	    $lang = strtolower(end($lang));
+	    
+	    $codeSuggestion = [];
+	    
+	    switch($lang) {
+            case "php":
+                loadModuleLib("codeIndexer", "api");
+	            $results1 = searchCodeIndex($_POST['context'], "core");
+	            $results2 = searchCodeIndex($_POST['context'], CMS_SITENAME);
+	            
+	            foreach($results2 as $k=>$code) {
+	                $codeSuggestion[] = [
+	                    "caption"=> $k,
+                        "value"=> $k,
+                        "meta"=> CMS_SITENAME
+	                    ];
+	            }
+	            foreach($results1 as $k=>$code) {
+	                $codeSuggestion[] = [
+	                    "caption"=> $k,
+                        "value"=> $k,
+                        "meta"=> "logiks"
+	                    ];
+	            }
+	            break;
+            case "javascript":
+                break;
+            case "css":
+                break;
+            case "html":
+                break;
+            case "jsx":
+                break;
+            case "json":
+                break;
+	    }
+	    
+	    printServiceMsg($codeSuggestion);
+	    break;
 }
 ?>

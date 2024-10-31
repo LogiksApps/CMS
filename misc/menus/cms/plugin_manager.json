@@ -11,7 +11,7 @@
     "site": "cms",
     "device": "*",
     "privilege": "root",
-    "weight": "400",
+    "weight": 51,
     "onmenu": true,
     "blocked": false,
     "rules": "module#pluginManager",
