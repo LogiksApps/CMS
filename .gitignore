@@ -6,5 +6,7 @@
 z/
 logs/
 
+config/logiksAI.cfg
+
 .project
 .DS_Store

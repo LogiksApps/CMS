@@ -39,10 +39,28 @@ $(function() {
             }
         });
   });
+  
+  $(".sidebarMenu .panel .panel-body a").click(function() {
+      $("body").removeClass("no_sidebar");
+  });
 
   $('[data-toggle="tooltip"]').tooltip();
 
   $('#sidebarMenuTree').metisMenu();
+  
+  if($("#sidebarAccordion").length>0) {
+        $("body").addClass("opend");
+        
+        $("body").delegate("#sidebarAccordion .mainTitle a[aria-expanded='true']", "click", function(e){
+                setTimeout(function () {
+                    $("body").removeClass("opend")
+                }, 400);
+            });
+            
+        $("body").delegate("#sidebarAccordion .mainTitle a[aria-expanded='false']", "click", function(e){
+            $("body").addClass("opend")
+        });
+    }
 });
 
 //Loads the correct sidebar on window load,
@@ -136,13 +154,6 @@ $.fn.extend({
     }
 });
 
-function openEStore() {
-    openLinkFrame("eStore", _link("modules/estore"), true);
-}
-function openCMSTodos() {
-    openLinkFrame("Todos", _link("modules/devTodos"), true);
-}
-
 function dataInfo(type, val) {
   //console.log(type+" "+val);
   type=type.split("-");
@@ -174,7 +185,22 @@ function hideLoader(){
 	$("body .loader_bg").detach();
 }
 
+function openEStore() {
+    openLinkFrame("eStore", _link("modules/estore"), true);
+}
+function openCMSTodos() {
+    openLinkFrame("Todos", _link("modules/devTodos"), true);
+}
+function openCodeSearch() {
+    openLinkFrame("Search", _link("modules/codeSearch"), true);
+}
 
-$(".sidebarMenu .panel .panel-body a").click(function() {
-      $("body").removeClass("no_sidebar");
-  });
+//Tools Section
+function runStudioTools() {
+    // lgksOverlayURL(_link("popup/studioRun/popup"), "Run Tool !", function() {}, {
+    //     "className": "popup"
+    // })
+}
+function loadStudioTools() {
+    
+}

@@ -68,11 +68,11 @@ if($_REQUEST['ext']=="inc") {
 <div id='editorToolbar'>
 	<a href="#" class="btn" cmd="trash" title="Delete"><i class="icon fa fa-trash"></i></a>
 	|
-	<a href="#" class="btn" cmd="history" title="History of file"><i class="icon fa fa-clock-o"></i></a>
+	<a href="#" class="btn" cmd="history" title="History of file"><i class="icon fa fa-clock-o fa-history"></i></a>
 	<a href="#" class="btn" cmd="save" title="Save"><i class="icon fa fa-save"></i></a>
     <a href="#" class="btn" cmd="beautify" title="Format"><i class="icon fa fa-code"></i></a>
-    |
-    <a href="#" class="btn" cmd="aicloud" title="Generate Code"><i class="icon fa fa-robot"></i></a>
+    <a href="#" class="btn" cmd="preview" title="Preview"><i class="icon fa fa-eye"></i></a>
+    
 	<input name='fname' style='width:40%;' value='<?=$_REQUEST['src']?>' data-original='<?=$_REQUEST['src']?>' />
 	<?php
 		foreach ($toolbarTools as $key => $value) {
@@ -83,6 +83,7 @@ if($_REQUEST['ext']=="inc") {
 	?>
 	<div class='pull-right'>
 		<!-- <a href='#' class='btn' cmd='settings'><i class='icon fa fa-cog'></i></a> -->
+		<a href="#" class="btn" cmd="aicloud" title="Generate Code" class='float-right'><i class="icon fa fa-comments"></i></a>
 		<div class="btn-group">
 		  <button type="button" class="btn btn-default dropdown-toggle"
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,7 +105,7 @@ if($_REQUEST['ext']=="inc") {
 		  		echo "</span><hr><span class='general'>";
 		  		foreach ($fsLang as $fx) {
 		  			$fx=str_replace(".js","",$fx);
-		  			if(in_array($fx, $favLang)) continue;
+		  			//if(in_array($fx, $favLang)) continue;
 		  			if(strlen($fx)<=3) $ttl=strtoupper($fx);
 		  			else $ttl=toTitle($fx);
 		  			if(strtoupper($_REQUEST['ext'])==strtoupper($fx)) {
@@ -145,15 +146,21 @@ if($_REQUEST['ext']=="inc") {
 		<ul class="list-group"></ul>
 	</div>
 </aside>
+<aside id='aiChat' class='aiChat hidden'>
+    <?php
+        include_once __DIR__."/comps/aichat.php";
+    ?>
+</aside>
 <script>
 var favLangs = [];
 var langTools = ace.require("ace/ext-language_tools");
 var beautify = ace.require("ace/ext/beautify");
 var editor = ace.edit("editor");
 var srcFile = "<?=$_REQUEST['src']?>";
+const extLang = "<?=$_REQUEST['ext']?>";
 var defaultEditorConfig={
 		"theme":"<?=$_REQUEST['theme']?>",
-		"fontsize":'12px',
+		"fontsize":'11px',
 		"tabsize":4,
 		"showPrintMargin":false,
 		"highlightActiveLine":true,
@@ -232,8 +239,11 @@ function doEditorAction(cmd,src) {
             editor.scrollToRow(dx);
           }
 		break;
+		case "preview":
+		    showPreview();
+		break;
 		case "aicloud":
-		    lgksAlert("Coming Soon");
+		    openAIChat();
 		break;
 		case "checkerror":
 
@@ -352,5 +362,11 @@ function addFavLangs(lang) {
         if(ttl.length<=4) ttl = ttl.toUpperCase();
         $("#editorToolbar .dropdown-menu.langlist>span.fav").append(`<li cmd='language' rel='${lang}' ><a href='#'>${ttl}</a></li>`);
     }
+}
+function openAIChat() {
+    $("#aiChat").toggleClass("hidden");
+}
+function showPreview() {
+    lgksAlert("Coming Soon !!!");
 }
 </script>

@@ -1,6 +1,8 @@
 {
     "title": "Plugin Manager",
-    "mode": "*",
+    "modes": [
+        "logiks-webapp"
+    ],
     "category": "",
     "menugroup": "System",
     "class": "",

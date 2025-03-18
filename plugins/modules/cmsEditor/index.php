@@ -90,6 +90,9 @@ switch($editType) {
 //printArray($_REQUEST);
 ?>
 <style>
+    #editorToolbar .open>.dropdown-menu {
+        background-color: white;
+    }
     @media(max-width:767px){
         .ace_editor{
                 display: none;

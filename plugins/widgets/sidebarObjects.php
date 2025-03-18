@@ -82,9 +82,7 @@ echo _js(["jquery.contextMenu"]);//,"sidebarFiles"
     line-height: 20px;
 }
 </style>
-<div id='searchField' class="searchField hidden d-none">
-    <input type='text' placeholder='Search files' />
-</div>
+<h3 class='heading'>Objects</h3>
 <div id="sidebarSourceTree" class='sidebarTree' basepath='/'>
     <div class="panel-group">
 <?php

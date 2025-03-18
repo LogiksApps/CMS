@@ -440,11 +440,14 @@ function folderEvents(cmd, eleTag, opts) {
 function loadFileTree(file) {
     $('#sidebarFileTree').html("<div class='ajaxloading ajaxloading8'></div>");
     lx = _service("files") + "&action=" + listFileMode + "&format=json";
+    if($('#sidebarFileTree').attr("basepath")!=null) {
+        lx += "&basepath="+$('#sidebarFileTree').attr("basepath");
+    }
     processAJAXQuery(lx, function(txt) {
         try {
             json = $.parseJSON(txt);
             $('#sidebarFileTree').html("");
-            loadFileTreeObj(json.Data, "/");
+            loadFileTreeObj(json.Data, $('#sidebarFileTree').attr("basepath"), $('#sidebarFileTree').attr("basepath"));
             $('#sidebarFileTree').treed({
                 openedClass: 'glyphicon-folder-open',
                 closedClass: 'glyphicon-folder-close'
@@ -457,29 +460,35 @@ function loadFileTree(file) {
     });
 }
 
-function loadFileTreeObj(obj, basePath) {
+function loadFileTreeObj(obj, basePath, originalBasePath) {
+    if(basePath==null) basePath = "/";
+    if(originalBasePath==null) originalBasePath = "/";
+    
 //     if (hiddenFolders.indexOf(basePath) >= 0) return;
+    var htmlTemp = "";
     $.each(obj, function(k, v) {
         if ((typeof v) == "object") {
             newBasePath = basePath + k + "/";
 //             if (hiddenFolders.indexOf(newBasePath) >= 0) return;
             html = "<li class='folder' basepath='" + newBasePath + "'><i class='indicator glyphicon glyphicon-folder-close'></i>" + k + "<ul></ul></li>";
-            if (basePath.length > 1) {
+            if (basePath.length > originalBasePath.length) {
                 $("#sidebarFileTree li[basepath='" + basePath + "']>ul").prepend(html);
             } else {
                 $('#sidebarFileTree').append(html);
             }
 
-            loadFileTreeObj(v, newBasePath);
+            loadFileTreeObj(v, newBasePath, originalBasePath);
         } else {
             html = "<li class='file' basepath='" + basePath + "' filepath='" + ((basePath + "/" + v).replace("//", "/")) + "'><i class='indicator glyphicon glyphicon-file'></i><span>" + v + "</span></li>";
-            if (basePath.length > 1) {
+            if (basePath.length > originalBasePath.length) {
                 $("#sidebarFileTree li[basepath='" + basePath + "']>ul").prepend(html);
             } else {
-                $('#sidebarFileTree').append(html);
+                // $('#sidebarFileTree').append(html);
+                htmlTemp += html;
             }
         }
     });
+    $('#sidebarFileTree').append(htmlTemp);
     $('#sidebarFileTree>li[basepath="/"]').each(function() {
         $('#sidebarFileTree').append(this);
     });

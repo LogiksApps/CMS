@@ -93,7 +93,23 @@ function addCustomCommands(aceEditor) {
     		saveFile();
     	}
     });
-    aceEditor.execCommand("showKeyboardShortcuts");
+    aceEditor.commands.addCommand({
+    	name: "showAIChat",
+    	bindKey: {win: "Ctrl-/", mac: "Ctrl-/"},
+    	exec: function(editor) {
+            openAIChat();
+    	}
+    });
+    aceEditor.commands.addCommand({
+    	name: "showPreview",
+    	bindKey: {win: "Ctrl-p", mac: "Ctrl-p"},
+    	exec: function(editor) {
+            showPreview();
+    	}
+    });
+    
+    //aceEditor.execCommand("showKeyboardShortcuts");
+    // openAIChat();
 }
 
 

@@ -9,7 +9,8 @@ if(!file_exists($siteCfg) || !array_key_exists($_REQUEST['forSite'], $_SESSION['
 	echo "<h2 align=center><a href='{$lx}'>Goto Default CMS Home Page</a></h2>";
 	exit();
 }
-_pageConfig("BODY_CLASS","class='toppage home'");
+_pageConfig("BODY_CLASS","class='toppage modeditor'");
+
 _pageConfig("forSite",$_REQUEST['forSite']);
 _pageConfig("siteList",_session("siteList"));
 _pageVar("SESS_USER_NAME",_session("SESS_USER_NAME"));
@@ -21,5 +22,5 @@ if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "electron")) {
     _pageVar("IS_ELECTRON", false);
 }
 
-_pageVar("DASHBOARD_MODULE", "dashboard");
+_pageVar("DASHBOARD_MODULE", "moduleDashboard");
 ?>

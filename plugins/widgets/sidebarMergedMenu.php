@@ -11,7 +11,7 @@ $menuTree3=generateNavigationFromDB("apps","links","core");
 
 $menuTree4=generateNavigationFromDir(APPROOT."misc/menus/apps/","core");
 
-if(CMS_SITENAME!="cms") {
+if(CMS_SITENAME!="cms" && CMS_SITENAME!="studio") {
   $menuTree5=generateNavigationFromDir(CMS_APPROOT."misc/menus/cms/","core");
 } else {
   $menuTree5=[];
@@ -34,8 +34,16 @@ foreach($menuTree as $a=>$group) {
 usort($generalGroup, "sortMenuByWeight");
 
 function sortMenuByWeight($a, $b) {
-    if(!isset($a['weight']) || strlen($a['weight'])<=0) $a['weight']=100;
-    if(!isset($b['weight']) || strlen($b['weight'])<=0) $b['weight']=100;
+    if(!isset($a['weight'])) {
+      if(is_string($a['weight']) && strlen($a['weight'])<=0) $a['weight']=100;
+      elseif(is_array($a['weight'])) $a['weight']=[0];
+      else $a['weight']=100;
+    }
+    if(!isset($b['weight'])) {
+      if(is_string($b['weight']) && strlen($b['weight'])<=0) $b['weight']=100;
+      elseif(is_array($b['weight'])) $b['weight']=[0];
+      else $b['weight']=100;
+    }
     
     $a['weight'] = (int)$a['weight'];
     $b['weight'] = (int)$b['weight'];
@@ -77,6 +85,7 @@ foreach($menuTree as $k=>$menuSet) {
   right: 0px;
 }
 </style>
+<h3 class='heading'>Studio</h3>
 <div id='sidebarMenu' class="panel-group sidebarMenu" role="tablist" aria-multiselectable="true">
   <?php
     foreach ($menuTree as $category=>$menuSet) {
@@ -95,6 +104,12 @@ foreach($menuTree as $k=>$menuSet) {
       echo "    <div class='panel-body'>";
       
       foreach ($menuSet as $key => $menu) {
+        if(isset($menu['modes'])) {
+            if(!is_array($menu['modes'])) $menu['modes'] = explode(",", $menu['modes']);
+            if(!in_array(getAppType(), $menu['modes'])) {
+                continue;
+            }
+        }
         $more=[];
         if($menu['target']!=null && strlen($menu['target'])>0) {
           $more[]="target='{$menu['target']}'";

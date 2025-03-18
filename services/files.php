@@ -9,6 +9,7 @@ $_ENV['HIDDEN']=[
 	];
 $_ENV['NOSCAN']=[
         "usermedia",
+        "node_modules",
 		"tmp",
 		"temp",
 		".git",
@@ -21,8 +22,13 @@ switch ($_REQUEST['action']) {
 	case 'listFiles':
 		if(checkUserRoles("FILES","LIST")) {
 			loadHelpers("files");
+			
+			if(!isset($_GET['basepath'])) $_GET['basepath'] = "/";
+			
+			if(substr($_GET['basepath'],0,1)!="/") $_GET['basepath'] = "/{$_GET['basepath']}";
 
-			$APPPATH=ROOT.APPS_FOLDER.$_GET['forsite']."/";
+            $APPPATH=ROOT.APPS_FOLDER.$_GET['forsite'].$_GET['basepath']."/";
+            
 			printServiceMsg(array_reverse(scanFolderTree($APPPATH)));
 		} else {
 			printServiceMsg([]);

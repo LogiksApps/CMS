@@ -39,6 +39,13 @@ $menuTree=array_merge_recursive($menuTree1,$menuTree2);
       echo "    <div class='panel-body'>";
       
       foreach ($menuSet as $key => $menu) {
+        if(isset($menu['modes'])) {
+            if(!is_array($menu['modes'])) $menu['modes'] = explode(",", $menu['modes']);
+            if(!in_array(getAppType(), $menu['modes'])) {
+                continue;
+            }
+        }
+        
         $more=[];
         if($menu['target']!=null && strlen($menu['target'])>0) {
           $more[]="target='{$menu['target']}'";

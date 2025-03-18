@@ -2,6 +2,7 @@
 if(!defined('ROOT')) exit('No direct script access allowed');
 
 loadModuleLib("logiksIDE", "api");
+$slug = _slug();
 
 $dbKey = "app";
 
@@ -38,14 +39,33 @@ foreach ($db['tables'] as $key=>$tbl) {
 }
 $db['tables']=array_values($db['tables']);
 
-// printArray($db);
+
+
+if(isset($slug['module']) && strlen($slug['module'])>0) {
+    
+    $modName = strtolower($slug['module']);
+    foreach($db as $k=>$objects) {
+        foreach($objects as $k1=>$obj) {
+            $tblMod = strtolower(current(explode("_", $obj)));
+            if($tblMod!=$modName) {
+                unset($db[$k][$k1]);
+            }
+        }
+    }
+    
+    // foreach($db as $k=>$objects) {
+    //     if(count($objects)<=0) {
+    //         if(!in_array($k, ["tables","views"])) {
+    //             unset($db[$k]);
+    //         }
+    //     }
+    // }
+}
 
 echo _css("jquery.contextMenu");
 echo _js(["jquery.contextMenu"]);
 ?>
-<div id='searchField' class="searchField d-none hidden">
-    <input type='text' placeholder='Search tables' />
-</div>
+<h3 class='heading'>Databases</h3>
 <div id="sidebarSourceTree" class='panel-group sidebarMenu'>
     <?php
         foreach ($db as $category=>$dbInfo) {
@@ -58,6 +78,7 @@ echo _js(["jquery.contextMenu"]);
             echo "        $categoryTitle";
             echo "      </a>";
             echo "      <i class='fa fa-angle-right pull-right'></i>";
+            echo "      <span class='label label-warning pull-right'>".count($dbInfo)."</span>";
             echo "    </h4>";
             echo "  </div>";
             echo "  <div id='collapse{$hash}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='$hash'>";

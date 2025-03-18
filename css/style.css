@@ -506,12 +506,12 @@ table tbody {
 #content {
     padding: 10px;
 }
-body.home #content {
+body.toppage #content {
     padding: 0px;
     padding-top: 82px;
     height: 100%;
 }
-body.home #content>ul#myTab {
+body.toppage #content>ul#myTab {
     position: fixed;
     left: 251px;
     right: 0px;
@@ -519,17 +519,17 @@ body.home #content>ul#myTab {
     background: #f8f8f8;
     z-index: 90;
 }
-body.home #content #myTab-content {
+body.toppage #content #myTab-content {
     height: 100%;
     overflow: auto;
 }
-body.home #content #myTab-content>.tab-pane {
+body.toppage #content #myTab-content>.tab-pane {
     height: 100%;
 }
-body.home #content #myTab-content iframe {
+body.toppage #content #myTab-content iframe {
 
 }
-body.home #content {
+body.toppage #content {
     background: url(images/logiks.png) no-repeat center center
 }
 /*.nav-tabs>li>a .closeTab {
@@ -650,7 +650,7 @@ body.home #content {
 }
 
 @media(max-width:800px) {
-    body.home #content>ul#myTab {
+    body.toppage #content>ul#myTab {
         left: 0px;
     }
 
@@ -975,4 +975,10 @@ body.no_sidebar #myTab {
 }
 i.fa.fa-cloud-upload:after {
     content: "\f093";
+}
+
+.noselection, .no-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }

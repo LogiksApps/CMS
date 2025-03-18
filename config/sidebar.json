@@ -1,5 +1,60 @@
 {
-    "sidebars": {
+    "home": {
+        "sidebars": {
+            "merged": {
+                "title": "Studio",
+                "icon": "fa fa-hamburger fa-fw",
+                "src": "sidebarMergedMenu",
+                "enabled": true
+            },
+            "modules": {
+                "title": "Modules",
+                "icon": "fa fa-cube fa-fw",
+                "src": "sidebarModules",
+                "enabled": true,
+                "modes": [
+                    "logiks-webapp"
+                ]
+            },
+            "files": {
+                "title": "Files",
+                "icon": "fa fa-folder fa-fw",
+                "src": "sidebarFiles",
+                "enabled": true,
+                "position": "bottom"
+            },
+            "db": {
+                "title": "Database",
+                "icon": "fa fa-database fa-fw",
+                "src": "sidebarDB",
+                "enabled": true,
+                "position": "bottom"
+            }
+        }
+    },
+    "modeditor": {
+        "sidebars": {
+            "objects": {
+                "title": "Objects",
+                "icon": "fa fa-object-group fa-fw",
+                "src": "sidebarObjects",
+                "enabled": true
+            },
+            "files": {
+                "title": "FS",
+                "icon": "fa fa-folder fa-fw",
+                "src": "sidebarFiles",
+                "enabled": true
+            },
+            "db": {
+                "title": "Database",
+                "icon": "fa fa-database fa-fw",
+                "src": "sidebarDB",
+                "enabled": true
+            }
+        }
+    },
+    "xtra": {
         "cms": {
             "title": "CMS Old",
             "icon": "fa fa-cubes fa-fw",
@@ -11,36 +66,6 @@
             "icon": "fa fa-hamburger fa-fw",
             "src": "sidebarApps",
             "enabled": false
-        },
-        "merged": {
-            "title": "CMS",
-            "icon": "fa fa-hamburger fa-fw",
-            "src": "sidebarMergedMenu",
-            "enabled": true
-        },
-        "files": {
-            "title": "FS",
-            "icon": "fa fa-folder fa-fw",
-            "src": "sidebarFiles",
-            "enabled": true
-        },
-        "modules": {
-            "title": "Mods",
-            "icon": "fa fa-cube fa-fw",
-            "src": "sidebarModules",
-            "enabled": false
-        },
-        "objects": {
-            "title": "Obj",
-            "icon": "fa fa-object-group fa-fw",
-            "src": "sidebarObjects",
-            "enabled": false
-        },
-        "db": {
-            "title": "DB",
-            "icon": "fa fa-database fa-fw",
-            "src": "sidebarDB",
-            "enabled": true
         }
     }
 }

@@ -1,6 +1,10 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
 
+$githubRepos = [
+        "logiks"=>"Logiks/Logiks-Core"
+    ];
+
 define("GITHUB_KEY","TG9naWtzOmZhZGYxOTIzZmU5ODkwMGQ1ZGRmOWYyODg0ZDk3NDMwYjY0ZmM3MjA=");
 
 switch($_REQUEST["action"]) {
@@ -13,21 +17,22 @@ switch($_REQUEST["action"]) {
         break;
     case "search":
         if(!isset($_POST['filters'])) $_POST['filters']="github";
+        if(!isset($_POST['projectType'])) $_POST['projectType']="logiks";
         if(!isset($_POST['lang'])) $_POST['lang']=false;
         if(!isset($_POST['path'])) $_POST['path']=false;
         
-        if(!isset($_POST['term'])) {
+        if(!isset($_POST['term']) || !isset($githubRepos[$_POST['projectType']])) {
             printServiceMsg([]);
         } else {
             $q=$_POST['term'];
             $ans=[];
             switch(strtolower($_POST['filters'])) {
                 case "github":
-                    $ans=searchGithub($q,$_POST['lang']);
+                    $ans=searchGithub($q, $_POST['lang'], $githubRepos[$_POST['projectType']]);
                     break;
                 case "local":case "appsource":
-                    $ans=searchLocal($q,$_POST['lang'],$_POST['path']);
-                    break;
+                    $ans=searchLocal($q, $_POST['lang'], $_POST['path']);
+                    break;  
             }
             if(isset($ans['error'])) {
                 if(is_array($ans['error'])) {
@@ -161,10 +166,12 @@ function searchDirectory($term, $path, $extension=["php","js","css","htm","html"
     $dir = new DirectoryIterator($path);
     $files = array();
 
+    $noSearch = ["vendors", "node_modules"];
+
     $totalFiles = 0;
     foreach ($dir as $file) {
         if (!$file->isDot()) {
-            if(in_array($file->getBasename(),["vendors"]) || substr($file->getBasename(),0,1)==".") {
+            if(in_array($file->getBasename(),$noSearch) || substr($file->getBasename(),0,1)==".") {
                 continue;
             }
             if($file->isDir()) {

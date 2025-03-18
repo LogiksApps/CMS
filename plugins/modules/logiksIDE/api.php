@@ -3,7 +3,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 if(!function_exists("getCompsList")) {
     
-    define("CMS_APPS_TYPE", getApp_PROPS("APPS_TYPE", false, "webapp"));
+    define("CMS_APPS_TYPE", getAppType());//getApp_PROPS("APPS_TYPE", false, "webapp")
     
     function getCompsList() {
         $data = [];
@@ -326,7 +326,11 @@ if(!function_exists("getCompsList")) {
             ];
     }
     
-    
+    function getModuleProps($module) {
+        $props = [];
+        
+        return $props;
+    }
     
     //Utility functions
     function prepareSourceList($basePath, $fs) {

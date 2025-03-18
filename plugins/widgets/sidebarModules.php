@@ -33,17 +33,18 @@ echo _js(["jquery.contextMenu"]);
     margin-left: -10px;
 }
 </style>
-<div id='searchField' class="searchField d-none hidden">
-    <input type='text' placeholder='Search tables' />
-</div>
+<h3 class='heading'>Modules
+    <a class='pull-right' title='Create a new module' onclick='createNewModule()'><i class='fa fa-plus'></i></a>
+</h3>
 <div id="sidebarSourceTree" class='panel-group sidebarMenu'>
     <?php
+        echo "<div class='panel panel-default'>";
         foreach ($moduleList as $category=>$moduleInfo) {
             $categoryTitle = toTitle($category);
             $hash=md5("sidebarMenu".$category);
-            $cat = ($category=="modules-app" || $category=="app")?"app":"";
+            $cat = "";//($category=="modules-app" || $category=="app")?"app":"";
             
-            echo "<div class='panel panel-default'>";
+            // echo "<div class='panel panel-default'>";
             if($cat=="app") {
                 echo "  <div class='panel-heading' role='tab' id='$hash'>";
                 echo "    <h4 class='panel-title'>";
@@ -59,7 +60,8 @@ echo _js(["jquery.contextMenu"]);
                 
                 foreach($moduleInfo as $a=>$b) {
                     $icon = "fa fa-cube";
-                    echo "<a class='module_item' href='#' data-type='{$category}' data-refkey='{$b}'><i class='menuIcon {$icon}'></i>&nbsp; {$b} <label class='label label-danger pull-right'>{$cat}</label></a>";
+                    $link = _link("modeditor/{$b}/{$category}")."&srctype={$category}&src={$b}";
+                    echo "<a class='module_item' href='{$link}' data-type='{$category}' data-refkey='{$b}'><i class='menuIcon {$icon}'></i>&nbsp; {$b} <label class='label label-danger pull-right'>{$cat}</label></a>";
                 }
                 
                 echo "    </div>";
@@ -69,15 +71,17 @@ echo _js(["jquery.contextMenu"]);
             
                 foreach($moduleInfo as $a=>$b) {
                     $icon = "fa fa-cube";
-                    echo "<a class='module_item' href='#' data-type='{$category}' data-refkey='{$b}'><i class='menuIcon {$icon}'></i>&nbsp; {$b} <label class='label label-danger pull-right'>{$cat}</label></a>";
+                    $link = _link("modeditor/{$b}/{$category}")."&srctype={$category}&src={$b}";
+                    echo "<a class='module_item' href='{$link}' data-type='{$category}' data-refkey='{$b}'><i class='menuIcon {$icon}'></i>&nbsp; {$b} <label class='label label-danger pull-right'>{$cat}</label></a>";
                 }
                 
                 echo "    </div>";
             }
-            echo "</div>";
+            // echo "</div>";
         }
+        echo "</div>";
     ?>
-<br><br><br>
+<br>
 </div>
 <script>
 $(function() {
@@ -86,8 +90,13 @@ $(function() {
         var refkey = $(this).data("refkey");
         var title = $(this).text();
         // alert(refkey+" "+type);
-        var lx = _link(`modules/moduleEditor/${refkey}/${type}`)+"&srctype="+type+"&src="+refkey;
-        parent.openLinkFrame("M:"+title, lx, true);
+        //var lx = _link(`modules/moduleEditor/${refkey}/${type}`)+"&srctype="+type+"&src="+refkey;
+        var lx = _link(`modeditor/${refkey}/${type}`)+"&srctype="+type+"&src="+refkey;
+        //parent.openLinkFrame("M:"+title, lx, true);
+        window.location = lx;
     });
 });
+function createNewModule() {
+    lgksAlert("Coming Soon !!!");
+}
 </script>

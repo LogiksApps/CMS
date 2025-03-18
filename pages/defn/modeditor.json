@@ -1,0 +1,15 @@
+{
+    "title": "Module Editor",
+    "description": "",
+    "keywords": "",
+    "robot": "",
+    "slug": "module/mode/action",
+    "template": "default",
+    "css": "style",
+    "js_preload": "",
+    "js_postload": "",
+    "modules_preload": "",
+    "modules_postload": "",
+    "enabled": "true",
+    "access": "private"
+}

@@ -1,39 +1,46 @@
 <?php
 if(!defined('ROOT')) exit('No direct script access allowed');
 //Main Sidebar
+$page = current(explode("/", PAGE));
+// echo $page;
+
+$show_header_title = true;
+$sidebars = [];
 
 $cmsSidebarFile = APPROOT."config/sidebar.json";
-$show_header_title = true;
-
-$sidebars = [
-    "cms"=> [
-        "title"=> "CMS",
-        "icon"=> "fa fa-cubes fa-fw",
-        "src"=> "sidebarMenu"
-    ],
-    "apps"=> [
-        "title"=> "Apps",
-        "icon"=> "fa fa-object-group fa-fw",
-        "src"=> "sidebarApps"    
-    ],
-    "files"=> [
-        "title"=> "Files",
-        "icon"=> "fa fa-folder fa-fw",
-        "src"=> "sidebarFiles"
-    ],
-];
 
 if(file_exists($cmsSidebarFile)) {
     $sidebarsContent = json_decode(file_get_contents($cmsSidebarFile), true);
-    if(isset($sidebarsContent['show_header_title'])) $show_header_title = $sidebarsContent['show_header_title'];
-    if($sidebarsContent && isset($sidebarsContent['sidebars'])) {
-        $sidebars = $sidebarsContent['sidebars'];
+    
+    if($sidebarsContent && isset($sidebarsContent[$page])) {
+        if(isset($sidebarsContent[$page]['show_header_title'])) $show_header_title = $sidebarsContent[$page]['show_header_title'];
+        
+        if(isset($sidebarsContent[$page]['sidebars'])) $sidebars = $sidebarsContent[$page]['sidebars'];
     }
 }
 
 foreach($sidebars as $a=>$b) {
     if(isset($b['enabled']) && $b['enabled']===false) unset($sidebars[$a]);
+    if(isset($b['privileges'])) {
+        if(!in_array($_SESSION['SESS_PRIVILEGE_NAME'], explode(",", $b['privileges']))) {
+            unset($sidebars[$a]);
+        }
+    }
+    if(isset($b['modes']) && $b['modes']!="*") {
+        if(!in_array(getAppType(), $b['modes'])) {
+            unset($sidebars[$a]);
+        }
+    }
+    if(isset($b['module']) && strlen($b['module'])>0) {
+        if(!checkModule($b['module'])) unset($sidebars[$a]);
+    }
 }
+
+if(!$sidebars) {
+    echo "<h5 align=center><br><br><br>No Sidebar Configuration Found</h1>";
+    return;
+}
+
 if(count($sidebars)>3) {
     $show_header_title = false;
 }
@@ -59,7 +66,11 @@ body.home #content>ul#myTab {left: 0px !important;}
 
 // printArray($sidebars);
 $firstOne = array_keys($sidebars)[0];
-?>
+$uiType = "accordion";
+
+switch($uiType) {
+    case "tabbed":
+        ?>
 <ul id="sidebarTab" class="nav nav-tabs nav-justified <?=(count($sidebars)==1)?"hidden d-none":""?>" data-tabs="tabs">
     <?php
         foreach($sidebars as $src=>$srcConfig) {
@@ -94,3 +105,56 @@ $firstOne = array_keys($sidebars)[0];
         }
     ?>
 </div>
+        <?php
+        break;
+    case "accordion":
+        ?>
+<div class="panel-group" id="sidebarAccordion">
+    <?php
+        foreach($sidebars as $src=>$srcConfig) {
+            $icon = $srcConfig['icon'];
+            
+            $panelClass = "";
+            $openClassHeader = "";
+            $openClassBody = "";
+            $areaExpand = "";
+            if($src==$firstOne) {
+                $openClassHeader = " active";
+                // $openClassBody = " in";
+                $areaExpand = "aria-expanded='true'";
+            }
+            if(isset($srcConfig['position']) && $srcConfig['position']=="bottom") {
+                $panelClass = "panel-bottom";
+            }
+            ?>
+            <div class="panel panel-default <?=$panelClass?>">
+                  <div class="panel-heading <?=$openClassHeader?>">
+                    <h4 class="panel-title <?=$openClassHeader?> mainTitle" title='<?=_ling($srcConfig['title'])?>'>
+                      <a data-toggle="collapse" data-parent="#sidebarAccordion" <?=$areaExpand?> href="#collapse-<?=$src?>"><?="<i class='{$icon}'></i>&nbsp;<span>"._ling($srcConfig['title'])."</span>"?></a>
+                    </h4>
+                  </div>
+                  <div id="collapse-<?=$src?>" class="panel-collapse collapse <?=$openClassBody?> mainCollapse">
+                    <div class="panel-body noselect">
+                        <?php
+                            $srcArr = explode(".", $srcConfig['src']);
+                            if(count($srcArr)>1)
+                                loadPluginComponent($srcArr[0], $srcArr[1]);
+                            else
+                                loadWidget($srcConfig['src']);
+                        ?>
+                    </div>
+                  </div>
+            </div>
+            <?php
+        }
+    ?>
+</div>
+<script>
+$(function() {
+    $("#sidebar .panel-heading.active").parent().find(".panel-collapse.mainCollapse").addClass("in");
+});
+</script>
+        <?php
+        break;
+}
+?>

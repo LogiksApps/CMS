@@ -54,12 +54,14 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 }
 .buildCodeTable citie {
     font-family: arial;
-    font-size: 11px;
+    font-size: 10px;
     margin: 10px;
     margin-left: 0px;
     margin-right: 0px;
     font-weight: 600;
     color: #8f8f8f;
+    margin-left: -25px;
+    margin-right: -25px;
 }
 </style>
 <div id='buildCodeTable' class="row1 text-center buildCodeTable">

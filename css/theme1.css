@@ -1,0 +1,59 @@
+#toolsMenu, #header .rightElement, body #header .navbar-brand {
+    display: none;
+}
+
+#header {
+    width: 52px !important;
+}
+body.opend #header {
+    width: 302px !important;
+}
+body:not(.opend) #header .navbar-brand, body:not(.opend) #header .navbar-header:not(.navbar-header-brand) {
+    display: none !important;
+}
+
+.navbar-header .thumbnail {
+    margin-right: 7px;
+}
+#header .btn-sitedropmenu {
+    width: 105px;
+}
+body #header .navbar-header:not(.navbar-header-brand) {
+    float: left;
+    background: transparent;
+    margin-left: 7px;
+}
+body #header .navbar-header-brand {
+    width: 46px !important;
+}
+
+.opend #page-wrapper{
+    /*margin: 0 0 0 320px;*/
+    margin: 0 0 0 301px;
+}
+body.home.opend #content>ul#myTab{
+        left: 320px;
+}
+body.application.opend #content>ul#myTab{
+        left: 320px;
+}
+body.toppage #content>ul#myTab{
+        left: 52px;
+}
+body.toppage.opend #content>ul#myTab{
+        /*left: 320px;*/
+        left: 301px;
+}
+
+
+body.toppage #content>ul#myTab {
+    top: 0px;
+}
+body.toppage #content {
+    padding-top: 32px;
+}
+
+
+.mainCollapse .panel-body {
+    padding: 8px 5px !important;
+}

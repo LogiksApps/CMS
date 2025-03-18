@@ -40,8 +40,8 @@
 }
 
 #pgtoolbar .onOpenEditor.highlight {
-	background: #3c8dbc;
-	color:white;
+	/*background: #3c8dbc;*/
+	/*color:white;*/
 	display: inline-block;
 }
 #toolbtn_editTemplate {display:none;}

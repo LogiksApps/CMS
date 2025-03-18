@@ -106,6 +106,9 @@ if(!function_exists("setupCMSEnviroment")) {
         define("CMS_APPROOT",ROOT.APPS_FOLDER.$forSite."/");
 		define("CMS_SITENAME",$_REQUEST['forsite']);
 		
+		define("STUDIO_APPROOT",ROOT.APPS_FOLDER.$forSite."/");
+		define("STUDIO_SITENAME",$_REQUEST['forsite']);
+		
         $cfgData = ConfigFileReader::LoadFile(CMS_APPROOT."apps.cfg");
         if(isset($cfgData['DEFINE'])) {
             $_SESSION["SITEPARAMS"] = $cfgData['DEFINE'];
@@ -171,7 +174,7 @@ if(!function_exists("setupCMSEnviroment")) {
 		if($maxHist==null || $maxHist<=0) $maxHist=100;
 		
 		$tbl=_dbTable("cache_editor",true);
-		$sql="SELECT id FROM {$tbl} WHERE filepath='{$src}' ORDER BY id DESC LIMIT 1000 OFFSET 50";
+		$sql="SELECT id FROM {$tbl} WHERE filepath='{$src}' ORDER BY id DESC LIMIT 1000 OFFSET 200";
 		$sql="DELETE FROM $tbl WHERE id IN ($sql)";
 		_dbQuery($sql,true);
 		

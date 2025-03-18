@@ -10,7 +10,7 @@
     </div>
     {/if}
     <h1 id="litheader">
-        <img src='media/logos/logiks.png' />
+        <img src='/media/logos/logiks.png' />
         <span> {$APPS_NAME} {$APPS_VERS}</span>
     </h1>
     <div class="inset">
@@ -27,7 +27,9 @@
         <!--  </div>-->
         <!--  <label for="remember">Remember me for 14 days</label>-->
         <!--</div>-->
-        <input class="loginLoginValue" type="hidden" name="service" value="login" />
+        {nocache}
+        <input class="loginLoginValue" type="hidden" name="site" value="{$LOGINSITE}" />
+        {/nocache}
     </div>
     <p class="p-container">
         <input type="submit" name="Login" id="go" value="Submit">
