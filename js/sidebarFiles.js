@@ -449,8 +449,8 @@ function loadFileTree(file) {
             $('#sidebarFileTree').html("");
             loadFileTreeObj(json.Data, $('#sidebarFileTree').attr("basepath"), $('#sidebarFileTree').attr("basepath"));
             $('#sidebarFileTree').treed({
-                openedClass: 'glyphicon-folder-open',
-                closedClass: 'glyphicon-folder-close'
+                openedClass: 'fa-folder-open',
+                closedClass: 'fa-folder'
             });
 
             revealFile(file);
@@ -470,7 +470,7 @@ function loadFileTreeObj(obj, basePath, originalBasePath) {
         if ((typeof v) == "object") {
             newBasePath = basePath + k + "/";
 //             if (hiddenFolders.indexOf(newBasePath) >= 0) return;
-            html = "<li class='folder' basepath='" + newBasePath + "'><i class='indicator glyphicon glyphicon-folder-close'></i>" + k + "<ul></ul></li>";
+            html = "<li class='folder' basepath='" + newBasePath + "'><i class='indicator fa-light fa-folder'></i>" + k + "<ul></ul></li>";
             if (basePath.length > originalBasePath.length) {
                 $("#sidebarFileTree li[basepath='" + basePath + "']>ul").prepend(html);
             } else {
@@ -479,7 +479,7 @@ function loadFileTreeObj(obj, basePath, originalBasePath) {
 
             loadFileTreeObj(v, newBasePath, originalBasePath);
         } else {
-            html = "<li class='file' basepath='" + basePath + "' filepath='" + ((basePath + "/" + v).replace("//", "/")) + "'><i class='indicator glyphicon glyphicon-file'></i><span>" + v + "</span></li>";
+            html = "<li class='file' basepath='" + basePath + "' filepath='" + ((basePath + "/" + v).replace("//", "/")) + "'><i class='indicator fa-light fa-file'></i><span>" + v + "</span></li>";
             if (basePath.length > originalBasePath.length) {
                 $("#sidebarFileTree li[basepath='" + basePath + "']>ul").prepend(html);
             } else {

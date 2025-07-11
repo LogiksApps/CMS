@@ -62,6 +62,18 @@ body.home #content>ul#myTab {left: 0px !important;}
 }
 </style>
 <?php
+} else {
+?>
+<style>
+.sidebarbtn.button-logout {
+    padding: 14px;
+    font-size: 20px;
+    position: absolute;
+    bottom: 0px;
+    cursor: pointer;
+}
+</style>
+<?php
 }
 
 // printArray($sidebars);
@@ -87,6 +99,7 @@ switch($uiType) {
             else
                 echo "<li role='presentation' title='{$title}'><a href='#sidebarTab-{$src}' data-toggle='tab'><i class='{$icon}'></i>&nbsp;"._ling($srcConfig['title'])."</a></li>";
         }
+        echo "<li class='sidebarbtn button-last' role='presentation' title='Logout'><a href='"._link("logout")."'><i class='fa fa-power-off'></i>L</a></li>";
     ?>
 </ul>
 <div id="sidebarPane" class="tab-content noselect">
@@ -147,11 +160,18 @@ switch($uiType) {
             </div>
             <?php
         }
+        echo "<div class='sidebarbtn button-logout' role='presentation' title='Logout'><i class='fa fa-power-off'></i></div>";//<a href='"._link("logout")."'></a>
     ?>
 </div>
 <script>
 $(function() {
     $("#sidebar .panel-heading.active").parent().find(".panel-collapse.mainCollapse").addClass("in");
+    $("#sidebar .sidebarbtn.button-logout").click(a=> {
+        var a = confirm("Do you want to logout this session?");
+        if(a) {
+            window.location = _link("logout.php");
+        }
+    });
 });
 </script>
         <?php

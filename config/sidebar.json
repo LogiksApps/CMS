@@ -3,13 +3,13 @@
         "sidebars": {
             "merged": {
                 "title": "Studio",
-                "icon": "fa fa-hamburger fa-fw",
+                "icon": "fa-thin fa-grid-2 fa-fw",
                 "src": "sidebarMergedMenu",
                 "enabled": true
             },
             "modules": {
                 "title": "Modules",
-                "icon": "fa fa-cube fa-fw",
+                "icon": "fa-thin fa-cube fa-fw",
                 "src": "sidebarModules",
                 "enabled": true,
                 "modes": [
@@ -18,14 +18,14 @@
             },
             "files": {
                 "title": "Files",
-                "icon": "fa fa-folder fa-fw",
+                "icon": "fa-thin fa-folder-open fa-fw",
                 "src": "sidebarFiles",
                 "enabled": true,
                 "position": "bottom"
             },
             "db": {
                 "title": "Database",
-                "icon": "fa fa-database fa-fw",
+                "icon": "fa-thin fa-database fa-fw",
                 "src": "sidebarDB",
                 "enabled": true,
                 "position": "bottom"

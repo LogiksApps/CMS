@@ -70,7 +70,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
     		<a class='btn btn-warning btn-xs'>Clear</a>
 		</div>
 	</div>
-	<div class="cacheData col-md-3 cache" data-rel='cache' data-toggle="tooltip" data-placement="bottom" title="Misc Cache. Clear this cache to get rid of all the Meta, Data cache.">
+	<div class="cacheData col-md-3 cache" data-rel='cache' data-toggle="tooltip" data-placement="bottom" title="Misc Cache. Clear this cache to get rid of all the Meta, Data cache, Resource Cache, etc.">
 	    <div  class="cacheBlock">
     		<img src="<?php echo loadMedia('images/schedule.png')?>">
     		<citie>--</citie>

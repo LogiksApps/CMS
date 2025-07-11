@@ -61,6 +61,7 @@ if($_REQUEST['ext']=="inc") {
 <script src="<?=$webpath?>ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?=$webpath?>ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?=$webpath?>ext-beautify.js" type="text/javascript" charset="utf-8"></script>
+<script src="<?=$webpath?>beautify.js" type="text/javascript" charset="utf-8"></script>
 <?=_css("cmsEditor")?>
 <?=_js("cmsEditor")?>
 <?=_js("md5")?>
@@ -233,10 +234,47 @@ function doEditorAction(cmd,src) {
 
 		break;
 		case "beautify":
-          if(beautify!=null && editor!=null) {
-            dx = editor.getFirstVisibleRow()+2;
-            beautify.beautify(editor.session);
-            editor.scrollToRow(dx);
+          switch(editor.session.getMode().$id) {
+              case "ace/mode/php":
+                  lgksAlert("PHP Formatting is not yet supported");
+                break;
+              case "ace/mode/javascript":
+              case "ace/mode/js":
+                  editor.setValue(js_beautify(editor.getValue(), {
+                        "indent_size": 4,
+                        "indent_char": " ",
+                        "indent_with_tabs": false,
+                        "editorconfig": false,
+                        "eol": "\n",
+                        "end_with_newline": false,
+                        "indent_level": 0,
+                        "preserve_newlines": true,
+                        "max_preserve_newlines": 10,
+                        "space_in_paren": false,
+                        "space_in_empty_paren": false,
+                        "jslint_happy": false,
+                        "space_after_anon_function": false,
+                        "space_after_named_function": false,
+                        "brace_style": "collapse",
+                        "unindent_chained_methods": false,
+                        "break_chained_methods": false,
+                        "keep_array_indentation": false,
+                        "unescape_strings": false,
+                        "wrap_line_length": 0,
+                        "e4x": false,
+                        "comma_first": false,
+                        "operator_position": "before-newline",
+                        "indent_empty_lines": false,
+                        "templating": ["auto"]
+                    }))
+                break;
+              default:
+                  if(beautify!=null && editor!=null) {
+                    dx = editor.getFirstVisibleRow()+2;
+                    beautify.beautify(editor.session);
+                    editor.scrollToRow(dx);
+                  }
+                break;
           }
 		break;
 		case "preview":

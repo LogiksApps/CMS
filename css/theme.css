@@ -477,7 +477,7 @@ button#leftMenuOpen {
     background-color: transparent;
 }
 #sidebarAccordion .panel-default>.panel-heading .mainTitle a{
-   color: #c9c9c9;
+   color: #ffffff;
     text-decoration: none;
     display: flex;
     padding: 7px 9px;
@@ -568,8 +568,11 @@ button#leftMenuOpen {
     height: 31px;
 }
 .dropdown-menu{
-   
     background-color: #292828;
+}
+.dropdown-menu hr {
+    margin: 0px;
+    border-color: #AAA;
 }
  #page-wrapper{
         margin: 0 0 0 52px;
@@ -599,7 +602,7 @@ body.toppage.opend #content>ul#myTab{
         left: 301px;
 }
 #sidebarAccordion .panel-default>.panel-heading .mainTitle a i{
-        font-size: 18px;
+        font-size: 21px;
 }
 #sidebarAccordion .panel-default>.panel-heading{
        padding: 3px 6px;
@@ -1331,6 +1334,7 @@ body.login {
 pre{
     background-color: #303132 !important;
     border: 1px solid #504c4c !important;
+    color: white;
 }
 body .dropdownIcon {
        position: absolute;
@@ -1388,8 +1392,7 @@ body .msg-profile.group{
         background-color: #303132;
 }
 body code {
-    
-    color: #c7254e;
+    color: white;
     background-color: #f9f2f400;
    
 }
@@ -1399,9 +1402,9 @@ body .btn-success {
     border-color: #646464;
 }
 body .btn-default {
-    color: #ffffff;
+    /*color: #ffffff;
     background-color: #202020;
-    border-color: #646464;
+    border-color: #646464;*/
 }
 body .chat-msg-text .code-tools{
         border-top: 1px solid #464242;
@@ -1419,4 +1422,10 @@ body .chat-area-group i{
 body .chat-area-header{
         border-bottom: 1px solid #494949;
         box-shadow: none;
+}
+#sidebarAccordion {
+    padding-top: 6px;
+    display: flex;
+    flex-direction: column;
+    height: 94vh;
 }

@@ -36,6 +36,10 @@ switch (strtoupper($_REQUEST['action'])) {
 				purge($pth);
 			}
 		}
+		
+		$resHashID = uniqid();
+		_cache("RESOURCEHASHID", $resHashID);
+		
 		printServiceMsg("done");
 		break;
 	case 'PURGE:TEMPLATES':

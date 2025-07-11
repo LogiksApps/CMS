@@ -26,13 +26,13 @@
 
             <!--<a href='{$WEBROOT}?site={$PAGE.forSite}' target='_blank' type="button" class="btn btn-default" title='Preview Site'>-->
             <!--    <i class='fa fa-rocket' style='margin: 3px;'></i></a>-->
-            <a href='#' type="button" class="btn btn-default" title='Code Search' onclick="openCodeSearch(this)"><i class='fa fa-search' style='margin: 3px;'></i></a>
+            <a href='#' type="button" class="btn btn-default" title='Code Search' onclick="openCodeSearch(this)"><i class='fa-light fa-magnifying-glass' style='margin: 3px;'></i></a>
         </div>
-        <a href='#' type="button" class="btn btn-default btn-action btn-open-file" title='Open File'><i class='fa fa-folder-open' style='margin: 3px;'></i></a>
+        <a href='#' type="button" class="btn btn-default btn-action btn-open-file" title='Open File'><i class='fa-light fa-folder-open' style='margin: 3px;'></i></a>
         
         <div class="dropdown btn-dropdown">
             <button type="button" class="btn btn-success btn-action btn-run dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="loadStudioTools()" >
-                    <i class='fa fa-play' style='margin: 3px;'></i>
+                    <i class='fa-light fa-play' style='margin: 3px;'></i>
                     <span class="caret"></span>
             </button>
             

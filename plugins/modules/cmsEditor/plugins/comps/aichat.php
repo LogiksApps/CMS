@@ -3,6 +3,8 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 loadModuleLib("logiksAI", "api");
 
+if(!function_exists("configureLogiksAI")) return;
+
 configureLogiksAI("LogiksAI !", "LogiksStudio");
 
 loadModuleComponent("logiksAI", "chatbox");

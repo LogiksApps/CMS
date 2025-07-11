@@ -97,7 +97,7 @@ foreach($menuTree as $k=>$menuSet) {
       echo "      <a role='button' data-toggle='collapse' data-parent='#sidebarMenu' href='#collapse{$hash}' aria-expanded='true' aria-controls='collapseOne'>";
       echo "        $category";
       echo "      </a>";
-      echo "      <i class='fa fa-angle-right pull-right'></i>";
+      echo "      <i class='fa-light fa-angle-right pull-right'></i>";
       echo "    </h4>";
       echo "  </div>";
       echo "  <div id='collapse{$hash}' class='panel-collapse collapse' role='tabpanel' aria-labelledby='$hash'>";
