@@ -1,0 +1,19 @@
+{
+    "title": "Templates",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Datacontrols",
+    "class": "",
+    "target": "",
+    "link": "modules/templates",
+    "iconpath": "",
+    "tips": "Templates for DataControls",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 400,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#templates",
+    "guid": "global"
+}

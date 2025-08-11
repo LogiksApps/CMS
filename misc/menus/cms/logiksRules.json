@@ -1,0 +1,19 @@
+{
+    "title": "Business Rules",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Datacontrols",
+    "class": "",
+    "target": "",
+    "link": "modules/logiksRules",
+    "iconpath": "",
+    "tips": "Business Rules for Application",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 400,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#logiksRules",
+    "guid": "global"
+}

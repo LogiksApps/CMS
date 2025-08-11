@@ -1,0 +1,19 @@
+{
+    "title": "Workflows",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Datacontrols",
+    "class": "",
+    "target": "",
+    "link": "modules/workflows",
+    "iconpath": "",
+    "tips": "Manage system wide workflows at a central place",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 400,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#workflows",
+    "guid": "global"
+}

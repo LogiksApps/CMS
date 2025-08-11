@@ -1,0 +1,19 @@
+{
+    "title": "Scratchpad",
+    "mode": "*",
+    "category": "",
+    "menugroup": "Tools",
+    "class": "",
+    "target": "",
+    "link": "modules/scratchpad",
+    "iconpath": "",
+    "tips": "ScratchPad - Quick Work",
+    "site": "cms",
+    "device": "*",
+    "privilege": "*",
+    "weight": 300,
+    "onmenu": true,
+    "blocked": false,
+    "rules": "module#scratchpad",
+    "guid": "global"
+}

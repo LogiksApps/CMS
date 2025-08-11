@@ -570,6 +570,9 @@ button#leftMenuOpen {
 .dropdown-menu{
     background-color: #292828;
 }
+.container-fluid .dropdown-menu {
+    background: white;
+}
 .dropdown-menu hr {
     margin: 0px;
     border-color: #AAA;
@@ -1392,7 +1395,7 @@ body .msg-profile.group{
         background-color: #303132;
 }
 body code {
-    color: white;
+    color: black;
     background-color: #f9f2f400;
    
 }
