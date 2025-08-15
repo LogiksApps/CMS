@@ -26,6 +26,16 @@ function pageContentArea() {
 
 printPageComponent(false,[
 		"toolbar"=>[
+		    "refreshPage"=>["icon"=>"<i class='fa fa-refresh'></i>"],
+			"changeLanguage"=>["title"=>"PHP","align"=>"left","type"=>"dropdown","options"=>[
+		            "php"=> "PHP",
+		            "js"=> "Javascript",
+		            "py"=> "Python",
+		            "bash"=> "Bash",
+		        ]],
+		   ['type'=>"bar"],
+		   "clearCode"=>["icon"=>"<i class='fa fa-eraser'></i>","title"=>"Clear"],
+		   "runCode"=>["icon"=>"<i class='fa fa-play'></i>","title"=>"Run"],
 // 			"loggers"=>["title"=>"Loggers","align"=>"right","type"=>"dropdown","options"=>$loggers],
 			// "pages"=>["title"=>"Pages","align"=>"right"],
 			// "comps"=>["title"=>"Components","align"=>"right"],
@@ -33,9 +43,8 @@ printPageComponent(false,[
 			// ['type'=>"bar"],
 
 			// ["title"=>"Search Site","type"=>"search","align"=>"left"]
-			"refreshPage"=>["icon"=>"<i class='fa fa-refresh'></i>"],
-			['type'=>"bar"],
-			"runCode"=>["icon"=>"<i class='fa fa-play'></i>","title"=>"Run"],
+			
+			
 			
 			"clearOutput"=>["icon"=>"<i class='fa fa-trash'></i>","title"=>"Clear", "align"=>"right"],
 		],
@@ -115,6 +124,12 @@ $(function() {
         editor.selection.clearSelection()
 		editor.session.getUndoManager().reset();
     }
+    
+    var lang = localStorage.getItem("SCRATCHPAD_LANG");
+    $("#toolbtn_changeLanguage ul>li>a.active").removeClass("active");
+    $(`#toolbtn_changeLanguage ul>li>a[data-drop=${lang}]`).addClass("active");
+    var text = $("#toolbtn_changeLanguage ul>li>a.active").text();
+    $("#toolbtn_changeLanguage button").html(`${text} <span class="caret"></span>`);
 });
 function refreshPage() {
     window.location.reload();
@@ -126,11 +141,12 @@ function runCode() {
     }
     var code = encodeURIComponent(editor.getValue());
     localStorage.setItem("SCRATCHPAD_CODE", code);
+    localStorage.setItem("SCRATCHPAD_LANG", lang);
     
     $("#resultArea .loading").detach();
     $("#resultArea").append("<div class='loading'>Loading</div>");
     
-    processAJAXPostQuery(_service("scratchpad", "runcode"), `code=${code}&lang=php`, function(data) {
+    processAJAXPostQuery(_service("scratchpad", "runcode"), `code=${code}&lang=${lang}`, function(data) {
         $("#resultArea .loading").detach();
         $("#resultArea").append(data);
         $("#resultArea").append("<hr/>");
@@ -138,7 +154,24 @@ function runCode() {
         $("#resultArea").scrollTop($("#resultArea").height()+1000);
     }, "raw");
 }
+function clearCode() {
+    editor.setValue("");
+    editor.setReadOnly(false);
+}
 function clearOutput() {
     $("#resultArea").html("<span class='loading'>Output will be displayed here. Press CTRL+S/CMD+S to run the code</span>");
+}
+function changeLanguage(ele, dx) {
+    var tempLang = $("#toolbtn_changeLanguage ul>li>a.active").data("drop");
+    var text = $("#toolbtn_changeLanguage ul>li>a.active").text();
+    $("#toolbtn_changeLanguage button").html(`${text} <span class="caret"></span>`);
+    
+    lang = tempLang;
+    
+    setupEditorConfig(editor, lang);
+    
+    // clearOutput();
+    // editor.setValue("");
+    editor.setReadOnly(false);
 }
 </script>
