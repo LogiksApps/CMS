@@ -81,7 +81,7 @@ function printDataInTable($data,$cols=false,$actionCol=false) {
 		echo $data;
 		return;
 	} elseif($data==null) {
-		echo "No Message Returned By Query";
+		echo "No Data Returned By Query";
 		return;
 	}
 	if(count($data)<=0) return "";

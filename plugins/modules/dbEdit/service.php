@@ -105,10 +105,14 @@ switch ($_REQUEST['action']) {
 				case 'sql':
 					$qType=strtoupper(current(explode(" ",$_POST['q'])));
 					$sql=_db($dbKey)->_raw($_POST['q']);
-					$data=$sql->_get();
 					if(isset($_REQUEST['showSQL']) && $_REQUEST['showSQL']=="true") {
 						echo "<citie>".$sql->_SQL()."</citie>";
 					}
+					$data=$sql->_get();
+				// 	$error = $sql->get_error();
+				// 	if($error) {
+				// 	    echo "<citie class='alert alert-danger alert-error'>{$error}</citie>";
+				// 	}
 					if($qType=="SELECT" || $qType=="SHOW") {
 						if($data) {
 							printDataInTable($data);
@@ -126,10 +130,14 @@ switch ($_REQUEST['action']) {
 				
 				case "json":
 					$sql=AbstractQueryBuilder::fromJSON($_POST['q'],_db($dbKey));
-					$data=$sql->_get();
 					if(isset($_REQUEST['showSQL']) && $_REQUEST['showSQL']=="true") {
 						echo "<citie>".$sql->_SQL()."</citie>";
 					}
+					$data=$sql->_get();
+				// 	$error = $sql->get_error();
+				// 	if($error) {
+				// 	    echo "<citie class='alert alert-danger alert-error'>{$error}</citie>";
+				// 	}
 					printDataInTable($data);
 					break;
 

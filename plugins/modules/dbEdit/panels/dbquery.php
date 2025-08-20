@@ -10,10 +10,15 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 				></textarea>
 		</div>
 		<div class='col-xs-3' style='padding: 3px;'>
-			<select id='queryType' class='form-control'>
-				<option>SQL</option>
-				<option>JSON</option>
-			</select>
+			<div>
+			    <select id='queryType' class='form-control'>
+    				<option>SQL</option>
+    				<option>JSON</option>
+    			</select>
+			</div>
+			<div class='' style='text-align: right;margin-top: 10px;'>
+				<label><input type='checkbox' id='showQuery' /> Show Query</label>
+			</div>
 			<div class='' style='text-align: center;margin-top: 10px;'>
 				<button type='button' onclick="runQuery()" class='btn btn-success'><i class='fa fa-flash'></i>RUN</button>
 			</div>
@@ -48,6 +53,10 @@ function runQuery() {
 
 	lx=_service("dbEdit","query")+"&dkey="+dkey+"&type="+type;
 	q="q="+qry;
+
+    if($("#showQuery")[0].checked) {
+        q+="&showSQL=true";
+    }
 
 	saveQueryLocal()
 
