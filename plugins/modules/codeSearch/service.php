@@ -166,7 +166,7 @@ function searchDirectory($term, $path, $extension=["php","js","css","htm","html"
     $dir = new DirectoryIterator($path);
     $files = array();
 
-    $noSearch = ["vendors", "node_modules"];
+    $noSearch = ["vendors", "node_modules", "SQL", ".install"];
 
     $totalFiles = 0;
     foreach ($dir as $file) {
