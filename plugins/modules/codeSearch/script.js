@@ -39,6 +39,16 @@ $(function() {
     if($("#searchTextField").val()!=null && $("#searchTextField").val().length>0) {
         searchCode($("#searchTextField").val());
     }
+    
+    $(".search-container .btn-search-more").click(function() {
+        $("#search-tools").toggleClass("hidden");
+    });
+    
+    if(localStorage.getItem("cms_show_code_snippet")=="true" || localStorage.getItem("cms_show_code_snippet")==null) {
+        $("#show_code_snippet")[0].checked = true;
+    } else {
+        $("#show_code_snippet")[0].checked = false;
+    }
 });
 
 function openCodeLink(src) {
@@ -100,11 +110,22 @@ function searchCode(term) {
         $.cookie("LOGIKS_CMS_SEARCH", $("#toolpath").val())
     } catch(e) {}
     
+    var template = "";
+    
+    if($("#show_code_snippet")[0].checked) {
+        template = Handlebars.compile($("#search-template").html());
+        localStorage.setItem("cms_show_code_snippet", "true");
+    } else {
+        template = Handlebars.compile($("#search-template2").html());
+        localStorage.setItem("cms_show_code_snippet", "false");
+    }
+    
+    
+    
     //"&filters="+q.join(",")+"&lang="+q2.join(",")+q1
     processAJAXPostQuery(_service("codeSearch","search"),"term="+term+"&"+q.join("&")+"&path="+$("#toolpath").val(), function(data) {
         requestTime = (new Date().getTime() - startTime)/1000;
         
-        template = Handlebars.compile($("#search-template").html());
         if(data.Data.results!=null) {
             if(data.Data.results.length>0) {
                 $("#searchResults").html(template({"RESULTS":data.Data.results}));

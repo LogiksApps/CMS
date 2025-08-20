@@ -56,11 +56,13 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result .thumbnail { border-radius: 0 !important; }
 .search-result:first-child { margin-top: 0 !important; }
 .search-result { margin-top: 20px; }
-.search-result .col-md-2 { min-height: 96px; }
-.search-result .col-md-7 { border-left: 1px dotted #ccc; min-height: 96px; }
+.search-result .col-md-2.excerpet { min-height: 96px; }
+.search-result .col-md-2.resultlink { min-height: 20px; }
 .search-result ul { padding-left: 0 !important; list-style: none;  }
 .search-result ul li { font: 400 normal .85em "Roboto",Arial,Verdana,sans-serif;  line-height: 30px; }
 .search-result ul li i { padding-right: 5px; }
+.search-result .col-md-7.excerpet { border-left: 1px dotted #ccc; min-height: 96px; }
+.search-result .col-md-7.resultlink { border-left: 1px dotted #ccc; min-height: 20px; }
 .search-result .col-md-7 { position: relative; }
 .search-result h3 { font: 500 normal 1.375em "Roboto",Arial,Verdana,sans-serif; margin-top: 0 !important; margin-bottom: 10px !important; }
 .search-result h3 > a, .search-result i { color: #248dc1 !important; }
@@ -70,3 +72,16 @@ hgroup h2.lead { font: normal normal 1.125em "Roboto",Arial,Verdana,sans-serif; 
 .search-result span.plus a:hover { background-color: #414141; }
 .search-result span.plus a i { color: #fff !important; }
 .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
+
+.btn-search-more {
+    padding: 9px;
+    padding-top: 9px;
+    font-weight: normal;
+    margin-top: -8px;
+}
+.search-tools {
+    margin-top: 50px;
+    text-align: right;
+    background: floralwhite;
+    padding-top: 4px;
+}

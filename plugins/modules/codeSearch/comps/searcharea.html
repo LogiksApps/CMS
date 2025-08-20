@@ -1,4 +1,18 @@
-<div class="container">
+<style>
+.btn-search-more {
+    padding: 9px;
+    padding-top: 9px;
+    font-weight: normal;
+    margin-top: -8px;
+}
+.search-tools {
+    margin-top: 50px;
+    text-align: right;
+    background: floralwhite;
+    padding-top: 4px;
+}
+</style>
+<div class="container search-container">
 	<div class="row">
         <div class="col-md-12 text-center">
     		<h2>Logiks Code Search</h2>
@@ -39,7 +53,12 @@
                     <label class="badge alert-warning"><input type="checkbox" name="lang" value="css"> CSS</label>
                     <label class="badge alert-warning"><input type="checkbox" name="lang" value="json"> JSON</label>
                     <label class="badge alert-warning"><input type="checkbox" name="lang" value="tpl" title='Templates'> TPL</label>
+                    
+                    <button class='btn btn-default btn-sm btn-search-more'><i class='fa fa-gear'></i></button>
                 </div>
+            </div>
+            <div id='search-tools' class="search-tools hidden">
+                <label class="badge alert-info"><input id='show_code_snippet' type="checkbox" value="*" checked> Code Snippet</label>
             </div>
         </div>
 	</div>
@@ -57,7 +76,7 @@
 <script id="search-template" type="text/x-handlebars-template">
 {{#each RESULTS}}
     <article class="search-result row">
-    	<div class="col-xs-12 col-sm-12 col-md-2">
+    	<div class="col-xs-12 col-sm-12 col-md-2 excerpet">
     		<ul class="meta-search">
     			<li>
     			    <i class="glyphicon glyphicon-tags"></i> 
@@ -68,6 +87,25 @@
     	<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
     		<h3><a href="{{link}}" target=_blank>{{path}}</a></h3>
             <pre><code>{{codesnap}}</code></pre>
+    	</div>
+    	<span class="clearfix"></span>
+    </article>
+{{/each}}
+</script>
+
+<script id="search-template2" type="text/x-handlebars-template">
+{{#each RESULTS}}
+    <article class="search-result row">
+    	<div class="col-xs-12 col-sm-12 col-md-2 resultlink">
+    		<ul class="meta-search">
+    			<li>
+    			    <i class="glyphicon glyphicon-tags"></i> 
+    			    <a href="{{repo_url}}" target=_blank > {{repo}}</a>
+    			</li>
+    		</ul>
+    	</div>
+    	<div class="col-xs-12 col-sm-12 col-md-7 resultlink">
+    		<h3><a href="{{link}}" target=_blank>{{path}}</a></h3>
     	</div>
     	<span class="clearfix"></span>
     </article>
